@@ -1,4 +1,5 @@
 # ターミナル
+- git clone https://github.com/TarouTanakaYokohama/uMy-foods.git
 - docker-compose build
 - docker-compose up -d
 - docker exec -it flutter bash
