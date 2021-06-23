@@ -3,75 +3,212 @@ import 'train01.dart';
 
 void main() => runApp(MyApp());
 
+// カラーコードで色を指定するためのクラス
+class HexColor extends Color {
+ static int _getColorFromHex(String hexColor) {
+   hexColor = hexColor.toUpperCase().replaceAll('#', '');
+   if (hexColor.length == 6) {
+     hexColor = 'FF' + hexColor;
+   }
+   return int.parse(hexColor, radix: 16);
+ }
+
+ HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
+// カラーコード ここまで
+
 class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Web Training',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(),
-    );
-  }
+	@override
+	Widget build(BuildContext context) {
+	return MaterialApp(
+		title: 'Flutter Web Training',
+		theme: ThemeData(
+		primarySwatch: Colors.blue,
+		),
+		home: MyHomePage(),
+	);
+	}
 }
 
 class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
+	@override
+	_MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String title = "Click!";
+	int _counter = 0;
+	String _type = "偶数";
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            RaisedButton(
-              child: Text('次へ'),
-                onPressed: (){
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => NextPage(),
-                  )
-                );
-                },
-            ),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 50.0
-              ),
-            ),
-            Text(
-              "↓",
-              style: TextStyle(
-                fontSize: 30.0
-              ),
-            ),
-            RaisedButton(
-              onPressed: () {
-                setState(() {
-                  title = "クリックされた！";
-                });
-              },
-              child: Text(
-                "Hello, Flutter!",
-                style: TextStyle(
-                  fontSize: 32.0,
-                  color: Colors.green
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+	// 比較する商品数
+	int itemnum = 3;
+	// 比較するリスト　現在は仮でTextに表示する文字リスト
+	var textlist = ['商品1','商品2','商品3'];
+
+	// 連主要
+	void _incrementCounter() {
+		setState(() {
+		_counter++;
+		if (_counter % 2 == 0) {
+			_type = "偶数";
+		} else {
+			_type = "奇数";
+		}
+		});
+	}
+	// リストの入れ替え(右移動)
+	void changeListR(int x){	// x・・・対象の添え字
+		if(x != itemnum - 1){
+			String temp = textlist[x];
+			setState(() {
+				textlist[x] = textlist[x+1];
+				textlist[x+1] = temp;
+			});
+		}
+	}
+
+	// リストの入れ替え(左移動)
+	void changeListL(int x){
+		if(x != 0){
+			String temp = textlist[x];
+			setState(() {
+				textlist[x] = textlist[x-1];
+				textlist[x-1] = temp;
+			});
+		}
+	}
+
+	@override
+	Widget build(BuildContext context) {
+		return Scaffold(
+			appBar: AppBar(
+				title: Text('DEEMO'),
+			),
+			body: Center(
+				child:
+					Column(
+						mainAxisAlignment: MainAxisAlignment.center,
+						children: <Widget>[
+							// < > x を表示
+								Row(
+									//mainAxisAlignment: MainAxisAlignment.center,
+									mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+									children: [
+										// 一列目
+										if(itemnum >= 1)
+										showGL(0),
+										if(itemnum >= 1)
+										showGR(0),
+										if(itemnum >= 1)
+										showGX(0),
+										// 二列目
+										if(itemnum >= 2)
+										showGL(1),
+										if(itemnum >= 2)
+										showGR(1),
+										if(itemnum >= 2)
+										showGX(1),
+										// 三列目
+										if(itemnum >= 3)
+										showGL(2),
+										if(itemnum >= 3)
+										showGR(2),
+										if(itemnum >= 3)
+										showGX(2),
+										// 四列目
+										if(itemnum >= 4)
+										showGL(3),
+										if(itemnum >= 4)
+										showGR(3),
+										if(itemnum >= 4)
+										showGX(3),
+									],
+								),
+							// 比較リストを表示する場所
+							Row(
+								//mainAxisAlignment: MainAxisAlignment.center,
+								mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+								children: [
+									if(itemnum >= 1)
+										Text(textlist[0]),
+									if(itemnum >= 2)
+										Text(textlist[1]),
+									if(itemnum >= 3)
+										Text(textlist[2]),
+									if(itemnum >= 4)
+										Text(textlist[3]),
+								],
+							),
+							// 比較リストここまで
+
+							// 以下練習用ウィジェット
+							Text(
+								'You have pushed the button this many times:',
+							),
+							Text(
+								'$_counter',
+								style: Theme.of(context).textTheme.headline4,
+							),
+							Text('$_type', style: TextStyle(fontSize: 20, color: Colors.red)),
+							RaisedButton(
+								child: Text('次へ'),
+								onPressed: (){
+									Navigator.push(
+										context,
+										MaterialPageRoute(builder: (context) => NextPage(),
+										)
+									);
+								},
+							),
+						],
+					),
+			),
+			floatingActionButton: FloatingActionButton(
+				onPressed: _incrementCounter,
+				tooltip: 'Increment',
+				child: Icon(Icons.add),
+			), // This trailing comma makes auto-formatting nicer for build methods.
+		);
+	}
+
+	GestureDetector showGL(int i){
+		return GestureDetector(
+					onTap: () => {changeListL(i)},
+					child: Icon(
+					Icons.chevron_left,
+					color: HexColor('696969'),
+					)
+				);
+	}
+	GestureDetector showGR(int i){
+				return GestureDetector(
+						onTap: () => {changeListR(i)},
+						child: Icon(
+						Icons.chevron_right,
+						color: HexColor('696969'),
+						)
+					);
+	}
+	GestureDetector showGX(int i){
+					return GestureDetector(
+						onTap: () => {print('あ')},
+						child: Icon(
+						Icons.close,
+						color: HexColor('696969'),
+						)
+					);
+	}
+				//if (_counter % 2 == 0)
+				// IconButton(
+				// 	onPressed: () => {print('ヒ・ダリ')},
+				// 	icon: Icon(Icons.chevron_left),
+				// 	color: HexColor('696969'),
+				// 	iconSize: 24.0,
+				// 	hoverColor: Colors.white.withOpacity(0.1),
+				// 	highlightColor: Colors.white.withOpacity(0.1),
+				// 	splashColor: Colors.white.withOpacity(0.1),
+					
+				// ),
 }
+
 
 
