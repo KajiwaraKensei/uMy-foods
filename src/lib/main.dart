@@ -101,11 +101,11 @@ class _MyHomePageState extends State<MyHomePage> {
           'https://www.tanomail.com/imgcv/product/26/2621344_01.jpg?sr.dw=230&sr.dh=230',
     },
     {
-      'Text': 'カントリーマアム5',
+      'Text': 'カントリーマアム4',
       'image': 'https://www.toysrus.co.jp/i/5/0/8/508961100AML.jpg',
     },
     {
-      'Text': 'カントリーマアム6',
+      'Text': 'カントリーマアム5',
       'image': 'https://www.toysrus.co.jp/i/5/0/8/508961100AML.jpg',
     },
   ];
