@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'train01.dart';
+import 'comparison.dart';
 
 void main() => runApp(MyApp());
 
@@ -133,32 +134,9 @@ class _MyHomePageState extends State<MyHomePage> {
             // 比較リストここまで
 
             // 以下練習用ウィジェット
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            Text('$_type', style: TextStyle(fontSize: 20, color: Colors.red)),
-            RaisedButton(
-              child: Text('次へ'),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NextPage(),
-                    ));
-              },
-            ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
