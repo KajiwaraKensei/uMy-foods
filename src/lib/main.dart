@@ -1,8 +1,26 @@
+import 'dart:html';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+const MaterialColor customSwatch = const MaterialColor(
+  0xFFf5f3ef,
+  const <int, Color>{
+    50: const Color(0xFFFEFEFD),
+    100: const Color(0xFFFCFBFA),
+    200: const Color(0xFFFAF9F7),
+    300: const Color(0xFFF8F7F4),
+    400: const Color(0xFFF7F5F1),
+    500: const Color(0xFFF5F3EF),
+    600: const Color(0xFFF4F1ED),
+    700: const Color(0xFFF2EFEB),
+    800: const Color(0xFFF0EDE8),
+    900: const Color(0xFFEEEAE4),
+  },
+);
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -22,11 +40,25 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: customSwatch,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Flutter デモページ'),
     );
   }
+}
+
+//カラーコードで色指定できるクラス
+//使う時は、HexColor('ec9463')
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll('#', '');
+    if (hexColor.length == 6) {
+      hexColor = 'FF' + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
 
 class MyHomePage extends StatefulWidget {
@@ -50,65 +82,161 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  final List<Map<String, dynamic>> listItems = [
+    {
+      'Text': 'カントリーマアム1',
+      'image': 'https://www.toysrus.co.jp/i/5/0/8/508961100AML.jpg',
+    },
+    {
+      'Text': 'カントリーマアム2',
+      'image': 'https://www.toysrus.co.jp/i/5/0/8/508961100AML.jpg',
+    },
+    {
+      'Text': 'カントリーマアム3',
+      'image': 'https://www.toysrus.co.jp/i/5/0/8/508961100AML.jpg',
+    },
+    {
+      'Text': 'パイの実',
+      'image':
+          'https://www.tanomail.com/imgcv/product/26/2621344_01.jpg?sr.dw=230&sr.dh=230',
+    },
+    {
+      'Text': 'カントリーマアム5',
+      'image': 'https://www.toysrus.co.jp/i/5/0/8/508961100AML.jpg',
+    },
+    {
+      'Text': 'カントリーマアム6',
+      'image': 'https://www.toysrus.co.jp/i/5/0/8/508961100AML.jpg',
+    },
+  ];
+
   void _incrementCounter() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counter++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:hogehgoehgoegh',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+          title: Row(children: [
+        Image.asset(
+          'image/icon.png',
+          height: 80.0,
+          width: 80.0,
         ),
+      ])),
+      drawer: Drawer(child: Center(child: Text("Drawer"))),
+      body: Center(
+        child: Column(children: [
+          Text('try'),
+          Text(listItems[0]['Text']),
+        ]),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        backgroundColor: HexColor('ec9463'),
         tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child: Icon(Icons.assignment, color: Colors.white),
+        onPressed: () async {
+          return showDialog<void>(
+            context: context,
+            barrierDismissible: true, // user must tap button!
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: HexColor('f5f3ef'),
+                title: const Text('Food List'),
+                content: new Container(
+                  width: MediaQuery.of(context).size.width * .8,
+                  child: new GridView.count(
+                    crossAxisCount: 4,
+                    childAspectRatio: 1.0,
+                    padding: const EdgeInsets.all(20.0),
+                    mainAxisSpacing: 4.0,
+                    crossAxisSpacing: 10.0,
+                    children: <Widget>[
+                      for (int i = 0; i < 6; i++)
+                        Card(
+                          //margin: const EdgeInsets.all(10.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              ButtonTheme(
+                                child: ButtonBar(
+                                  children: <Widget>[
+                                    Tooltip(
+                                      message: 'クリップボードから削除します。',
+                                      child: IconButton(
+                                        icon: const Icon(Icons.close,
+                                            color: Colors.black),
+                                        onPressed: () {
+                                          listItems.removeAt(i);
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Image.network(
+                                listItems[i]['image'],
+                                height: 120.0,
+                                width: 120.0,
+                              ),
+                              Text(
+                                listItems[i]['Text'],
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  Center(
+                    child: Row(
+                      // 均等配置
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Opacity(
+                          opacity: 0.0,
+                        ),
+                        Opacity(
+                          opacity: 0.0,
+                        ),
+                        Opacity(
+                          opacity: 0.0,
+                        ),
+                        OutlinedButton(
+                          child: const Text('比較'),
+                          style: TextButton.styleFrom(primary: Colors.black),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        Opacity(
+                          opacity: 0.0,
+                        ),
+                        TextButton.icon(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: Icon(
+                            Icons.delete_outlined,
+                          ),
+                          label: Text('全体削除'),
+                          style: TextButton.styleFrom(
+                            primary: HexColor('8c6e63'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
