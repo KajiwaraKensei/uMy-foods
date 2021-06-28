@@ -131,6 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ])),
       drawer: Drawer(child: Center(child: Text("Drawer"))),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           ListView.builder(
               padding: const EdgeInsets.all(8),
