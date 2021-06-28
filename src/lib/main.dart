@@ -82,7 +82,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  final List<Map<String, dynamic>> listItems = [
+  final List<Map<String, dynamic>> _listItems = [
     {
       'Text': 'カントリーマアム1',
       'image': 'https://www.toysrus.co.jp/i/5/0/8/508961100AML.jpg',
@@ -110,9 +110,11 @@ class _MyHomePageState extends State<MyHomePage> {
     },
   ];
 
-  void _incrementCounter() {
+  String _textex = "";
+
+  void _deleteItem(i) async {
     setState(() {
-      _counter++;
+      _listItems.removeAt(i);
     });
   }
 
@@ -122,17 +124,54 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
           title: Row(children: [
         Image.asset(
-          'image/icon.png',
+          'images/icon.png',
           height: 80.0,
           width: 80.0,
         ),
       ])),
       drawer: Drawer(child: Center(child: Text("Drawer"))),
-      body: Center(
-        child: Column(children: [
-          Text('try'),
-          Text(listItems[0]['Text']),
-        ]),
+      body: Column(
+        children: <Widget>[
+          ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: _listItems.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  height: 50,
+                  child: RaisedButton(
+                    child: Text(_listItems[index]["Text"]),
+                    onPressed: () {
+                      _deleteItem(index);
+                    },
+                  ),
+                );
+              }),
+          TextButton(
+              child: Text('Alert'),
+              onPressed: () async {
+                return showDialog<void>(
+                  context: context,
+                  barrierDismissible: true, // user must tap button!
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: HexColor('f5f3ef'),
+                      title: const Text('Food List'),
+                      content: StatefulBuilder(builder:
+                          (BuildContext context, StateSetter setState) {
+                        return new Container(
+                          child: RaisedButton(
+                            child: Text(_textex),
+                            onPressed: () {
+                              _textex = "ほげほげ";
+                            },
+                          ),
+                        );
+                      }),
+                    );
+                  },
+                );
+              }),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: HexColor('ec9463'),
@@ -146,52 +185,52 @@ class _MyHomePageState extends State<MyHomePage> {
               return AlertDialog(
                 backgroundColor: HexColor('f5f3ef'),
                 title: const Text('Food List'),
-                content: new Container(
-                  width: MediaQuery.of(context).size.width * .8,
-                  child: new GridView.count(
-                    crossAxisCount: 4,
-                    childAspectRatio: 1.0,
-                    padding: const EdgeInsets.all(20.0),
-                    mainAxisSpacing: 4.0,
-                    crossAxisSpacing: 10.0,
-                    children: <Widget>[
-                      for (int i = 0; i < 6; i++)
-                        Card(
-                          //margin: const EdgeInsets.all(10.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              ButtonTheme(
-                                child: ButtonBar(
-                                  children: <Widget>[
-                                    Tooltip(
-                                      message: 'クリップボードから削除します。',
-                                      child: IconButton(
-                                        icon: const Icon(Icons.close,
-                                            color: Colors.black),
-                                        onPressed: () {
-                                          listItems.removeAt(i);
-                                        },
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Image.network(
-                                listItems[i]['image'],
-                                height: 120.0,
-                                width: 120.0,
-                              ),
-                              Text(
-                                listItems[i]['Text'],
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ],
-                          ),
+                content: StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
+                  return new Container(
+                    width: MediaQuery.of(context).size.width * .8,
+                    child: new GridView.builder(
+                        itemCount: _listItems.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
                         ),
-                    ],
-                  ),
-                ),
+                        itemBuilder: (BuildContext context, int index) {
+                          return Card(
+                            //margin: const EdgeInsets.all(10.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                ButtonTheme(
+                                  child: ButtonBar(
+                                    children: [
+                                      Tooltip(
+                                        message: 'クリップボードから削除します。',
+                                        child: IconButton(
+                                          icon: const Icon(Icons.close,
+                                              color: Colors.black),
+                                          onPressed: () {
+                                            _deleteItem(index);
+                                          },
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Image.network(
+                                  _listItems[index]['image'],
+                                  height: 120.0,
+                                  width: 120.0,
+                                ),
+                                Text(
+                                  _listItems[index]['Text'],
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                  );
+                }),
                 actions: <Widget>[
                   Center(
                     child: Row(
