@@ -5,6 +5,6 @@
 
 version:
   revision: f1542ace4fd8ca2de78e49f4bb0def4849e1f40c
-  channel: master
+  channel: stable
 
 project_type: app
