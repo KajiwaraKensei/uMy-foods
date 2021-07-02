@@ -128,24 +128,40 @@ class _ComparisonState extends State<Comparison> {
               scrollDirection: Axis.horizontal, // スクロールの向きを水平方向に指定
               child: Column(
                 children: [
+                  // 入れ替えボタン
                   Row(
                     //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       for (ccnt = 0; ccnt < conItems.length; ccnt++)
                         Container(
                           width: 300,
-                          padding: EdgeInsets.fromLTRB(150, 0, 0, 0),
+                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              showGL(ccnt),
-                              showGR(ccnt),
-                              showGX(ccnt),
+                              Container(
+                                width: 170,
+                                margin: EdgeInsets.fromLTRB(55, 0, 0, 0),
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    showGL(ccnt),
+                                    showGR(ccnt),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(40, 0, 0, 0),
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                child: showGX(ccnt),
+                              ),
                             ],
                           ),
                         ),
                     ],
                   ),
+                  // 比較する商品一覧
                   Row(
                     children: [
                       myContainer(size: 120, color: Colors.blue, text: 'list'),
@@ -315,7 +331,7 @@ class _ComparisonState extends State<Comparison> {
         child: Icon(
           Icons.chevron_left,
           color: HexColor('696969'),
-          size: 19,
+          size: 40,
         ));
   }
 
@@ -326,7 +342,7 @@ class _ComparisonState extends State<Comparison> {
         child: Icon(
           Icons.chevron_right,
           color: HexColor('696969'),
-          size: 19,
+          size: 40,
         ));
   }
 
@@ -337,7 +353,7 @@ class _ComparisonState extends State<Comparison> {
         child: Icon(
           Icons.close,
           color: HexColor('696969'),
-          size: 19,
+          size: 20,
         ));
   }
 
