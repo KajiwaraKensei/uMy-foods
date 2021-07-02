@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:workspace/comparison.dart';
+import 'package:umy_foods/comparison.dart';
 
 void main() {
   runApp(MyApp());
