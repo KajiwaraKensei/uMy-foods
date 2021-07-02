@@ -123,40 +123,37 @@ class _ComparisonState extends State<Comparison> {
               padding: EdgeInsets.only(bottom: 10),
               child: Text('トップ＞比較'),
             ),
-            // 入れ替え削除アイコン、改良必要
-            Row(
-              children: [
-                // 一列目
-                if (conItems.length >= 1) showGL(0),
-                if (conItems.length >= 1) showGR(0),
-                if (conItems.length >= 1) showGX(0),
-                // 二列目
-                if (conItems.length >= 2) showGL(1),
-                if (conItems.length >= 2) showGR(1),
-                if (conItems.length >= 2) showGX(1),
-                // 三列目
-                if (conItems.length >= 3) showGL(2),
-                if (conItems.length >= 3) showGR(2),
-                if (conItems.length >= 3) showGX(2),
-                // 四列目
-                if (conItems.length >= 4) showGL(3),
-                if (conItems.length >= 4) showGR(3),
-                if (conItems.length >= 4) showGX(3),
-                // ５列目
-                if (conItems.length >= 5) showGL(4),
-                if (conItems.length >= 5) showGR(4),
-                if (conItems.length >= 5) showGX(4),
-              ],
-            ),
             SingleChildScrollView(
               // SingleChildScrollViewで子ウィジェットをラップ
               scrollDirection: Axis.horizontal, // スクロールの向きを水平方向に指定
-              child: Row(
+              child: Column(
                 children: [
-                  myContainer(color: Colors.blue, text: 'list'),
-                  for (ccnt = 0; ccnt < conItems.length; ccnt++) myContainer(color: Colors.orange, text: 'contents'),
-                  // スクロールした時に確認できるように右側にも配置
-                  if (conItems.length > 3) myContainer(color: Colors.blue, text: 'list'),
+                  Row(
+                    //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      for (ccnt = 0; ccnt < conItems.length; ccnt++)
+                        Container(
+                          width: 300,
+                          padding: EdgeInsets.fromLTRB(150, 0, 0, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              showGL(ccnt),
+                              showGR(ccnt),
+                              showGX(ccnt),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      myContainer(size: 120, color: Colors.blue, text: 'list'),
+                      for (ccnt = 0; ccnt < conItems.length; ccnt++) myContainer(color: Colors.orange, text: 'contents'),
+                      // スクロールした時に確認できるように右側にも配置
+                      if (conItems.length > 3) myContainer(size: 120, color: Colors.blue, text: 'list'),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -318,6 +315,7 @@ class _ComparisonState extends State<Comparison> {
         child: Icon(
           Icons.chevron_left,
           color: HexColor('696969'),
+          size: 19,
         ));
   }
 
@@ -328,6 +326,7 @@ class _ComparisonState extends State<Comparison> {
         child: Icon(
           Icons.chevron_right,
           color: HexColor('696969'),
+          size: 19,
         ));
   }
 
@@ -338,6 +337,7 @@ class _ComparisonState extends State<Comparison> {
         child: Icon(
           Icons.close,
           color: HexColor('696969'),
+          size: 19,
         ));
   }
 
