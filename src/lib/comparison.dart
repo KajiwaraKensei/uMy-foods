@@ -129,45 +129,49 @@ class _ComparisonState extends State<Comparison> {
               child: Column(
                 children: [
                   // 入れ替えボタン
-                  Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      for (ccnt = 0; ccnt < conItems.length; ccnt++)
-                        Container(
-                          width: 300,
-                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 170,
-                                margin: EdgeInsets.fromLTRB(55, 0, 0, 0),
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    showGL(ccnt),
-                                    showGR(ccnt),
-                                  ],
+                  Container(
+                    margin: EdgeInsets.fromLTRB(120, 0, 0, 0),
+                    child: Row(
+                      children: <Widget>[
+                        for (ccnt = 0; ccnt < conItems.length; ccnt++)
+                          Container(
+                            //color: HexColor('ff9999'), // 確認用
+                            width: 300, // 商品一覧コンテナと同じ数値
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  //color: HexColor('ffff99'), // 確認用
+                                  width: 200,
+                                  margin: EdgeInsets.fromLTRB(50, 0, 0, 0),
+                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      showGL(ccnt),
+                                      showGR(ccnt),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(40, 0, 0, 0),
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                child: showGX(ccnt),
-                              ),
-                            ],
+                                Container(
+                                  //color: Colors.blue, // 確認用
+                                  width: 50,
+                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                  child: showGX(ccnt),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
                   // 比較する商品一覧
                   Row(
                     children: [
                       myContainer(size: 120, color: Colors.blue, text: 'list'),
                       for (ccnt = 0; ccnt < conItems.length; ccnt++) myContainer(color: Colors.orange, text: 'contents'),
-                      // スクロールした時に確認できるように右側にも配置
-                      if (conItems.length > 3) myContainer(size: 120, color: Colors.blue, text: 'list'),
                     ],
                   ),
                 ],
@@ -183,7 +187,6 @@ class _ComparisonState extends State<Comparison> {
     return Container(
       color: color,
       width: size,
-      height: 630,
       child: Column(children: [
         Table(
           border: TableBorder.all(),
