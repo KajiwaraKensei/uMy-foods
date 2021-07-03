@@ -264,7 +264,7 @@ class _ComparisonState extends State<Comparison> {
                       //Radar Chart
                       child: RadarChart(
                         animate: false, // アニメーションの有無 true or false
-                        //animationDuration: Duration(milliseconds: 150), //アニメーションの再生速度 150ミリ秒
+                        animationDuration: Duration(milliseconds: 700), //アニメーションの再生速度 ミリ秒
                         values: conItems[ccnt]['taste'],
                         labels: [
                           "甘味",
@@ -277,7 +277,7 @@ class _ComparisonState extends State<Comparison> {
                         ],
                         maxValue: 10,
                         fillColor: Colors.blue,
-                        chartRadiusFactor: 0.7,
+                        chartRadiusFactor: 0.8,
                       ),
                     )
                   else
