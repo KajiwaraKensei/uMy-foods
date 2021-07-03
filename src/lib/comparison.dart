@@ -13,13 +13,24 @@ class _ComparisonState extends State<Comparison> {
 
   // 行カウント
   var ccnt = 0;
-  // 味覚リスト
-  List<List<double>> tastelist = [
-    [10, 0, 0, 0, 0, 0, 8],
-    [10, 0, 0, 0, 0, 0, 10],
-    [8, 0, 0, 0, 0, 0, 8],
-    [7, 0, 0, 0, 0, 0, 7],
-    [4, 0, 7, 0, 0, 0, 10],
+
+  List<String> conItemLabels = [
+    'Name',
+    'Image',
+    'Eval',
+    'Rank',
+    'Repeat',
+    'Con',
+    'CostP',
+    'taste',
+    'Material',
+    'Allergy',
+    'Nutrition',
+    'Manufact',
+    'RefPrice',
+    'InterCap',
+    'Brand',
+    'RelDate',
   ];
   // 味覚以外のリスト
   final List<Map<String, dynamic>> conItems = [
@@ -28,9 +39,10 @@ class _ComparisonState extends State<Comparison> {
       'Image': 'https://www.toysrus.co.jp/i/5/0/8/508961100AML.jpg',
       'Eval': 5, // 総合評価
       'Rank': 'お菓子2位',
-      'Repeat': 252,
+      'Repeat': <double>[252, 249],
       'Con': 252, // 気になる
       'CostP': 4, // コスパ
+      'taste': <double>[10, 0, 0, 0, 0, 0, 8],
       'Material': 'いろいろ', // 原材料
       'Allergy': '小麦',
       'Nutrition': 'カロリー：10g,タンパク質：11g',
@@ -45,9 +57,10 @@ class _ComparisonState extends State<Comparison> {
       'Image': 'https://www.life-netsuper.jp/k-kinkicommon/parts/data/item/04901360273010.jpg',
       'Eval': 5, // 総合評価
       'Rank': 'お菓子1位',
-      'Repeat': 99999,
+      'Repeat': <double>[999, 999],
       'Con': 99999, // 気になる
       'CostP': 5, // コスパ
+      'taste': <double>[10, 0, 0, 0, 0, 0, 10],
       'Material': 'いろいろ', // 原材料
       'Allergy': '小麦',
       'Nutrition': 'カロリー：5g,タンパク質：8g',
@@ -62,9 +75,10 @@ class _ComparisonState extends State<Comparison> {
       'Image': 'https://images-fe.ssl-images-amazon.com/images/I/71SBG7SSapL.__AC_SX300_SY300_QL70_ML2_.jpg',
       'Eval': 5, // 総合評価
       'Rank': 'お菓子3位',
-      'Repeat': 212,
+      'Repeat': <double>[212, 200],
       'Con': 212, // 気になる
       'CostP': 5, // コスパ
+      'taste': <double>[8, 0, 0, 0, 0, 0, 8],
       'Material': 'いろいろ', // 原材料
       'Allergy': '小麦',
       'Nutrition': 'エネルギー：10g,タンパク質：11g',
@@ -79,9 +93,10 @@ class _ComparisonState extends State<Comparison> {
       'Image': 'https://images-na.ssl-images-amazon.com/images/I/71mxyAVWynL._AC_SL1500_.jpg',
       'Eval': 5, // 総合評価
       'Rank': 'お菓子4位',
-      'Repeat': 111,
+      'Repeat': <double>[111, 80],
       'Con': 51, // 気になる
       'CostP': 4, // コスパ
+      'taste': <double>[7, 0, 0, 0, 0, 0, 7],
       'Material': 'いろいろ', // 原材料
       'Allergy': '小麦',
       'Nutrition': 'エネルギー：10g,タンパク質：11g',
@@ -96,9 +111,10 @@ class _ComparisonState extends State<Comparison> {
       'Image': 'https://stat.ameba.jp/user_images/20200226/19/feals/4c/99/j/o0466034614719411273.jpg',
       'Eval': 5, // 総合評価
       'Rank': 'お菓子5位',
-      'Repeat': 300,
+      'Repeat': <double>[300, 250], // [レビュー数, リピしたい数]
       'Con': 300, // 気になる
       'CostP': 4, // コスパ
+      'taste': <double>[4, 0, 7, 0, 0, 0, 10],
       'Material': 'いろいろ', // 原材料
       'Allergy': '小麦',
       'Nutrition': 'エネルギー：10g,タンパク質：11g',
@@ -213,12 +229,7 @@ class _ComparisonState extends State<Comparison> {
                       color: HexColor('ffdfc5'),
                     )
                 else if (text == 'contents')
-                  if (rcnt == 0) // 商品名
-                    Container(
-                      child: Center(child: Text(conItems[ccnt]['Name'], style: TextStyle(color: Colors.black))),
-                      color: Colors.white,
-                    )
-                  else if (rcnt == 1) //商品画像
+                  if (rcnt == 1) //商品画像
                     Container(
                       child: Padding(padding: EdgeInsets.all(5.0), child: Center(child: Image.network(conItems[ccnt]['Image']))),
                       height: 150,
@@ -230,19 +241,14 @@ class _ComparisonState extends State<Comparison> {
                       child: Center(child: Text(conItems[ccnt]['Eval'].toString(), style: TextStyle(color: Colors.black))),
                       color: Colors.white,
                     )
-                  else if (rcnt == 3) //ランキング
+                  else if (rcnt == 4) //リピートしたい
                     Container(
-                      child: Center(child: Text(conItems[ccnt]['Rank'], style: TextStyle(color: Colors.black))),
-                      color: Colors.white,
-                    )
-                  else if (rcnt == 4) //リピしたい
-                    Container(
-                      child: Center(child: Text(conItems[ccnt]['Repeat'].toString(), style: TextStyle(color: Colors.black))),
+                      child: Center(child: Text(showRepeat(conItems[ccnt][conItemLabels[rcnt]]), style: TextStyle(color: Colors.black))),
                       color: Colors.white,
                     )
                   else if (rcnt == 5) //気になる
                     Container(
-                      child: Center(child: Text(conItems[ccnt]['Con'].toString(), style: TextStyle(color: Colors.black))),
+                      child: Center(child: Text(conItems[ccnt][conItemLabels[rcnt]].toString() + '回', style: TextStyle(color: Colors.black))),
                       color: Colors.white,
                     )
                   else if (rcnt == 6) //コスパ
@@ -257,7 +263,9 @@ class _ComparisonState extends State<Comparison> {
                       color: Colors.white,
                       //Radar Chart
                       child: RadarChart(
-                        values: tastelist[ccnt],
+                        animate: false, // アニメーションの有無 true or false
+                        //animationDuration: Duration(milliseconds: 150), //アニメーションの再生速度 150ミリ秒
+                        values: conItems[ccnt]['taste'],
                         labels: [
                           "甘味",
                           "酸味",
@@ -272,44 +280,9 @@ class _ComparisonState extends State<Comparison> {
                         chartRadiusFactor: 0.7,
                       ),
                     )
-                  else if (rcnt == 8) //原材料
+                  else
                     Container(
-                      child: Center(child: Text(conItems[ccnt]['Material'], style: TextStyle(color: Colors.black))),
-                      color: Colors.white,
-                    )
-                  else if (rcnt == 9) //アレルギー
-                    Container(
-                      child: Center(child: Text(conItems[ccnt]['Allergy'], style: TextStyle(color: Colors.black))),
-                      color: Colors.white,
-                    )
-                  else if (rcnt == 10) //栄養成分
-                    Container(
-                      child: Center(child: Text(conItems[ccnt]['Nutrition'], style: TextStyle(color: Colors.black))),
-                      color: Colors.white,
-                    )
-                  else if (rcnt == 11) //メーカー
-                    Container(
-                      child: Center(child: Text(conItems[ccnt]['Manufact'], style: TextStyle(color: Colors.black))),
-                      color: Colors.white,
-                    )
-                  else if (rcnt == 12) //参考価格
-                    Container(
-                      child: Center(child: Text(conItems[ccnt]['RefPrice'], style: TextStyle(color: Colors.black))),
-                      color: Colors.white,
-                    )
-                  else if (rcnt == 13) //内容量
-                    Container(
-                      child: Center(child: Text(conItems[ccnt]['InterCap'], style: TextStyle(color: Colors.black))),
-                      color: Colors.white,
-                    )
-                  else if (rcnt == 14) //ディオ
-                    Container(
-                      child: Center(child: Text(conItems[ccnt]['Brand'], style: TextStyle(color: Colors.black))),
-                      color: Colors.white,
-                    )
-                  else //発売日
-                    Container(
-                      child: Center(child: Text(conItems[ccnt]['RelDate'], style: TextStyle(color: Colors.black))),
+                      child: Center(child: Text(conItems[ccnt][conItemLabels[rcnt]], style: TextStyle(color: Colors.black))),
                       color: Colors.white,
                     )
               ])
@@ -325,6 +298,12 @@ class _ComparisonState extends State<Comparison> {
         // ),
       ]),
     );
+  }
+
+  String showRepeat(List lists) {
+    const base_namber = 1; // 四捨五入する小数点の場所  1(小数点第1) 10(第2) 100(第3) ...
+    String tmp = (((lists[1] / lists[0] * 100) * base_namber).round() / base_namber).toString() + '%';
+    return tmp;
   }
 
   // < を表示
@@ -365,12 +344,9 @@ class _ComparisonState extends State<Comparison> {
     // x・・・対象の添え字
     if (x != -1) {
       var temp = conItems[x];
-      var temp2 = tastelist[x];
       setState(() {
         conItems[x] = conItems[x + 1];
         conItems[x + 1] = temp;
-        tastelist[x] = tastelist[x + 1];
-        tastelist[x + 1] = temp2;
       });
     }
   }
@@ -379,12 +355,9 @@ class _ComparisonState extends State<Comparison> {
   void changeListL(int x) {
     if (x != 0) {
       var temp = conItems[x];
-      var temp2 = tastelist[x];
       setState(() {
         conItems[x] = conItems[x - 1];
         conItems[x - 1] = temp;
-        tastelist[x] = tastelist[x - 1];
-        tastelist[x - 1] = temp2;
       });
     }
   }
@@ -393,7 +366,6 @@ class _ComparisonState extends State<Comparison> {
   void deleteList(int x) {
     setState(() {
       conItems.removeAt(x); // 添え字xの要素を削除
-      tastelist.removeAt(x);
     });
   }
 }
