@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:umy_foods/comparison.dart';
+import 'package:umy_foods/login.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,7 +30,35 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Comparison());
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RaisedButton(
+              child: Text('比較画面'),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Comparison(),
+                    ));
+              },
+            ),
+            RaisedButton(
+              child: Text('ログイン画面'),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Login(),
+                    ));
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
