@@ -1,5 +1,6 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:umy_foods/signup.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -7,7 +8,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  late FocusNode myFocusNode;
+  /*late FocusNode myFocusNode;
 
   @override
   void initState() {
@@ -22,7 +23,7 @@ class _LoginState extends State<Login> {
     myFocusNode.dispose();
 
     super.dispose();
-  }
+  }*/
 
   var _useraddress = TextEditingController();
   var _userpassword = TextEditingController();
@@ -52,20 +53,20 @@ class _LoginState extends State<Login> {
                         style: TextStyle(
                           color: HexColor('8c6e63'),
                           fontSize: 25,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w600, // 文字の太さ
                         ),
                       ),
                     ),
                     // メールアドレス入力欄
                     TextField(
-                      focusNode: myFocusNode,
-                      // カーソルの色
-                      cursorColor: Colors.orange,
-                      controller: _useraddress,
+                      //focusNode: myFocusNode,
+                      cursorColor: Colors.orange, // カーソルの色
+                      controller: _useraddress, // 入力文字取得用
                       decoration: InputDecoration(
                         // フォーカスされていないとき
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(10.0), //角のまるさ
+                          // 枠線
                           borderSide: BorderSide(
                             color: HexColor('ec9463'),
                             width: 1.5,
@@ -85,7 +86,12 @@ class _LoginState extends State<Login> {
                     // メールアドレスエラーメッセージ
                     Container(
                       margin: EdgeInsets.only(top: 3, bottom: 25),
-                      child: Text('メールアドレスエラーメッセージ'),
+                      child: Text(
+                        'メールアドレスエラーメッセージ',
+                        style: TextStyle(
+                          color: Colors.red,
+                        ),
+                      ),
                     ),
                     // パスワード入力欄
                     TextField(
@@ -124,7 +130,12 @@ class _LoginState extends State<Login> {
                     // パスワードエラーメッセージ
                     Container(
                       margin: EdgeInsets.only(top: 5, bottom: 5),
-                      child: Text('パスワードエラーメッセージ'),
+                      child: Text(
+                        'パスワードエラーメッセージ',
+                        style: TextStyle(
+                          color: Colors.red,
+                        ),
+                      ),
                     ),
                     // パスワード忘れリンク
                     Container(
@@ -135,7 +146,15 @@ class _LoginState extends State<Login> {
                           Text('パスワードを忘れた方は'),
                           Container(
                             margin: EdgeInsets.only(left: 8),
-                            child: Text('こちら'),
+                            child: TextButton(
+                              child: const Text('こちら'),
+                              style: TextButton.styleFrom(
+                                primary: Colors.blue,
+                              ),
+                              onPressed: () {
+                                // パスワード忘れ画面へ
+                              },
+                            ),
                           ),
                         ],
                       ),
@@ -148,10 +167,10 @@ class _LoginState extends State<Login> {
                         children: [
                           Checkbox(
                             activeColor: Colors.blue,
-                            value: _flag,
+                            value: _flag, //チェックの有無(bool型)
                             onChanged: (bool? value) {
                               setState(() {
-                                _flag = value!;
+                                _flag = value!; // 反転させる
                               });
                             },
                           ),
@@ -166,6 +185,7 @@ class _LoginState extends State<Login> {
                       height: 40,
                       child: ElevatedButton(
                         onPressed: () {
+                          // 確認用
                           setState(() {
                             _text = _useraddress.text;
                             _text += ':';
@@ -199,12 +219,24 @@ class _LoginState extends State<Login> {
                           ),
                           Container(
                             margin: EdgeInsets.only(left: 8),
-                            child: Text(
-                              'こちら',
-                              style: TextStyle(
-                                color: HexColor('f47c01'),
-                                fontSize: 17,
+                            child: TextButton(
+                              child: const Text(
+                                'こちら',
+                                style: TextStyle(
+                                  fontSize: 17,
+                                ),
                               ),
+                              style: TextButton.styleFrom(
+                                primary: HexColor('f47c01'),
+                              ),
+                              // 新規登録画面へ
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Signup(),
+                                    ));
+                              },
                             ),
                           ),
                         ],
@@ -228,6 +260,7 @@ class _LoginState extends State<Login> {
                 width: 400,
                 child: Column(
                   children: [
+                    // 他サービスIDでログイン
                     Container(
                       margin: EdgeInsets.only(bottom: 20),
                       child: Text(
@@ -239,12 +272,43 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
+                    // Google
                     Container(
                       width: 300,
                       height: 50,
+                      // ボタン + icon
                       child: ElevatedButton.icon(
-                        icon: FaIcon(FontAwesomeIcons.google, color: Colors.grey),
-                        label: Text('Googleでログイン'),
+                        icon: FaIcon(FontAwesomeIcons.google, color: Colors.red),
+                        label: Text('Google'),
+                        // ボタンのデザイン
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white,
+                          onPrimary: Colors.black,
+                        ),
+                        onPressed: () {
+                          // Googleでログイン処理
+                        },
+                      ),
+                    ),
+                    // Twitter
+                    Container(
+                      width: 300,
+                      height: 50,
+                      margin: EdgeInsets.only(top: 20),
+                      child: ElevatedButton.icon(
+                        // 青色部分
+                        icon: Ink(
+                          width: 30,
+                          decoration: ShapeDecoration(
+                            color: Colors.blue,
+                            shape: CircleBorder(),
+                          ),
+                          // アイコン部分
+                          child: Center(
+                            child: FaIcon(FontAwesomeIcons.twitter, color: Colors.white, size: 19),
+                          ),
+                        ),
+                        label: Text('Twitter'),
                         style: ElevatedButton.styleFrom(
                           primary: Colors.white,
                           onPrimary: Colors.black,
@@ -252,41 +316,16 @@ class _LoginState extends State<Login> {
                         onPressed: () {},
                       ),
                     ),
+                    // Facebook
                     Container(
                       width: 300,
                       height: 50,
                       margin: EdgeInsets.only(top: 20),
-                      child: ElevatedButton.icon(
-                        icon: FaIcon(FontAwesomeIcons.twitter, color: Colors.blue),
-                        label: Text('トゥイッターでログイン'),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
-                          onPrimary: Colors.black,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ),
-                    Container(
-                      width: 300,
-                      height: 50,
-                      margin: EdgeInsets.only(top: 20),
+                      // ボタン + icon
                       child: ElevatedButton.icon(
                         icon: FaIcon(FontAwesomeIcons.facebook, color: Colors.indigo),
-                        label: Text('顔本でログイン'),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
-                          onPrimary: Colors.black,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ),
-                    Container(
-                      width: 300,
-                      height: 50,
-                      margin: EdgeInsets.only(top: 20),
-                      child: ElevatedButton.icon(
-                        icon: FaIcon(FontAwesomeIcons.line, color: Colors.greenAccent.shade700),
-                        label: Text('LINEでログイン'),
+                        label: Text('Facebook'),
+                        // ボタンのデザイン
                         style: ElevatedButton.styleFrom(
                           primary: Colors.white,
                           onPrimary: Colors.black,
