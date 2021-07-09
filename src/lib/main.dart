@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -82,9 +83,9 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-Widget buildTaskList() {
+Widget buildTaskList(String path) {
   return StreamBuilder<QuerySnapshot>(
-    stream: FirebaseFirestore.instance.collection('major_category').snapshots(),
+    stream: FirebaseFirestore.instance.collection(path).snapshots(),
     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
       if (!snapshot.hasData) {
         return const Center(
@@ -99,15 +100,30 @@ Widget buildTaskList() {
           final data = document.data() as Map<String, dynamic>;
           return Card(
             child: ListTile(
-              title: Text('${data['category_name']}'),
+              title: Text(' ${data['category_name']}'),
             ),
-            );
+          );
         }).toList(),
       );
     },
-    );
-  }
+  );
+}
 
+String randomString(int length) {
+  const _randomChars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const _charsLength = _randomChars.length;
+
+  final rand = new Random();
+  final codeUnits = new List.generate(
+    length,
+    (index) {
+      final n = rand.nextInt(_charsLength);
+      return _randomChars.codeUnitAt(n);
+    },
+  );
+  return new String.fromCharCodes(codeUnits);
+}
 
 class _MyHomePageState extends State<MyHomePage> {
   // 作成したドキュメント一覧
@@ -115,6 +131,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // 指定したドキュメントの情報
   String orderDocumentInfo = '';
+
+  String messageText = '';
+
+  List addcategory = [];
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +164,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),*/
               Flexible(
-                child: buildTaskList(),
+                child: buildTaskList(
+                    'major_category/002/category/001/sub_category/'),
                 /*child: ListView.builder(
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
@@ -164,9 +185,50 @@ class _MyHomePageState extends State<MyHomePage> {
                   itemCount: documentList.length,
                 ),*/
               ),
+              TextFormField(
+                decoration: InputDecoration(labelText: '追加カテゴリー'),
+                onChanged: (String value) {
+                  setState(() {
+                    messageText = value;
+                  });
+                },
+              ),
+              const SizedBox(height: 8),
+              Container(
+                child: ElevatedButton(
+                  child: Text('追加'),
+                  onPressed: () async {
+                    String id = randomString(10);
+                    // 投稿メッセージ用ドキュメント作成
+                    await FirebaseFirestore.instance
+                        .collection(
+                            'major_category/002/category/001/sub_category/') // コレクションID指定
+                        .doc(id) // ドキュメントID自動生成
+                        .set({
+                      'category_name': messageText,
+                    });
+                    addcategory.add(id);
+                  },
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                child: ElevatedButton(
+                  child: Text('データ削除'),
+                  onPressed: () {
+                    addcategory.forEach((docID) async {
+                      await FirebaseFirestore.instance
+                          .collection(
+                              'major_category/002/category/001/sub_category/') // コレクションID指定
+                          .doc(docID)
+                          .delete();
+                    });
+                    addcategory = [];
+                  },
+                ),
+              ),
             ],
           ),
         ));
   }
 }
-
