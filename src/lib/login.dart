@@ -44,16 +44,19 @@ class _LoginState extends State<Login> {
               Container(
                 width: 400,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // メールアドレスでログイン
-                    Container(
-                      margin: EdgeInsets.only(bottom: 20),
-                      child: Text(
-                        'メールアドレスでログイン',
-                        style: TextStyle(
-                          color: HexColor('8c6e63'),
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600, // 文字の太さ
+                    Center(
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 20),
+                        child: Text(
+                          'メールアドレスでログイン',
+                          style: TextStyle(
+                            color: HexColor('8c6e63'),
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600, // 文字の太さ
+                          ),
                         ),
                       ),
                     ),
@@ -179,29 +182,31 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     // ログインボタン
-                    Container(
-                      margin: EdgeInsets.only(top: 20),
-                      width: 170,
-                      height: 40,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // 確認用
-                          setState(() {
-                            _text = _useraddress.text;
-                            _text += ':';
-                            _text += _userpassword.text;
-                          });
-                        },
-                        child: Text(
-                          "ログイン",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
+                    Center(
+                      child: Container(
+                        margin: EdgeInsets.only(top: 20),
+                        width: 170,
+                        height: 40,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // 確認用
+                            setState(() {
+                              _text = _useraddress.text;
+                              _text += ':';
+                              _text += _userpassword.text;
+                            });
+                          },
+                          child: Text(
+                            "ログイン",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          primary: HexColor('ec9463'), //ボタンの背景色
+                          style: ElevatedButton.styleFrom(
+                            primary: HexColor('ec9463'), //ボタンの背景色
+                          ),
                         ),
                       ),
                     ),
