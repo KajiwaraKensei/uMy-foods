@@ -53,8 +53,11 @@ Widget buildTaskList(String path) {
           final data = document.data() as Map<String, dynamic>;
           return Card(
             child: ListTile(
-              title: Text(' ${data['review_comment']}'),
-            ),
+                title: Text(
+              ' ${data['review_comment']}',
+              overflow: TextOverflow.ellipsis, //...を表示させる
+              maxLines: 2, //2行表示
+            )),
           );
         }).toList(),
       );
