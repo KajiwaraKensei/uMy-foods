@@ -83,7 +83,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-Widget buildTaskList(String path) {
+Widget buildList(String path) {
   return StreamBuilder<QuerySnapshot>(
     stream: FirebaseFirestore.instance.collection(path).snapshots(),
     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -103,6 +103,64 @@ Widget buildTaskList(String path) {
               title: Text(' ${data['category_name']}'),
             ),
           );
+        }).toList(),
+      );
+    },
+  );
+}
+
+Stream<QuerySnapshot> fetchUserData(String user_id) {
+  return FirebaseFirestore.instance
+      .collection('account')
+      .where('user_id', isNotEqualTo: null)
+      .where('user_id', isEqualTo: user_id)
+      .snapshots();
+}
+
+Widget user(String user_id) {
+  return StreamBuilder<QuerySnapshot>(
+      stream: fetchUserData(user_id),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: const CircularProgressIndicator(),
+          );
+        }
+        if (snapshot.hasError) {
+          return const Text('Something went wrong');
+        }
+        return Column(
+            children: snapshot.data.docs.map((DocumentSnapshot document) {
+          final data = document.data() as Map<String, dynamic>;
+          return Card(
+              child: Column(children: [
+            Text('ユーザー名：' + data['user_name']),
+          ]));
+        }).toList());
+      });
+}
+
+Widget review(String path, String doc) {
+  return StreamBuilder<QuerySnapshot>(
+    stream: FirebaseFirestore.instance.collection(path).snapshots(),
+    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      if (!snapshot.hasData) {
+        return const Center(
+          child: const CircularProgressIndicator(),
+        );
+      }
+      if (snapshot.hasError) {
+        return const Text('Something went wrong');
+      }
+      return Column(
+        children: snapshot.data.docs.map((DocumentSnapshot document) {
+          final data = document.data() as Map<String, dynamic>;
+          return Card(
+              child: Column(children: [
+            user(data['user_id']),
+            Text('コメント： ${data['review_comment']}'),
+            //Text(fetchUserData(' ${data['user_id']}')),
+          ]));
         }).toList(),
       );
     },
@@ -136,6 +194,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List addcategory = [];
 
+  String user_id;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,9 +223,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 },
               ),*/
-              Flexible(
-                child: buildTaskList(
-                    'major_category/002/category/001/sub_category/'),
+              /*Flexible(
+                child:
+                    buildList('major_category/002/category/001/sub_category/'),
                 /*child: ListView.builder(
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
@@ -184,8 +244,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                   itemCount: documentList.length,
                 ),*/
+              ),*/
+              Flexible(
+                child: review('review', '6thCrK5xfxEUgMIXxYzr'),
               ),
-              TextFormField(
+
+              /*TextFormField(
                 decoration: InputDecoration(labelText: '追加カテゴリー'),
                 onChanged: (String value) {
                   setState(() {
@@ -226,7 +290,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     addcategory = [];
                   },
                 ),
-              ),
+              ),*/
             ],
           ),
         ));
