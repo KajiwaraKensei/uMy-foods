@@ -128,7 +128,7 @@ class _ReviewPageState extends State<ReviewPage> {
                                       child:Container(
                                         height: 90,
                                         width: 90,
-                                        child: Image.asset('images/190525pokka.jpg'),
+                                        child: Image.network('https://m.media-amazon.com/images/I/71tcgatTdML._AC_SL1500_.jpg'),
                                       )
                                     ),
                                   ),
