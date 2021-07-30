@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workspace/HexColor.dart';   //16進数カラーコード
-import 'package:contained_tab_bar_view/contained_tab_bar_view.dart'; //年代別レビュー
+import 'package:contained_tab_bar_view/contained_tab_bar_view.dart'; //年代別レビュー　
 
 
 class Gender_FilteringDialog extends StatefulWidget {
