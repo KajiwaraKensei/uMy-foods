@@ -8,8 +8,6 @@ import 'package:percent_indicator/percent_indicator.dart';  //割合棒グラフ
 // 外部ファイル
 import 'package:workspace/HexColor.dart';   //16進数カラーコード
 import 'package:workspace/SpaceBox.dart';   //空間
-// import 'package:workspace/Filtering.dart';  //フィルタリングポップアップ
-// import 'package:workspace/sort.dart'; //ソートポップアップ
 import 'package:workspace/star.dart';   //星評価
 
 class ProductPage extends StatefulWidget {
@@ -19,16 +17,20 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
 
+  //気になる、リピートボタン
   List<bool> _selections = List.generate(1, (_) => false);
   List<bool> _selections1 = List.generate(1, (_) => false);
 
+  //栄養など詳細情報ボタン
   bool _materials = false;
   bool _allergy = false;
   bool _nutrition = false;
 
+  //商品情報
   var plist=['商品名','メーカ名','ブランド名','発売日','内容量'];
   var pinfo=['つぶつぶいちごポッキー','グリコ','ポッキー','2019/1/25','‎750 g'];
 
+  //商品画像
   String imgmain='https://m.media-amazon.com/images/I/71tcgatTdML._AC_SL1500_.jpg';
   String img1='https://m.media-amazon.com/images/I/71tcgatTdML._AC_SL1500_.jpg';
   String img2='https://m.media-amazon.com/images/I/61qh2yP5IkS._AC_SL1000_.jpg';
@@ -466,7 +468,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                         onPressed: () async {
                           setState(() {
-                            _nutrition=!_nutrition;
+                            _nutrition=!_nutrition; 
                           });
                         }
                       ),
@@ -540,6 +542,7 @@ class _ProductPageState extends State<ProductPage> {
     
   }
 
+  //割合棒グラフ
   Widget percent_indicator(String name,double persent) {
     double persentsub=persent*100; //パーセントを100表示
     String persenttext=persentsub.toString(); //パーセントを文字化
