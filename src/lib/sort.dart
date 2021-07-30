@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:workspace/HexColor.dart';   //16進数カラーコード
+import 'package:workspace/HexColor.dart';   //16進数カラーコード　
 
 
 enum SingingCharacter { evaluation, post,like,comment }
