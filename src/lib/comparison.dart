@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:multi_charts/multi_charts.dart';
-import 'package:flutter_breadcrumb/flutter_breadcrumb.dart';
+import 'package:multi_charts/multi_charts.dart';  //レーダーチャート
+import 'package:flutter_breadcrumb/flutter_breadcrumb.dart';  //パンくずリスト
 import 'package:workspace/HexColor.dart';   //16進数カラーコード
 
 class Comparison extends StatelessWidget {
