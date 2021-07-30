@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class HexColor extends Color {
+class HexColor extends Color {  //16進数カラーコード
   static int _getColorFromHex(String hexColor) {
     hexColor = hexColor.toUpperCase().replaceAll('#', '');
     if (hexColor.length == 6) {
