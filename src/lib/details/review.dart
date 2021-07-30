@@ -173,6 +173,7 @@ class _ReviewPageState extends State<ReviewPage> {
     );
   }
 
+  //割合棒グラフ
   Widget percent_indicator(String name,double persent) {
     double persentsub=persent*100; //パーセントを100表示
     String persenttext=persentsub.toString(); //パーセントを文字化
@@ -258,7 +259,7 @@ class _Age_Review extends State<Age_Review>{
     ]);
   }
   
-  //年代タイトル、絞り込み、表示順
+  //年代タイトル、絞り込み、表示順、レビュー
   bool switchBool = false;
   void _onPressedStart(){
     setState((){switchBool = !switchBool;});
@@ -501,7 +502,7 @@ class _Age_Review extends State<Age_Review>{
     );
   }
 
-
+  //レーダーチャート
   Widget reader(List<double> cnt,String color){
     return RadarChart(
       values: cnt,
