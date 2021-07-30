@@ -7,8 +7,8 @@ import 'package:flutter_breadcrumb/flutter_breadcrumb.dart';    //パンくず
 // 外部ファイル
 import 'package:workspace/HexColor.dart';   //16進数カラーコード
 import 'package:workspace/SpaceBox.dart';   //空間
-import 'package:workspace/details/product.dart';
-import 'package:workspace/details/review.dart';
+import 'package:workspace/details/product.dart';  //商品情報
+import 'package:workspace/details/review.dart'; //レビュー
 
 void main() {
   runApp(MyApp());
