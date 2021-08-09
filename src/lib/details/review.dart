@@ -14,6 +14,7 @@ import 'package:workspace/sort.dart'; //ソートポップアップ
 import 'package:workspace/star.dart';   //星評価
 
 
+
 class ReviewPage extends StatefulWidget {
   @override
   _ReviewPageState createState() => _ReviewPageState();
@@ -83,6 +84,7 @@ class _ReviewPageState extends State<ReviewPage> {
                     ],
                   ),
                 ),
+                SpaceBox.width(30),
                 Expanded(flex: 2,
                   child: Padding(
                     padding: EdgeInsets.all(10),
@@ -91,76 +93,85 @@ class _ReviewPageState extends State<ReviewPage> {
                       mainAxisAlignment:MainAxisAlignment.start,
                       children: [
                         Container(width: 100 ,height: 300,color: Colors.grey,child: Text('広告'),),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 50),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        SpaceBox.height(25),
+                        Column(
+                          children: [
+                            GestureDetector(    //新商品タイトル
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text('レビュー',style: TextStyle(color: HexColor('EC9361'),fontSize: 20.0),),
-                                  ElevatedButton(
-                                    child: const Text('一覧'),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: HexColor('EC9361'),
-                                      onPrimary: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    onPressed: () {},
+                                  Container(
+                                    width: 35,
+                                    child: Image.asset('images/newgoods.png'),
                                   ),
+                                  SpaceBox.width(10),
+                                  Text('新商品',style: TextStyle(color: HexColor('EC9361'),fontSize: 20.0),),
                                 ],
                               ),
-                              Divider(
-                                height: 20,
-                                thickness: 5,
-                                color: HexColor('FFDFC5'),
-                              ),
-                              Row(
+                              onTap: () {
+                                setState(() {});
+                              },
+                            ),
+                            SpaceBox.height(10),  //隙間
+                            Container(  //新商品
+                              color:HexColor('F5F3EF'),
+                              child: Column(
                                 children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {});
-                                      },
-                                      child:Container(
-                                        height: 90,
-                                        width: 90,
-                                        child: Image.network('https://m.media-amazon.com/images/I/71tcgatTdML._AC_SL1500_.jpg'),
-                                      )
+                                  Container(
+                                    margin: EdgeInsets.symmetric(vertical: 20,horizontal: 15),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: HexColor('616161')),
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white
                                     ),
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                    child: Row(
                                       children: [
-                                        Text('発売日'+'2020/10/03'),
-                                        SpaceBox.height(10),
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {});
-                                          },
-                                          child: Text('ポッカサッポロ',style: TextStyle(color: HexColor('616161'),fontSize: 10),),
+                                        Expanded(
+                                          flex: 1,
+                                          child: GestureDetector(
+                                            child:Container(  //商品画像
+                                              height: 90,
+                                              width: 90,
+                                              child: Image.asset('images/190525pokka.jpg'),
+                                            ) ,
+                                            onTap: () {
+                                              setState(() {});  //商品詳細ページへ
+                                            },
+                                          ),
                                         ),
-                                        SpaceBox.height(10),
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {});
-                                          },
-                                          child: Text('LEMON MADE')
+                                        Expanded(
+                                          flex: 2,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              Text('発売日'+'2020/10/03'),  //発売日
+                                              SpaceBox.height(10),  
+                                              GestureDetector(
+                                                child: Text('ポッカサッポロ',style: TextStyle(color: HexColor('616161'),fontSize: 10),),
+                                                onTap: () {
+                                                  setState(() {});   //メーカーページへ
+                                                },
+                                              ),
+                                              SpaceBox.height(10),
+                                              GestureDetector(
+                                                child: Text('LEMON MADE'),
+                                                onTap: () {
+                                                  setState(() {});  //商品詳細ページへ
+                                                },
+                                              ),
+                                            ],
+                                          )
                                         ),
                                       ],
-                                    )
-                                  ),
+                                    ),
+                                  )
                                 ],
                               ),
-                            ],
-                          ),
+                            )
+                          ],
                         ),
+                        SpaceBox.height(25), //隙間
                         Container(width: 100 ,height: 300,color: Colors.grey,child: Text('広告'),),
                       ],
                     ),
@@ -173,7 +184,6 @@ class _ReviewPageState extends State<ReviewPage> {
     );
   }
 
-  //割合棒グラフ
   Widget percent_indicator(String name,double persent) {
     double persentsub=persent*100; //パーセントを100表示
     String persenttext=persentsub.toString(); //パーセントを文字化
@@ -259,7 +269,7 @@ class _Age_Review extends State<Age_Review>{
     ]);
   }
   
-  //年代タイトル、絞り込み、表示順、レビュー
+  //年代タイトル、絞り込み、表示順
   bool switchBool = false;
   void _onPressedStart(){
     setState((){switchBool = !switchBool;});
@@ -502,7 +512,7 @@ class _Age_Review extends State<Age_Review>{
     );
   }
 
-  //レーダーチャート
+
   Widget reader(List<double> cnt,String color){
     return RadarChart(
       values: cnt,
