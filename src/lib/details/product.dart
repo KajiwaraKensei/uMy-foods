@@ -164,7 +164,7 @@ class _ProductPageState extends State<ProductPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('コスト'),
+                              Text('コスパ'),
                               star(2,30)
                             ],
                           )
