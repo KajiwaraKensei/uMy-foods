@@ -14,7 +14,6 @@ import 'package:workspace/sort.dart'; //ソートポップアップ
 import 'package:workspace/star.dart';   //星評価
 
 
-
 class ReviewPage extends StatefulWidget {
   @override
   _ReviewPageState createState() => _ReviewPageState();
@@ -109,64 +108,64 @@ class _ReviewPageState extends State<ReviewPage> {
                                 ],
                               ),
                               onTap: () {
-                                setState(() {});
+                                setState(() {}); //新商品ページへ
                               },
                             ),
                             SpaceBox.height(10),  //隙間
                             Container(  //新商品
                               color:HexColor('F5F3EF'),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.symmetric(vertical: 20,horizontal: 15),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: HexColor('616161')),
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.white
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: GestureDetector(
-                                            child:Container(  //商品画像
-                                              height: 90,
-                                              width: 90,
-                                              child: Image.asset('images/190525pokka.jpg'),
-                                            ) ,
-                                            onTap: () {
-                                              setState(() {});  //商品詳細ページへ
-                                            },
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 20,horizontal: 15),
+                                child: Card(
+                                  child:  InkWell(
+                                    onTap:(){
+                                      setState(() {});  //商品詳細ページへ
+                                    },
+                                    child: Container(
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: GestureDetector(
+                                              child:Container(  //商品画像
+                                                height: 90,
+                                                width: 90,
+                                                child: Image.asset('images/190525pokka.jpg'),
+                                              ) ,
+                                              onTap: () {
+                                                setState(() {});  //商品詳細ページへ
+                                              },
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Text('発売日'+'2020/10/03'),  //発売日
-                                              SpaceBox.height(10),  
-                                              GestureDetector(
-                                                child: Text('ポッカサッポロ',style: TextStyle(color: HexColor('616161'),fontSize: 10),),
-                                                onTap: () {
-                                                  setState(() {});   //メーカーページへ
-                                                },
-                                              ),
-                                              SpaceBox.height(10),
-                                              GestureDetector(
-                                                child: Text('LEMON MADE'),
-                                                onTap: () {
-                                                  setState(() {});  //商品詳細ページへ
-                                                },
-                                              ),
-                                            ],
-                                          )
-                                        ),
-                                      ],
-                                    ),
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                Text('発売日'+'2020/10/03'),  //発売日
+                                                SpaceBox.height(10),  
+                                                GestureDetector(
+                                                  child: Text('ポッカサッポロ',style: TextStyle(color: HexColor('616161'),fontSize: 10),),
+                                                  onTap: () {
+                                                    setState(() {});   //メーカーページへ
+                                                  },
+                                                ),
+                                                SpaceBox.height(10),
+                                                GestureDetector(
+                                                  child: Text('LEMON MADE'),
+                                                  onTap: () {
+                                                    setState(() {});  //商品詳細ページへ
+                                                  },
+                                                ),
+                                              ],
+                                            )
+                                          ),
+                                        ],
+                                      ),
+                                    )
                                   )
-                                ],
+                                ),
                               ),
                             )
                           ],
