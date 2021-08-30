@@ -33,19 +33,19 @@ class _ReviewPageState extends State<ReviewPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('レビュー',style: TextStyle(color: HexColor('EC9361'),fontSize: 27.0),),
+                      Text('レビュー',style: TextStyle(color: HexColor('EC9361'),fontSize: 27.0),), 
                       Row(
                         children: [
                           Expanded(
                             flex: 1,
                             child: Column(
                               children: [
-                                star(4,50),
-                                Text('5000件'),
+                                star(4,50), //星評価
+                                Text('5000件'), //評価件数
                                 Container(
                                   height: 170,
                                   //Radar Chart
-                                  child: RadarChart(
+                                  child: RadarChart(  
                                     values: [1, 2, 4, 7, 9, 0, 6],
                                     labels: [
                                       "甘味",
@@ -68,7 +68,7 @@ class _ReviewPageState extends State<ReviewPage> {
                           Expanded(
                             flex: 1,
                             child: Column(
-                              children: [
+                              children: [ //評価別のパーセント
                                 percent_indicator('5',0.9),
                                 percent_indicator('4',0.4),
                                 percent_indicator('3',0.2),
@@ -84,7 +84,8 @@ class _ReviewPageState extends State<ReviewPage> {
                   ),
                 ),
                 SpaceBox.width(30),
-                Expanded(flex: 2,
+                Expanded(
+                  flex: 2,
                   child: Padding(
                     padding: EdgeInsets.all(10),
                     child: 
@@ -219,8 +220,8 @@ class Age_Review extends StatefulWidget {
 //レビュー年代別
 class _Age_Review extends State<Age_Review>{
 
-  List<double> list=[1, 2, 4, 7, 9, 0, 6];  //レーダーチャート全体
-  List<double> list1=[5, 3, 2, 4, 5, 0, 6];  //レーダーチャート年代
+  List<double> allage_list=[1, 2, 4, 7, 9, 0, 6];  //レーダーチャート全体
+  List<double> age_list=[5, 3, 2, 4, 5, 0, 6];  //レーダーチャート年代
 
   @override
   Widget build(BuildContext context) {
@@ -281,14 +282,14 @@ class _Age_Review extends State<Age_Review>{
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(age+'の総合評価',style: TextStyle(fontSize: 27.0)),
+                Text(age+'の総合評価',style: TextStyle(fontSize: 27.0)),  //年代タイトル
                 Container(
                   child: Row(
                     children: [
                       SizedBox(
                         width: 80,
                         height: 40,
-                        child: ElevatedButton(
+                        child: ElevatedButton(  //表示順
                           child: const Text('表示順'),
                           style: ElevatedButton.styleFrom(
                             primary: Colors.white,
@@ -311,7 +312,7 @@ class _Age_Review extends State<Age_Review>{
                       SizedBox(
                         width: 80,
                         height: 40,
-                        child: ElevatedButton(
+                        child: ElevatedButton(  //絞り込みボタン
                           child: const Text('絞り込み'),
                           style: ElevatedButton.styleFrom(
                             primary: Colors.white,
@@ -330,7 +331,7 @@ class _Age_Review extends State<Age_Review>{
                           }
                         ),
                       ),
-                      if (switchBool) 
+                      if (switchBool)   //昇順降順ボタン
                         Container(
                           child: Transform.rotate(
                             child: TextButton(
@@ -349,7 +350,7 @@ class _Age_Review extends State<Age_Review>{
                 )
             ]),
           ),
-          Divider(
+          Divider(  //仕切り線
             height: 20,
             thickness: 5,
             color: HexColor('FFDFC5'),
@@ -358,13 +359,13 @@ class _Age_Review extends State<Age_Review>{
             child: Row(
               children: [
                 Column(children: [
-                  Row(children: [
+                  Row(children: [ //総合星評価
                     Align(alignment: Alignment.centerLeft, child: Text('総合評価',style: TextStyle(fontSize: 15)),),
                     SpaceBox.width(30),
                     star(4, 50)
                   ],),
-                  Row(children: [
-                    Align(alignment: Alignment.centerLeft, child: Text('コスパ',style: TextStyle(fontSize: 15)),),
+                  Row(children: [ //コスパ星評価
+                    Align(alignment: Alignment.centerLeft, child: Text('コスパ',style: TextStyle(fontSize: 15)),),  
                     SpaceBox.width(40),
                     star(4, 50)
                   ],)
@@ -374,11 +375,11 @@ class _Age_Review extends State<Age_Review>{
                 child: Container(
                   child: Column(
                     children: [
-                      Stack(children: [
-                        reader(list,'2196F3'),
-                        reader(list1,'EC9361')
+                      Stack(children: [ 
+                        reader(allage_list,'2196F3'),  //全年代レーダーチャート
+                        reader(age_list,'EC9361')     //選択した年代のレーダーチャート
                       ],),
-                      RichText(
+                      RichText( //レーダーの色説明  
                         text: TextSpan(style: TextStyle(color: Colors.black), children: [
                           TextSpan(text: '■',style: TextStyle(color: HexColor('2196F3'),fontWeight: FontWeight.w900)),
                           TextSpan(text: '全年代'),
@@ -407,7 +408,7 @@ class _Age_Review extends State<Age_Review>{
                     flex: 2,
                     child: Container(
                       // margin: EdgeInsets.only(right: 20),
-                      child: ElevatedButton(
+                      child: ElevatedButton(  //ユーザーアイコン
                         style: ElevatedButton.styleFrom(
                           shape: CircleBorder()
                         ),
@@ -418,7 +419,7 @@ class _Age_Review extends State<Age_Review>{
                             fit: BoxFit.contain,
                           )
                         ),
-                        onPressed: () {  },
+                        onPressed: () {  }, //ユーザーへ
                       ),
                     )
                   ),
@@ -427,10 +428,10 @@ class _Age_Review extends State<Age_Review>{
                     child: Column(
                       // mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Align(alignment: Alignment.centerLeft,child: Text('onigiri',style: TextStyle(fontSize: 17))),
-                        Align(alignment: Alignment.centerLeft,child: Text('男',style: TextStyle(fontSize: 17))),
-                        Align(alignment: Alignment.centerLeft,child: Text('ゴールド',style: TextStyle(fontSize: 17))),
-                        Align(alignment: Alignment.centerLeft,child: star(3,17),),
+                        Align(alignment: Alignment.centerLeft,child: Text('onigiri',style: TextStyle(fontSize: 17))), //ユーザー名
+                        Align(alignment: Alignment.centerLeft,child: Text('男',style: TextStyle(fontSize: 17))),  //性別
+                        Align(alignment: Alignment.centerLeft,child: Text('ゴールド',style: TextStyle(fontSize: 17))),  //ランク
+                        Align(alignment: Alignment.centerLeft,child: star(3,17),),  //星評価
                       ],
                     )
                   ),
@@ -438,10 +439,10 @@ class _Age_Review extends State<Age_Review>{
                     flex: 6,
                     child: Column(
                       children: [
-                        RichText(
+                        RichText( //レビュー内容
                           softWrap: true,
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
+                          maxLines: 3,  //最大行数
                           text: TextSpan(
                             text: "レビュー内容",
                             style: TextStyle(color: Colors.black)
@@ -460,9 +461,9 @@ class _Age_Review extends State<Age_Review>{
                           Text('100'),
                           SpaceBox.width(20),
                           Icon(Icons.chat_bubble_outline,color: Colors.grey,size: 20,),
-                          Text('100'),
+                          Text('100'),  
                           SpaceBox.width(50),
-                          Text('2021/07/07 10:00')
+                          Text('2021/07/07 10:00')  //投稿日時
                         ],
                       )
                     ],
@@ -477,13 +478,13 @@ class _Age_Review extends State<Age_Review>{
           margin: EdgeInsets.symmetric(vertical: 20),
           child: Column(
             children: [
-              Row(
+              Row(   //ページング
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
                     width: 35,
                     height: 50,
-                    child: ElevatedButton(
+                    child: ElevatedButton(  
                       child: Text('1',style: TextStyle(fontSize: 20),),
                         style: ElevatedButton.styleFrom(
                           primary: HexColor('EC9361'),
@@ -495,7 +496,7 @@ class _Age_Review extends State<Age_Review>{
                         onPressed: () {},
                     ),
                   ),
-                  TextButton(
+                  TextButton( //＞ボタン
                     child: const Text('>',style: TextStyle(fontSize: 40),),
                     style: TextButton.styleFrom(
                       primary: Colors.black,
