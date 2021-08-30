@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 // パッケージ
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';  //font_awesome
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart';    //パンくず
 
 // 外部ファイル
