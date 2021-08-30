@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              BreadCrumb(
+                              BreadCrumb( //パンくずリスト
                                 items: <BreadCrumbItem>[
                                   BreadCrumbItem(content: Text('Top')),
                                   BreadCrumbItem(content: Text('検索結果')),
@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ],
                                 divider: Icon(Icons.chevron_right),
                               ),
-                              ElevatedButton(
+                              ElevatedButton( //絞り込みボタン
                                 child: const Text('絞り込み'),
                                 style: ElevatedButton.styleFrom(
                                   primary: Colors.white,
@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ],
                           ),
                           for(int cnt=0;cnt<2;cnt++)
-                          Container(
+                          Container(  
                             padding: EdgeInsets.symmetric(vertical: 15),
                             child: Column(
                               children: [
@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(title[cnt],style: TextStyle(fontSize: 23)),
-                                    GestureDetector(
+                                    GestureDetector(  //もっと見るボタン
                                       onTap: () {
                                         setState(() {});
                                       },
@@ -100,21 +100,21 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ],
                                 ),
                                 SpaceBox.height(10),
-                                Row(
+                                Row(  
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                     for(int cardcnt=0;cardcnt<3;cardcnt++)
                                     Card(
-                                      child:  InkWell(
+                                      child:  InkWell(  
                                         onTap:(){
-                                          setState(() {});
+                                          setState(() {});  //商品詳細ページへ
                                         },
                                         child: Container(
-                                          child: Stack(
+                                          child: Stack( //順位とカード内容を被せる
                                             children: [
-                                              Container(
-                                                height: 40,
-                                                width: 40,
+                                              Container(  //順位画像
+                                                height: 40, 
+                                                width: 40,  
                                                 child: Image.asset('images/icon/'+image[cardcnt]+'.png'),
                                               ),
                                               Padding(
@@ -122,16 +122,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 child:
                                                 Column(
                                                   children: [
-                                                    Container(
+                                                    Container(  //商品画像
                                                       height: 100,
                                                       child: Align(alignment: Alignment.center,child: Image.network('https://images-na.ssl-images-amazon.com/images/I/71tcgatTdML._AC_SL1500_.jpg'),),
                                                     ),
                                                     Column(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Text('グリコ'),
-                                                        Text('つぶつぶいちごポッキー'),
-                                                        Row(
+                                                        Text('グリコ'), //メーカー名
+                                                        Text('つぶつぶいちごポッキー'), //商品名
+                                                        Row(  //星評価
                                                           children: [
                                                             star(3,25),
                                                             Text('500',style: TextStyle(color: HexColor('EC9361'),fontSize: 12))
@@ -142,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                             Column(
                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
-                                                                RichText(
+                                                                RichText( //気になる数
                                                                   text: TextSpan(style: TextStyle(color: Colors.black), 
                                                                     children: [
                                                                       TextSpan( text: '1', style: TextStyle(fontWeight: FontWeight.w800,color: HexColor('EC9361'))),
@@ -150,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                                     ]
                                                                   )
                                                                 ),
-                                                                RichText(
+                                                                RichText( //リピート数
                                                                   text: TextSpan(style: TextStyle(color: Colors.black), 
                                                                     children: [
                                                                       TextSpan( text: '100', style: TextStyle(fontWeight: FontWeight.w800,color: HexColor('EC9361'))),
@@ -161,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                               ],
                                                             ),
                                                             SpaceBox.width(10),
-                                                            ElevatedButton(
+                                                            ElevatedButton(   //クリップボタン
                                                               child: Icon(Icons.assignment_turned_in,),
                                                               style: ElevatedButton.styleFrom(
                                                                 padding: EdgeInsets.all(15),
