@@ -34,7 +34,7 @@ class Ranking_detailsPage extends StatefulWidget {
 
 class _Ranking_detailsPageState extends State<Ranking_detailsPage> {
 
-  List image=['first','second','third'];
+  List image=['first','second','third'];  //順位画像
 
   bool switchBool = false;
 
@@ -49,7 +49,7 @@ class _Ranking_detailsPageState extends State<Ranking_detailsPage> {
           padding:  EdgeInsets.symmetric(vertical: 20,horizontal: 40),
           child: ListView(
             children: [
-              BreadCrumb(
+              BreadCrumb( //パンくずリスト
                 items: <BreadCrumbItem>[
                   BreadCrumbItem(
                     content: GestureDetector(
@@ -89,8 +89,8 @@ class _Ranking_detailsPageState extends State<Ranking_detailsPage> {
                               divider: Icon(Icons.chevron_right),
                             ),
                             Row(
-                              children:[
-                                ElevatedButton(
+                              children:[  
+                                ElevatedButton( //絞り込みボタン
                                   child: const Text('絞り込み'),
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.white,
@@ -108,8 +108,8 @@ class _Ranking_detailsPageState extends State<Ranking_detailsPage> {
                                     );
                                   }
                                 ),
-                                if (switchBool) 
-                                  Container(
+                                if (switchBool) //昇順降順
+                                  Container(  
                                     child: Transform.rotate(
                                       child: TextButton(
                                         child: Icon(Icons.sort_outlined,color: HexColor('FFDFC5'),size: 50,),
@@ -134,16 +134,16 @@ class _Ranking_detailsPageState extends State<Ranking_detailsPage> {
                                   child:Row(
                                     children: [
                                       SpaceBox.width(23),
-                                      Card(
+                                      Card(   //商品カード
                                         child:  InkWell(
                                           onTap:(){
-                                            setState(() {});
+                                            setState(() {});  //商品詳細ページへ
                                           },
                                           child: Container(
                                             child: Stack(
                                               children: [
-                                                if((i+x)<3)
-                                                  Container(
+                                                if((i+x)<3)   //１～３の場合順位の画像、それ以降は数字
+                                                  Container(    
                                                     height: 40,
                                                     width: 40,
                                                     child: Image.asset('images/icon/'+image[i]+'.png'),
@@ -154,27 +154,27 @@ class _Ranking_detailsPageState extends State<Ranking_detailsPage> {
                                                   padding: EdgeInsets.all(10),
                                                   child:Column(
                                                     children: [
-                                                      Container(
+                                                      Container(  //商品画像
                                                         height: 100,
                                                         child: Align(alignment: Alignment.center,child: Image.network('https://images-na.ssl-images-amazon.com/images/I/71tcgatTdML._AC_SL1500_.jpg'),),
                                                       ),
                                                       Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
-                                                          Text('グリコ'),
-                                                          Text('つぶつぶいちごポッキー'),
-                                                          Row(
+                                                          Text('グリコ'), //メーカー
+                                                          Text('つぶつぶいちごポッキー'), //商品名
+                                                          Row(  //星評価
                                                             children: [
                                                               star(3,25),
                                                               Text('500',style: TextStyle(color: HexColor('EC9361'),fontSize: 12))
                                                             ],
                                                           ),
-                                                            Row(
+                                                          Row(
                                                             children: [
                                                               Column(
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
-                                                                  RichText(
+                                                                  RichText( //気になる数
                                                                     text: TextSpan(style: TextStyle(color: Colors.black),
                                                                       children: [
                                                                         TextSpan( text: '1', style: TextStyle(fontWeight: FontWeight.w800,color: HexColor('EC9361'))),
@@ -182,7 +182,7 @@ class _Ranking_detailsPageState extends State<Ranking_detailsPage> {
                                                                       ]
                                                                     )
                                                                   ),
-                                                                  RichText(
+                                                                  RichText( //リピート数
                                                                     text: TextSpan(style: TextStyle(color: Colors.black),
                                                                       children: [
                                                                         TextSpan( text: '100', style: TextStyle(fontWeight: FontWeight.w800,color: HexColor('EC9361'))),
@@ -193,7 +193,7 @@ class _Ranking_detailsPageState extends State<Ranking_detailsPage> {
                                                                 ],
                                                               ),
                                                               SpaceBox.width(10),
-                                                              ElevatedButton(
+                                                              ElevatedButton(   //クリップボタン
                                                                 child: Icon(Icons.assignment_turned_in,),
                                                                 style: ElevatedButton.styleFrom(
                                                                   padding: EdgeInsets.all(15),
@@ -227,10 +227,10 @@ class _Ranking_detailsPageState extends State<Ranking_detailsPage> {
                             ],
                           ),
                           SpaceBox.height(20),
-                          Row(
+                          Row(    //ページング
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              SizedBox(
+                              SizedBox(  //数字ボタン
                                 width: 35,
                                 height: 50,
                                 child: ElevatedButton(
@@ -245,7 +245,7 @@ class _Ranking_detailsPageState extends State<Ranking_detailsPage> {
                                     onPressed: () {},
                                 ),
                               ),
-                              TextButton(
+                              TextButton(   //＞ボタン
                                 child: const Text('>',style: TextStyle(fontSize: 40),),
                                 style: TextButton.styleFrom(
                                   primary: Colors.black,
