@@ -50,13 +50,13 @@ class _ProductPageState extends State<ProductPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('つぶつぶいちごポッキー',style: TextStyle(fontSize: 27.0,fontWeight: FontWeight.bold,)),
+                  Text('つぶつぶいちごポッキー',style: TextStyle(fontSize: 27.0,fontWeight: FontWeight.bold,)), //商品名
                   Container(
                     child: Row(
                       children: [
                         SpaceBox.width(5),
                         Icon(FontAwesomeIcons.sync,color: Colors.grey,size: 20,),
-                        Text('100',style: TextStyle(color: HexColor('#EC9361'),fontWeight: FontWeight.w900,) ),
+                        Text('100',style: TextStyle(color: HexColor('#EC9361'),fontWeight: FontWeight.w900,) ), 
                         SpaceBox.width(20),
                         Icon(Icons.rate_review,color: Colors.grey,size: 30),
                         Text('100',style: TextStyle(color: HexColor('#EC9361'),fontWeight: FontWeight.w900,) ),
@@ -71,12 +71,12 @@ class _ProductPageState extends State<ProductPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  IconButton(
+                  IconButton( //スパナ
                     icon: const Icon(FontAwesomeIcons.wrench,color: Colors.grey,size: 20,),
                     onPressed: () {},
                   ),
                   SpaceBox.width(10),
-                  Ink(
+                  Ink(  //Twitterボタン
                     decoration: ShapeDecoration(
                       color: HexColor('1DA1F2'),
                       shape: CircleBorder(),
@@ -88,7 +88,7 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                   ),
                   SpaceBox.width(10),
-                  Ink(
+                  Ink(  //Instagramボタン
                     decoration: ShapeDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -107,7 +107,7 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                   ),
                   SpaceBox.width(10),
-                  Ink(
+                  Ink(  //Facebookボタン
                     decoration: ShapeDecoration(
                       color: HexColor('3b5998'),
                       shape: CircleBorder(),
@@ -135,7 +135,7 @@ class _ProductPageState extends State<ProductPage> {
                     Container(
                       
                       height: 330,
-                      child: Image.network(imgmain),
+                      child: Image.network(imgmain),  //メイン商品画像
                     ),
                   ],
                 ),
@@ -151,7 +151,7 @@ class _ProductPageState extends State<ProductPage> {
                       children: [
                         Expanded(
                           flex: 1,
-                          child: Column(
+                          child: Column(  //総合星評価
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('総合評価'),
@@ -161,7 +161,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                         Expanded(
                           flex: 1,
-                          child: Column(
+                          child: Column(  //コスパ星評価
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('コスパ'),
@@ -172,18 +172,21 @@ class _ProductPageState extends State<ProductPage> {
                       ],
                     ),
                     SpaceBox.height(20),
-                    Align(alignment: Alignment.centerLeft,child: Text('商品情報',style: TextStyle(fontSize: 20)),),
+                    Align(  
+                      alignment: Alignment.centerLeft,
+                      child: Text('商品情報',style: TextStyle(fontSize: 20)),
+                    ),
                     SpaceBox.height(20),
-                    Table(
+                    Table(  //商品情報テーブル
                       columnWidths: const <int, TableColumnWidth>{
-                        0: FlexColumnWidth(0.6),
-                        1: FlexColumnWidth(1.0),
+                        0: FlexColumnWidth(0.6),  //１列目の幅の割合
+                        1: FlexColumnWidth(1.0),  //２列目の幅の割合
                       },
                       children: [
                         for(int i=0;i<5;i++)
                           TableRow(
                             children: [
-                              Text(plist[i]),
+                              Text(plist[i]), 
                               Text(pinfo[i]),
                               SpaceBox.height(30),
                             ]),
@@ -200,29 +203,29 @@ class _ProductPageState extends State<ProductPage> {
           children: [
             Expanded(
               flex: 1,
-              child: Container(
+              child: Container( //商品画像切り替え
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    GestureDetector(
+                    GestureDetector(    //商品画像１
                       onTap: () {
                         setState(() {
                           imgmain=img1;
                         });
                       },
-                      child:Container(
+                      child:Container(  
                         padding: EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey),
                         ),
                         child:Container(
-                          height: 100,
+                          height: 100,  //画像サイズ
                           width: 100,
-                          child: Image.network(img1),
+                          child: Image.network(img1), 
                         ),
                       )
                     ),
-                    GestureDetector(
+                    GestureDetector(  //商品画像２
                       onTap: () {
                         setState(() {
                           imgmain=img2;
@@ -240,7 +243,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                       )
                     ),
-                    GestureDetector(
+                    GestureDetector(  //商品画像３
                       onTap: () {
                         setState(() {
                           imgmain=img3;
@@ -258,7 +261,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                       )
                     ),
-                    GestureDetector(
+                    GestureDetector(  //商品画像４
                       onTap: () {
                         setState(() {
                           imgmain=img4;
@@ -276,7 +279,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                       )
                     ),
-                    GestureDetector(
+                    GestureDetector(  //商品画像５
                       onTap: () {
                         setState(() {
                           imgmain=img5;
@@ -298,9 +301,9 @@ class _ProductPageState extends State<ProductPage> {
                 )
               )
             ),
-            Expanded(
+            Expanded( 
               flex: 1,
-              child: Container(
+              child: Container( //購入情報（未定）
                 padding: EdgeInsets.only(left: 100),
                 child: Text('購入情報'),
               )
@@ -312,7 +315,7 @@ class _ProductPageState extends State<ProductPage> {
           children: [
             Expanded(
               flex: 1,
-              child: Container(
+              child: Container( //気になるボタン
                 child: Center(
                   child:Container(
                     padding: EdgeInsets.zero,
@@ -351,7 +354,7 @@ class _ProductPageState extends State<ProductPage> {
             ),
             Expanded(
               flex: 1,
-              child: Container(
+              child: Container( //リピートボタン
                 padding: EdgeInsets.only(left: 100),
                 child: Center(
                   child: Container(
@@ -398,9 +401,9 @@ class _ProductPageState extends State<ProductPage> {
             Expanded(
               flex: 1,
               child: Container(
-                child: Column(
+                child: Column(  
                   children: [
-                    SizedBox(
+                    SizedBox( //原材料ドロップダウン
                       width: 700,
                       height: 40,
                       child: ElevatedButton(
@@ -417,18 +420,18 @@ class _ProductPageState extends State<ProductPage> {
                         }
                       ),
                     ),
-                    Visibility(
+                    Visibility( //押してない時の空間
                       visible: !_materials,
                       child: SpaceBox.height(40)
                     ),
-                    Visibility(
+                    Visibility( //押したとき表示
                       visible: _materials,
                       child: Padding(
                         padding:EdgeInsets.only(bottom: 20),
                         child: Text('小麦粉、砂糖、植物油脂、乳糖、全粉乳、ココアパウダー、いちごパウダー、小麦たんぱく、ショートニング、キャンデーチップ、食塩、イースト／着色料（アカビート色素、ブドウ果皮色素、カラメル）、乳化剤、香料、調味料（無機塩）、膨脹剤、酸味料、トレハロース、甘味料（スクラロース）、（一部に乳成分・小麦・大豆を含む）'),
                       )
                     ),
-                    SizedBox(
+                    SizedBox( //アレルギードロップダウン
                       width: 700,
                       height: 40,
                       child: ElevatedButton(
@@ -445,18 +448,18 @@ class _ProductPageState extends State<ProductPage> {
                         }
                       ),
                     ),
-                    Visibility(
+                    Visibility(//押してない時の空間
                       visible: !_allergy,
                       child: SpaceBox.height(40)
                     ),
-                    Visibility(
+                    Visibility(//押したとき表示
                       visible: _allergy,
                       child: Padding(
                         padding:EdgeInsets.only(bottom: 20),
                         child: Text('乳成分、小麦、大豆、カカオ'),
                       )
                     ),
-                    SizedBox(
+                    SizedBox( //栄養成分ドロップダウン
                       width: 700,
                       height: 40,
                       child: ElevatedButton(
@@ -477,7 +480,7 @@ class _ProductPageState extends State<ProductPage> {
                     //   visible: !_nutrition,
                     //   child: SpaceBox.height(40)
                     // ),
-                    Visibility(
+                    Visibility(//押したとき表示
                       visible: _nutrition,
                       child: Padding(
                         padding:EdgeInsets.only(bottom: 20),
@@ -490,7 +493,7 @@ class _ProductPageState extends State<ProductPage> {
             ),
             Expanded(
               flex: 1,
-              child: Container(
+              child: Container( //割合棒グラフ
                 height: 300,
                 padding: EdgeInsets.only(left: 100),
                 child: Column(
