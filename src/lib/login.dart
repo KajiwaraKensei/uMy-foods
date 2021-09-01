@@ -1,6 +1,11 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:umy_foods/signup.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:umy_foods/auth_complete.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -30,9 +35,58 @@ class _LoginState extends State<Login> {
   var _text = '';
   bool _flag = true;
   bool _showPassword = true;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  Future<User?> signInWithGoogle() async {
+    await Firebase.initializeApp();
+    String uid;
+    String userEmail;
+    String name;
+    String imageUrl;
+
+    final GoogleSignInAccount? googleSignInAccount =
+        await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount!.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    final UserCredential userCredential =
+        await auth.signInWithCredential(credential);
+    final User? user = userCredential.user;
+
+    if (user != null) {
+      // Checking if email and name is null
+      assert(user.uid != null);
+      assert(user.email != null);
+      assert(user.displayName != null);
+      assert(user.photoURL != null);
+
+      uid = user.uid;
+      name = user.displayName!;
+      userEmail = user.email!;
+      imageUrl = user.photoURL!;
+
+      assert(!user.isAnonymous);
+      assert(await user.getIdToken() != null);
+
+      final User? currentUser = auth.currentUser;
+      assert(user.uid == currentUser!.uid);
+    }
+    return user;
+  }
 
   @override
   Widget build(BuildContext context) {
+    User user;
+    String uid;
+    String userEmail;
+    String name;
+    String imageUrl;
     return Scaffold(
         appBar: AppBar(
           backgroundColor: HexColor('F5F3EF'),
@@ -119,7 +173,11 @@ class _LoginState extends State<Login> {
                         ),
                         // 表示マーク
                         suffixIcon: IconButton(
-                          icon: Icon(_showPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined, color: Colors.grey),
+                          icon: Icon(
+                              _showPassword
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined,
+                              color: Colors.grey),
                           onPressed: () {
                             this.setState(() {
                               // 表示と非表示切り替え
@@ -188,14 +246,36 @@ class _LoginState extends State<Login> {
                         width: 170,
                         height: 40,
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            try {
+                              // メール/パスワードでログイン
+                              final result =
+                                  await auth.signInWithEmailAndPassword(
+                                email: _useraddress.text,
+                                password: _userpassword.text,
+                              );
+                              // ログインに成功した場合
+                              // 遷移＋ログイン画面を破棄
+                              await Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (context) {
+                                  return AuthComplete(result.user!);
+                                }),
+                              );
+                            } catch (e) {
+                              // ログインに失敗した場合
+                              setState(() {
+                                _text = "ログインに失敗しました：${e.toString()}";
+                              });
+                            }
+                          },
+                          /*{
                             // 確認用
                             setState(() {
                               _text = _useraddress.text;
                               _text += ':';
                               _text += _userpassword.text;
                             });
-                          },
+                          },*/
                           child: Text(
                             "ログイン",
                             style: TextStyle(
@@ -283,14 +363,29 @@ class _LoginState extends State<Login> {
                       height: 50,
                       // ボタン + icon
                       child: ElevatedButton.icon(
-                        icon: FaIcon(FontAwesomeIcons.google, color: Colors.red),
+                        icon:
+                            FaIcon(FontAwesomeIcons.google, color: Colors.red),
                         label: Text('Google'),
                         // ボタンのデザイン
                         style: ElevatedButton.styleFrom(
                           primary: Colors.white,
                           onPrimary: Colors.black,
                         ),
-                        onPressed: () {
+                        onPressed: () async {
+                          await signInWithGoogle().then((result) {
+                            print(result);
+
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                fullscreenDialog: true,
+                                builder: (context) =>
+                                    GoogleAuthComplete(result),
+                              ),
+                            );
+                          }).catchError((e) {
+                            print('ログインに失敗しました： $e');
+                          });
                           // Googleでログイン処理
                         },
                       ),
@@ -310,7 +405,8 @@ class _LoginState extends State<Login> {
                           ),
                           // アイコン部分
                           child: Center(
-                            child: FaIcon(FontAwesomeIcons.twitter, color: Colors.white, size: 19),
+                            child: FaIcon(FontAwesomeIcons.twitter,
+                                color: Colors.white, size: 19),
                           ),
                         ),
                         label: Text('Twitter'),
@@ -328,7 +424,8 @@ class _LoginState extends State<Login> {
                       margin: EdgeInsets.only(top: 20),
                       // ボタン + icon
                       child: ElevatedButton.icon(
-                        icon: FaIcon(FontAwesomeIcons.facebook, color: Colors.indigo),
+                        icon: FaIcon(FontAwesomeIcons.facebook,
+                            color: Colors.indigo),
                         label: Text('Facebook'),
                         // ボタンのデザイン
                         style: ElevatedButton.styleFrom(

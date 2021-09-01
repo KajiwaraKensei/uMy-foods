@@ -26,6 +26,9 @@
   <meta name="apple-mobile-web-app-title" content="workspace">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
+  <meta name="google-signin-client_id" content="427606584752-br7kagr0hk4hgn6nrfuvsifvgbl3q225.apps.googleusercontent.com">
+
+
   <title>workspace</title>
   <link rel="manifest" href="manifest.json">
 </head>
@@ -97,5 +100,31 @@
       loadMainDartJs();
     }
   </script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-firestore.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyCQFfjvNlY5HOQZDafHlTjVOuEmdiIIDW8",
+    authDomain: "umyfoods-rac.firebaseapp.com",
+    projectId: "umyfoods-rac",
+    storageBucket: "umyfoods-rac.appspot.com",
+    messagingSenderId: "427606584752",
+    appId: "1:427606584752:web:bf08226a80970471557a75",
+    measurementId: "G-VVMZ3WH8NT"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+
 </body>
 </html>

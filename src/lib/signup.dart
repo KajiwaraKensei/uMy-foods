@@ -1,5 +1,9 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:umy_foods/auth_complete.dart';
 
 class Signup extends StatefulWidget {
   @override
@@ -292,12 +296,34 @@ class _SignupState extends State<Signup> {
                           width: 350,
                           height: 40,
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              try {
+                                // メール/パスワードでユーザー登録
+                                final FirebaseAuth auth = FirebaseAuth.instance;
+                                final result =
+                                    await auth.createUserWithEmailAndPassword(
+                                  email: _useraddress.text,
+                                  password: _userpassword.text,
+                                );
+                                // ユーザー登録に成功した場合
+                                // チャット画面に遷移＋ログイン画面を破棄
+                                await Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(builder: (context) {
+                                    return AuthComplete(result.user!);
+                                  }),
+                                );
+                              } catch (e) {
+                                // ユーザー登録に失敗した場合
+                                setState(() {
+                                  _text = "登録に失敗しました：${e.toString()}";
+                                });
+                              }
+                              /*
                               setState(() {
                                 _text = _useraddress.text; // 確認用
                                 _text += ':'; //確認用
                                 _text += _userpassword.text; //確認用
-                              });
+                              });*/
                             },
                             child: Text(
                               "利用規約に同意して確認画面へ",
