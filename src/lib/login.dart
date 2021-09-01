@@ -25,9 +25,9 @@ class _LoginState extends State<Login> {
     super.dispose();
   }*/
 
-  var _useraddress = TextEditingController();
+  var _useraddress = TextEditingController(text: 'aaaa'); // text: XXXX で初期値
   var _userpassword = TextEditingController();
-  var _text = '';
+  var _text = ''; // 確認用
   bool _flag = true;
   bool _showPassword = true;
 

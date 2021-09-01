@@ -1,5 +1,6 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:umy_foods/signup_confirm.dart';
 
 class Signup extends StatefulWidget {
   @override
@@ -28,6 +29,11 @@ class _SignupState extends State<Signup> {
   var _username = TextEditingController();
   var _userpassword = TextEditingController();
   var _passwordconfirm = TextEditingController();
+
+  var address_error = '';
+  var username_error = '';
+  var password_error = '';
+
   var _text = '';
   bool _flag = true;
   bool _showPassword = true;
@@ -68,7 +74,7 @@ class _SignupState extends State<Signup> {
                       ),
                       Container(
                         child: Text(
-                          'すべてが必須項目です',
+                          '※すべてが必須項目です',
                           style: TextStyle(
                             color: Colors.orange,
                           ),
@@ -76,7 +82,7 @@ class _SignupState extends State<Signup> {
                       ),
                       Container(
                         child: Text(
-                          'メールアドレス',
+                          '▼メールアドレス',
                           style: TextStyle(
                             color: HexColor('000000'),
                           ),
@@ -112,7 +118,7 @@ class _SignupState extends State<Signup> {
                       Container(
                         margin: EdgeInsets.only(top: 3, bottom: 25),
                         child: Text(
-                          'メールアドレスエラーメッセージ',
+                          address_error,
                           style: TextStyle(
                             color: Colors.red,
                           ),
@@ -120,7 +126,7 @@ class _SignupState extends State<Signup> {
                       ),
                       // ユーザー名
                       Text(
-                        'ユーザー名',
+                        '▼ユーザー名',
                         style: TextStyle(
                           color: HexColor('000000'),
                         ),
@@ -155,14 +161,14 @@ class _SignupState extends State<Signup> {
                       Container(
                         margin: EdgeInsets.only(top: 3, bottom: 25),
                         child: Text(
-                          'ユーザー名エラーメッセージ',
+                          username_error,
                           style: TextStyle(
                             color: Colors.red,
                           ),
                         ),
                       ),
                       Text(
-                        'パスワード',
+                        '▼パスワード',
                         style: TextStyle(
                           color: HexColor('000000'),
                         ),
@@ -205,14 +211,14 @@ class _SignupState extends State<Signup> {
                       Container(
                         margin: EdgeInsets.only(top: 3, bottom: 25),
                         child: Text(
-                          'パスワードエラーメッセージ',
+                          password_error,
                           style: TextStyle(
                             color: Colors.red,
                           ),
                         ),
                       ),
                       Text(
-                        '確認のため、もう一度パスワードを入力してください',
+                        '▼確認のため、もう一度パスワードを入力してください',
                         style: TextStyle(
                           color: HexColor('000000'),
                         ),
@@ -294,9 +300,17 @@ class _SignupState extends State<Signup> {
                           child: ElevatedButton(
                             onPressed: () {
                               setState(() {
-                                _text = _useraddress.text; // 確認用
-                                _text += ':'; //確認用
-                                _text += _userpassword.text; //確認用
+                                address_error = '';
+                                password_error = '';
+                                if (!validateEmail(_useraddress.text)) address_error = 'メールアドレスが正しくありません。';
+                                if (validatePassword(_userpassword.text))
+                                  password_error = 'パスワードは半角6文字以上で入力してください。';
+                                else
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Signup_Confirm(address: _useraddress.text, username: _username.text),
+                                      ));
                               });
                             },
                             child: Text(
@@ -436,4 +450,15 @@ class HexColor extends Color {
   }
 
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
+
+// メールアドレスの正規表現チェック
+bool validateEmail(String value) {
+  String pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  RegExp regex = new RegExp(pattern);
+  return (!regex.hasMatch(value)) ? false : true;
+}
+
+bool validatePassword(String value) {
+  return (value.length >= 6) ? false : true;
 }

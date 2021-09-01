@@ -311,7 +311,7 @@ class _ComparisonState extends State<Comparison> {
     return GestureDetector(
         onTap: () => {changeListL(i)},
         child: Icon(
-          Icons.chevron_left,
+          Icons.chevron_left_outlined,
           color: HexColor('696969'),
           size: 40,
         ));
