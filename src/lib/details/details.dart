@@ -44,11 +44,24 @@ class _DetailsPageState extends State<DetailsPage> {
             child: ListView(
               children: [
                 //パンくずリスト
-                BreadCrumb( 
+                BreadCrumb( //パンくずリスト
                   items: <BreadCrumbItem>[
-                    BreadCrumbItem(content: Text('Top')),
-                    BreadCrumbItem(content: Text('検索結果')),
-                    BreadCrumbItem(content: Text('商品詳細')),
+                    BreadCrumbItem(
+                      content: GestureDetector(
+                        child: Text('パン'),
+                        onTap: (){
+                          setState(() {});
+                        },
+                      )
+                    ),
+                    BreadCrumbItem(
+                      content: GestureDetector(
+                        child: Text('くず'),
+                        onTap: (){
+                          setState(() {});
+                        },
+                      )
+                    ),
                   ],
                   divider: Icon(Icons.chevron_right),
                 ),
