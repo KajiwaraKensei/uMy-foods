@@ -43,7 +43,6 @@ class _DetailsPageState extends State<DetailsPage> {
             padding: EdgeInsets.symmetric(vertical: 20,horizontal: 40),
             child: ListView(
               children: [
-                //パンくずリスト
                 BreadCrumb( //パンくずリスト
                   items: <BreadCrumbItem>[
                     BreadCrumbItem(
