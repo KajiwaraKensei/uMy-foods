@@ -35,20 +35,20 @@ class _LoginState extends State<Login> {
   var _text = '';
   bool _flag = true;
   bool _showPassword = true;
+  //firebase_auth
   final FirebaseAuth auth = FirebaseAuth.instance;
+  //googleログイン
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
+//googleログイン用のクラス
   Future<User?> signInWithGoogle() async {
     await Firebase.initializeApp();
-    String uid;
-    String userEmail;
-    String name;
-    String imageUrl;
 
     final GoogleSignInAccount? googleSignInAccount =
         await googleSignIn.signIn();
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount!.authentication;
+    //ログイン自体はここで完了
 
     final AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleSignInAuthentication.accessToken,
@@ -57,7 +57,7 @@ class _LoginState extends State<Login> {
 
     final UserCredential userCredential =
         await auth.signInWithCredential(credential);
-    final User? user = userCredential.user;
+    final User? user = userCredential.user; //ログインしたユーザーの情報
 
     if (user != null) {
       // Checking if email and name is null
@@ -66,27 +66,17 @@ class _LoginState extends State<Login> {
       assert(user.displayName != null);
       assert(user.photoURL != null);
 
-      uid = user.uid;
-      name = user.displayName!;
-      userEmail = user.email!;
-      imageUrl = user.photoURL!;
-
       assert(!user.isAnonymous);
-      assert(await user.getIdToken() != null);
+      assert(await user.getIdToken() != null); //トークンに保存（現状は放置）
 
       final User? currentUser = auth.currentUser;
       assert(user.uid == currentUser!.uid);
     }
-    return user;
+    return user; //ユーザー情報を返す
   }
 
   @override
   Widget build(BuildContext context) {
-    User user;
-    String uid;
-    String userEmail;
-    String name;
-    String imageUrl;
     return Scaffold(
         appBar: AppBar(
           backgroundColor: HexColor('F5F3EF'),
@@ -373,14 +363,13 @@ class _LoginState extends State<Login> {
                         ),
                         onPressed: () async {
                           await signInWithGoogle().then((result) {
-                            print(result);
-
+                            //googleログイン用のクラスを呼んで、ユーザー情報を取得
                             Navigator.of(context).pop();
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 fullscreenDialog: true,
-                                builder: (context) =>
-                                    GoogleAuthComplete(result),
+                                builder: (context) => GoogleAuthComplete(
+                                    result), //auth_compleet.dartのGoogleAuthCompleteにresult(ユーザー情報)を送る
                               ),
                             );
                           }).catchError((e) {
