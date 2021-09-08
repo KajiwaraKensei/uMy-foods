@@ -33,6 +33,7 @@ class _SignupState extends State<Signup> {
   var address_error = '';
   var username_error = '';
   var password_error = '';
+  var passwordCon_error = '';
 
   var _text = '';
   bool _flag = true;
@@ -260,7 +261,7 @@ class _SignupState extends State<Signup> {
                       Container(
                         margin: EdgeInsets.only(top: 5, bottom: 20),
                         child: Text(
-                          'パスワードが正しくありません',
+                          passwordCon_error,
                           style: TextStyle(
                             color: Colors.red,
                           ),
@@ -301,16 +302,41 @@ class _SignupState extends State<Signup> {
                             onPressed: () {
                               setState(() {
                                 address_error = '';
+                                username_error = '';
                                 password_error = '';
-                                if (!validateEmail(_useraddress.text)) address_error = 'メールアドレスが正しくありません。';
-                                if (validatePassword(_userpassword.text))
+                                passwordCon_error = '';
+                                if (!validateEmail(_useraddress.text)) {
+                                  address_error = 'メールアドレスが正しくありません。';
+                                  _flag = false;
+                                }
+                                if (_username.text.length < 1) {
+                                  username_error = 'ユーザー名を入力してください。';
+                                  _flag = false;
+                                }
+                                if (_username.text.length > 15) {
+                                  username_error = 'ユーザー名は15文字以内で入力してください。';
+                                  _flag = false;
+                                }
+                                if (validatePassword(_userpassword.text)) {
                                   password_error = 'パスワードは半角6文字以上で入力してください。';
-                                else
+                                  _flag = false;
+                                } else if (_userpassword.text != _passwordconfirm.text) {
+                                  passwordCon_error = 'パスワードが正しくありません。';
+                                  _flag = false;
+                                }
+
+                                if (_flag) {
+                                  address_error = '';
+                                  username_error = '';
+                                  password_error = '';
+                                  passwordCon_error = '';
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => Signup_Confirm(address: _useraddress.text, username: _username.text),
                                       ));
+                                } else
+                                  _flag = true;
                               });
                             },
                             child: Text(
@@ -342,7 +368,8 @@ class _SignupState extends State<Signup> {
                                   primary: Colors.blue,
                                 ),
                                 onPressed: () {
-                                  //パスワード忘れ画面へ
+                                  // ただ前に戻るだけなので、ヘッダーから直接飛んだ場合はログイン画面にいかない状態
+                                  Navigator.of(context).pop();
                                 },
                               ),
                             ),
@@ -459,6 +486,7 @@ bool validateEmail(String value) {
   return (!regex.hasMatch(value)) ? false : true;
 }
 
+// パスワードの文字数チェック
 bool validatePassword(String value) {
   return (value.length >= 6) ? false : true;
 }
