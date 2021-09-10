@@ -3,8 +3,7 @@ import 'package:workspace/HexColor.dart';   //16進数カラーコード
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:workspace/SpaceBox.dart'; //年代別レビュー
 
-
-//性別フィルタリング
+//性別のフィルタリング表示
 class Gender_FilteringDialog extends StatefulWidget {
   @override
   _Gender_FilteringDialogState createState() => _Gender_FilteringDialogState();
@@ -14,7 +13,9 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
 
   bool male = false;
   bool woman = false;
-  
+
+  List _gender_keep=[];
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -27,13 +28,19 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
         child:Table(children: [
           TableRow(
             children: [
-              CheckboxListTile( 
+              CheckboxListTile(
                 value: male,
                 title: Text('男性'),
                 controlAffinity: ListTileControlAffinity.leading,
                 onChanged: (value) {
                   setState(() {
                     male = value!;
+                    if (woman!=true) {
+                      _gender_keep.remove('男性');
+                    } else {
+                      // 選択されたらリストに追加する
+                      _gender_keep.add('男性');
+                    }
                   });
                 },
               ),
@@ -44,6 +51,12 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
                 onChanged: (value) {
                   setState(() {
                     woman = value!;
+                    if (woman!=true) {
+                      _gender_keep.remove('女性');
+                    } else {
+                      // 選択されたらリストに追加する
+                      _gender_keep.add('女性');
+                    }
                   });
                 },
               ),
@@ -52,16 +65,15 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
         )
       ),
       actions: <Widget>[
-        Center(   //決定ボタン
-          child: OutlinedButton(    
-            child: const Text('検索'),
+        Center(
+          child: OutlinedButton(
+            child: const Text('OK'),
             style: TextButton.styleFrom(
               primary:HexColor('EC9361'),
               side: BorderSide(color: HexColor('EC9361')),
             ),
             onPressed: () {
               Navigator.of(context).pop();
-              setState(() {});
             },
           ),
         ),
@@ -70,18 +82,7 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
   }
 }
 
-class Gender extends StatefulWidget {
-  @override
-  _Gender createState() => _Gender();
-}
-class _Gender extends State<Gender>{
-  @override
-  Widget build(BuildContext context) {
-    return Text('aaa');
-  }
-}
-
-//メーカー、ブランド、カテゴリーの各分岐
+//メーカー、ブランド、カテゴリーのフィルタリング表示
 class Details_FilteringDialog extends StatefulWidget {
   @override
   _Details_FilteringDialogState createState() => _Details_FilteringDialogState();
@@ -148,7 +149,7 @@ class _Details_FilteringDialogState extends State<Details_FilteringDialog> {
     );
   }
 }
-
+//カテゴリ一覧
 class Category extends StatefulWidget {
   @override
   _Category createState() => _Category();
@@ -199,7 +200,7 @@ class _Category extends State<Category>{
   List category_stoplist=[0,2,4,6];
   List subcategory_stoplist=[0,2,4,6,8,10,12];
 
-  void _majorCheckbox(int index,bool e) { //親カテゴリ
+  void _majorCheckbox(int index,bool e) {
     setState(() {
       // 選択が解除されたらリストから消す
       if (_majorkeep.contains(index)) {
@@ -211,7 +212,7 @@ class _Category extends State<Category>{
     });
   }
 
-  void _childCheckbox(int index,bool e) { //子カテゴリ
+  void _childCheckbox(int index,bool e) {
     setState(() {
       // 選択が解除されたらリストから消す
       if (_childkeep.contains(index)) {
@@ -222,7 +223,7 @@ class _Category extends State<Category>{
       }
     });
   }
-  void _grandsonCheckbox(int index,bool e) {  //孫カテゴリ
+  void _grandsonCheckbox(int index,bool e) {
     setState(() {
       // 選択が解除されたらリストから消す
       if (_grandsonkeep.contains(index)) {
@@ -239,7 +240,7 @@ class _Category extends State<Category>{
   return Scaffold(
     body: ListView(
       children: [
-        GestureDetector(  //選択解除ボタン
+        GestureDetector(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -256,13 +257,13 @@ class _Category extends State<Category>{
             });
           },
         ),
-        for(int m_cnt=0;m_cnt<major_category.length;m_cnt++)  
+        for(int m_cnt=0;m_cnt<major_category.length;m_cnt++)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(   //親カテゴリ
+              Row(
                 children: [
-                  Checkbox(    //親チェックボタン
+                  Checkbox(
                     activeColor: Colors.blue,
                     value: _majorkeep.contains(int.parse(major_category[m_cnt][1])),
                     onChanged: (e) {
@@ -270,12 +271,11 @@ class _Category extends State<Category>{
                         _majorCheckbox(int.parse(major_category[m_cnt][1]),e!);
                     },
                   ),
-                  GestureDetector(  //親チェックボタン名
+                  GestureDetector(
                     child: Text(major_category[m_cnt][0],style: TextStyle(fontSize: 15),),
                     onTap: () {
                       setState(() {
                         if (_childvisibility.contains(m_cnt)) {
-                          //既に選択されていたらリストから削除
                           _childvisibility.remove(m_cnt);
                         } else {
                           // 選択されたらリストに追加する
@@ -297,10 +297,10 @@ class _Category extends State<Category>{
                     for(int c_cnt=category_stoplist[m_cnt];c_cnt<category_stoplist[m_cnt+1];c_cnt++)
                       Column(
                         children: [
-                          Row(    //子カテゴリ
+                          Row(
                             children: [
                               SpaceBox.width(23),
-                              Checkbox( //子チェックボタン
+                              Checkbox(
                                 activeColor: Colors.blue,
                                 value: _childkeep.contains(int.parse(category[c_cnt][1])),
                                 onChanged: (e) {
@@ -308,12 +308,11 @@ class _Category extends State<Category>{
                                     _childCheckbox(int.parse(category[c_cnt][1]),e!);
                                 },
                               ),
-                              GestureDetector(  //子チェックボタン名
+                              GestureDetector(
                                 child: Text(category[c_cnt][0],style: TextStyle(fontSize: 15),),
                                 onTap: () {
                                   setState(() {
                                     if (_grandsonvisibility.contains(c_cnt)) {
-                                      //既に選択されていたらリストから削除
                                       _grandsonvisibility.remove(c_cnt);
                                     } else {
                                       // 選択されたらリストに追加する
@@ -331,10 +330,10 @@ class _Category extends State<Category>{
                                 for(int s_cnt=subcategory_stoplist[c_cnt];s_cnt<subcategory_stoplist[c_cnt+1];s_cnt++)
                                   Column(
                                     children: [
-                                      Row(  //孫チェックボタン
+                                      Row(
                                         children: [
                                           SpaceBox.width(46),
-                                          Checkbox( //孫チェックボタン
+                                          Checkbox(
                                             activeColor: Colors.blue,
                                             value: _grandsonkeep.contains(int.parse(sub_category[s_cnt][1])),
                                             onChanged: (e) {
@@ -342,12 +341,11 @@ class _Category extends State<Category>{
                                                 _grandsonCheckbox(int.parse(sub_category[s_cnt][1]),e!);
                                             },
                                           ),
-                                          GestureDetector(  //孫チェックボタンタイトル
+                                          GestureDetector(
                                             child: Text(sub_category[s_cnt][0],style: TextStyle(fontSize: 15),),
                                             onTap: () {
                                               setState(() {
                                                 if (_grandsonvisibility.contains(s_cnt)) {
-                                                  //既に選択されていたらリストから削除
                                                   _grandsonvisibility.remove(s_cnt);
                                                 } else {
                                                   // 選択されたらリストに追加する
@@ -376,7 +374,7 @@ class _Category extends State<Category>{
   );
   }
 }
-
+//ブランド一覧
 class Brand extends StatefulWidget {
   @override
   _Brand createState() => _Brand();
@@ -438,7 +436,7 @@ class _Brand extends State<Brand>{
     );
   }
 }
-
+//メーカー一覧
 class Maker extends StatefulWidget {
   @override
   _Maker createState() => _Maker();
