@@ -3,17 +3,16 @@ import 'package:workspace/HexColor.dart';   //16進数カラーコード
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:workspace/SpaceBox.dart'; //年代別レビュー
 
-
+//性別のフィルタリング表示
 class Gender_FilteringDialog extends StatefulWidget {
   @override
   _Gender_FilteringDialogState createState() => _Gender_FilteringDialogState();
 }
 
 class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
+
   bool male = false;
   bool woman = false;
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -69,19 +68,7 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
   }
 }
 
-class Gender extends StatefulWidget {
-  @override
-  _Gender createState() => _Gender();
-}
-class _Gender extends State<Gender>{
-  @override
-  Widget build(BuildContext context) {
-    return Text('aaa');
-  }
-}
-
-//メーカー、ブランド、カテゴリー
-
+//メーカー、ブランド、カテゴリーのフィルタリング表示
 class Details_FilteringDialog extends StatefulWidget {
   @override
   _Details_FilteringDialogState createState() => _Details_FilteringDialogState();
@@ -148,7 +135,7 @@ class _Details_FilteringDialogState extends State<Details_FilteringDialog> {
     );
   }
 }
-
+//カテゴリ一覧
 class Category extends StatefulWidget {
   @override
   _Category createState() => _Category();
@@ -373,7 +360,7 @@ class _Category extends State<Category>{
   );
   }
 }
-
+//ブランド一覧
 class Brand extends StatefulWidget {
   @override
   _Brand createState() => _Brand();
@@ -435,7 +422,7 @@ class _Brand extends State<Brand>{
     );
   }
 }
-
+//メーカー一覧
 class Maker extends StatefulWidget {
   @override
   _Maker createState() => _Maker();
