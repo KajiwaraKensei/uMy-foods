@@ -14,6 +14,8 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
   bool male = false;
   bool woman = false;
 
+  List _gender_keep=[];
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -33,6 +35,12 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
                 onChanged: (value) {
                   setState(() {
                     male = value!;
+                    if (woman!=true) {
+                      _gender_keep.remove('男性');
+                    } else {
+                      // 選択されたらリストに追加する
+                      _gender_keep.add('男性');
+                    }
                   });
                 },
               ),
@@ -43,6 +51,12 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
                 onChanged: (value) {
                   setState(() {
                     woman = value!;
+                    if (woman!=true) {
+                      _gender_keep.remove('女性');
+                    } else {
+                      // 選択されたらリストに追加する
+                      _gender_keep.add('女性');
+                    }
                   });
                 },
               ),
