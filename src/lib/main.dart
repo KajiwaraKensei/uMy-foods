@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:umy_foods/comparison.dart';
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
+import 'package:umy_foods/details/details.dart';
 
 void main() => runApp(MyApp());
 
@@ -24,14 +26,37 @@ class Home extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: 1000,
-              child: Text('トップページ',
-                  style: TextStyle(fontSize: 25, color: HexColor('8C6E63'))),
-            ),
-                FooterCreate(),
+                height: 1000,
+                child: Column(children: [
+                  Text('トップページ',
+                      style:
+                          TextStyle(fontSize: 25, color: HexColor('8C6E63'))),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailsPage(),
+                            ));
+                      },
+                      child: Text('詳細画面')),
+                ])),
+            FooterCreate(),
           ],
-            ),
-          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: HexColor('ec9463'),
+        tooltip: 'Increment',
+        child: Icon(Icons.assignment, color: Colors.white),
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Comparison(),
+              ));
+        },
+      ),
     );
   }
 }

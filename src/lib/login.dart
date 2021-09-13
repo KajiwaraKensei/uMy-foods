@@ -39,7 +39,9 @@ class _LoginState extends State<Login> {
 
   var _useraddress = TextEditingController();
   var _userpassword = TextEditingController();
-  var _text = '';
+  var address_error = '';
+  var password_error = '';
+
   bool _flag = true;
   bool _showPassword = true;
   //firebase_auth
@@ -90,10 +92,10 @@ class _LoginState extends State<Login> {
           child: Column(
             children: [
               Container(
-                  height: 1000,
+                  height: 700,
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(150, 30, 30, 30),
-                    child: Row(
+                    padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
+                    child: Column(
                       children: [
                         Container(
                           width: 400,
@@ -145,7 +147,7 @@ class _LoginState extends State<Login> {
                               Container(
                                 margin: EdgeInsets.only(top: 3, bottom: 25),
                                 child: Text(
-                                  'メールアドレスエラーメッセージ',
+                                  address_error,
                                   style: TextStyle(
                                     color: Colors.red,
                                   ),
@@ -193,7 +195,7 @@ class _LoginState extends State<Login> {
                               Container(
                                 margin: EdgeInsets.only(top: 5, bottom: 5),
                                 child: Text(
-                                  'パスワードエラーメッセージ',
+                                  password_error,
                                   style: TextStyle(
                                     color: Colors.red,
                                   ),
@@ -264,10 +266,20 @@ class _LoginState extends State<Login> {
                                           }),
                                         );
                                       } catch (e) {
+                                        address_error = '';
+                                        password_error = '';
+
+                                        if (e.toString() ==
+                                            '[firebase_auth/invalid-email] The email address is badly formatted.') {
+                                          setState(() {
+                                            address_error =
+                                                "正しいメールアドレスを入力してください。";
+                                          });
+                                        } else if (e.toString() ==
+                                            '[firebase_auth/wrong-password] The password is invalid or the user does not have a password.') {
+                                          password_error = "正しいパスワードを入力してください。";
+                                        }
                                         // ログインに失敗した場合
-                                        setState(() {
-                                          _text = "ログインに失敗しました：${e.toString()}";
-                                        });
                                       }
                                     },
                                     /*{
@@ -294,7 +306,7 @@ class _LoginState extends State<Login> {
                               ),
                               // 新規会員登録リンク
                               Container(
-                                margin: EdgeInsets.only(top: 20),
+                                margin: EdgeInsets.only(top: 20, bottom: 20),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -329,21 +341,19 @@ class _LoginState extends State<Login> {
                                   ],
                                 ),
                               ),
-                              //テストメッセージ
-                              Text(_text),
                             ],
                           ),
                         ),
                         // 縦線
                         Container(
-                          margin: EdgeInsets.only(left: 100),
-                          height: 700,
-                          width: 3,
+                          margin: EdgeInsets.only(left: 8),
+                          height: 3,
+                          width: 700,
                           color: HexColor('ffdfc5'),
                         ),
                         // 他サービス欄
                         Container(
-                          margin: EdgeInsets.only(left: 100),
+                          margin: EdgeInsets.only(top: 30, left: 8),
                           width: 400,
                           child: Column(
                             children: [

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:umy_foods/auth_complete.dart';
 import 'package:umy_foods/signup_confirm.dart';
 import 'package:umy_foods/header.dart';
@@ -46,6 +47,46 @@ class _SignupState extends State<Signup> {
   bool _showPassword = true;
   bool _showPasswordCon = true;
 
+  //firebase_auth
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  //googleログイン
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+//googleログイン用のクラス
+  Future<User?> signInWithGoogle() async {
+    await Firebase.initializeApp();
+
+    final GoogleSignInAccount? googleSignInAccount =
+        await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount!.authentication;
+    //ログイン自体はここで完了
+
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    final UserCredential userCredential =
+        await auth.signInWithCredential(credential);
+    final User? user = userCredential.user; //ログインしたユーザーの情報
+
+    if (user != null) {
+      // Checking if email and name is null
+      assert(user.uid != null);
+      assert(user.email != null);
+      assert(user.displayName != null);
+      assert(user.photoURL != null);
+
+      assert(!user.isAnonymous);
+      assert(await user.getIdToken() != null); //トークンに保存（現状は放置）
+
+      final User? currentUser = auth.currentUser;
+      assert(user.uid == currentUser!.uid);
+    }
+    return user; //ユーザー情報を返す
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,10 +94,10 @@ class _SignupState extends State<Signup> {
       body: SingleChildScrollView(
         child: Column(children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(150, 30, 30, 30),
+            padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
             child: Container(
-              height: 1000,
-              child: Row(
+              height: 900,
+              child: Column(
                 children: [
                   Container(
                     width: 400,
@@ -398,13 +439,14 @@ class _SignupState extends State<Signup> {
                   ),
                   // 縦線
                   Container(
-                    margin: EdgeInsets.only(left: 100),
-                    width: 3,
+                    margin: EdgeInsets.only(left: 8),
+                    width: 700,
+                    height: 3,
                     color: HexColor('ffdfc5'),
                   ),
                   // 他サービス欄
                   Container(
-                    margin: EdgeInsets.only(left: 100),
+                    margin: EdgeInsets.only(top: 30, left: 8),
                     width: 400,
                     child: Column(
                       children: [
@@ -430,7 +472,22 @@ class _SignupState extends State<Signup> {
                               primary: Colors.white,
                               onPrimary: Colors.black,
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              await signInWithGoogle().then((result) {
+                                //googleログイン用のクラスを呼んで、ユーザー情報を取得
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    fullscreenDialog: true,
+                                    builder: (context) => GoogleAuthComplete(
+                                        result), //auth_compleet.dartのGoogleAuthCompleteにresult(ユーザー情報)を送る
+                                  ),
+                                );
+                              }).catchError((e) {
+                                print('ログインに失敗しました： $e');
+                              });
+                              // Googleでログイン処理
+                            },
                           ),
                         ),
                         /*
