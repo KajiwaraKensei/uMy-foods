@@ -236,7 +236,7 @@ class _TopPageState extends State<TopPage> {
                                                     ),
                                                   ),
                                                   Container(
-                                                    margin: EdgeInsets.only(top: 5),
+                                                    margin: EdgeInsets.only(top: 5, left: 5),
                                                     child: Column(
                                                       // ベースラインに揃えて配置
                                                       crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -246,6 +246,7 @@ class _TopPageState extends State<TopPage> {
                                                       children: [
                                                         SelectableText(
                                                           'ウィルキンソン',
+                                                          maxLines: 2,
                                                           scrollPhysics: NeverScrollableScrollPhysics(),
                                                           style: TextStyle(
                                                             fontSize: 14,
@@ -342,7 +343,7 @@ class _TopPageState extends State<TopPage> {
                                                     ),
                                                   ),
                                                   Container(
-                                                    margin: EdgeInsets.only(top: 5),
+                                                    margin: EdgeInsets.only(top: 5, left: 5),
                                                     child: Column(
                                                       // ベースラインに揃えて配置
                                                       crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -352,6 +353,7 @@ class _TopPageState extends State<TopPage> {
                                                       children: [
                                                         SelectableText(
                                                           'ウィルキンソン',
+                                                          maxLines: 2,
                                                           scrollPhysics: NeverScrollableScrollPhysics(),
                                                           style: TextStyle(
                                                             fontSize: 14,
@@ -425,6 +427,84 @@ class _TopPageState extends State<TopPage> {
                               width: media_width * 0.6,
                               height: media_height * 0.4,
                               color: HexColor('F5F3EF'),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  for (var i = 0; i < 3; i++)
+                                    Card(
+                                      margin: EdgeInsets.symmetric(horizontal: 8),
+                                      child: Container(
+                                        width: media_width * 0.18,
+                                        height: media_height * 0.37,
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.only(top: 5),
+                                              height: media_height * 0.1,
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: media_width * 0.04,
+                                                    height: media_height * 0.06,
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(color: Colors.black),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        '#',
+                                                        style: TextStyle(
+                                                          fontSize: 24,
+                                                          fontWeight: FontWeight.w500,
+                                                          color: HexColor('616161'),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    // ベースラインに揃えて配置
+                                                    crossAxisAlignment: CrossAxisAlignment.baseline,
+
+                                                    // ベースラインの指定
+                                                    textBaseline: TextBaseline.alphabetic,
+                                                    children: [
+                                                      SelectableText(
+                                                        '片手で食べれるお菓子',
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                      SelectableText(
+                                                        'つくれぽ ' + '255' + '投稿',
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: HexColor('616161'),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(top: 20),
+                                              width: media_width * 0.15,
+                                              height: media_height * 0.17,
+                                              color: HexColor('fffafa'),
+                                              child: Image.network(
+                                                'https://www.bourbon.co.jp/product_file/file/2151.jpg',
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
                             ), // トレンドのタグ終わり
 
                             // 人気ユーザー
@@ -459,6 +539,74 @@ class _TopPageState extends State<TopPage> {
                               width: media_width * 0.6,
                               height: media_height * 0.4,
                               color: HexColor('F5F3EF'),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  for (var i = 0; i < 4; i++)
+                                    Card(
+                                      margin: EdgeInsets.symmetric(horizontal: 15),
+                                      child: Container(
+                                        width: media_width * 0.12,
+                                        height: media_height * 0.34,
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.only(top: 10),
+                                              width: media_width * 0.15,
+                                              height: media_height * 0.15,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: DecorationImage(
+                                                  fit: BoxFit.contain,
+                                                  image: NetworkImage(
+                                                      'http://petrichor.blue/wp-content/uploads/2018/11/46132564_570624860055194_808212540440969216_n.mp4_snapshot_00.34_2018.11.18_03.06.07-e1542478230568.jpg'),
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(top: 5),
+                                              child: SelectableText('ルーシー'),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(top: 20),
+                                              child: RichText(
+                                                text: TextSpan(
+                                                  style: TextStyle(color: HexColor('616161')),
+                                                  children: [
+                                                    WidgetSpan(
+                                                      child: Padding(
+                                                        padding: EdgeInsets.only(bottom: 5),
+                                                        child: Icon(
+                                                          Icons.favorite,
+                                                          size: 12,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    TextSpan(
+                                                      text: '14623',
+                                                    ),
+                                                    WidgetSpan(
+                                                      child: Padding(
+                                                        padding: EdgeInsets.only(left: 15, bottom: 5),
+                                                        child: Icon(
+                                                          Icons.person,
+                                                          size: 12,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    TextSpan(
+                                                      text: '14623',
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
                             ), // 人気ユーザー終わり
 
                             // 新着レビュー
@@ -491,8 +639,59 @@ class _TopPageState extends State<TopPage> {
                             Container(
                               margin: EdgeInsets.only(top: 10),
                               width: media_width * 0.6,
-                              height: media_height * 0.4,
+                              height: media_height * 0.6,
                               color: HexColor('F5F3EF'),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  for (var i = 0; i < 3; i++)
+                                    Card(
+                                      margin: EdgeInsets.symmetric(horizontal: 8),
+                                      child: Container(
+                                        width: media_width * 0.18,
+                                        height: media_height * 0.56,
+                                        child: Column(
+                                          // ベースラインに揃えて配置
+                                          crossAxisAlignment: CrossAxisAlignment.baseline,
+
+                                          // ベースラインの指定
+                                          textBaseline: TextBaseline.alphabetic,
+                                          children: [
+                                            Center(
+                                              child: Container(
+                                                margin: EdgeInsets.only(top: 5),
+                                                width: media_width * 0.16,
+                                                height: media_height * 0.24,
+                                                color: HexColor('ff2222'),
+                                                child: Image.network(
+                                                  'https://cdn-ak.f.st-hatena.com/images/fotolife/d/drinkoon/20210125/20210125000127.jpg',
+                                                  fit: BoxFit.contain,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 10),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    child: SelectableText('高橋太郎' + '　' + '50代' + '・' + '男性'),
+                                                  ),
+                                                  Container(
+                                                    child: SelectableText('ウィルキンソン',
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.w600,
+                                                        )),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
                             ), // 新着レビュー終わり
                           ],
                         ),
