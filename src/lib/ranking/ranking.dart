@@ -91,12 +91,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(title[cnt],style: TextStyle(fontSize: 23)),
-                                    GestureDetector(  //もっと見るボタン
-                                      onTap: () {
-                                        setState(() {});
-                                      },
-                                      child: Text('もっと見る'),
-                                    ),
+                                    TextButton(//もっと見るボタン
+                                      onPressed: (){},
+                                      child: Text('もっと見る',style: TextStyle(color: Colors.black),)
+                                    )
                                   ],
                                 ),
                                 SpaceBox.height(10),
