@@ -6,10 +6,10 @@ import 'package:workspace/HexColor.dart';   //16進数カラーコード
 import 'package:workspace/SpaceBox.dart';   //空間
 
 void main() {
-  runApp(MyApp());
+  runApp(ReviewPostApp());
 }
 
-class MyApp extends StatelessWidget {
+class ReviewPostApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
