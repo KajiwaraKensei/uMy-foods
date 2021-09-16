@@ -69,14 +69,14 @@ class Header extends StatelessWidget with PreferredSizeWidget {
       // ],
 
       actions: [
-        FlatButton(
-          textColor: Colors.white,
-          color: Colors.orange,
-          onPressed: () {},
-          child: Text(
-            '投稿',
-            style: TextStyle(fontSize: 20.0),
+        TextButton(
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.all(16.0),
+            primary: Colors.orange,
+            textStyle: const TextStyle(fontSize: 20),
           ),
+          onPressed: () {},
+          child: const Text('投稿'),
         ),
         GestureDetector(
             onTap: () {
