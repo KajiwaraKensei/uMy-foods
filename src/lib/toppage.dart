@@ -948,7 +948,7 @@ class _TopPageState extends State<TopPage> {
                                               textBaseline: TextBaseline.alphabetic,
                                               children: [
                                                 SelectableText('発売日：' + '2021/09/16'),
-                                                SelectableText('サントリー'),
+                                                SelectableText('レッドブル・ジャパン'),
                                                 SelectableText(
                                                   'Red Bull 250ml',
                                                   style: TextStyle(
