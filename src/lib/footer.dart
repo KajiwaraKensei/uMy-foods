@@ -16,6 +16,11 @@ class FooterCreate extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
+                child: Column(children: [
+                  Row(children: []),
+                ]),
+              ),
+              Container(
                 alignment: Alignment.center,
                 child: Container(
                   child: Column(
@@ -84,6 +89,13 @@ class FooterCreate extends StatelessWidget {
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  Text(
+                                    '',
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      color: HexColor('8C6E63'),
+                                    ),
+                                  ),
                                   Text(
                                     'サポート',
                                     style: TextStyle(
@@ -322,6 +334,11 @@ class FooterCreate extends StatelessWidget {
                 ),
               ),
               Container(
+                child: Column(children: [
+                  Row(children: []),
+                ]),
+              ),
+              Container(
                 width: 300,
                 alignment: Alignment.center,
                 child: Container(
@@ -379,7 +396,8 @@ class FooterCreate extends StatelessWidget {
                         Container(
                           child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly, //均等スペース
                               children: [
                                 /*
                         CircleAvatar(
@@ -403,7 +421,7 @@ class FooterCreate extends StatelessWidget {
                                     ),
                                     child: IconButton(
                                       icon: FaIcon(FontAwesomeIcons.facebook,
-                                          color: Colors.indigo, size: 40),
+                                          color: Colors.indigo, size: 37),
                                       //tooltip: '',
                                       // ボタンのデザイン
                                       onPressed: () async {
@@ -421,7 +439,7 @@ class FooterCreate extends StatelessWidget {
                                   alignment: Alignment.center,
                                   child: CircleAvatar(
                                     radius: 20,
-                                    backgroundColor: Colors.blue,
+                                    // backgroundColor: Colors.blue,
                                     // アイコン部分
                                     child: IconButton(
                                       //tooltip: 'Twitterへ',
@@ -437,10 +455,61 @@ class FooterCreate extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+                                Container(
+                                  height: 85,
+                                  alignment: Alignment.center,
+                                  child: Ink(
+                                    decoration: const ShapeDecoration(
+                                      color: Colors.lightBlue,
+                                      shape: CircleBorder(),
+                                    ),
+                                    child: IconButton(
+                                      icon: FaIcon(FontAwesomeIcons.instagram,
+                                          color: Colors.orange, size: 37),
+                                      //tooltip: '',
+                                      // ボタンのデザイン
+                                      onPressed: () async {
+                                        if (await canLaunch(
+                                            "https://www.facebook.com/UmyExe/")) {
+                                          await launch(
+                                              "https://www.facebook.com/UmyExe/");
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  height: 85,
+                                  alignment: Alignment.center,
+                                  child: Ink(
+                                    decoration: const ShapeDecoration(
+                                      color: Colors.lightBlue,
+                                      shape: CircleBorder(),
+                                    ),
+                                    child: IconButton(
+                                      icon: FaIcon(FontAwesomeIcons.line,
+                                          color: Colors.green, size: 40),
+                                      //tooltip: '',
+                                      // ボタンのデザイン
+                                      onPressed: () async {
+                                        if (await canLaunch(
+                                            "https://www.facebook.com/UmyExe/")) {
+                                          await launch(
+                                              "https://www.facebook.com/UmyExe/");
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
                               ]),
                         ),
                       ]),
                 ),
+              ),
+              Container(
+                child: Column(children: [
+                  Row(children: []),
+                ]),
               ),
             ]),
       ),
