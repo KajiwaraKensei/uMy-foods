@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:umy_foods/main.dart';
 import 'package:umy_foods/login.dart';
@@ -9,8 +11,22 @@ class Header extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      leading: IconButton(
+        icon: CircleAvatar(
+          backgroundImage: AssetImage('images/uMyFoods_icon.png'),
+          backgroundColor: Colors.transparent, // 背景色
+          radius: 90, // 表示したいサイズの半径を指定
+        ),
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyApp(),
+              ));
+        },
+      ),
       leadingWidth: 80,
-      titleSpacing: 300,
+      // titleSpacing: 300,
       title: TextField(
         decoration: InputDecoration(
           // hintText: "クチコミ・商品・ユーザを検索",
@@ -35,62 +51,53 @@ class Header extends StatelessWidget with PreferredSizeWidget {
       ),
       centerTitle: true,
       toolbarHeight: 150,
-      leading: IconButton(
-        icon: CircleAvatar(
-          backgroundImage: AssetImage('images/uMyFoods_icon.png'),
-          backgroundColor: Colors.transparent, // 背景色
-          radius: 90, // 表示したいサイズの半径を指定
-        ),
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MyApp(),
-              ));
-        },
-      ),
-
-      // actions: [
-      //   IconButton(
-      //     icon: CircleAvatar(
-      //       backgroundImage: NetworkImage(
-      //           "https://toolmania.info/wp-content/uploads/2017/11/image_in_account05.png"),
-      //       backgroundColor: Colors.transparent, // 背景色
-      //       radius: 20, // 表示したいサイズの半径を指定
-      //     ),
-      //     onPressed: () {
-      //       Navigator.push(
-      //           context,
-      //           MaterialPageRoute(
-      //             builder: (context) => Login(),
-      //           ));
-      //     },
-      //   ),
-      // ],
-
       actions: [
-        TextButton(
-          style: TextButton.styleFrom(
-            padding: const EdgeInsets.all(16.0),
-            primary: Colors.orange,
-            textStyle: const TextStyle(fontSize: 20),
+        Container(
+          margin: EdgeInsets.only(right: 50, left: 50),
+          child: Row(
+            children: [
+              // 投稿ボタン
+              Container(
+                width: 100,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text(
+                    "投稿",
+                    style: TextStyle(
+                      color: HexColor('ffffff'),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: HexColor('EC9361'), //ボタンの背景色
+                    side: BorderSide(
+                      color: HexColor('ffffff'), //枠線
+                      width: 1.5,
+                    ),
+                  ),
+                ),
+              ),
+              // マイページ
+              Container(
+                  margin: EdgeInsets.only(left: 50),
+                  child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Login(),
+                            ));
+                      },
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.white,
+                        backgroundImage: AssetImage("images/anotherUser.png"),
+                      ))),
+            ],
           ),
-          onPressed: () {},
-          child: const Text('投稿'),
         ),
-        GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Login(),
-                  ));
-            },
-            child: CircleAvatar(
-              radius: 20,
-              backgroundColor: Colors.white,
-              backgroundImage: AssetImage("images/anotherUser.png"),
-            ))
       ],
       backgroundColor: HexColor('F5F3EF'),
     );
