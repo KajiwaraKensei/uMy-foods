@@ -16,131 +16,112 @@ class FooterCreate extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                child: Column(children: [
-                  Row(children: []),
-                ]),
-              ),
-              Container(
                 alignment: Alignment.center,
                 child: Container(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                            width: 200,
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'ようこそ',
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      color: HexColor('8C6E63'),
-                                    ),
-                                  ),
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  WhatuMyFoods(),
-                                            ));
-                                      },
-                                      child: Text('uMyFoodsとは'),
-                                      style: ButtonStyle(
-                                        foregroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Colors.black),
-                                      )),
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  TermsOfService(),
-                                            ));
-                                      },
-                                      child: Text('ご利用規約'),
-                                      style: ButtonStyle(
-                                        foregroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Colors.black),
-                                      )),
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PrivacyPolicy(),
-                                            ));
-                                      },
-                                      child: Text('プライバシーポリシー'),
-                                      style: ButtonStyle(
-                                        foregroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Colors.black),
-                                      )),
-                                ])),
-                        Container(
-                            width: 200,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '',
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      color: HexColor('8C6E63'),
-                                    ),
-                                  ),
-                                  Text(
-                                    'サポート',
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      color: HexColor('8C6E63'),
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => FAQ(),
-                                          ));
-                                    },
-                                    child: Text('よくある質問'),
-                                    style: ButtonStyle(
-                                      foregroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.black),
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => Support(),
-                                          ));
-                                    },
-                                    child: Text('サポート'),
-                                    style: ButtonStyle(
-                                      foregroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.black),
-                                    ),
-                                  ),
-                                ])),
+                              Text(
+                                'ようこそ',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: HexColor('8C6E63'),
+                                ),
+                              ),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => WhatuMyFoods(),
+                                        ));
+                                  },
+                                  child: Text('uMyFoodsとは'),
+                                  style: ButtonStyle(
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.black),
+                                  )),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              TermsOfService(),
+                                        ));
+                                  },
+                                  child: Text('ご利用規約'),
+                                  style: ButtonStyle(
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.black),
+                                  )),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => PrivacyPolicy(),
+                                        ));
+                                  },
+                                  child: Text('プライバシーポリシー'),
+                                  style: ButtonStyle(
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.black),
+                                  )),
+                              Text(
+                                '',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: HexColor('8C6E63'),
+                                ),
+                              ),
+                              Text(
+                                'サポート',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: HexColor('8C6E63'),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => FAQ(),
+                                      ));
+                                },
+                                child: Text('よくある質問'),
+                                style: ButtonStyle(
+                                  foregroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.black),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Support(),
+                                      ));
+                                },
+                                child: Text('サポート'),
+                                style: ButtonStyle(
+                                  foregroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.black),
+                                ),
+                              ),
+                            ])),
                       ]),
                 ),
-              ),
-              Container(
-                child: Column(children: [
-                  Row(children: []),
-                ]),
               ),
               Container(
                 child: Column(children: [
@@ -234,48 +215,42 @@ class FooterCreate extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          alignment: Alignment.center,
                           child: Container(
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Column(children: [
+                            Container(
+                              height: 250,
+                              child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                Container(
-                                  height: 250,
-                                  child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Container(
-                                            child: ElevatedButton(
-                                                child: Image(
-                                                  width: 100,
-                                                  image: AssetImage(
-                                                      'images/uMyFoods_icon.png'),
-                                                  fit: BoxFit.contain,
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: HexColor('F5F3EF'),
-                                                  shape: const CircleBorder(),
-                                                  elevation: 0,
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            MyApp(),
-                                                      ));
-                                                })),
-                                      ]),
-                                ),
-                              ])),
+                                    Container(
+                                        child: ElevatedButton(
+                                            child: Image(
+                                              width: 100,
+                                              image: AssetImage(
+                                                  'images/uMyFoods_icon.png'),
+                                              fit: BoxFit.contain,
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: HexColor('F5F3EF'),
+                                              shape: const CircleBorder(),
+                                              elevation: 0,
+                                            ),
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MyApp(),
+                                                  ));
+                                            })),
+                                  ]),
+                            ),
+                          ])),
                         ),
                       ]),
                 ]),
               ),
               Container(
-                width: 300,
                 alignment: Alignment.center,
                 child: Container(
                   child: Column(
@@ -334,70 +309,63 @@ class FooterCreate extends StatelessWidget {
                 ),
               ),
               Container(
-                child: Column(children: [
-                  Row(children: []),
-                ]),
-              ),
-              Container(
-                width: 300,
+                // width: 300,
                 alignment: Alignment.center,
                 child: Container(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                            width: 200,
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'レビューを見る',
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      color: HexColor('8C6E63'),
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ViewPopularReviews(),
-                                          ));
-                                    },
-                                    child: Text('人気のレビューを見る'),
-                                    style: ButtonStyle(
-                                      foregroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.black),
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ViewNewReviews(),
-                                          ));
-                                    },
-                                    child: Text('新着のレビューを見る'),
-                                    style: ButtonStyle(
-                                      foregroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.black),
-                                    ),
-                                  ),
-                                ])),
+                              Text(
+                                'レビューを見る',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: HexColor('8C6E63'),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ViewPopularReviews(),
+                                      ));
+                                },
+                                child: Text('人気のレビューを見る'),
+                                style: ButtonStyle(
+                                  foregroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.black),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ViewNewReviews(),
+                                      ));
+                                },
+                                child: Text('新着のレビューを見る'),
+                                style: ButtonStyle(
+                                  foregroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.black),
+                                ),
+                              ),
+                            ])),
                         Container(
                           height: 80,
                         ),
                         Container(
                           child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly, //均等スペース
+                                  MainAxisAlignment.spaceAround, //均等スペース
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 /*
                         CircleAvatar(
@@ -437,6 +405,7 @@ class FooterCreate extends StatelessWidget {
                                 Container(
                                   height: 100,
                                   alignment: Alignment.center,
+                                  margin: EdgeInsets.only(left: 10),
                                   child: CircleAvatar(
                                     radius: 20,
                                     // backgroundColor: Colors.blue,
@@ -478,38 +447,33 @@ class FooterCreate extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  height: 85,
-                                  alignment: Alignment.center,
-                                  child: Ink(
-                                    decoration: const ShapeDecoration(
-                                      color: Colors.lightBlue,
-                                      shape: CircleBorder(),
-                                    ),
-                                    child: IconButton(
-                                      icon: FaIcon(FontAwesomeIcons.line,
-                                          color: Colors.green, size: 40),
-                                      //tooltip: '',
-                                      // ボタンのデザイン
-                                      onPressed: () async {
-                                        if (await canLaunch(
-                                            "https://www.facebook.com/UmyExe/")) {
-                                          await launch(
-                                              "https://www.facebook.com/UmyExe/");
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ),
+                                // Container(
+                                //   height: 85,
+                                //   alignment: Alignment.center,
+                                //   child: Ink(
+                                //     decoration: const ShapeDecoration(
+                                //       color: Colors.lightBlue,
+                                //       shape: CircleBorder(),
+                                //     ),
+                                //     child: IconButton(
+                                //       icon: FaIcon(FontAwesomeIcons.line,
+                                //           color: Colors.green, size: 40),
+                                //       //tooltip: '',
+                                //       // ボタンのデザイン
+                                //       onPressed: () async {
+                                //         if (await canLaunch(
+                                //             "https://www.facebook.com/UmyExe/")) {
+                                //           await launch(
+                                //               "https://www.facebook.com/UmyExe/");
+                                //         }
+                                //       },
+                                //     ),
+                                //   ),
+                                // ),
                               ]),
                         ),
                       ]),
                 ),
-              ),
-              Container(
-                child: Column(children: [
-                  Row(children: []),
-                ]),
               ),
             ]),
       ),
