@@ -91,9 +91,9 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                             ));
                       },
                       child: CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.white,
-                        backgroundImage: AssetImage("images/anotherUser.png"),
+                        radius: 30,
+                        backgroundColor: Colors.orange,
+                        backgroundImage: AssetImage("images/anotherUser2.png"),
                       ))),
             ],
           ),
