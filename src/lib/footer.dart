@@ -15,6 +15,7 @@ class FooterCreate extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround, //均等スペース
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Container(), //一番左を開ける
               Container(
                 alignment: Alignment.center,
                 child: Container(
@@ -123,6 +124,7 @@ class FooterCreate extends StatelessWidget {
                       ]),
                 ),
               ),
+              Container(), //ようこそ と コンテンツを見るの間をあける
               Container(
                 child: Column(children: [
                   Row(
@@ -308,6 +310,7 @@ class FooterCreate extends StatelessWidget {
                       ]),
                 ),
               ),
+              Container(), //商品を探す と レビューを見るの間をあける
               Container(
                 // width: 300,
                 alignment: Alignment.center,
@@ -475,6 +478,7 @@ class FooterCreate extends StatelessWidget {
                       ]),
                 ),
               ),
+              Container(), //一番左をあける
             ]),
       ),
     );
