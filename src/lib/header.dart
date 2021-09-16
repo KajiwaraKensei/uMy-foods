@@ -71,6 +71,9 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     primary: HexColor('EC9361'), //ボタンの背景色
                     side: BorderSide(
                       color: HexColor('ffffff'), //枠線
