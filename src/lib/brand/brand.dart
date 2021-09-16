@@ -9,7 +9,9 @@ import 'package:workspace/SpaceBox.dart';   //空間
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // 外部ファイル
-import 'package:workspace/HexColor.dart';   //16進数カラーコード
+// import 'package:workspace/HexColor.dart';   //16進数カラーコード
+import 'package:workspace/footer.dart'; //ヘッダー
+import 'package:workspace/header.dart'; //フッター
 
 void main() {
   runApp(MyApp());
@@ -36,40 +38,50 @@ class _BrandListState extends State<BrandListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: Header(),
       body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
+        padding:  EdgeInsets.only(top: 10),
         child: ListView(
           children: [
-            BreadCrumb( //パンくずリスト
-                items: <BreadCrumbItem>[
-                  BreadCrumbItem(
-                    content: TextButton(
-                      onPressed: (){}, 
-                      child: SelectableText('パン',style: TextStyle(color: Colors.black),scrollPhysics: NeverScrollableScrollPhysics(),),
-                    ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 35),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  BreadCrumb( //パンくずリスト
+                    items: <BreadCrumbItem>[
+                      BreadCrumbItem(
+                        content: TextButton(
+                          onPressed: (){}, 
+                          child: SelectableText('パン',style: TextStyle(color: Colors.black),scrollPhysics: NeverScrollableScrollPhysics(),),
+                        ),
+                      ),
+                      BreadCrumbItem(
+                        content: TextButton(
+                          onPressed: (){}, 
+                          child: SelectableText('くず',style: TextStyle(color: Colors.black),scrollPhysics: NeverScrollableScrollPhysics(),),
+                        ),
+                      ),
+                    ],
+                    divider: Icon(Icons.chevron_right),
                   ),
-                  BreadCrumbItem(
-                    content: TextButton(
-                      onPressed: (){}, 
-                      child: SelectableText('くず',style: TextStyle(color: Colors.black),scrollPhysics: NeverScrollableScrollPhysics(),),
+                  SpaceBox.height(30),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        left: BorderSide(color: HexColor('EC9361'),width: 4,)
+                      )
                     ),
+                    child: SelectableText(' ブランド一覧',style: TextStyle(color:Colors.black.withOpacity(0.6),fontSize: 23,fontWeight: FontWeight.bold),scrollPhysics: NeverScrollableScrollPhysics()),
                   ),
                 ],
-                divider: Icon(Icons.chevron_right),
-              ),
-              SpaceBox.height(30),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    left: BorderSide(color: HexColor('EC9361'),width: 4,)
-                  )
-                ),
-                child: SelectableText(' ブランド一覧',style: TextStyle(color:Colors.black.withOpacity(0.6),fontSize: 23,fontWeight: FontWeight.bold),scrollPhysics: NeverScrollableScrollPhysics()),
-              ),
-              SpaceBox.height(30),
-              Container(
-                child: buildTaskList('brand/'),
               )
+            ),
+            SpaceBox.height(30),
+            Container(
+              child: buildTaskList('brand/'),
+            ),
+            FooterCreate(),
           ],
         )
       )
@@ -129,4 +141,15 @@ class _BrandListState extends State<BrandListPage> {
       },
     );
   }
+}
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll('#', '');
+    if (hexColor.length == 6) {
+      hexColor = 'FF' + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
