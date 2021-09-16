@@ -10,7 +10,7 @@ class Header extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leadingWidth: 80,
-      // titleSpacing: 300,
+      titleSpacing: 300,
       title: TextField(
         decoration: InputDecoration(
           // hintText: "クチコミ・商品・ユーザを検索",
@@ -38,8 +38,8 @@ class Header extends StatelessWidget with PreferredSizeWidget {
       leading: IconButton(
         icon: CircleAvatar(
           backgroundImage: AssetImage('images/uMyFoods_icon.png'),
-          // backgroundColor: Colors.transparent, // 背景色
-          // radius: 90, // 表示したいサイズの半径を指定
+          backgroundColor: Colors.transparent, // 背景色
+          radius: 90, // 表示したいサイズの半径を指定
         ),
         onPressed: () {
           Navigator.push(
@@ -69,6 +69,15 @@ class Header extends StatelessWidget with PreferredSizeWidget {
       // ],
 
       actions: [
+        FlatButton(
+          textColor: Colors.white,
+          color: Colors.orange,
+          onPressed: () {},
+          child: Text(
+            '投稿',
+            style: TextStyle(fontSize: 20.0),
+          ),
+        ),
         GestureDetector(
             onTap: () {
               Navigator.push(
@@ -80,8 +89,7 @@ class Header extends StatelessWidget with PreferredSizeWidget {
             child: CircleAvatar(
               radius: 20,
               backgroundColor: Colors.white,
-              backgroundImage: NetworkImage(
-                  "https://toolmania.info/wp-content/uploads/2017/11/image_in_account05.png"),
+              backgroundImage: AssetImage("images/anotherUser.png"),
             ))
       ],
       backgroundColor: HexColor('F5F3EF'),
