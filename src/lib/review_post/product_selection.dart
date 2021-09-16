@@ -3,28 +3,30 @@ import 'dart:math';
 // パッケージ
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart';    //パンくず
 // 外部ファイル
-import 'package:workspace/HexColor.dart';   //16進数カラーコード
+// import 'package:workspace/HexColor.dart';   //16進数カラーコード
 import 'package:workspace/SpaceBox.dart';   //空間
 import 'package:workspace/Filtering.dart';  //フィルタリングポップアップ
 import 'package:workspace/sort.dart'; //ソートポップアップ
 import 'package:workspace/star.dart';   //星評価
+import 'package:workspace/footer.dart';
+import 'package:workspace/header.dart';
 
-// void main() {
-//   runApp(MyApp());
-// }
+void main() {
+  runApp(MyApp());
+}
 
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: ProductselectionPage(),
-//     );
-//   }
-// }
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: ProductselectionPage(),
+    );
+  }
+}
 
 class ProductselectionPage extends StatefulWidget {
   @override
@@ -38,8 +40,9 @@ class _ProductselectionPageState extends State<ProductselectionPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: Header(),
         body: Container(
-          padding:  EdgeInsets.symmetric(vertical: 20,horizontal: 40),
+          padding:  EdgeInsets.only(top: 10),
           child: ListView(
             children: [
               BreadCrumb( //パンくずリスト
@@ -66,7 +69,7 @@ class _ProductselectionPageState extends State<ProductselectionPage> {
                     Expanded(
                       flex: 5,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        padding: EdgeInsets.only(left: 40,right:5,bottom: 20),
                         child: Column(
                           children: [
                             TextField(// 検索バー
@@ -294,96 +297,111 @@ class _ProductselectionPageState extends State<ProductselectionPage> {
                     ),
                     Expanded(
                       flex: 2,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(width: 100 ,height: 300,color: Colors.grey,child: Text('広告'),),
-                          SpaceBox.height(40),
-                          Column(
-                            children: [
-                              TextButton(   //新商品タイトル
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 35,
-                                      child: Image.asset('images/icon/newgoods.png'), //アイコン
-                                    ),
-                                    SpaceBox.width(10),
-                                    Text('新商品',style: TextStyle(color: HexColor('EC9361'),fontSize: 20.0),),
-                                  ],
-                                ),
-                                onPressed: () {
-                                  setState(() {}); //新商品ページへ
-                                },
-                              ),
-                              SpaceBox.height(10),  //隙間
-                              Container(  //新商品
-                                color:HexColor('F5F3EF'),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 20,horizontal: 15),
-                                  child: Card(
-                                    child:  InkWell(
-                                      onTap:(){
-                                        setState(() {});  //商品詳細ページへ
-                                      },
-                                      child: Container(
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              flex: 1,
-                                              child: TextButton(
-                                                child:Container(  //商品画像
-                                                  height: 90,
-                                                  width: 90,
-                                                  child: Image.asset('images/190525pokka.jpg'),
-                                                ) ,
-                                                onPressed: () {
-                                                  setState(() {});  //商品詳細ページへ
-                                                },
-                                              ),
-                                            ),
-                                            Expanded(
-                                              flex: 2,
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: [
-                                                  Text('発売日'+'2020/10/03'),  //発売日
-                                                  SpaceBox.height(10),  
-                                                  TextButton(
-                                                    onPressed: (){}, 
-                                                    child: SelectableText('ポッカサッポロ',style: TextStyle(color: HexColor('616161'),fontSize: 10),scrollPhysics: NeverScrollableScrollPhysics(),), //メーカー名
-                                                  ),
-                                                  SpaceBox.height(10),
-                                                  TextButton(
-                                                    onPressed: (){}, //商品詳細へ
-                                                    child: SelectableText('LEMON MADE',style: TextStyle(color: Colors.black),scrollPhysics: NeverScrollableScrollPhysics(),), //商品名
-                                                  )
-                                                ],
-                                              )
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    )
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 5,right:40,bottom: 20), 
+                        child:Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(width: 100 ,height: 300,color: Colors.grey,child: Text('広告'),),
+                            SpaceBox.height(40),
+                            Column(
+                              children: [
+                                TextButton(   //新商品タイトル
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 35,
+                                        child: Image.asset('images/icon/newgoods.png'), //アイコン
+                                      ),
+                                      SpaceBox.width(10),
+                                      Text('新商品',style: TextStyle(color: HexColor('EC9361'),fontSize: 20.0),),
+                                    ],
                                   ),
+                                  onPressed: () {
+                                    setState(() {}); //新商品ページへ
+                                  },
                                 ),
-                              )
-                            ],
-                          ),
-                          SpaceBox.height(40), //隙間
-                          Container(width: 100 ,height: 100,color: Colors.grey,child: Text('広告'),),
-                        ],
+                                SpaceBox.height(10),  //隙間
+                                Container(  //新商品
+                                  color:HexColor('F5F3EF'),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 20,horizontal: 15),
+                                    child: Card(
+                                      child:  InkWell(
+                                        onTap:(){
+                                          setState(() {});  //商品詳細ページへ
+                                        },
+                                        child: Container(
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: TextButton(
+                                                  child:Container(  //商品画像
+                                                    height: 90,
+                                                    width: 90,
+                                                    child: Image.asset('images/190525pokka.jpg'),
+                                                  ) ,
+                                                  onPressed: () {
+                                                    setState(() {});  //商品詳細ページへ
+                                                  },
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 2,
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  children: [
+                                                    Text('発売日'+'2020/10/03'),  //発売日
+                                                    SpaceBox.height(10),  
+                                                    TextButton(
+                                                      onPressed: (){}, 
+                                                      child: SelectableText('ポッカサッポロ',style: TextStyle(color: HexColor('616161'),fontSize: 10),scrollPhysics: NeverScrollableScrollPhysics(),), //メーカー名
+                                                    ),
+                                                    SpaceBox.height(10),
+                                                    TextButton(
+                                                      onPressed: (){}, //商品詳細へ
+                                                      child: SelectableText('LEMON MADE',style: TextStyle(color: Colors.black),scrollPhysics: NeverScrollableScrollPhysics(),), //商品名
+                                                    )
+                                                  ],
+                                                )
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      )
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            SpaceBox.height(40), //隙間
+                            Container(width: 100 ,height: 100,color: Colors.grey,child: Text('広告'),),
+                          ],
+                        )
                       )
                     )
                   ],
                 )
-              )
+              ),
+              FooterCreate(),
             ]
           )
         )
       ),
     );
   }
+}
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll('#', '');
+    if (hexColor.length == 6) {
+      hexColor = 'FF' + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
