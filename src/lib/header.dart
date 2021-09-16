@@ -49,7 +49,7 @@ class Header extends StatelessWidget with PreferredSizeWidget {
               ));
         },
       ),
-      
+
       // actions: [
       //   IconButton(
       //     icon: CircleAvatar(
@@ -69,20 +69,20 @@ class Header extends StatelessWidget with PreferredSizeWidget {
       // ],
 
       actions: [
-        IconButton(
-          icon: CircleAvatar(
-            backgroundImage: AssetImage('images/uMyFoods_icon.png'),
-            backgroundColor: Colors.transparent, // 背景色
-            radius: 500, // 表示したいサイズの半径を指定
-          ),
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Login(),
-                ));
-          },
-        ),
+        GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Login(),
+                  ));
+            },
+            child: CircleAvatar(
+              radius: 20,
+              backgroundColor: Colors.white,
+              backgroundImage: NetworkImage(
+                  "https://toolmania.info/wp-content/uploads/2017/11/image_in_account05.png"),
+            ))
       ],
       backgroundColor: HexColor('F5F3EF'),
     );
