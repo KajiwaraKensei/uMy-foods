@@ -39,6 +39,8 @@ dependencies:
   multi_charts: ^0.3.0            #レーダーチャート
   percent_indicator: ^3.0.1       #割合棒グラフ
   contained_tab_bar_view: ^0.8.0  #年齢別ボタン
+  table_calendar: ^3.0.2  #カレンダー
+  intl: ^0.17.0 #日本語翻訳
 
 
   # The following adds the Cupertino Icons font to your application.
