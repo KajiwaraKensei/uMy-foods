@@ -5,10 +5,14 @@ import 'package:umy_foods/main.dart';
 import 'package:umy_foods/login/login.dart';
 import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/review_post/product_selection.dart';
+import 'package:umy_foods/list_page/brand.dart';
 
 class Header extends StatelessWidget with PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(80.0);
+
+  var _selectedValue = 'ログイン'; //初期にフォーカスされているもの
+  var _usStates = ["ログイン", "マイページ"]; //ポップアップのリスト
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +61,7 @@ class Header extends StatelessWidget with PreferredSizeWidget {
         Container(
           margin: EdgeInsets.only(right: 50, left: 50),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // 投稿ボタン
               Container(
@@ -91,22 +96,56 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                 ),
               ),
               // マイページ
-              Container(
+              PopupMenuButton<String>(
+                child:Container(
                   margin: EdgeInsets.only(left: 50),
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Login(),
-                            ));
-                      },
-                      child: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.orange,
-                          backgroundImage: NetworkImage((UserImage == "")
-                              ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/anotherUser2.png?alt=media&token=2c965f37-f6b3-4594-9998-24080a38073f'
-                              : UserImage)))),
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.orange,
+                    backgroundImage: NetworkImage((UserImage == "")
+                      ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/anotherUser2.png?alt=media&token=2c965f37-f6b3-4594-9998-24080a38073f'
+                      : UserImage) 
+                  ),
+                ),
+              
+                initialValue: _selectedValue,
+                onSelected: (String s) {
+                  if(s=='ログイン'){  //画面遷移
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Login(),
+                      ));
+                  }
+                  // setState(() {
+                  //   _selectedValue = s;
+                  // });
+                },
+                itemBuilder: (BuildContext context) {
+                  return _usStates.map((String s) {
+                    return PopupMenuItem(   //ポップアップに載せる物
+                      child: Text(s),
+                      value: s,
+                    );
+                  }).toList();
+                },
+            ),
+              // Container(
+              //     margin: EdgeInsets.only(left: 50),
+              //     child: GestureDetector(
+              //         onTap: () {
+              //           Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                 builder: (context) => Login(),
+              //               ));
+              //         },
+              //         child: CircleAvatar(
+              //             radius: 30,
+              //             backgroundColor: Colors.orange,
+              //             backgroundImage: NetworkImage((UserImage == "")
+              //                 ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/anotherUser2.png?alt=media&token=2c965f37-f6b3-4594-9998-24080a38073f'
+              //                 : UserImage)))),
             ],
           ),
         ),
