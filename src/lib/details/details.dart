@@ -8,22 +8,33 @@ import 'package:umy_foods/HexColor.dart'; //16進数カラーコード
 import 'package:umy_foods/SpaceBox.dart'; //空間
 import 'package:umy_foods/details/product.dart'; //商品情報
 import 'package:umy_foods/details/review.dart'; //レビュー
+import 'package:umy_foods/footer.dart'; //フッター
+import 'package:umy_foods/header.dart'; //ヘッダー
+import 'package:umy_foods/main.dart';
+import 'package:umy_foods/review_post/review_post.dart'; //レビュー投稿
+import 'package:umy_foods/clipButton.dart';
 
 class DetailsPage extends StatefulWidget {
+  DetailsPage(this.productID, this.where);
+  final String productID;
+  final String where;
   @override
-  _DetailsPageState createState() => _DetailsPageState();
+  _DetailsPageState createState() => _DetailsPageState(productID, where);
 }
 
 class _DetailsPageState extends State<DetailsPage> {
+  _DetailsPageState(this.productId, this.where);
+  final String productId;
+  final String where;
   @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: Header(),
       body: Stack(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: ListView(
               children: [
                 BreadCrumb(
@@ -31,14 +42,19 @@ class _DetailsPageState extends State<DetailsPage> {
                   items: <BreadCrumbItem>[
                     BreadCrumbItem(
                         content: GestureDetector(
-                      child: Text('パン'),
+                      child: Text(where),
                       onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MyApp(),
+                            ));
                         setState(() {});
                       },
                     )),
                     BreadCrumbItem(
                         content: GestureDetector(
-                      child: Text('くず'),
+                      child: Text('商品詳細'),
                       onTap: () {
                         setState(() {});
                       },
@@ -48,7 +64,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 ),
                 SpaceBox.height(20),
                 //商品詳細
-                ProductPage(),
+                ProductPage(productId),
                 //仕切り線
                 const Divider(
                   height: 20,
@@ -57,10 +73,12 @@ class _DetailsPageState extends State<DetailsPage> {
                   endIndent: 0,
                 ),
                 //レビュー
-                ReviewPage(),
+                ReviewPage(productId),
+                FooterCreate(),
               ],
             ),
           ),
+
           //フッター固定ボタン
           Align(
               alignment: Alignment.bottomCenter,
@@ -91,7 +109,14 @@ class _DetailsPageState extends State<DetailsPage> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ReviewPostPage(productId, '商品詳細'),
+                                  ));
+                            },
                           ),
                           SpaceBox.width(5),
                           ElevatedButton(
@@ -119,6 +144,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   ))),
         ],
       ),
+      floatingActionButton: clipButton(),
     );
   }
 }

@@ -29,6 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   flappy_search_bar: ^1.7.2
   font_awesome_flutter: ^9.1.0
@@ -50,6 +52,7 @@ dependencies:
   firebase_auth: ^3.0.2
   cloud_firestore: ^2.5.0
   google_sign_in: ^5.0.7
+  firebase_storage: ^10.0.3
 
   #urlリンクを使うパッケージ
   url_launcher: ^6.0.10

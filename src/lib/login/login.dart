@@ -1,13 +1,14 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:umy_foods/signup.dart';
+import 'package:umy_foods/login/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:umy_foods/auth_complete.dart';
+import 'package:umy_foods/login/auth_complete.dart';
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
+import 'package:umy_foods/HexColor.dart';
 
 //firebase_auth
 final FirebaseAuth auth = FirebaseAuth.instance;
@@ -491,17 +492,4 @@ Future<User?> signInWithGoogle() async {
     assert(user.uid == currentUser!.uid);
   }
   return user; //ユーザー情報を返す
-}
-
-//16進数カラーコード
-class HexColor extends Color {
-  static int _getColorFromHex(String hexColor) {
-    hexColor = hexColor.toUpperCase().replaceAll('#', '');
-    if (hexColor.length == 6) {
-      hexColor = 'FF' + hexColor;
-    }
-    return int.parse(hexColor, radix: 16);
-  }
-
-  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }

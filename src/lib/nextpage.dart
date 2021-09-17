@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/header.dart';
+import 'package:umy_foods/HexColor.dart';
 
 class WhatuMyFoods extends StatefulWidget {
   @override
@@ -17,8 +18,15 @@ class _WhatuMyFoodsState extends State<WhatuMyFoods> {
           children: [
             Container(
               height: 1000,
-              child: Text('uMyFoodsとは..',
-                  style: TextStyle(fontSize: 25, color: HexColor('8C6E63'))),
+              child: Column(children: [
+                Text('uMyFoodsとは..',
+                    style: TextStyle(fontSize: 25, color: HexColor('8C6E63'))),
+                    Container(
+                  color: HexColor('F5F3EF'),
+                  child: Text('aaaaa',
+                      style: TextStyle(fontSize: 18, color: Colors.black)),
+                )
+              ]),
             ),
             FooterCreate(),
           ],
@@ -367,15 +375,3 @@ class _ViewNewReviewsState extends State<ViewNewReviews> {
 }
 
 //ViewPopularReviews
-//16進数カラーコード
-class HexColor extends Color {
-  static int _getColorFromHex(String hexColor) {
-    hexColor = hexColor.toUpperCase().replaceAll('#', '');
-    if (hexColor.length == 6) {
-      hexColor = 'FF' + hexColor;
-    }
-    return int.parse(hexColor, radix: 16);
-  }
-
-  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
-}

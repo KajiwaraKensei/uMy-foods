@@ -4,10 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:umy_foods/auth_complete.dart';
-import 'package:umy_foods/signup_confirm.dart';
+import 'package:umy_foods/login/auth_complete.dart';
+import 'package:umy_foods/login/signup_confirm.dart';
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
+import 'package:umy_foods/HexColor.dart';
 
 class Signup extends StatefulWidget {
   @override
@@ -542,19 +543,6 @@ class _SignupState extends State<Signup> {
       ),
     );
   }
-}
-
-//16進数カラーコード
-class HexColor extends Color {
-  static int _getColorFromHex(String hexColor) {
-    hexColor = hexColor.toUpperCase().replaceAll('#', '');
-    if (hexColor.length == 6) {
-      hexColor = 'FF' + hexColor;
-    }
-    return int.parse(hexColor, radix: 16);
-  }
-
-  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
 
 // メールアドレスの正規表現チェック

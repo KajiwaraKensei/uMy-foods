@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:multi_charts/multi_charts.dart';
+import 'package:umy_foods/HexColor.dart';
+import 'package:umy_foods/header.dart';
+import 'package:umy_foods/footer.dart';
+import 'package:umy_foods/main.dart';
+
+import 'package:flutter_breadcrumb/flutter_breadcrumb.dart'; //パンくず
 
 class Comparison extends StatefulWidget {
   @override
@@ -107,8 +113,9 @@ class _ComparisonState extends State<Comparison> {
       'RelDate': '2021/06/20',
     },
     {
-      'Name': 'プリッツ',
-      'Image': 'https://stat.ameba.jp/user_images/20200226/19/feals/4c/99/j/o0466034614719411273.jpg',
+      'Name': 'パイの実',
+      'Image':
+          'https://www.tanomail.com/imgcv/product/26/2621344_01.jpg?sr.dw=230&sr.dh=230',
       'Eval': 5, // 総合評価
       'Rank': 'お菓子5位',
       'Repeat': <double>[300, 250], // [レビュー数, リピしたい数]
@@ -129,20 +136,43 @@ class _ComparisonState extends State<Comparison> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: HexColor('F5F3EF'),
-        ),
+        appBar: Header(),
         body: Padding(
           padding: EdgeInsets.all(30.0),
           child: ListView(children: [
             Padding(
               padding: EdgeInsets.only(bottom: 10),
-              child: Text('トップ＞比較'),
+              child: BreadCrumb(
+                //パンくずリスト
+                items: <BreadCrumbItem>[
+                  BreadCrumbItem(
+                      content: GestureDetector(
+                    child: Text('TOP'),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MyApp(),
+                          ));
+                      setState(() {});
+                    },
+                  )),
+                  BreadCrumbItem(
+                      content: GestureDetector(
+                    child: Text('比較'),
+                    onTap: () {
+                      setState(() {});
+                    },
+                  )),
+                ],
+                divider: Icon(Icons.chevron_right),
+              ),
             ),
             SingleChildScrollView(
               // SingleChildScrollViewで子ウィジェットをラップ
               scrollDirection: Axis.horizontal, // スクロールの向きを水平方向に指定
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // 入れ替えボタン
                   Container(
@@ -193,6 +223,7 @@ class _ComparisonState extends State<Comparison> {
                 ],
               ),
             ),
+            FooterCreate(),
           ]),
         ));
   }
@@ -370,15 +401,4 @@ class _ComparisonState extends State<Comparison> {
   }
 }
 
-//16進数カラーコード
-class HexColor extends Color {
-  static int _getColorFromHex(String hexColor) {
-    hexColor = hexColor.toUpperCase().replaceAll('#', '');
-    if (hexColor.length == 6) {
-      hexColor = 'FF' + hexColor;
-    }
-    return int.parse(hexColor, radix: 16);
-  }
 
-  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
-}

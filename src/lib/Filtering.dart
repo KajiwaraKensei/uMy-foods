@@ -13,7 +13,7 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
   bool male = false;
   bool woman = false;
 
-  List _gender_keep = [];
+
 
   @override
   Widget build(BuildContext context) {
@@ -23,49 +23,38 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
           style: TextStyle(
               color: HexColor('EC9361'), fontWeight: FontWeight.w900)),
       content: Container(
-          padding: EdgeInsets.all(5),
+        padding: EdgeInsets.all(5),
           width: MediaQuery.of(context).size.width * .6,
           color: HexColor('f5f3ef'),
-          child: Table(
+        child: Table(
             children: [
-              TableRow(children: [
-                CheckboxListTile(
+              TableRow(
+            children: [
+              CheckboxListTile(
                   value: male,
                   title: Text('男性'),
                   controlAffinity: ListTileControlAffinity.leading,
                   onChanged: (value) {
                     setState(() {
                       male = value!;
-                      if (woman != true) {
-                        _gender_keep.remove('男性');
-                      } else {
-                        // 選択されたらリストに追加する
-                        _gender_keep.add('男性');
-                      }
-                    });
+                  });
                   },
                 ),
                 CheckboxListTile(
                   value: woman,
-                  title: Text(
+                title: Text(
                     '女性',
                   ),
                   controlAffinity: ListTileControlAffinity.leading,
                   onChanged: (value) {
                     setState(() {
                       woman = value!;
-                      if (woman != true) {
-                        _gender_keep.remove('女性');
-                      } else {
-                        // 選択されたらリストに追加する
-                        _gender_keep.add('女性');
-                      }
-                    });
+                  });
                   },
                 ),
               ]),
             ],
-          )),
+        )),
       actions: <Widget>[
         Center(
           child: OutlinedButton(
@@ -84,7 +73,20 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
   }
 }
 
-//メーカー、ブランド、カテゴリーのフィルタリング表示
+class Gender extends StatefulWidget {
+  @override
+  _Gender createState() => _Gender();
+}
+
+class _Gender extends State<Gender> {
+  @override
+  Widget build(BuildContext context) {
+    return Text('aaa');
+  }
+}
+
+//メーカー、ブランド、カテゴリー
+
 class Details_FilteringDialog extends StatefulWidget {
   @override
   _Details_FilteringDialogState createState() =>
@@ -155,14 +157,13 @@ class _Details_FilteringDialogState extends State<Details_FilteringDialog> {
   }
 }
 
-//カテゴリ一覧
 class Category extends StatefulWidget {
   @override
   _Category createState() => _Category();
 }
-
 class _Category extends State<Category> {
   @override
+
   final List<List<String>> major_category = [
     ["メジャーカテゴリ1", "001"],
     ["メジャーカテゴリ2", "002"],
@@ -229,7 +230,6 @@ class _Category extends State<Category> {
       }
     });
   }
-
   void _grandsonCheckbox(int index, bool e) {
     setState(() {
       // 選択が解除されたらリストから消す
@@ -244,7 +244,7 @@ class _Category extends State<Category> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+  return Scaffold(
         body: ListView(
       children: [
         GestureDetector(
@@ -277,8 +277,8 @@ class _Category extends State<Category> {
                     value: _majorkeep
                         .contains(int.parse(major_category[m_cnt][1])),
                     onChanged: (e) {
-                      // Card 内のチェックボックスが選択されたら実行
-                      _majorCheckbox(int.parse(major_category[m_cnt][1]), e!);
+                        // Card 内のチェックボックスが選択されたら実行
+                        _majorCheckbox(int.parse(major_category[m_cnt][1]), e!);
                     },
                   ),
                   GestureDetector(
@@ -304,8 +304,8 @@ class _Category extends State<Category> {
                 child: SpaceBox.height(15),
               ),
               Visibility(
-                  visible: _childvisibility.contains(m_cnt),
-                  child: Column(children: [
+                visible: _childvisibility.contains(m_cnt),
+                child: Column(children: [
                     for (int c_cnt = category_stoplist[m_cnt];
                         c_cnt < category_stoplist[m_cnt + 1];
                         c_cnt++)
@@ -319,8 +319,8 @@ class _Category extends State<Category> {
                                 value: _childkeep
                                     .contains(int.parse(category[c_cnt][1])),
                                 onChanged: (e) {
-                                  // Card 内のチェックボックスが選択されたら実行
-                                  _childCheckbox(
+                                    // Card 内のチェックボックスが選択されたら実行
+                                    _childCheckbox(
                                       int.parse(category[c_cnt][1]), e!);
                                 },
                               ),
@@ -360,8 +360,8 @@ class _Category extends State<Category> {
                                                 int.parse(
                                                     sub_category[s_cnt][1])),
                                             onChanged: (e) {
-                                              // Card 内のチェックボックスが選択されたら実行
-                                              _grandsonCheckbox(
+                                                // Card 内のチェックボックスが選択されたら実行
+                                                _grandsonCheckbox(
                                                   int.parse(
                                                       sub_category[s_cnt][1]),
                                                   e!);
@@ -390,14 +390,14 @@ class _Category extends State<Category> {
                                       ),
                                     ],
                                   ),
-                                SpaceBox.height(15),
+                                  SpaceBox.height(15),
                               ],
                             ),
                           ),
                         ],
                       ),
-                    SpaceBox.height(15),
-                  ])),
+                      SpaceBox.height(15),
+                ])),
             ],
           )
       ],
@@ -405,12 +405,10 @@ class _Category extends State<Category> {
   }
 }
 
-//ブランド一覧
 class Brand extends StatefulWidget {
   @override
   _Brand createState() => _Brand();
 }
-
 class _Brand extends State<Brand> {
   final List<List<String>> brand = [
     ["ブランド1", "001"],
@@ -436,13 +434,13 @@ class _Brand extends State<Brand> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView(
+      body: ListView(
       children: [
         GestureDetector(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Icon(
+                Icon(
                 Icons.clear_outlined,
               ),
               Text('選択を解除'),
@@ -451,31 +449,29 @@ class _Brand extends State<Brand> {
           ),
           onTap: () {
             setState(() {
-              _brandkeep.removeRange(0, _brandkeep.length);
+                _brandkeep.removeRange(0, _brandkeep.length);
             });
           },
         ),
-        for (int m_cnt = 0; m_cnt < brand.length; m_cnt++)
+          for (int m_cnt = 0; m_cnt < brand.length; m_cnt++)
           CheckboxListTile(
             activeColor: Colors.blue,
             title: Text(brand[m_cnt][0]),
             controlAffinity: ListTileControlAffinity.leading,
             value: _brandkeep.contains(int.parse(brand[m_cnt][1])),
-            onChanged: (e) {
+              onChanged: (e) {
               _brandCheckbox(int.parse(brand[m_cnt][1]), e!);
             },
           ),
       ],
-    ));
+      ));
   }
 }
 
-//メーカー一覧
 class Maker extends StatefulWidget {
   @override
   _Maker createState() => _Maker();
 }
-
 class _Maker extends State<Maker> {
   final List<List<String>> maker = [
     ["メーカー1", "001"],
@@ -500,14 +496,14 @@ class _Maker extends State<Maker> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+      return Scaffold(
         body: ListView(
       children: [
         GestureDetector(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Icon(
+                Icon(
                 Icons.clear_outlined,
               ),
               Text('選択を解除'),
@@ -516,21 +512,21 @@ class _Maker extends State<Maker> {
           ),
           onTap: () {
             setState(() {
-              _makerkeep.removeRange(0, _makerkeep.length);
+                _makerkeep.removeRange(0, _makerkeep.length);
             });
           },
         ),
-        for (int m_cnt = 0; m_cnt < maker.length; m_cnt++)
+          for (int m_cnt = 0; m_cnt < maker.length; m_cnt++)
           CheckboxListTile(
             activeColor: Colors.blue,
             title: Text(maker[m_cnt][0]),
             controlAffinity: ListTileControlAffinity.leading,
             value: _makerkeep.contains(int.parse(maker[m_cnt][1])),
-            onChanged: (e) {
+              onChanged: (e) {
               _brandCheckbox(int.parse(maker[m_cnt][1]), e!);
             },
           ),
       ],
-    ));
+      ));
   }
 }

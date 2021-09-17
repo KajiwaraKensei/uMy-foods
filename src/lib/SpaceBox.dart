@@ -1,5 +1,6 @@
+
 import 'package:flutter/material.dart';
-//縦横空間
+//空間
 class SpaceBox extends SizedBox {
   SpaceBox({double width = 8, double height = 8})
       : super(width: width, height: height);

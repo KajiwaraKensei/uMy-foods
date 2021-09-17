@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:umy_foods/HexColor.dart';
 
 class Signup_Confirm extends StatelessWidget {
   // 値を受け取る
@@ -114,17 +115,4 @@ class Signup_Confirm extends StatelessWidget {
       ),
     );
   }
-}
-
-//16進数カラーコード
-class HexColor extends Color {
-  static int _getColorFromHex(String hexColor) {
-    hexColor = hexColor.toUpperCase().replaceAll('#', '');
-    if (hexColor.length == 6) {
-      hexColor = 'FF' + hexColor;
-    }
-    return int.parse(hexColor, radix: 16);
-  }
-
-  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }

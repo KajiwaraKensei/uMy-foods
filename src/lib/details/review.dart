@@ -5,6 +5,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart'; //font_awesome
 import 'package:percent_indicator/percent_indicator.dart'; //割合棒グラフ
 import 'package:multi_charts/multi_charts.dart'; //レーダーチャート
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart'; //年代別レビュー
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; //DB
+import "package:intl/intl.dart";
+import 'package:intl/date_symbol_data_local.dart'; //日時用
 
 // 外部ファイル
 import 'package:umy_foods/HexColor.dart'; //16進数カラーコード
@@ -14,11 +18,15 @@ import 'package:umy_foods/sort.dart'; //ソートポップアップ
 import 'package:umy_foods/star.dart'; //星評価
 
 class ReviewPage extends StatefulWidget {
+  ReviewPage(this.productID);
+  final String productID;
   @override
-  _ReviewPageState createState() => _ReviewPageState();
+  _ReviewPageState createState() => _ReviewPageState(productID);
 }
 
 class _ReviewPageState extends State<ReviewPage> {
+  _ReviewPageState(this.productId);
+  final String productId;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -82,7 +90,7 @@ class _ReviewPageState extends State<ReviewPage> {
                       )
                     ],
                   ),
-                  Age_Review()
+                  Age_Review(productId)
                 ],
               ),
             ),
@@ -248,12 +256,16 @@ class _ReviewPageState extends State<ReviewPage> {
 }
 
 class Age_Review extends StatefulWidget {
+  Age_Review(this.productId);
+  final String productId;
   @override
-  _Age_Review createState() => _Age_Review();
+  _Age_Review createState() => _Age_Review(productId);
 }
 
 //レビュー年代別
 class _Age_Review extends State<Age_Review> {
+  _Age_Review(this.productId);
+  final String productId;
   List<double> allage_list = [1, 2, 4, 7, 9, 0, 6]; //レーダーチャート全体
   List<double> age_list = [5, 3, 2, 4, 5, 0, 6]; //レーダーチャート年代
 
@@ -284,16 +296,16 @@ class _Age_Review extends State<Age_Review> {
           ],
           views: [
             Container(
-              child: age_reviewbar('～10代'),
+              child: age_reviewbar('～10代', productId),
             ),
             Container(
-              child: age_reviewbar('20代'),
+              child: age_reviewbar('20代', productId),
             ),
             Container(
-              child: age_reviewbar('30代'),
+              child: age_reviewbar('30代', productId),
             ),
             Container(
-              child: age_reviewbar('40代～'),
+              child: age_reviewbar('40代～', productId),
             ),
           ],
           onChange: (index) => print(index),
@@ -310,7 +322,7 @@ class _Age_Review extends State<Age_Review> {
     });
   }
 
-  Widget age_reviewbar(String age) {
+  Widget age_reviewbar(String age, String productId) {
     return Column(
       children: [
         Container(
@@ -466,104 +478,7 @@ class _Age_Review extends State<Age_Review> {
         ),
         SpaceBox.height(20),
         Container(
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Row(
-                  children: [
-                    Expanded(
-                        flex: 2,
-                        child: Container(
-                          // margin: EdgeInsets.only(right: 20),
-                          child: ElevatedButton(
-                            //ユーザーアイコン
-                            style:
-                                ElevatedButton.styleFrom(shape: CircleBorder()),
-                            child: ClipOval(
-                                child: Image(
-                              width: 85,
-                              image: AssetImage('images/icon.jpeg'),
-                              fit: BoxFit.contain,
-                            )),
-                            onPressed: () {}, //ユーザーへ
-                          ),
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          // mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text('onigiri',
-                                    style: TextStyle(fontSize: 17))), //ユーザー名
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text('男',
-                                    style: TextStyle(fontSize: 17))), //性別
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text('ゴールド',
-                                    style: TextStyle(fontSize: 17))), //ランク
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: star(3, 17),
-                            ), //星評価
-                          ],
-                        )),
-                    Expanded(
-                      flex: 6,
-                      child: Column(
-                        children: [
-                          RichText(
-                              //レビュー内容
-                              softWrap: true,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 3, //最大行数
-                              text: TextSpan(
-                                  text: "レビュー内容",
-                                  style: TextStyle(color: Colors.black))),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {});
-                            },
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                '続きを読む',
-                                style: TextStyle(color: Colors.lightBlue),
-                              ),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.favorite,
-                                color: Colors.grey,
-                                size: 20,
-                              ),
-                              Text('100'),
-                              SpaceBox.width(20),
-                              Icon(
-                                Icons.chat_bubble_outline,
-                                color: Colors.grey,
-                                size: 20,
-                              ),
-                              Text('100'),
-                              SpaceBox.width(50),
-                              Text('2021/07/07 10:00') //投稿日時
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
+          child: review(productId),
         ),
         Container(
             margin: EdgeInsets.symmetric(vertical: 20),
@@ -628,4 +543,175 @@ class _Age_Review extends State<Age_Review> {
       animationDuration: Duration(milliseconds: 500),
     );
   }
+}
+
+Widget review(productId) {
+  return StreamBuilder<QuerySnapshot>(
+
+      //表示したいFiresotreの保存先を指定
+      stream: reviewData(productId),
+
+      //streamが更新されるたびに呼ばれる
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        //データが取れていない時の処理
+        if (!snapshot.hasData) return const Text('Loading...');
+
+        final result = snapshot.data!.docs;
+
+        return Column(
+          children: [
+            for (int i = 0; i < result.length; i++)
+              Container(
+                padding: EdgeInsets.only(bottom: 20),
+                child: Row(
+                  children: [
+                    reviewUserIcon(result[i]['user_id']),
+                    reviewUserData(
+                        result[i]['user_id'], result[i]['review_evaluation']),
+                    Expanded(
+                      flex: 6,
+                      child: Column(
+                        children: [
+                          RichText(
+                              //レビュー内容
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3, //最大行数
+                              text: TextSpan(
+                                  text: result[i]['review_comment'],
+                                  style: TextStyle(color: Colors.black))),
+                          GestureDetector(
+                            onTap: () {
+                              //setState(() {});
+                            },
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                '続きを読む',
+                                style: TextStyle(color: Colors.lightBlue),
+                              ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.favorite,
+                                color: Colors.grey,
+                                size: 20,
+                              ),
+                              Text('100'),
+                              SpaceBox.width(20),
+                              Icon(
+                                Icons.chat_bubble_outline,
+                                color: Colors.grey,
+                                size: 20,
+                              ),
+                              Text('100'),
+                              SpaceBox.width(50),
+                              Text(DateFormat("yyyy/MM/dd")
+                                  .format(result[i]['review_postdate'].toDate())
+                                  .toString()) //投稿日時
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+          ],
+        );
+      });
+}
+
+Stream<QuerySnapshot> reviewData(String id) {
+  return FirebaseFirestore.instance
+      .collection('review')
+      .where('product_id', isEqualTo: id)
+      .snapshots();
+}
+
+Widget reviewUserData(userId, evaluation) {
+  return StreamBuilder<QuerySnapshot>(
+
+      //表示したいFiresotreの保存先を指定
+      stream: reviewUser(userId),
+
+      //streamが更新されるたびに呼ばれる
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        //データが取れていない時の処理
+        if (!snapshot.hasData) return const Text('Loading...');
+
+        final result = snapshot.data!.docs[0];
+        String gender = "";
+        if (result['user_gender'] == "male") {
+          gender = '男性';
+        } else if (result['user_gender'] == "female") {
+          gender = '女性';
+        }
+        return Expanded(
+          flex: 2,
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(result['user_name'],
+                      style: TextStyle(fontSize: 17))), //ユーザー名
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(gender, style: TextStyle(fontSize: 17))), //性別
+              /*Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('ゴールド', style: TextStyle(fontSize: 17))),*/ //ランク
+              Align(
+                alignment: Alignment.centerLeft,
+                child: star(evaluation, 17),
+              ), //星評価
+            ],
+          ),
+        );
+      });
+}
+
+Widget reviewUserIcon(userId) {
+  return StreamBuilder<QuerySnapshot>(
+
+      //表示したいFiresotreの保存先を指定
+      stream: reviewUser(userId),
+
+      //streamが更新されるたびに呼ばれる
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        //データが取れていない時の処理
+        if (!snapshot.hasData) return const Text('Loading...');
+
+        final result = snapshot.data!.docs[0];
+
+        return Expanded(
+            flex: 2,
+            child: Container(
+              // margin: EdgeInsets.only(right: 20),
+              child: ElevatedButton(
+                //ユーザーアイコン
+                style: ElevatedButton.styleFrom(shape: CircleBorder()),
+                child: ClipOval(
+                    child: Image(
+                  width: 85,
+                  image: NetworkImage((result['user_icon'] == "")
+                      ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
+                      : result['user_icon']),
+                  fit: BoxFit.contain,
+                )),
+                onPressed: () {}, //ユーザーへ
+              ),
+            ));
+      });
+}
+
+Stream<QuerySnapshot> reviewUser(String id) {
+  return FirebaseFirestore.instance
+      .collection('account')
+      .where('user_id', isEqualTo: id)
+      .snapshots();
 }
