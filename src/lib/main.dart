@@ -110,6 +110,52 @@ class Home extends StatelessWidget {
         'maker': 'アサヒ飲料'
       },
     ];
+    final List<Map<String, dynamic>> review = [
+      {
+        'name': '田中実',
+        'gender': '女性',
+        'age': '20代',
+        'product': 'ウィルキンソン',
+        'star': '★☆☆☆☆',
+        'Text': '思っていたより炭酸が強すぎて、炭酸が苦手でなくても飲みにくか…',
+        'image':
+            'https://m.media-amazon.com/images/I/61KZUmru1sL._AC_SL1500_.jpg',
+      },
+      {
+        'name': '高橋太郎',
+        'gender': '男性',
+        'age': '50代',
+        'product': '練乳いちごミルク',
+        'star': '★☆☆☆☆',
+        'Text': 'この商品を詐欺罪で訴えます。理由は勿論、お分かりですね。あ…',
+        'image':
+            'https://cdn-ak.f.st-hatena.com/images/fotolife/d/drinkoon/20210125/20210125000127.jpg',
+      },
+      {
+        'name': 'ハナ',
+        'gender': '女性',
+        'age': '40代',
+        'product': 'きのこの山とたけのこの里 12袋',
+        'star': '★★★★★',
+        'Text': '量重視の私には大満足の内容量と満足感でした！案外一人でも食…',
+        'image':
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1iSBzQche-bz05pN4oy14EFgCi7ha7a_xiw&usqp=CAU',
+      },
+    ];
+    final List<Map<String, dynamic>> tag = [
+      {
+        'Text': '片手で食べれるお菓子',
+        'image': 'https://www.bourbon.co.jp/product_file/file/2151.jpg',
+      },
+      {
+        'Text': 'エナジードリンク',
+        'image': 'https://img07.shop-pro.jp/PA01350/082/product/137945030.jpg',
+      },
+      {
+        'Text': '小腹がすいたら',
+        'image': 'https://livedoor.blogimg.jp/plankman/imgs/b/f/bfa6566c.jpg',
+      },
+    ];
     return Scaffold(
         appBar: Header(),
         body: SingleChildScrollView(
@@ -741,7 +787,7 @@ class Home extends StatelessWidget {
                                                                   .alphabetic,
                                                           children: [
                                                             SelectableText(
-                                                              '片手で食べれるお菓子',
+                                                              tag[i]['Text'],
                                                               style: TextStyle(
                                                                 fontSize: 14,
                                                                 fontWeight:
@@ -771,7 +817,7 @@ class Home extends StatelessWidget {
                                                     height: media_height * 0.17,
                                                     color: HexColor('fffafa'),
                                                     child: Image.network(
-                                                      'https://www.bourbon.co.jp/product_file/file/2151.jpg',
+                                                      tag[i]['image'],
                                                       fit: BoxFit.contain,
                                                     ),
                                                   ),
@@ -972,7 +1018,7 @@ class Home extends StatelessWidget {
                                                           media_height * 0.24,
                                                       //color: HexColor('ff2222'), // 範囲確認用
                                                       child: Image.network(
-                                                        'https://cdn-ak.f.st-hatena.com/images/fotolife/d/drinkoon/20210125/20210125000127.jpg',
+                                                        review[i]['image'],
                                                         fit: BoxFit.contain,
                                                       ),
                                                     ),
@@ -995,11 +1041,14 @@ class Home extends StatelessWidget {
                                                               EdgeInsets.only(
                                                                   top: 10),
                                                           child: SelectableText(
-                                                              '高橋太郎' +
+                                                              review[i]
+                                                                      ['name'] +
                                                                   '　' +
-                                                                  '50代' +
+                                                                  review[i]
+                                                                      ['age'] +
                                                                   '・' +
-                                                                  '男性'),
+                                                                  review[i][
+                                                                      'gender']),
                                                         ),
 
                                                         // 商品名
@@ -1008,7 +1057,8 @@ class Home extends StatelessWidget {
                                                               EdgeInsets.only(
                                                                   top: 7),
                                                           child: SelectableText(
-                                                              '練乳いちごミルク',
+                                                              review[i]
+                                                                  ['product'],
                                                               style: TextStyle(
                                                                 fontSize: 14,
                                                                 fontWeight:
@@ -1023,7 +1073,8 @@ class Home extends StatelessWidget {
                                                                   top: 7),
                                                           child: SelectableText(
                                                               '総合評価：' +
-                                                                  '★☆☆☆☆'),
+                                                                  review[i]
+                                                                      ['star']),
                                                         ),
                                                         // レビュー本文
                                                         Container(
@@ -1031,7 +1082,7 @@ class Home extends StatelessWidget {
                                                               EdgeInsets.only(
                                                                   top: 10),
                                                           child: SelectableText(
-                                                            'この商品を詐欺罪で訴えます。理由は勿論、お分かりですね。あ…',
+                                                            review[i]['Text'],
                                                             maxLines: 3,
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics(),

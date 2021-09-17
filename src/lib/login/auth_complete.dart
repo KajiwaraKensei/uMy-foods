@@ -24,7 +24,7 @@ class AuthComplete extends StatelessWidget {
       body: SingleChildScrollView(
           child: Column(
         children: [
-          Container(height: 100, child: UserWelcome(user.uid)),
+          Container(height: 1000, child: UserWelcome(user.uid)),
           IconButton(
               icon: Icon(Icons.logout),
               onPressed: () async {

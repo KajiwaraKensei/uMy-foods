@@ -8,6 +8,7 @@ import 'package:umy_foods/SpaceBox.dart'; //空間
 import 'package:umy_foods/Filtering.dart'; //フィルタリングポップアップ
 import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/header.dart';
+import 'package:umy_foods/clipButton.dart';
 import 'package:umy_foods/review_post/review_post.dart';
 import 'package:umy_foods/sort.dart'; //ソートポップアップ
 import 'package:umy_foods/star.dart'; //星評価
@@ -37,8 +38,7 @@ class _ProductselectionPageState extends State<ProductselectionPage> {
   bool switchBool = false;
 
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
           appBar: Header(),
           body: Container(
               padding: EdgeInsets.only(top: 10),
@@ -519,7 +519,7 @@ class _ProductselectionPageState extends State<ProductselectionPage> {
                   ],
                 )),
                 FooterCreate(),
-              ]))),
-    );
+              ])),
+        floatingActionButton: clipButton());
   }
 }
