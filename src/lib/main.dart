@@ -7,6 +7,7 @@ import 'package:umy_foods/details/details.dart';
 import 'package:umy_foods/clipButton.dart';
 import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/list_page/brand.dart';
+import 'package:umy_foods/new_item/newitem.dart';
 
 void main() => runApp(MyApp());
 
@@ -1273,7 +1274,16 @@ class Home extends StatelessWidget {
                                     ), // 広告終わり
 
                                     // 新商品
-                                    Container(
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  NewItemPage(),
+                                            ));
+                                      },
+                                      child: Container(
                                       margin: EdgeInsets.only(top: 10),
                                       child: Row(
                                         mainAxisAlignment:
@@ -1287,18 +1297,17 @@ class Home extends StatelessWidget {
                                               fit: BoxFit.cover,
                                             ),
                                           ),
-                                          SelectableText(
+                                          Text(
                                             '新商品',
                                             style: TextStyle(
                                               color: HexColor('ec9361'),
                                               fontSize: 20,
                                               fontWeight: FontWeight.w600,
                                             ),
-                                            scrollPhysics:
-                                                NeverScrollableScrollPhysics(),
                                           ),
                                         ],
                                       ),
+                                    ),
                                     ),
                                     // 新商品コンテナ
                                     Container(

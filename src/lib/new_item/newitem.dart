@@ -119,7 +119,7 @@ class _NewItemPageState extends State<NewItemPage> {
     }
 
     return Scaffold(
-    appbar:Header(),
+    appBar: Header(),
     floatingActionButton: clipButton(),
           body: Container(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
@@ -475,10 +475,11 @@ class _NewItemPageState extends State<NewItemPage> {
                 ),
               ),
               Expanded(flex: 2, child: Text('広告'))
-            ])
+            ]),
+              FooterCreate(),
           ],
         ),
-      );
+      ));
   }
 
   Widget _releaseList(List<dynamic> releaseId, DateTime day) {
