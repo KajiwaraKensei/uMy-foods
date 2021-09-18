@@ -233,6 +233,11 @@ class _ProductPageState extends State<ProductPage> {
                                     SpaceBox.height(30),
                                   ]),
                                   TableRow(children: [
+                                    Text('メーカーID'),
+                                    Text(result['maker_id']),
+                                    SpaceBox.height(30),
+                                  ]),
+                                  TableRow(children: [
                                     Text('メーカー名'),
                                     makerName(result['maker_id']),
                                     SpaceBox.height(30),
@@ -573,7 +578,7 @@ Widget makerName(id) {
       //表示したいFiresotreの保存先を指定
       stream: FirebaseFirestore.instance
           .collection('maker')
-          .where('maker_id', isEqualTo: id)
+          .where('maker_id', isEqualTo: int.parse(id))
           .snapshots(),
 
       //streamが更新されるたびに呼ばれる
