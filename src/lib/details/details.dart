@@ -140,24 +140,26 @@ class _DetailsPageState extends State<DetailsPage> {
                   //パンくずリスト
                   items: <BreadCrumbItem>[
                     BreadCrumbItem(
-                        content: GestureDetector(
-                      child: Text(where),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MyApp(),
-                            ));
-                        setState(() {});
-                      },
-                    )),
-                    BreadCrumbItem(
-                        content: GestureDetector(
-                      child: Text('商品詳細'),
-                      onTap: () {
-                        setState(() {});
-                      },
-                    )),
+                      content: TextButton(
+                        child: Text(
+                          where,
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onPressed: (){
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => MyApp()));
+                        }
+                      ),
+                    ),
+                      BreadCrumbItem(
+                        content: TextButton(
+                          child: Text(
+                            '商品詳細',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          onPressed: (){
+                          }
+                        ),
+                      ),
                   ],
                   divider: Icon(Icons.chevron_right),
                 ),
