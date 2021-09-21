@@ -13,7 +13,8 @@ class Header extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: IconButton(
+      leading: Container(
+        child: IconButton(
         icon: CircleAvatar(
           backgroundImage: AssetImage('images/uMyFoods_icon.png'),
           backgroundColor: Colors.transparent, // 背景色
@@ -26,6 +27,7 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                 builder: (context) => MyApp(),
               ));
         },
+      ),
       ),
       leadingWidth: 80,
       //titleSpacing: 300,

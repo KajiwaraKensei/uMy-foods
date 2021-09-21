@@ -33,10 +33,7 @@ class _DetailsPageState extends State<DetailsPage> {
   _DetailsPageState(this.productId, this.where);
   final String productId;
   final String where;
-
-  @override
-  Widget build(BuildContext context) {
-    //気になる、リピートボタン
+  //気になる、リピートボタン
     List<bool> _selections = List.generate(1, (_) => false);
     List<bool> _selections1 = List.generate(1, (_) => false);
 
@@ -47,6 +44,9 @@ class _DetailsPageState extends State<DetailsPage> {
     String image = "";
     String product_name = "";
     String maker = "";
+
+  @override
+  Widget build(BuildContext context) {
 
     Stream<QuerySnapshot> product(String id) {
       return FirebaseFirestore.instance
