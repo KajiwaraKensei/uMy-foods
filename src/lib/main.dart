@@ -11,7 +11,8 @@ import 'package:umy_foods/new_item/newitem.dart';
 
 void main() => runApp(MyApp());
 
-String UserImage = "";
+String UID = "";
+String UserImage   = "";
 
 class MyApp extends StatelessWidget {
   @override
@@ -1284,30 +1285,30 @@ class Home extends StatelessWidget {
                                             ));
                                       },
                                       child: Container(
-                                      margin: EdgeInsets.only(top: 10),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: 40,
-                                            height: 40,
-                                            child: Image.asset(
-                                              'images/new_goods.png',
-                                              fit: BoxFit.cover,
+                                        margin: EdgeInsets.only(top: 10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 40,
+                                              height: 40,
+                                              child: Image.asset(
+                                                'images/new_goods.png',
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            '新商品',
-                                            style: TextStyle(
-                                              color: HexColor('ec9361'),
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600,
+                                            Text(
+                                              '新商品',
+                                              style: TextStyle(
+                                                color: HexColor('ec9361'),
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600,
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
                                     ),
                                     // 新商品コンテナ
                                     Container(

@@ -19,6 +19,7 @@ class AuthComplete extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UID = user.uid;
     return Scaffold(
       appBar: Header(),
       body: SingleChildScrollView(
@@ -33,6 +34,7 @@ class AuthComplete extends StatelessWidget {
                 // （現時点ではログアウト時はこの処理を呼び出せばOKと、思うぐらいで大丈夫です）
                 await FirebaseAuth.instance.signOut();
                 UserImage = "";
+                UID = "";
                 // ログイン画面に遷移＋チャット画面を破棄
                 await Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) {
@@ -93,6 +95,7 @@ class GoogleAuthComplete extends StatelessWidget {
                         await googleSignIn.signOut();
                         await auth.signOut(); //ログアウト完了
                         UserImage = "";
+                        UID = "";
                         await Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) {
                             return Login(); //ログイン画面に戻る

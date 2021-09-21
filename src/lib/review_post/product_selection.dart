@@ -201,6 +201,9 @@ class _ProductselectionPageState extends State<ProductselectionPage> {
                                                             builder: (context) =>
                                                                 ReviewPostPage(
                                                                     'productId',
+                                                                    'つぶつぶいちごポッキー',
+                                                                  'https://images-na.ssl-images-amazon.com/images/I/71tcgatTdML._AC_SL1500_.jpg',
+                                                                  'グリコ',
                                                                     'レビュー商品選択'),
                                                           ));
                                                       setState(

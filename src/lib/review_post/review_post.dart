@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 // パッケージ
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart'; //パンくず
@@ -10,11 +12,16 @@ import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/main.dart';
 
 class ReviewPostPage extends StatefulWidget {
-  ReviewPostPage(this.productId, this.where);
+  ReviewPostPage(
+      this.productId, this.product_name, this.image, this.maker, this.where);
   final String productId;
   final String where;
+  final String product_name;
+  final String image;
+  final String maker;
   @override
-  _ReviewPostPageState createState() => _ReviewPostPageState(productId, where);
+  _ReviewPostPageState createState() =>
+      _ReviewPostPageState(productId, product_name, image, maker, where);
 }
 
 //ラジオボタンの割り当て
@@ -26,8 +33,12 @@ enum SpicyRadio { FIRST, SECOND, THIRD, FOUR, FIVE }
 enum TasteRadio { FIRST, SECOND, THIRD, FOUR, FIVE }
 
 class _ReviewPostPageState extends State<ReviewPostPage> {
-  _ReviewPostPageState(this.productId, this.where);
+  _ReviewPostPageState(
+      this.productId, this.product_name, this.image, this.maker, this.where);
   final String productId;
+  final String product_name;
+  final String image;
+  final String maker;
   final String where;
   //星評価on,off判定
   final List<int> _comprehensive = [1, 2, 3];
@@ -50,6 +61,8 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
   TasteRadio _tasteValue = TasteRadio.FIRST;
 
   Widget build(BuildContext context) {
+    //ユーザーID
+    String userId = UID;
     return Scaffold(
         appBar: Header(),
         body: Container(
@@ -118,8 +131,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                   height: 100,
                                   child: Align(
                                     alignment: Alignment.center,
-                                    child: Image.network(
-                                        'https://images-na.ssl-images-amazon.com/images/I/71tcgatTdML._AC_SL1500_.jpg'),
+                                    child: Image.network(image),
                                   ),
                                 ),
                                 SpaceBox.width(100),
@@ -128,14 +140,14 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      child: SelectableText('グリコ',
+                                      child: SelectableText(maker,
                                           style: TextStyle(fontSize: 16),
                                           scrollPhysics:
                                               NeverScrollableScrollPhysics()),
                                       height: 20,
                                     ),
                                     Container(
-                                      child: SelectableText('つぶつぶいちごポッキー',
+                                      child: SelectableText(product_name,
                                           style: TextStyle(
                                               fontSize: 22,
                                               fontWeight: FontWeight.bold),
