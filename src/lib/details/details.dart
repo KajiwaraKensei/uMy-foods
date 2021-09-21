@@ -33,9 +33,10 @@ class _DetailsPageState extends State<DetailsPage> {
   _DetailsPageState(this.productId, this.where);
   final String productId;
   final String where;
+
   //気になる、リピートボタン
-    List<bool> _selections = List.generate(1, (_) => false);
-    List<bool> _selections1 = List.generate(1, (_) => false);
+  bool concern = false;
+  bool repeat = false;
 
     //栄養など詳細情報ボタン
     bool _materials = false;
@@ -129,10 +130,12 @@ class _DetailsPageState extends State<DetailsPage> {
       appBar: Header(),
       body: Stack(
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: ListView(
-              children: [
+          ListView(
+            children: [Padding(
+              padding: EdgeInsets.symmetric(horizontal: 60,vertical: 20),
+              child:Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                 BreadCrumb(
                   //パンくずリスト
                   items: <BreadCrumbItem>[
@@ -186,11 +189,13 @@ class _DetailsPageState extends State<DetailsPage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(result['product_name'],
+                                    SelectableText(result['product_name'],
                                         style: TextStyle(
                                           fontSize: 27.0,
                                           fontWeight: FontWeight.bold,
-                                        )), //商品名
+                                        ),
+                                        scrollPhysics: NeverScrollableScrollPhysics()
+                                    ), //商品名
                                     Container(
                                       child: Row(
                                         children: [
@@ -329,7 +334,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Text('総合評価'),
+                                                      SelectableText('総合評価',scrollPhysics: NeverScrollableScrollPhysics()),
                                                       star(4, 30)
                                                     ],
                                                   )),
@@ -341,7 +346,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Text('コスパ'),
+                                                      SelectableText('コスパ',scrollPhysics: NeverScrollableScrollPhysics()),
                                                       star(2, 30)
                                                     ],
                                                   )),
@@ -350,8 +355,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                           SpaceBox.height(20),
                                           Align(
                                             alignment: Alignment.centerLeft,
-                                            child: Text('商品情報',
-                                                style: TextStyle(fontSize: 20)),
+                                            child: SelectableText('商品情報',
+                                              scrollPhysics: NeverScrollableScrollPhysics(),
+                                              style: TextStyle(fontSize: 20)),
                                           ),
                                           SpaceBox.height(20),
                                           Table(
@@ -365,17 +371,17 @@ class _DetailsPageState extends State<DetailsPage> {
                                             },
                                             children: [
                                               TableRow(children: [
-                                                Text('商品名'),
-                                                Text(result['product_name']),
+                                                SelectableText('商品名',scrollPhysics: NeverScrollableScrollPhysics()),
+                                                SelectableText(result['product_name'],scrollPhysics: NeverScrollableScrollPhysics()),
                                                 SpaceBox.height(30),
                                               ]),
                                               TableRow(children: [
-                                                Text('メーカー名'),
+                                                SelectableText('メーカー名',scrollPhysics: NeverScrollableScrollPhysics()),
                                                 makerName(result['maker_id']),
                                                 SpaceBox.height(30),
                                               ]),
                                               TableRow(children: [
-                                                Text('ブランド名'),
+                                                SelectableText('ブランド名',scrollPhysics: NeverScrollableScrollPhysics()),
                                                 brandName(result['brand_id']),
                                                 SpaceBox.height(30),
                                               ]),
@@ -442,103 +448,63 @@ class _DetailsPageState extends State<DetailsPage> {
                           Row(
                             children: [
                               Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                      //気になるボタン
-                                      child: Center(
-                                    child: Container(
-                                      padding: EdgeInsets.zero,
-                                      decoration: BoxDecoration(
-                                        color: HexColor('FFDFC5'),
-                                        border: Border.all(
-                                            color: Colors.white, width: 1.0),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5.0)),
-                                      ),
-                                      child: ToggleButtons(
-                                        color: HexColor('616161'), //文字色
-                                        selectedColor: Colors.white, //押したときの文字色
-                                        selectedBorderColor:
-                                            HexColor('EC9361'), //押したときの枠
-                                        fillColor:
-                                            HexColor('EC9361'), //押したときの背景
-                                        children: <Widget>[
-                                          Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 20, vertical: 10),
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    FontAwesomeIcons
-                                                        .exclamation,
-                                                    size: 15,
-                                                  ),
-                                                  SpaceBox.width(15),
-                                                  Text('気になる (435)')
-                                                ],
-                                              ))
-                                        ],
-                                        isSelected: _selections,
-                                        onPressed: (int index) {
+                                flex: 1,
+                                child: Container(  
+                                  child: Center(
+                                    child:SizedBox(  //気になるボタン
+                                      width: 200,
+                                      height: 50,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: concern==true ? HexColor('EC9361') : HexColor('FFDFC5'), //押したとき：押してない時
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(FontAwesomeIcons.exclamation,size: 17,color:concern==true ? Colors.white : HexColor('616161')),
+                                            SpaceBox.width(10),
+                                            Text('気になる (435)',style:TextStyle(color:concern==true ? Colors.white : HexColor('616161'),fontSize: 17)) 
+                                          ],
+                                        ),                                
+                                        onPressed: () {
                                           setState(() {
-                                            _selections[index] =
-                                                !_selections[index];
+                                            concern= !concern;
                                           });
                                         },
                                       ),
-                                    ),
-                                  ))),
+                                    ),  
+                                  )
+                                )
+                              ),
                               Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                      //リピートボタン
-                                      padding: EdgeInsets.only(left: 100),
-                                      child: Center(
-                                        child: Container(
-                                          padding: EdgeInsets.zero,
-                                          decoration: BoxDecoration(
-                                            color: HexColor('FFDFC5'),
-                                            border: Border.all(
-                                                color: Colors.white,
-                                                width: 1.0),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(5.0)),
-                                          ),
-                                          child: ToggleButtons(
-                                            color: HexColor('616161'), //文字色
-                                            selectedColor:
-                                                Colors.white, //押したときの文字色
-                                            selectedBorderColor:
-                                                HexColor('EC9361'), //押したときの枠
-                                            fillColor:
-                                                HexColor('EC9361'), //押したときの背景
-                                            children: <Widget>[
-                                              Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 10),
-                                                  child: Row(
-                                                    children: [
-                                                      Icon(
-                                                        FontAwesomeIcons
-                                                            .exclamation,
-                                                        size: 15,
-                                                      ),
-                                                      SpaceBox.width(15),
-                                                      Text('リピート (435)')
-                                                    ],
-                                                  ))
-                                            ],
-                                            isSelected: _selections1,
-                                            onPressed: (int index) {
-                                              setState(() {
-                                                _selections1[index] =
-                                                    !_selections1[index];
-                                              });
-                                            },
-                                          ),
+                                flex: 1,
+                                child: Container(  
+                                  child: Center(
+                                    child:SizedBox(  //リピートボタン
+                                      width: 200,
+                                      height: 50,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: repeat==true ? HexColor('EC9361') : HexColor('FFDFC5'),
                                         ),
-                                      ))),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(FontAwesomeIcons.sync,size: 17,color:repeat==true ? Colors.white : HexColor('616161')),
+                                            SpaceBox.width(10),
+                                            Text('リピート (435)',style:TextStyle(color:repeat==true ? Colors.white : HexColor('616161'),fontSize: 17)) 
+                                          ],
+                                        ),                                 
+                                        onPressed: () {
+                                          setState(() {
+                                            repeat= !repeat;
+                                          });
+                                        },
+                                      ),
+                                    ),  
+                                  )
+                                )
+                              ),
                             ],
                           ),
                           SpaceBox.height(20),
@@ -575,11 +541,12 @@ class _DetailsPageState extends State<DetailsPage> {
                                       Visibility(
                                           //押したとき表示
                                           visible: _materials,
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsets.only(bottom: 20),
-                                            child: Text(result['raw_material']),
-                                          )),
+                                          child:Container(
+                                            width: 700,
+                                            height: 40,
+                                            child: SelectableText(result['raw_material'],scrollPhysics: NeverScrollableScrollPhysics()),
+                                          )
+                                      ),
                                       SizedBox(
                                         //アレルギードロップダウン
                                         width: 700,
@@ -605,9 +572,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                       Visibility(
                                           //押したとき表示
                                           visible: _allergy,
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsets.only(bottom: 20),
+                                          child:Container(
+                                            width: 700,
+                                            height: 40,
                                             child: Row(children: [
                                               for (int i = 0;
                                                   i <
@@ -617,7 +584,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 allergyName(
                                                     result['allergy_id'][i])
                                             ]),
-                                          )),
+                                          )
+                                        ),
                                       SizedBox(
                                         //栄養成分ドロップダウン
                                         width: 700,
@@ -636,18 +604,16 @@ class _DetailsPageState extends State<DetailsPage> {
                                               });
                                             }),
                                       ),
-                                      // Visibility(
-                                      //   visible: !_nutrition,
-                                      //   child: SpaceBox.height(40)
-                                      // ),
                                       Visibility(
                                         //押したとき表示
                                         visible: _nutrition,
-                                        child: Padding(
-                                          padding: EdgeInsets.only(bottom: 20),
-                                          child: Text(
-                                              '${result['nutritional_ingredients'][0]} / ${result['nutritional_ingredients'][1]} / ${result['nutritional_ingredients'][2]} / ${result['nutritional_ingredients'][3]} / ${result['nutritional_ingredients'][4]} / ${result['nutritional_ingredients'][5]}'),
-                                        ),
+                                        child:Container(
+                                          width: 700,
+                                          height: 40,
+                                          child: SelectableText(
+                                              '${result['nutritional_ingredients'][0]} / ${result['nutritional_ingredients'][1]} / ${result['nutritional_ingredients'][2]} / ${result['nutritional_ingredients'][3]} / ${result['nutritional_ingredients'][4]} / ${result['nutritional_ingredients'][5]}',scrollPhysics: NeverScrollableScrollPhysics())
+                                              
+                                        )
                                       )
                                     ],
                                   ))),
@@ -659,7 +625,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                       padding: EdgeInsets.only(left: 100),
                                       child: Column(
                                         children: [
-                                          Text('この商品を「気になる」しているユーザーの年代'),
+                                          SelectableText('この商品を「気になる」しているユーザーの年代',scrollPhysics: NeverScrollableScrollPhysics()),
                                           Table(
                                             children: [
                                               TableRow(children: [
@@ -700,11 +666,11 @@ class _DetailsPageState extends State<DetailsPage> {
                   indent: 0,
                   endIndent: 0,
                 ),
-                //レビュー
-                ReviewPage(productId),
-                FooterCreate(),
-              ],
-            ),
+                ReviewPage(productId),//レビュー
+                ])
+              ),
+              FooterCreate(),
+            ],  
           ),
 
           //フッター固定ボタン
@@ -715,22 +681,23 @@ class _DetailsPageState extends State<DetailsPage> {
                       .copyWith(canvasColor: Colors.transparent),
                   child: Container(
                     margin: EdgeInsets.only(bottom: 20),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 7, horizontal: 17),
-                    width: 300,
+                    padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 17),
+                    width: 350,
+                    height:65,
                     decoration: BoxDecoration(
                       color: HexColor('EC9361'),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Container(
                       child: Row(
+                        mainAxisAlignment:MainAxisAlignment.spaceAround,
                         children: [
                           ElevatedButton(
                             //レビューボタン
-                            child: const Text('この商品をレビューする'),
+                            child: const Text('この商品をレビューする',style: TextStyle(fontWeight: FontWeight.w600)),
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 25),
+                                  vertical: 20, horizontal: 30),
                               primary: Colors.white,
                               onPrimary: HexColor('EC9361'),
                               shape: RoundedRectangleBorder(
@@ -751,14 +718,13 @@ class _DetailsPageState extends State<DetailsPage> {
                                   ));
                             },
                           ),
-                          SpaceBox.width(5),
                           ElevatedButton(
                             //クリップボタン
                             child: Icon(
-                              Icons.assignment_turned_in,
+                              Icons.assignment_turned_in,size:30
                             ),
                             style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.all(15),
+                              padding: EdgeInsets.all(20),
                               primary: Colors.white,
                               onPrimary: HexColor('EC9361'),
                               shape: CircleBorder(

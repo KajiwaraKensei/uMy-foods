@@ -24,8 +24,8 @@ class _ProductPageState extends State<ProductPage> {
   _ProductPageState(this.productID);
   final String productID;
   //気になる、リピートボタン
-  List<bool> _selections = List.generate(1, (_) => false);
-  List<bool> _selections1 = List.generate(1, (_) => false);
+  bool concern = false;
+  bool repeat = false;
 
   //栄養など詳細情報ボタン
   bool _materials = false;
@@ -302,92 +302,68 @@ class _ProductPageState extends State<ProductPage> {
               Row(
                 children: [
                   Expanded(
-                      flex: 1,
-                      child: Container(
-                          //気になるボタン
-                          child: Center(
-                        child: Container(
-                          padding: EdgeInsets.zero,
-                          decoration: BoxDecoration(
-                            color: HexColor('FFDFC5'),
-                            border: Border.all(color: Colors.white, width: 1.0),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(5.0)),
+                    flex: 1,
+                    child: Container(
+                      child:SizedBox(  //リピートボタン
+                        width: 100,
+                        height: 30,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: repeat_button==true ? HexColor('B8AA8E') : Colors.grey,
                           ),
-                          child: ToggleButtons(
-                            color: HexColor('616161'), //文字色
-                            selectedColor: Colors.white, //押したときの文字色
-                            selectedBorderColor: HexColor('EC9361'), //押したときの枠
-                            fillColor: HexColor('EC9361'), //押したときの背景
-                            children: <Widget>[
-                              Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 10),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        FontAwesomeIcons.exclamation,
-                                        size: 15,
-                                      ),
-                                      SpaceBox.width(15),
-                                      Text('気になる (435)')
-                                    ],
-                                  ))
-                            ],
-                            isSelected: _selections,
-                            onPressed: (int index) {
-                              setState(() {
-                                _selections[index] = !_selections[index];
-                              });
-                            },
-                          ),
+                          child: Text(repeat_text[cnt],),                                 
+                          onPressed: () {
+                            setState(() {});
+                          },
                         ),
-                      ))),
-                  Expanded(
-                      flex: 1,
-                      child: Container(
-                          //リピートボタン
-                          padding: EdgeInsets.only(left: 100),
-                          child: Center(
-                            child: Container(
-                              padding: EdgeInsets.zero,
-                              decoration: BoxDecoration(
-                                color: HexColor('FFDFC5'),
-                                border:
-                                    Border.all(color: Colors.white, width: 1.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5.0)),
-                              ),
-                              child: ToggleButtons(
-                                color: HexColor('616161'), //文字色
-                                selectedColor: Colors.white, //押したときの文字色
-                                selectedBorderColor:
-                                    HexColor('EC9361'), //押したときの枠
-                                fillColor: HexColor('EC9361'), //押したときの背景
-                                children: <Widget>[
-                                  Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 10),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            FontAwesomeIcons.exclamation,
-                                            size: 15,
-                                          ),
-                                          SpaceBox.width(15),
-                                          Text('リピート (435)')
-                                        ],
-                                      ))
-                                ],
-                                isSelected: _selections1,
-                                onPressed: (int index) {
-                                  setState(() {
-                                    _selections1[index] = !_selections1[index];
-                                  });
-                                },
-                              ),
-                            ),
-                          ))),
+                      ),  
+                    )
+                  ),
+                  // Expanded(
+                  //     flex: 1,
+                  //     child: Container(
+                  //         //リピートボタン
+                  //         padding: EdgeInsets.only(left: 100),
+                  //         child: Center(
+                  //           child: Container(
+                  //             padding: EdgeInsets.zero,
+                  //             decoration: BoxDecoration(
+                  //               color: HexColor('FFDFC5'),
+                  //               border:
+                  //                   Border.all(color: Colors.white, width: 1.0),
+                  //               borderRadius:
+                  //                   BorderRadius.all(Radius.circular(5.0)),
+                  //             ),
+                  //             child: ToggleButtons(
+                  //               color: HexColor('616161'), //文字色
+                  //               selectedColor: Colors.white, //押したときの文字色
+                  //               selectedBorderColor:
+                  //                   HexColor('EC9361'), //押したときの枠
+                  //               fillColor: HexColor('EC9361'), //押したときの背景
+                  //               children: <Widget>[
+                  //                 Padding(
+                  //                     padding: EdgeInsets.symmetric(
+                  //                         horizontal: 20, vertical: 10),
+                  //                     child: Row(
+                  //                       children: [
+                  //                         Icon(
+                  //                           FontAwesomeIcons.exclamation,
+                  //                           size: 15,
+                  //                         ),
+                  //                         SpaceBox.width(15),
+                  //                         Text('リピート (435)')
+                  //                       ],
+                  //                     ))
+                  //               ],
+                  //               isSelected: repeat,
+                  //               onPressed: (int index) {
+                  //                 setState(() {
+                  //                   repeat[index] = !repeat[index];
+                  //                 });
+                  //               },
+                  //             ),
+                  //           ),
+                  //         ))),
                 ],
               ),
               SpaceBox.height(20),

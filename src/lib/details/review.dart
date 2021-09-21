@@ -40,9 +40,10 @@ class _ReviewPageState extends State<ReviewPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  SelectableText(
                     'レビュー',
                     style: TextStyle(color: HexColor('EC9361'), fontSize: 27.0),
+                    scrollPhysics: NeverScrollableScrollPhysics()
                   ),
                   Row(
                     children: [
@@ -51,7 +52,7 @@ class _ReviewPageState extends State<ReviewPage> {
                         child: Column(
                           children: [
                             star(4, 50), //星評価
-                            Text('5000件'), //評価件数
+                            SelectableText('5000件',scrollPhysics: NeverScrollableScrollPhysics()), //評価件数
                             Container(
                               height: 170,
                               //Radar Chart
@@ -105,8 +106,8 @@ class _ReviewPageState extends State<ReviewPage> {
                     Container(
                       width: 100,
                       height: 300,
-                      color: Colors.grey,
-                      child: Text('広告'),
+                      // color: Colors.grey,
+                      // child: Text('広告'),
                     ),
                     SpaceBox.height(25),
                     Column(
@@ -207,8 +208,8 @@ class _ReviewPageState extends State<ReviewPage> {
                     Container(
                       width: 100,
                       height: 300,
-                      color: Colors.grey,
-                      child: Text('広告'),
+                      // color: Colors.grey,
+                      // child: Text('広告'),
                     ),
                   ],
                 ),
@@ -329,12 +330,12 @@ class _Age_Review extends State<Age_Review> {
           height: 74,
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(age + 'の総合評価', style: TextStyle(fontSize: 27.0)), //年代タイトル
+            SelectableText(age + 'の総合評価', style: TextStyle(fontSize: 27.0),scrollPhysics: NeverScrollableScrollPhysics()), //年代タイトル
             Container(
               child: Row(
                 children: [
                   SizedBox(
-                    width: 80,
+                    width: 120,
                     height: 40,
                     child: ElevatedButton(
                         //表示順
@@ -356,7 +357,7 @@ class _Age_Review extends State<Age_Review> {
                   ),
                   SpaceBox.width(20),
                   SizedBox(
-                    width: 80,
+                    width: 120,
                     height: 40,
                     child: ElevatedButton(
                         //絞り込みボタン
@@ -465,7 +466,7 @@ class _Age_Review extends State<Age_Review> {
                                 style: TextStyle(
                                     color: HexColor('EC9361'),
                                     fontWeight: FontWeight.w900)),
-                            TextSpan(text: age + '代'),
+                            TextSpan(text: age ),
                           ]),
                     )
                   ],
@@ -474,7 +475,7 @@ class _Age_Review extends State<Age_Review> {
         )),
         Align(
           alignment: Alignment.centerLeft,
-          child: Text(age + '代のコメント', style: TextStyle(fontSize: 27.0)),
+          child: SelectableText(age + '代のコメント', style: TextStyle(fontSize: 27.0),scrollPhysics: NeverScrollableScrollPhysics()),
         ),
         SpaceBox.height(20),
         Container(
@@ -657,11 +658,11 @@ Widget reviewUserData(userId, evaluation) {
             children: [
               Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(result['user_name'],
-                      style: TextStyle(fontSize: 17))), //ユーザー名
+                  child: SelectableText(result['user_name'],
+                      style: TextStyle(fontSize: 17),scrollPhysics: NeverScrollableScrollPhysics())), //ユーザー名
               Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(gender, style: TextStyle(fontSize: 17))), //性別
+                  child: SelectableText(gender, style: TextStyle(fontSize: 17),scrollPhysics: NeverScrollableScrollPhysics())), //性別
               /*Align(
                   alignment: Alignment.centerLeft,
                   child: Text('ゴールド', style: TextStyle(fontSize: 17))),*/ //ランク
