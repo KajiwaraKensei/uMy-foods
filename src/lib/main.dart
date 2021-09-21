@@ -12,13 +12,13 @@ import 'package:umy_foods/new_item/newitem.dart';
 void main() => runApp(MyApp());
 
 String UID = "";
-String UserImage   = "";
+String UserImage = "";
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'uMyFoods',
+        title: 'uMyFoodas',
         theme: ThemeData(primarySwatch: Colors.blue),
         debugShowCheckedModeBanner: false,
         home: Home());
