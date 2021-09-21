@@ -137,95 +137,101 @@ class _ComparisonState extends State<Comparison> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: Header(),
-        body: Padding(
-          padding: EdgeInsets.all(30.0),
-          child: ListView(children: [
+        body: ListView(
+          children: [
             Padding(
-              padding: EdgeInsets.only(bottom: 10),
-              child: BreadCrumb(
-                //パンくずリスト
-                items: <BreadCrumbItem>[
-                  BreadCrumbItem(
-                      content: GestureDetector(
-                    child: Text('TOP'),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MyApp(),
-                          ));
-                      setState(() {});
-                    },
-                  )),
-                  BreadCrumbItem(
-                      content: GestureDetector(
-                    child: Text('比較'),
-                    onTap: () {
-                      setState(() {});
-                    },
-                  )),
-                ],
-                divider: Icon(Icons.chevron_right),
-              ),
-            ),
-            SingleChildScrollView(
-              // SingleChildScrollViewで子ウィジェットをラップ
-              scrollDirection: Axis.horizontal, // スクロールの向きを水平方向に指定
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              padding: EdgeInsets.symmetric(horizontal: 60,vertical: 60),
+              child:Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 入れ替えボタン
-                  Container(
-                    margin: EdgeInsets.fromLTRB(120, 0, 0, 0),
-                    child: Row(
-                      children: <Widget>[
-                        for (ccnt = 0; ccnt < conItems.length; ccnt++)
-                          Container(
-                            //color: HexColor('ff9999'), // 確認用
-                            width: 300, // 商品一覧コンテナと同じ数値
-                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
+                  BreadCrumb(//パンくずリスト
+                    items: <BreadCrumbItem>[
+                      BreadCrumbItem(
+                        content: TextButton(
+                          child: Text(
+                            'TOP',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          onPressed: (){
+                            Navigator.push(context,MaterialPageRoute(builder: (context) => MyApp()));
+                          }
+                        ),
+                      ),
+                      BreadCrumbItem(
+                        content: TextButton(
+                          child: Text(
+                            '比較',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          onPressed: (){
+                          }
+                        ),
+                      ),
+                    ],
+                    divider: Icon(Icons.chevron_right),
+                  ),
+                  SingleChildScrollView(
+                    // SingleChildScrollViewで子ウィジェットをラップ
+                    scrollDirection: Axis.horizontal, // スクロールの向きを水平方向に指定
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // 入れ替えボタン
+                        Container(
+                          margin: EdgeInsets.fromLTRB(120, 0, 0, 0),
+                          child: Row(
+                            children: <Widget>[
+                              for (ccnt = 0; ccnt < conItems.length; ccnt++)
                                 Container(
-                                  //color: HexColor('ffff99'), // 確認用
-                                  width: 200,
-                                  margin: EdgeInsets.fromLTRB(50, 0, 0, 0),
+                                  //color: HexColor('ff9999'), // 確認用
+                                  width: 300, // 商品一覧コンテナと同じ数値
                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      showGL(ccnt),
-                                      showGR(ccnt),
+                                      Container(
+                                        //color: HexColor('ffff99'), // 確認用
+                                        width: 200,
+                                        margin: EdgeInsets.fromLTRB(50, 0, 0, 0),
+                                        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: [
+                                            showGL(ccnt),
+                                            showGR(ccnt),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        //color: Colors.blue, // 確認用
+                                        width: 50,
+                                        margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                        child: showGX(ccnt),
+                                      ),
                                     ],
                                   ),
                                 ),
-                                Container(
-                                  //color: Colors.blue, // 確認用
-                                  width: 50,
-                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                  child: showGX(ccnt),
-                                ),
-                              ],
-                            ),
+                            ],
                           ),
+                        ),
+                        // 比較する商品一覧
+                        Row(
+                          children: [
+                            myContainer(size: 120, color: Colors.blue, text: 'list'),
+                            for (ccnt = 0; ccnt < conItems.length; ccnt++) myContainer(color: Colors.orange, text: 'contents'),
+                          ],
+                        ),
                       ],
                     ),
                   ),
-                  // 比較する商品一覧
-                  Row(
-                    children: [
-                      myContainer(size: 120, color: Colors.blue, text: 'list'),
-                      for (ccnt = 0; ccnt < conItems.length; ccnt++) myContainer(color: Colors.orange, text: 'contents'),
-                    ],
-                  ),
-                ],
-              ),
+                ]
+              )
             ),
             FooterCreate(),
-          ]),
-        ));
+          ]
+        ),
+      );
   }
 
   Widget myContainer({double size = 300, required Color color, String text = ''}) {
