@@ -454,70 +454,46 @@ class _DetailsPageState extends State<DetailsPage> {
                                             primary: HexColor('FF9900'),
                                             onPrimary: Colors.white,
                                           ),
-                                          child: Text('Amazonで購入する',style: TextStyle(fontSize: 10)),
+                                          child: Text('Amazonで購入する',style: TextStyle(fontSize: 12)),
                                           onPressed: ()async{
-                                            if (await canLaunch("https://www.amazon.co.jp/"+result['product_name'])) {
-                                              await launch("https://www.amazon.co.jp/"+result['product_name']);
+                                            if (await canLaunch("https://www.amazon.co.jp/s?k="+result['product_name'])) {
+                                              await launch("https://www.amazon.co.jp/s?k="+result['product_name']);
                                             }
                                           }, 
                                         )
                                       ), 
-                                                                            SizedBox(  //気になるボタン
+                                      SizedBox(  //気になるボタン
                                         width: 170,
                                         height: 35,
                                         child:ElevatedButton(
                                           style: ElevatedButton.styleFrom(
-                                            primary: HexColor('FF9900'),
+                                            primary: HexColor('bf0000'),
                                             onPrimary: Colors.white,
                                           ),
-                                          child: Text('Amazonで購入する',style: TextStyle(fontSize: 15)),
-                                          onPressed: (){
-
+                                          child: Text('楽天市場で購入する',style: TextStyle(fontSize: 12)),
+                                          onPressed: ()async{
+                                            if (await canLaunch("https://search.rakuten.co.jp/search/mall/"+result['product_name'])) {
+                                              await launch("https://search.rakuten.co.jp/search/mall/"+result['product_name']);
+                                            }
                                           }, 
                                         )
                                       ),  
-                                                                            SizedBox(  //気になるボタン
+                                      SizedBox(  //気になるボタン
                                         width: 170,
                                         height: 35,
                                         child:ElevatedButton(
                                           style: ElevatedButton.styleFrom(
-                                            primary: HexColor('FF9900'),
+                                            primary: HexColor('FF0027'),
                                             onPrimary: Colors.white,
                                           ),
-                                          child: Text('Amazonで購入する',style: TextStyle(fontSize: 15)),
-                                          onPressed: (){
-
+                                          child: Text('Y！ショッピングで購入する',style: TextStyle(fontSize: 12)),
+                                          onPressed: ()async{
+                                            if (await canLaunch("https://shopping.yahoo.co.jp/search?first=&p="+result['product_name'])) {
+                                              await launch("https://shopping.yahoo.co.jp/search?first=&p="+result['product_name']);
+                                            }
                                           }, 
                                         )
                                       ),  
-                                      // SizedBox(  //気になるボタン
-                                      //   width: 170,
-                                      //   height: 35,
-                                      //   child:ElevatedButton(
-                                      //     style: ElevatedButton.styleFrom(
-                                      //       primary: HexColor('bf0000'),
-                                      //       onPrimary: Colors.white,
-                                      //     ),
-                                      //     child: Text('楽天市場で購入する',style: TextStyle(fontSize: 10)),
-                                      //     onPressed: (){
-
-                                      //     }, 
-                                      //   )
-                                      // ),  
-                                      // SizedBox(  //気になるボタン
-                                      //   width: 170,
-                                      //   height: 35,
-                                      //   child:ElevatedButton(
-                                      //     style: ElevatedButton.styleFrom(
-                                      //       primary: HexColor('FF0027'),
-                                      //       onPrimary: Colors.white,
-                                      //     ),
-                                      //     child: Text('Y！ショッピングで購入する',style: TextStyle(fontSize: 10)),
-                                      //     onPressed: (){
-
-                                      //     }, 
-                                      //   )
-                                      // ),  
                                     ]
                                   )
                                 )
