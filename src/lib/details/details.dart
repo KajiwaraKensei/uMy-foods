@@ -9,6 +9,7 @@ import 'package:percent_indicator/percent_indicator.dart'; //割合棒グラフ
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; //DB
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // 外部ファイル
 import 'package:umy_foods/HexColor.dart'; //16進数カラーコード
@@ -323,7 +324,7 @@ class _DetailsPageState extends State<DetailsPage> {
                               Expanded(
                                   flex: 1,
                                   child: Container(
-                                      padding: EdgeInsets.only(left: 100),
+                                      padding: EdgeInsets.only(left: 20),
                                       child: Column(
                                         children: [
                                           Row(
@@ -438,12 +439,89 @@ class _DetailsPageState extends State<DetailsPage> {
                                     ],
                                   ))),
                               Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    //購入情報（未定）
-                                    padding: EdgeInsets.only(left: 100),
-                                    child: Text('購入情報'),
-                                  )),
+                                flex: 1,
+                                child: Container(
+                                  // color: Colors.red,
+                                  padding: EdgeInsets.only(left: 20),
+                                  child:Row(
+                                    mainAxisAlignment:MainAxisAlignment.spaceAround,
+                                    children:[
+                                      SizedBox(  //気になるボタン
+                                        width: 170,
+                                        height: 35,
+                                        child:ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            primary: HexColor('FF9900'),
+                                            onPrimary: Colors.white,
+                                          ),
+                                          child: Text('Amazonで購入する',style: TextStyle(fontSize: 10)),
+                                          onPressed: ()async{
+                                            if (await canLaunch("https://www.amazon.co.jp/"+result['product_name'])) {
+                                              await launch("https://www.amazon.co.jp/"+result['product_name']);
+                                            }
+                                          }, 
+                                        )
+                                      ), 
+                                                                            SizedBox(  //気になるボタン
+                                        width: 170,
+                                        height: 35,
+                                        child:ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            primary: HexColor('FF9900'),
+                                            onPrimary: Colors.white,
+                                          ),
+                                          child: Text('Amazonで購入する',style: TextStyle(fontSize: 15)),
+                                          onPressed: (){
+
+                                          }, 
+                                        )
+                                      ),  
+                                                                            SizedBox(  //気になるボタン
+                                        width: 170,
+                                        height: 35,
+                                        child:ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            primary: HexColor('FF9900'),
+                                            onPrimary: Colors.white,
+                                          ),
+                                          child: Text('Amazonで購入する',style: TextStyle(fontSize: 15)),
+                                          onPressed: (){
+
+                                          }, 
+                                        )
+                                      ),  
+                                      // SizedBox(  //気になるボタン
+                                      //   width: 170,
+                                      //   height: 35,
+                                      //   child:ElevatedButton(
+                                      //     style: ElevatedButton.styleFrom(
+                                      //       primary: HexColor('bf0000'),
+                                      //       onPrimary: Colors.white,
+                                      //     ),
+                                      //     child: Text('楽天市場で購入する',style: TextStyle(fontSize: 10)),
+                                      //     onPressed: (){
+
+                                      //     }, 
+                                      //   )
+                                      // ),  
+                                      // SizedBox(  //気になるボタン
+                                      //   width: 170,
+                                      //   height: 35,
+                                      //   child:ElevatedButton(
+                                      //     style: ElevatedButton.styleFrom(
+                                      //       primary: HexColor('FF0027'),
+                                      //       onPrimary: Colors.white,
+                                      //     ),
+                                      //     child: Text('Y！ショッピングで購入する',style: TextStyle(fontSize: 10)),
+                                      //     onPressed: (){
+
+                                      //     }, 
+                                      //   )
+                                      // ),  
+                                    ]
+                                  )
+                                )
+                              ),
                             ],
                           ),
                           SpaceBox.height(20),
@@ -545,7 +623,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                           visible: _materials,
                                           child:Container(
                                             width: 700,
-                                            height: 40,
+                                            height: 150,
                                             child: SelectableText(result['raw_material'],scrollPhysics: NeverScrollableScrollPhysics()),
                                           )
                                       ),
@@ -576,7 +654,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                           visible: _allergy,
                                           child:Container(
                                             width: 700,
-                                            height: 40,
+                                            height: 100,
                                             child: Row(children: [
                                               for (int i = 0;
                                                   i <
@@ -611,7 +689,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                         visible: _nutrition,
                                         child:Container(
                                           width: 700,
-                                          height: 40,
+                                          height: 100,
                                           child: SelectableText(
                                               '${result['nutritional_ingredients'][0]} / ${result['nutritional_ingredients'][1]} / ${result['nutritional_ingredients'][2]} / ${result['nutritional_ingredients'][3]} / ${result['nutritional_ingredients'][4]} / ${result['nutritional_ingredients'][5]}',scrollPhysics: NeverScrollableScrollPhysics())
                                               
@@ -624,7 +702,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   child: Container(
                                       //割合棒グラフ
                                       height: 300,
-                                      padding: EdgeInsets.only(left: 100),
+                                      padding: EdgeInsets.only(left: 20),
                                       child: Column(
                                         children: [
                                           SelectableText('この商品を「気になる」しているユーザーの年代',scrollPhysics: NeverScrollableScrollPhysics()),
