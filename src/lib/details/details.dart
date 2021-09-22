@@ -599,8 +599,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                           visible: _materials,
                                           child:Container(
                                             width: 700,
-                                            height: 150,
-                                            child: SelectableText(result['raw_material'],scrollPhysics: NeverScrollableScrollPhysics()),
+                                            // height: 150,
+                                            child: SelectableText(result['raw_material'],scrollPhysics: NeverScrollableScrollPhysics(),),
                                           )
                                       ),
                                       SizedBox(
@@ -630,7 +630,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                           visible: _allergy,
                                           child:Container(
                                             width: 700,
-                                            height: 100,
+                                            // height: 100,
                                             child: Row(children: [
                                               for (int i = 0;
                                                   i <
@@ -665,7 +665,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                         visible: _nutrition,
                                         child:Container(
                                           width: 700,
-                                          height: 100,
+                                          // height: 100,
                                           child: SelectableText(
                                               '${result['nutritional_ingredients'][0]} / ${result['nutritional_ingredients'][1]} / ${result['nutritional_ingredients'][2]} / ${result['nutritional_ingredients'][3]} / ${result['nutritional_ingredients'][4]} / ${result['nutritional_ingredients'][5]}',scrollPhysics: NeverScrollableScrollPhysics())
                                               
