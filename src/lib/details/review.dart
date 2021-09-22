@@ -196,7 +196,7 @@ class _ReviewPageState extends State<ReviewPage> {
                                                 mainAxisAlignment: MainAxisAlignment.start,
                                                 children: [
                                                   Text('発売日'+new_item[i]['date']),  //発売日
-                                                  SpaceBox.height(10),  
+                                                  SpaceBox.height(5),  
                                                   Row(
                                                     children: [
                                                       Expanded(
@@ -210,7 +210,7 @@ class _ReviewPageState extends State<ReviewPage> {
                                                                 setState(() {});   //メーカーページへ
                                                               },
                                                             ),
-                                                            SpaceBox.height(10),
+                                                            SpaceBox.height(5),
                                                             GestureDetector(
                                                               child: Text(new_item[i]['Text']),
                                                               onTap: () {
