@@ -44,12 +44,12 @@ class _ComparisonState extends State<Comparison> {
     {
       'Name': '明治ホワイトチョコレート 40g',
       'Image': 'https://livedoor.blogimg.jp/plankman/imgs/e/e/ee5945d2.jpg',
-      'Eval': 5, // 総合評価
+      'Eval': 3, // 総合評価
       'Rank': 'お菓子9位',
-      'Repeat': <double>[252, 249],
-      'Con': 252, // 気になる
-      'CostP': 4, // コスパ
-      'taste': <double>[10, 0, 0, 0, 0, 0, 8],
+      'Repeat': <double>[252, 59],
+      'Con': 452, // 気になる
+      'CostP': 2, // コスパ
+      'taste': <double>[10, 1, 0, 1, 0, 0, 4],
       'Material': '砂糖、全粉乳、ココアバター、植物油脂、脱脂粉乳／乳化剤、香料、（一部に乳成分・大豆を含む）', // 原材料
       'Allergy': '乳、大豆',
       'Nutrition':
@@ -64,12 +64,12 @@ class _ComparisonState extends State<Comparison> {
       'Name': 'きのこの山とたけのこの里 12袋',
       'Image':
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1iSBzQche-bz05pN4oy14EFgCi7ha7a_xiw&usqp=CAU',
-      'Eval': 5, // 総合評価
+      'Eval': 4, // 総合評価
       'Rank': 'お菓子2位',
       'Repeat': <double>[252, 249],
       'Con': 252, // 気になる
       'CostP': 4, // コスパ
-      'taste': <double>[10, 0, 0, 0, 0, 0, 8],
+      'taste': <double>[10, 1, 3, 2, 0, 0, 4],
       'Material':
           '＜きのこの山＞砂糖（外国製造、国内製造）、小麦粉、カカオマス、植物油脂、全粉乳、ココアバター、乳糖、ショートニング、練乳加工品、脱脂粉乳、クリーミングパウダー、異性化液糖、麦芽エキス、食塩、イースト／乳化剤、膨脹剤、香料、（一部に小麦・乳成分・大豆を含む）＜たけのこの里＞砂糖（外国製造、国内製造）、小麦粉、全粉乳、カカオマス、ショートニング、鶏卵、植物油脂、ココアバター、卵白、マーガリン、アーモンドペースト、乳糖、脱脂粉乳、食塩、クリーミングパウダー、麦芽エキス／乳化剤、膨脹剤、香料、（一部に小麦・卵・乳成分・アーモンド・大豆を含む', // 原材料
       'Allergy': '小麦、卵、乳、大豆',
@@ -84,12 +84,12 @@ class _ComparisonState extends State<Comparison> {
     {
       'Name': 'ガルボチョコパウチ 76g',
       'Image': 'https://livedoor.blogimg.jp/plankman/imgs/b/f/bfa6566c.jpg',
-      'Eval': 5, // 総合評価
+      'Eval': 3, // 総合評価
       'Rank': 'お菓子4位',
-      'Repeat': <double>[252, 249],
-      'Con': 252, // 気になる
-      'CostP': 4, // コスパ
-      'taste': <double>[10, 0, 0, 0, 0, 0, 8],
+      'Repeat': <double>[111, 80],
+      'Con': 132, // 気になる
+      'CostP': 2, // コスパ
+      'taste': <double>[10, 1, 0, 5, 0, 0, 3],
       'Material':
           '砂糖（外国製造、国内製造）、カカオマス、植物油脂、全粉乳、ココアバター、鶏卵、小麦粉、植物油脂加工食品、脱脂粉乳、練乳パウダー、ココアパウダー、還元水あめ／加工デンプン、乳化剤、光沢剤、香料、セルロース、膨脹剤、（一部に小麦・卵・乳成分・大豆を含む）', // 原材料
       'Allergy': '小麦、卵、乳、大豆、りんご',
@@ -99,27 +99,6 @@ class _ComparisonState extends State<Comparison> {
       'RefPrice': '250円',
       'InterCap': '100g',
       'Brand': 'ガルボ',
-      'RelDate': '1990/01/01',
-    },
-    {
-      'Name': 'マーブル 32g',
-      'Image':
-          'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf',
-      'Eval': 5, // 総合評価
-      'Rank': 'お菓子56位',
-      'Repeat': <double>[252, 249],
-      'Con': 252, // 気になる
-      'CostP': 4, // コスパ
-      'taste': <double>[10, 0, 0, 0, 0, 0, 8],
-      'Material':
-          '砂糖（外国製造、国内製造）、カカオマス、全粉乳、ココアバター、植物油脂、でん粉、水あめ、ゼラチン／卵殻カルシウム、乳化剤、増粘剤（アラビアガム）、着色料（フラボノイド、クチナシ、ビートレッド、スピルリナ青、カロチノイド、イカ墨）、香料、光沢剤、セルロース、（一部に卵・乳成分・いか・大豆・ゼラチンを含む）', // 原材料
-      'Allergy': '卵、乳、いか、大豆、ゼラチン',
-      'Nutrition':
-          '栄養成分表示 1本（32g）あたり / たんぱく質　1.8g / エネルギー　161kcal / 炭水化物　21.8g / 脂質　7.4g / 食塩相当量　0.04g',
-      'Manufact': '明治', // メーカー
-      'RefPrice': '250円',
-      'InterCap': '100g',
-      'Brand': '小粒チョコ',
       'RelDate': '1990/01/01',
     },
     /*{
@@ -258,6 +237,14 @@ class _ComparisonState extends State<Comparison> {
                       color: HexColor('ffdfc5'),
                       height: 150,
                     )
+                    else if (rcnt == 0)
+                      Container(
+                        child: Center(
+                            child: Text(slist[rcnt],
+                                style: TextStyle(color: HexColor('616161')))),
+                        color: HexColor('ffdfc5'),
+                        height: 25,
+                      )
                   else if (rcnt == 7)
                     Container(
                       child: Center(

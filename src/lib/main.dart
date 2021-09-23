@@ -74,7 +74,8 @@ class Home extends StatelessWidget {
       },
       {
         'Text': 'マーブル 32g',
-        'image': '',
+        'image':
+            'https://upload.wikimedia.org/wikipedia/commons/8/89/Meiji_Marble_Chocolate.jpg',
         'product_id': '0uUyWU7Yfp1LxgcJhXN',
       },
     ];

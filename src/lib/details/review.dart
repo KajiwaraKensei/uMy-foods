@@ -682,7 +682,9 @@ Widget review(productId) {
                       flex: 6,
                       child: Column(
                         children: [
-                          RichText(
+                          Container(
+                            alignment: Alignment.topLeft,
+                            child: RichText(
                               //レビュー内容
                               softWrap: true,
                               overflow: TextOverflow.ellipsis,
@@ -690,6 +692,7 @@ Widget review(productId) {
                               text: TextSpan(
                                   text: result[i]['review_comment'],
                                   style: TextStyle(color: Colors.black))),
+                          ),
                           GestureDetector(
                             onTap: () {
                               //setState(() {});
