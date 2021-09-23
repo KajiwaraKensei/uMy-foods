@@ -8,19 +8,24 @@ import 'package:umy_foods/review_post/product_selection.dart';
 
 class Header extends StatelessWidget with PreferredSizeWidget {
   @override
-  Size get preferredSize => Size.fromHeight(80.0);
+  Size get preferredSize => Size.fromHeight(90.0);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       leading: Container(
-        child: IconButton(
-        icon: CircleAvatar(
+        padding: EdgeInsets.only(top: 2, right: 2, bottom: 2, left: 50),
+        child: OverflowBox(
+          maxWidth: 110,
+          child: Tooltip(
+            message: 'トップページへ',
+            child: GestureDetector(
+              child: CircleAvatar(
           backgroundImage: AssetImage('images/uMyFoods_icon.png'),
           backgroundColor: Colors.transparent, // 背景色
-          radius: 90, // 表示したいサイズの半径を指定
+          radius: 40, // 表示したいサイズの半径を指定
         ),
-        onPressed: () {
+        onTap: () {
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -28,9 +33,11 @@ class Header extends StatelessWidget with PreferredSizeWidget {
               ));
         },
       ),
+          ),
+        ),
       ),
       leadingWidth: 80,
-      //titleSpacing: 300,
+      titleSpacing: 100,
       title: TextField(
         decoration: InputDecoration(
           // hintText: "クチコミ・商品・ユーザを検索",
@@ -93,7 +100,9 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                 ),
               ),
               // マイページ
-              Container(
+              Tooltip(
+                message: 'ログイン',
+                child: Container(
                   margin: EdgeInsets.only(left: 50),
                   child: GestureDetector(
                       onTap: () {
@@ -109,6 +118,7 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                           backgroundImage: NetworkImage((UserImage == "")
                               ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/anotherUser2.png?alt=media&token=2c965f37-f6b3-4594-9998-24080a38073f'
                               : UserImage)))),
+              ),
             ],
           ),
         ),

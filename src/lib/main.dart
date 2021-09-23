@@ -6,13 +6,17 @@ import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/details/details.dart';
 import 'package:umy_foods/clipButton.dart';
 import 'package:umy_foods/HexColor.dart';
+import 'package:umy_foods/star.dart';
 import 'package:umy_foods/list_page/brand.dart';
 import 'package:umy_foods/new_item/newitem.dart';
 
 void main() => runApp(MyApp());
 
 String UID = "";
-String UserImage   = "";
+String UserImage = "";
+List<Map<String, dynamic>> clipList = [
+  {'image': '', 'text': '', 'product_id': ''}
+];
 
 class MyApp extends StatelessWidget {
   @override
@@ -32,7 +36,11 @@ class Home extends StatelessWidget {
     var media_height = MediaQuery.of(context).size.height;
 
     var testcategory = ['飲料水', '炭酸飲料', '炭酸水'];
-    var test_ranknum = ['１', '２', '３'];
+    var rankicon = [
+      'images/icon/first.png',
+      'images/icon/second.png',
+      'images/icon/third.png'
+    ];
 
     final List<Map<String, dynamic>> ConcernRanking = [
       {
@@ -118,8 +126,8 @@ class Home extends StatelessWidget {
         'gender': '女性',
         'age': '20代',
         'product': 'ウィルキンソン',
-        'star': '★☆☆☆☆',
-        'Text': '思っていたより炭酸が強すぎて、炭酸が苦手でなくても飲みにくか…',
+        'star': 1,
+        'Text': '思っていたより炭酸が強すぎて、炭酸が苦手でなくても飲みにくかった。',
         'image':
             'https://m.media-amazon.com/images/I/61KZUmru1sL._AC_SL1500_.jpg',
       },
@@ -128,8 +136,9 @@ class Home extends StatelessWidget {
         'gender': '男性',
         'age': '50代',
         'product': '練乳いちごミルク',
-        'star': '★☆☆☆☆',
-        'Text': 'この商品を詐欺罪で訴えます。理由は勿論、お分かりですね。あ…',
+        'star': 1,
+        'Text':
+            'この商品を詐欺罪で訴えます。理由は勿論お分かりですね。あなたが皆をこんなパッケージで騙し、期待を破壊したからです！覚悟の準備をしておいてください。近いうちに訴えます。裁判も起こします。',
         'image':
             'https://cdn-ak.f.st-hatena.com/images/fotolife/d/drinkoon/20210125/20210125000127.jpg',
       },
@@ -138,8 +147,9 @@ class Home extends StatelessWidget {
         'gender': '女性',
         'age': '40代',
         'product': 'きのこの山とたけのこの里 12袋',
-        'star': '★★★★★',
-        'Text': '量重視の私には大満足の内容量と満足感でした！案外一人でも食…',
+        'star': 5,
+        'Text':
+            'たけこのきのこ戦争とは無意味だ。争いの果てになにが残る？争う必要はない。両方食べればいいのだ。なーんて言うと思ったかぁ！たけのこの里が一番に決まってんだろうがあああああ！！',
         'image':
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1iSBzQche-bz05pN4oy14EFgCi7ha7a_xiw&usqp=CAU',
       },
@@ -164,16 +174,21 @@ class Home extends StatelessWidget {
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
                 child: Column(
                   children: [
-                    Container(
-                      width: media_width * 0.99,
-                      height: media_height * 0.45,
-                      child: Image.asset(
-                        'images/headerwoman.png',
-                        fit: BoxFit.cover,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: media_width * 0.995,
+                          height: media_height * 0.35,
+                          child: Image.asset(
+                            'images/headerwoman.png',
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ],
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 20, right: 30),
@@ -182,8 +197,8 @@ class Home extends StatelessWidget {
                         children: [
                           // ランキングボタン
                           Container(
-                            width: 150,
-                            height: 60,
+                            width: 140,
+                            height: 50,
                             child: ElevatedButton(
                               onPressed: () {},
                               child: Text(
@@ -295,37 +310,55 @@ class Home extends StatelessWidget {
                               child: Column(
                                 children: [
                                   // アイコン + ランキング
-                                  Container(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          width: 40,
-                                          height: 40,
-                                          child: Image.asset(
-                                            'images/podium.png',
-                                            fit: BoxFit.cover,
+                                  GestureDetector(
+                                    onTap: () {
+                                      // ランキング一覧に変える
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => NewItemPage(),
+                                          ));
+                                    },
+                                    child: Container(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            width: 40,
+                                            height: 40,
+                                            child: Image.asset(
+                                              'images/podium.png',
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ),
-                                        SelectableText(
-                                          'ランキング',
-                                          style: TextStyle(
-                                            color: HexColor('ec9361'),
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
+                                          SelectableText(
+                                            'ランキング',
+                                            style: TextStyle(
+                                              color: HexColor('ec9361'),
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            scrollPhysics:
+                                                NeverScrollableScrollPhysics(),
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        NewItemPage(),
+                                                  ));
+                                            },
                                           ),
-                                          scrollPhysics:
-                                              NeverScrollableScrollPhysics(),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   // ランキングコンテナ
                                   Container(
                                     margin: EdgeInsets.only(top: 10),
                                     width: media_width * 0.6,
-                                    height: media_height * 0.7,
+                                    height: media_height * 0.75,
                                     color: HexColor('F5F3EF'),
                                     child: Row(
                                       children: [
@@ -379,36 +412,36 @@ class Home extends StatelessWidget {
                                                     child: Container(
                                                       width: media_width * 0.28,
                                                       height:
-                                                          media_height * 0.17,
+                                                          media_height * 0.185,
                                                       child: Row(
+                                                        // レイアウト追加　間隔均等配置
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceEvenly,
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
                                                                 .start,
                                                         children: [
+                                                          // ランキング順位
                                                           Container(
                                                             margin:
                                                                 EdgeInsets.only(
-                                                                    left: 10,
                                                                     top: 5),
-                                                            width: 28,
-                                                            height: 35,
-                                                            color: HexColor(
-                                                                'FFDFC5'),
+                                                            width: media_width *
+                                                                0.03,
+                                                            height:
+                                                                media_height *
+                                                                    0.06,
                                                             child: Center(
-                                                              child: Text(
-                                                                test_ranknum[i],
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize: 25,
-                                                                  color: HexColor(
-                                                                      '616161'),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w800,
-                                                                ),
+                                                              child:
+                                                                  Image.asset(
+                                                                rankicon[i],
+                                                                fit: BoxFit
+                                                                    .contain,
                                                               ),
                                                             ),
                                                           ),
+                                                          // 画像
                                                           Center(
                                                             child: Container(
                                                               margin: EdgeInsets
@@ -435,12 +468,19 @@ class Home extends StatelessWidget {
                                                               ),
                                                             ),
                                                           ),
+                                                          // 商品名等
                                                           Container(
+                                                            width: media_width *
+                                                                0.14,
                                                             margin:
                                                                 EdgeInsets.only(
                                                                     top: 5,
                                                                     left: 5),
                                                             child: Column(
+                                                              // レイアウト追加 間隔均等配置
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
                                                               // ベースラインに揃えて配置
                                                               crossAxisAlignment:
                                                                   CrossAxisAlignment
@@ -468,16 +508,8 @@ class Home extends StatelessWidget {
                                                                   ),
                                                                 ),
                                                                 // スターレーティング部分
-                                                                Text(
-                                                                  '★★★★★',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        20,
-                                                                    color: Colors
-                                                                        .yellow,
-                                                                  ),
-                                                                ),
+                                                                star(5, 20),
+                                                                // きになるリピートアイコン
                                                                 Row(
                                                                   children: [
                                                                     Icon(
@@ -496,8 +528,55 @@ class Home extends StatelessWidget {
                                                                               Colors.blue),
                                                                     ),
                                                                     Text('100'),
+                                                                    // クリップボタン
+                                                                    Container(
+                                                                      margin: EdgeInsets.only(
+                                                                          left:
+                                                                              20,
+                                                                          bottom:
+                                                                              4),
+                                                                      child:
+                                                                          ElevatedButton(
+                                                                        //クリップボタン
+                                                                        child:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .assignment_turned_in,
+                                                                        ),
+                                                                        style: ElevatedButton
+                                                                            .styleFrom(
+                                                                          padding:
+                                                                              EdgeInsets.all(12),
+                                                                          primary:
+                                                                              HexColor('EC9361'),
+                                                                          onPrimary:
+                                                                              Colors.white,
+                                                                          shape:
+                                                                              CircleBorder(
+                                                                            side:
+                                                                                BorderSide(
+                                                                              color: Colors.transparent,
+                                                                              width: 1,
+                                                                              style: BorderStyle.solid,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        onPressed:
+                                                                            () {
+                                                                          clipList
+                                                                              .add({
+                                                                            'Text':
+                                                                                ConcernRanking[i]['Text'],
+                                                                            'image':
+                                                                                ConcernRanking[i]['image'],
+                                                                            'product_id':
+                                                                                ConcernRanking[i]['product_id'],
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                    ),
                                                                   ],
-                                                                )
+                                                                ),
                                                               ],
                                                             ),
                                                           ),
@@ -557,8 +636,12 @@ class Home extends StatelessWidget {
                                                     child: Container(
                                                       width: media_width * 0.28,
                                                       height:
-                                                          media_height * 0.17,
+                                                          media_height * 0.185,
                                                       child: Row(
+                                                        // レイアウト追加　間隔均等配置
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceEvenly,
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
                                                                 .start,
@@ -566,24 +649,18 @@ class Home extends StatelessWidget {
                                                           Container(
                                                             margin:
                                                                 EdgeInsets.only(
-                                                                    left: 10,
                                                                     top: 5),
-                                                            width: 28,
-                                                            height: 35,
-                                                            color: HexColor(
-                                                                'FFDFC5'),
+                                                            width: media_width *
+                                                                0.03,
+                                                            height:
+                                                                media_height *
+                                                                    0.06,
                                                             child: Center(
-                                                              child: Text(
-                                                                test_ranknum[i],
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize: 25,
-                                                                  color: HexColor(
-                                                                      '616161'),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w800,
-                                                                ),
+                                                              child:
+                                                                  Image.asset(
+                                                                rankicon[i],
+                                                                fit: BoxFit
+                                                                    .contain,
                                                               ),
                                                             ),
                                                           ),
@@ -614,11 +691,17 @@ class Home extends StatelessWidget {
                                                             ),
                                                           ),
                                                           Container(
+                                                            width: media_width *
+                                                                0.14,
                                                             margin:
                                                                 EdgeInsets.only(
                                                                     top: 5,
                                                                     left: 5),
                                                             child: Column(
+                                                              // レイアウト追加 間隔均等配置
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
                                                               // ベースラインに揃えて配置
                                                               crossAxisAlignment:
                                                                   CrossAxisAlignment
@@ -646,16 +729,7 @@ class Home extends StatelessWidget {
                                                                   ),
                                                                 ),
                                                                 // スターレーティング部分
-                                                                Text(
-                                                                  '★★★★★',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        20,
-                                                                    color: Colors
-                                                                        .yellow,
-                                                                  ),
-                                                                ),
+                                                                star(5, 20),
                                                                 Row(
                                                                   children: [
                                                                     Icon(
@@ -674,6 +748,53 @@ class Home extends StatelessWidget {
                                                                               Colors.blue),
                                                                     ),
                                                                     Text('100'),
+                                                                    // クリップボタン
+                                                                    Container(
+                                                                      margin: EdgeInsets.only(
+                                                                          left:
+                                                                              20,
+                                                                          bottom:
+                                                                              4),
+                                                                      child:
+                                                                          ElevatedButton(
+                                                                        //クリップボタン
+                                                                        child:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .assignment_turned_in,
+                                                                        ),
+                                                                        style: ElevatedButton
+                                                                            .styleFrom(
+                                                                          padding:
+                                                                              EdgeInsets.all(12),
+                                                                          primary:
+                                                                              HexColor('EC9361'),
+                                                                          onPrimary:
+                                                                              Colors.white,
+                                                                          shape:
+                                                                              CircleBorder(
+                                                                            side:
+                                                                                BorderSide(
+                                                                              color: Colors.transparent,
+                                                                              width: 1,
+                                                                              style: BorderStyle.solid,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        onPressed:
+                                                                            () {
+                                                                          clipList
+                                                                              .add({
+                                                                            'Text':
+                                                                                RepeatRanking[i]['Text'],
+                                                                            'image':
+                                                                                RepeatRanking[i]['image'],
+                                                                            'product_id':
+                                                                                RepeatRanking[i]['product_id'],
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                    ),
                                                                   ],
                                                                 )
                                                               ],
@@ -692,31 +813,49 @@ class Home extends StatelessWidget {
                                   ), // ランキング終わり
 
                                   // トレンドのタグ
-                                  Container(
-                                    margin: EdgeInsets.only(top: 10),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          width: 40,
-                                          height: 40,
-                                          child: Image.asset(
-                                            'images/trend.png',
-                                            fit: BoxFit.cover,
+                                  GestureDetector(
+                                    onTap: () {
+                                      // タグに変える
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => NewItemPage(),
+                                          ));
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(top: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            width: 40,
+                                            height: 40,
+                                            child: Image.asset(
+                                              'images/trend.png',
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ),
-                                        SelectableText(
-                                          'トレンドのタグ',
-                                          style: TextStyle(
-                                            color: HexColor('ec9361'),
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
+                                          SelectableText(
+                                            'トレンドのタグ',
+                                            style: TextStyle(
+                                              color: HexColor('ec9361'),
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            scrollPhysics:
+                                                NeverScrollableScrollPhysics(),
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        NewItemPage(),
+                                                  ));
+                                            },
                                           ),
-                                          scrollPhysics:
-                                              NeverScrollableScrollPhysics(),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   // トレンドのタグコンテナ
@@ -737,10 +876,12 @@ class Home extends StatelessWidget {
                                               width: media_width * 0.18,
                                               height: media_height * 0.37,
                                               child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
                                                   Container(
-                                                    margin:
-                                                        EdgeInsets.only(top: 5),
+                                                    //margin: EdgeInsets.only(top: 5),
                                                     height: media_height * 0.1,
                                                     child: Row(
                                                       mainAxisAlignment:
@@ -813,8 +954,7 @@ class Home extends StatelessWidget {
                                                     ),
                                                   ),
                                                   Container(
-                                                    margin: EdgeInsets.only(
-                                                        top: 20),
+                                                    //margin: EdgeInsets.only(top: 20),
                                                     width: media_width * 0.15,
                                                     height: media_height * 0.17,
                                                     color: HexColor('fffafa'),
@@ -832,31 +972,49 @@ class Home extends StatelessWidget {
                                   ), // トレンドのタグ終わり
 
                                   // 人気ユーザー
-                                  Container(
-                                    margin: EdgeInsets.only(top: 10),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          width: 40,
-                                          height: 40,
-                                          child: Image.asset(
-                                            'images/popular_user.png',
-                                            fit: BoxFit.cover,
+                                  GestureDetector(
+                                    onTap: () {
+                                      // ユーザー一覧に変える
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => NewItemPage(),
+                                          ));
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(top: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            width: 40,
+                                            height: 40,
+                                            child: Image.asset(
+                                              'images/popular_user.png',
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ),
-                                        SelectableText(
-                                          '人気のユーザー',
-                                          style: TextStyle(
-                                            color: HexColor('ec9361'),
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
+                                          SelectableText(
+                                            '人気のユーザー',
+                                            style: TextStyle(
+                                              color: HexColor('ec9361'),
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            scrollPhysics:
+                                                NeverScrollableScrollPhysics(),
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        NewItemPage(),
+                                                  ));
+                                            },
                                           ),
-                                          scrollPhysics:
-                                              NeverScrollableScrollPhysics(),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   // 人気ユーザーコンテナ
@@ -877,10 +1035,12 @@ class Home extends StatelessWidget {
                                               width: media_width * 0.12,
                                               height: media_height * 0.34,
                                               child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
                                                   Container(
-                                                    margin: EdgeInsets.only(
-                                                        top: 10),
+                                                    //margin: EdgeInsets.only(top: 10),
                                                     width: media_width * 0.15,
                                                     height: media_height * 0.15,
                                                     decoration: BoxDecoration(
@@ -898,14 +1058,12 @@ class Home extends StatelessWidget {
                                                     ),
                                                   ),
                                                   Container(
-                                                    margin:
-                                                        EdgeInsets.only(top: 5),
+                                                    //margin: EdgeInsets.only(top: 5),
                                                     child: SelectableText(
                                                         user[i]['Text']),
                                                   ),
                                                   Container(
-                                                    margin: EdgeInsets.only(
-                                                        top: 20),
+                                                    //margin: EdgeInsets.only(top: 20),
                                                     child: RichText(
                                                       text: TextSpan(
                                                         style: TextStyle(
@@ -956,32 +1114,50 @@ class Home extends StatelessWidget {
                                   ), // 人気ユーザー終わり
 
                                   // 新着レビュー
-                                  Container(
-                                    margin: EdgeInsets.only(top: 10),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        // レビューアイコン
-                                        Container(
-                                          width: 40,
-                                          height: 40,
-                                          child: Image.asset(
-                                            'images/new_review.png',
-                                            fit: BoxFit.cover,
+                                  GestureDetector(
+                                    onTap: () {
+                                      // レビュー一覧に変える
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => NewItemPage(),
+                                          ));
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(top: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          // レビューアイコン
+                                          Container(
+                                            width: 40,
+                                            height: 40,
+                                            child: Image.asset(
+                                              'images/new_review.png',
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ),
-                                        SelectableText(
-                                          '新着レビュー',
-                                          style: TextStyle(
-                                            color: HexColor('ec9361'),
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
+                                          SelectableText(
+                                            '新着レビュー',
+                                            style: TextStyle(
+                                              color: HexColor('ec9361'),
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            scrollPhysics:
+                                                NeverScrollableScrollPhysics(),
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        NewItemPage(),
+                                                  ));
+                                            },
                                           ),
-                                          scrollPhysics:
-                                              NeverScrollableScrollPhysics(),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   // 新着レビューコンテナ
@@ -999,9 +1175,14 @@ class Home extends StatelessWidget {
                                             margin: EdgeInsets.symmetric(
                                                 horizontal: 8),
                                             child: Container(
+                                              //margin: EdgeInsets.only(left: 5),
                                               width: media_width * 0.18,
                                               height: media_height * 0.5,
                                               child: Column(
+                                                // レイアウト追加　間隔均等配置
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                 // ベースラインに揃えて配置
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.baseline,
@@ -1013,8 +1194,6 @@ class Home extends StatelessWidget {
                                                   // 商品画面
                                                   Center(
                                                     child: Container(
-                                                      margin: EdgeInsets.only(
-                                                          top: 5),
                                                       width: media_width * 0.16,
                                                       height:
                                                           media_height * 0.24,
@@ -1025,23 +1204,21 @@ class Home extends StatelessWidget {
                                                       ),
                                                     ),
                                                   ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 10),
+
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        left: 20),
+                                                    height: media_height * 0.24,
                                                     child: Column(
-                                                      // ベースラインに揃えて配置
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
-                                                              .baseline,
-                                                      // ベースラインの指定
-                                                      textBaseline: TextBaseline
-                                                          .alphabetic,
+                                                              .start,
                                                       children: [
                                                         // 投稿者
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  top: 10),
                                                           child: SelectableText(
                                                               review[i]
                                                                       ['name'] +
@@ -1055,12 +1232,10 @@ class Home extends StatelessWidget {
 
                                                         // 商品名
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  top: 7),
                                                           child: SelectableText(
                                                               review[i]
                                                                   ['product'],
+                                                              maxLines: 1,
                                                               style: TextStyle(
                                                                 fontSize: 14,
                                                                 fontWeight:
@@ -1070,19 +1245,15 @@ class Home extends StatelessWidget {
                                                         ),
                                                         // スターレーティング　用改良
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  top: 7),
-                                                          child: SelectableText(
-                                                              '総合評価：' +
-                                                                  review[i]
-                                                                      ['star']),
+                                                          child: star(
+                                                              review[i]['star'],
+                                                              16),
                                                         ),
                                                         // レビュー本文
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  top: 10),
+                                                          //height: media_height * 0.1,
+                                                          width: media_width *
+                                                              0.17,
                                                           child: SelectableText(
                                                             review[i]['Text'],
                                                             maxLines: 3,
@@ -1112,30 +1283,50 @@ class Home extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     //ユーザーアンケート
-                                    Container(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: 40,
-                                            height: 40,
-                                            child: Image.asset(
-                                              'images/questionnaireicon.png',
-                                              fit: BoxFit.cover,
+                                    GestureDetector(
+                                      onTap: () {
+                                        // ユーザーアンケート一覧に変える
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  NewItemPage(),
+                                            ));
+                                      },
+                                      child: Container(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 40,
+                                              height: 40,
+                                              child: Image.asset(
+                                                'images/questionnaireicon.png',
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
-                                          ),
-                                          SelectableText(
-                                            'ユーザーアンケート',
-                                            style: TextStyle(
-                                              color: HexColor('ec9361'),
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600,
+                                            SelectableText(
+                                              'ユーザーアンケート',
+                                              style: TextStyle(
+                                                color: HexColor('ec9361'),
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                              scrollPhysics:
+                                                  NeverScrollableScrollPhysics(),
+                                              onTap: () {
+                                                // ユーザーアンケートに変える
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          NewItemPage(),
+                                                    ));
+                                              },
                                             ),
-                                            scrollPhysics:
-                                                NeverScrollableScrollPhysics(),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     // コンテナ
@@ -1154,7 +1345,7 @@ class Home extends StatelessWidget {
                                               scrollPhysics:
                                                   NeverScrollableScrollPhysics(),
                                               style: TextStyle(
-                                                color: HexColor('EC9361'),
+                                                color: HexColor('616161'),
                                                 fontSize: 24,
                                                 fontWeight: FontWeight.w600,
                                               ),
@@ -1256,27 +1447,47 @@ class Home extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          // 残り日数　用改良
+                                          // 残り日数
                                           Container(
-                                            child:
-                                                SelectableText('終了まであと' + '2日'),
+                                            // selectable + richtext
+                                            child: SelectableText.rich(
+                                              TextSpan(
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                    text: '終了まであと ',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                  TextSpan(
+                                                    text: '2日',
+                                                    style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontSize: 22,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ), // ユーザーアンケート終わり
 
                                     // 広告
-                                    Container(
-                                      margin: EdgeInsets.only(top: 20),
-                                      width: media_width * 0.3,
-                                      height: media_height * 0.6,
-                                      color: HexColor('87cefa'),
-                                      child: Center(child: Text('広告')),
-                                    ), // 広告終わり
+                                    // Container(
+                                    //   margin: EdgeInsets.only(top: 20),
+                                    //   width: media_width * 0.3,
+                                    //   height: media_height * 0.6,
+                                    //   color: HexColor('87cefa'),
+                                    //   child: Center(child: Text('広告')),
+                                    // ), // 広告終わり
 
                                     // 新商品
-                                    TextButton(
-                                      onPressed: () {
+                                    GestureDetector(
+                                      onTap: () {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -1298,13 +1509,23 @@ class Home extends StatelessWidget {
                                                 fit: BoxFit.cover,
                                               ),
                                             ),
-                                            Text(
+                                            SelectableText(
                                               '新商品',
                                               style: TextStyle(
                                                 color: HexColor('ec9361'),
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.w600,
                                               ),
+                                              scrollPhysics:
+                                                  NeverScrollableScrollPhysics(),
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          NewItemPage(),
+                                                    ));
+                                              },
                                             ),
                                           ],
                                         ),
@@ -1314,7 +1535,7 @@ class Home extends StatelessWidget {
                                     Container(
                                       margin: EdgeInsets.only(top: 10),
                                       width: media_width * 0.3,
-                                      height: media_height * 0.6,
+                                      height: media_height * 0.7,
                                       color: HexColor('F5F3EF'),
                                       child: Column(
                                         mainAxisAlignment:
@@ -1324,8 +1545,11 @@ class Home extends StatelessWidget {
                                             Card(
                                               child: Container(
                                                 width: media_width * 0.28,
-                                                height: media_height * 0.17,
+                                                height: media_height * 0.2,
                                                 child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
                                                   children: [
                                                     Container(
                                                       margin: EdgeInsets.only(
@@ -1342,6 +1566,8 @@ class Home extends StatelessWidget {
                                                     Container(
                                                       margin: EdgeInsets.only(
                                                           left: 10),
+                                                      width:
+                                                          media_width * 0.115,
                                                       child: Column(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
@@ -1360,16 +1586,79 @@ class Home extends StatelessWidget {
                                                                   new_item[i]
                                                                       ['date']),
                                                           SelectableText(
-                                                              new_item[i]
-                                                                  ['maker']),
+                                                            new_item[i]
+                                                                ['maker'],
+                                                            maxLines: 1,
+                                                          ),
                                                           SelectableText(
                                                             new_item[i]['Text'],
+                                                            maxLines: 2,
+                                                            scrollPhysics:
+                                                                NeverScrollableScrollPhysics(),
                                                             style: TextStyle(
-                                                              fontSize: 18,
+                                                              fontSize: 16,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w700,
                                                             ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // クリップボタン
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 10),
+                                                      // 末尾に配置するためColumnを追加
+                                                      child: Column(
+                                                        // 末尾に配置
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          ElevatedButton(
+                                                            //クリップボタン
+                                                            child: Icon(
+                                                              Icons
+                                                                  .assignment_turned_in,
+                                                            ),
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(12),
+                                                              primary: HexColor(
+                                                                  'EC9361'),
+                                                              onPrimary:
+                                                                  Colors.white,
+                                                              shape:
+                                                                  CircleBorder(
+                                                                side:
+                                                                    BorderSide(
+                                                                  color: Colors
+                                                                      .transparent,
+                                                                  width: 1,
+                                                                  style:
+                                                                      BorderStyle
+                                                                          .solid,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              clipList.add({
+                                                                'Text':
+                                                                    new_item[i][
+                                                                        'Text'],
+                                                                'image':
+                                                                    new_item[i][
+                                                                        'image'],
+                                                                /*'product_id':
+                                                                    new_item[
+                                                                            i][
+                                                                        'product_id'],*/
+                                                              });
+                                                            },
                                                           ),
                                                         ],
                                                       ),
@@ -1383,13 +1672,13 @@ class Home extends StatelessWidget {
                                     ), // 新商品終わり
 
                                     // 広告
-                                    Container(
-                                      margin: EdgeInsets.only(top: 20),
-                                      width: media_width * 0.30,
-                                      height: media_height * 0.6,
-                                      color: HexColor('87cefa'),
-                                      child: Center(child: Text('広告')),
-                                    ), // 広告終わり
+                                    // Container(
+                                    //   margin: EdgeInsets.only(top: 20),
+                                    //   width: media_width * 0.30,
+                                    //   height: media_height * 0.6,
+                                    //   color: HexColor('87cefa'),
+                                    //   child: Center(child: Text('広告')),
+                                    // ), // 広告終わり
                                   ],
                                 ))
                           ],

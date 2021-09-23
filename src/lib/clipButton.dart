@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/comparison.dart';
+import 'package:umy_foods/main.dart';
 
 const MaterialColor customSwatch = const MaterialColor(
   0xFFf5f3ef,
@@ -74,7 +75,7 @@ class _clipButtonState extends State<clipButton> {
                 // i = 0 +(x * 4) ・・・2列目なら4から、3列目なら8から
                 // i < 4 * (x + 1) ・・・2列目なら8まで、3列目なら12まで
                 for (int i = 0 + (x * 4); i < 4 * (x + 1); i++)
-                  if (listItems.length > i)
+                  if (clipList.length > i)
                     Card(
                       //margin: const EdgeInsets.all(10.0),
                       child: Container(
@@ -99,12 +100,14 @@ class _clipButtonState extends State<clipButton> {
                               ),
                             ),
                             Image.network(
-                              listItems[i]['image'],
+                              (clipList[i]['image'] == "")
+                                  ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
+                                  : clipList[i]['image'],
                               height: 120.0,
                               width: 120.0,
                             ),
                             Text(
-                              listItems[i]['Text'],
+                              clipList[i]['Text'],
                               style: TextStyle(fontSize: 16),
                             ),
                           ],
@@ -120,15 +123,17 @@ class _clipButtonState extends State<clipButton> {
 
   void _deleteItem(i) {
     setState(() {
-      listItems.removeAt(i); // 削除
+      clipList.removeAt(i); // 削除
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
+    return Container(
+      width: 120.0, //ここでクリップボタンのサイズ変更可能
+      child: FloatingActionButton(
       backgroundColor: HexColor('ec9463'),
-      tooltip: 'Increment',
+      tooltip: 'クリップボード',
       child: Icon(Icons.assignment, color: Colors.white),
       onPressed: () async {
         // MyHomePageと同期をとるだけのsetState
@@ -142,6 +147,7 @@ class _clipButtonState extends State<clipButton> {
           },
         );
       },
+    ),
     ); //This trailing comma makes auto-formatting nicer for build methods.
   }
 }
@@ -166,8 +172,8 @@ class _MyDialogState extends State<MyDialog> {
                 // 横に4個並べる  4を変えれば変わる
                 // i = 0 +(x * 4) ・・・2列目なら4から、3列目なら8から
                 // i < 4 * (x + 1) ・・・2列目なら8まで、3列目なら12まで
-                for (int i = 0 + (x * 4); i < 4 * (x + 1); i++)
-                  if (listItems.length > i)
+                for (int i = 1 + (x * 4); i < 4 * (x + 1); i++)
+                  if (clipList.length > i)
                     Card(
                       //margin: const EdgeInsets.all(10.0),
                       child: Container(
@@ -192,12 +198,14 @@ class _MyDialogState extends State<MyDialog> {
                               ),
                             ),
                             Image.network(
-                              listItems[i]['image'],
+                              (clipList[i]['image'] == "")
+                                  ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
+                                  : clipList[i]['image'],
                               height: 120.0,
                               width: 120.0,
                             ),
                             Text(
-                              listItems[i]['Text'],
+                              clipList[i]['Text'],
                               style: TextStyle(fontSize: 16),
                             ),
                           ],
@@ -213,7 +221,7 @@ class _MyDialogState extends State<MyDialog> {
 
   void _deleteItem(i) {
     setState(() {
-      listItems.removeAt(i); // 削除
+      clipList.removeAt(i); // 削除
     });
   }
 
@@ -258,7 +266,7 @@ class _MyDialogState extends State<MyDialog> {
               TextButton.icon(
                 onPressed: () {
                   setState(() {
-                    listItems.removeRange(0, listItems.length);
+                    clipList.removeRange(1, clipList.length);
                   });
                 },
                 icon: Icon(
