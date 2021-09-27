@@ -243,7 +243,7 @@ class _ComparisonState extends State<Comparison> {
                             child: Text(slist[rcnt],
                                 style: TextStyle(color: HexColor('616161')))),
                         color: HexColor('ffdfc5'),
-                        height: 25,
+                        height: 28,
                       )
                   else if (rcnt == 7)
                     Container(

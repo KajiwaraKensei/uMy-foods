@@ -51,279 +51,296 @@ class _ReviewPageState extends State<ReviewPage> {
   final String productId;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        IntrinsicHeight(
-            child: Row(
-          children: [
-            Expanded(
-              flex: 5,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return StreamBuilder<QuerySnapshot>(
+
+        //表示したいFiresotreの保存先を指定
+        stream: reviewData(productId),
+
+        //streamが更新されるたびに呼ばれる
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          //データが取れていない時の処理
+          if (!snapshot.hasData) return const Text('Loading...');
+
+          final result = snapshot.data!.docs;
+
+          if (result.length == 0) {
+            return Text('レビューはありません');
+          }
+
+          int sum = 0;
+          for (int j = 0; j < result.length; j++) {
+            //  sum += int.parse(result[j]['review_evaluation']);
+          }
+
+          double ave = sum / result.length;
+          int average = ave.round();
+
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IntrinsicHeight(
+                  child: Row(
                 children: [
-                  SelectableText(
-                    'レビュー',
-                    style: TextStyle(color: HexColor('EC9361'), fontSize: 27.0),
-                    scrollPhysics: NeverScrollableScrollPhysics()
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Column(
+                  Expanded(
+                    flex: 5,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SelectableText('レビュー',
+                            style: TextStyle(
+                                color: HexColor('EC9361'), fontSize: 27.0),
+                            scrollPhysics: NeverScrollableScrollPhysics()),
+                        Row(
                           children: [
-                            star(4, 50), //星評価
-                            SelectableText('5000件',
-                                scrollPhysics:
-                                    NeverScrollableScrollPhysics()), //評価件数
-                            Container(
-                              height: 170,
-                              //Radar Chart
-                              child: RadarChart(
-                                values: [1, 2, 4, 7, 9, 0, 6],
-                                labels: [
-                                  "甘味",
-                                  "酸味",
-                                  "塩味",
-                                  "苦味",
-                                  "辛味",
-                                  "刺激",
-                                  "うま味",
+                            Expanded(
+                              flex: 1,
+                              child: Column(
+                                children: [
+                                  star(4, 50), //星評価
+                                  SelectableText('5000件',
+                                      scrollPhysics:
+                                          NeverScrollableScrollPhysics()), //評価件数
+                                  Container(
+                                    height: 170,
+                                    //Radar Chart
+                                    child: RadarChart(
+                                      values: [1, 2, 4, 7, 9, 0, 6],
+                                      labels: [
+                                        "甘味",
+                                        "酸味",
+                                        "塩味",
+                                        "苦味",
+                                        "辛味",
+                                        "刺激",
+                                        "うま味",
+                                      ],
+                                      maxValue: 10,
+                                      fillColor: Colors.blue,
+                                      chartRadiusFactor: 0.7,
+                                      animationDuration:
+                                          Duration(milliseconds: 500),
+                                    ),
+                                  )
                                 ],
-                                maxValue: 10,
-                                fillColor: Colors.blue,
-                                chartRadiusFactor: 0.7,
-                                animationDuration: Duration(milliseconds: 500),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Column(
+                                children: [
+                                  //評価別のパーセント
+                                  percent_indicator('5', 0.9),
+                                  percent_indicator('4', 0.4),
+                                  percent_indicator('3', 0.2),
+                                  percent_indicator('2', 0.6),
+                                  percent_indicator('1', 0.1),
+                                ],
                               ),
                             )
                           ],
                         ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          children: [
-                            //評価別のパーセント
-                            percent_indicator('5', 0.9),
-                            percent_indicator('4', 0.4),
-                            percent_indicator('3', 0.2),
-                            percent_indicator('2', 0.6),
-                            percent_indicator('1', 0.1),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  Age_Review(productId)
-                ],
-              ),
-            ),
-            SpaceBox.width(30),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 100,
-                      height: 300,
-                      // color: Colors.grey,
-                      // child: Text('広告'),
-                    ),
-                    SpaceBox.height(25),
-                    Column(
-                      children: [
-                        GestureDetector(
-                          //新商品タイトル
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 35,
-                                child: Image.asset('images/icon/newgoods.png'),
-                              ),
-                              SpaceBox.width(10),
-                              Text(
-                                '新商品',
-                                style: TextStyle(
-                                    color: HexColor('EC9361'), fontSize: 20.0),
-                              ),
-                            ],
-                          ),
-                          onTap: () {
-                            setState(() {}); //新商品ページへ
-                          },
-                        ),
-                        SpaceBox.height(10), //隙間
-                        Container(
-                          //新商品
-                          color: HexColor('F5F3EF'),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                  vertical: 20, horizontal: 15),
-                              child: Column(
-                                children: [
-                                  for (int i = 0; i < 3; i++)
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 5),
-                                      child: Card(
-                                          child: InkWell(
-                                              onTap: () {
-                                                setState(() {}); //商品詳細ページへ
-                                              },
-                                              child: Container(
-                                                child: Row(
-                                                  children: [
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: GestureDetector(
-                                                        child: Container(
-                                                          //商品画像
-                                                          padding:
-                                                              EdgeInsets.all(5),
-                                                          height: 90,
-                                                          width: 90,
-                                                  child: Image.network(
-                                                            new_item[i]
-                                                                ['image'],
-                                                            fit: BoxFit.contain,
-                                                          ),
-                                                        ),
-                                                        onTap: () {
-                                                  setState(
-                                                              () {}); //商品詳細ページへ
-                                                        },
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                              flex: 2,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                children: [
-                                                  Text('発売日' +
-                                                                new_item[i][
-                                                                    'date']), //発売日
-                                                            SpaceBox.height(5),
-                                                            Row(
-                                                              children: [
-                                                                Expanded(
-                                                                    flex: 3,
-                                                                    child:
-                                                                        Column(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        GestureDetector(
-                                                              child:
-                                                                              Text(
-                                                                            new_item[i]['maker'],
-                                                                            style:
-                                                                                TextStyle(color: HexColor('616161'), fontSize: 10),
-                                                                          ),
-                                                                          onTap:
-                                                                              () {
-                                                                            setState(() {}); //メーカーページへ
-                                                                          },
-                                                                        ),
-                                                            SpaceBox
-                                                                            .height(5),
-                                                                        GestureDetector(
-                                                              child:
-                                                                              Text(new_item[i]['Text']),
-                                                                          onTap:
-                                                                              () {
-                                                                            setState(() {}); //商品詳細ページへ
-                                                                          },
-                                                                        ),
-                                                                      ],
-                                                                    )),
-                                                                Expanded(
-                                                                  flex: 1,
-                                                                  child:
-                                                                      ElevatedButton(
-                                                                    //クリップボタン
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .assignment_turned_in,
-                                                                    ),
-                                                                    style: ElevatedButton
-                                                                        .styleFrom(
-                                                                      padding:
-                                                                          EdgeInsets.all(
-                                                                              11),
-                                                                      primary:
-                                                                          HexColor(
-                                                                              'EC9361'),
-                                                                      onPrimary:
-                                                                          Colors
-                                                                              .white,
-                                                                      shape:
-                                                                          CircleBorder(
-                                                                        side:
-                                                                            BorderSide(
-                                                                          color:
-                                                                              Colors.transparent,
-                                                                          width:
-                                                                              1,
-                                                                          style:
-                                                                              BorderStyle.solid,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    onPressed:
-                                                                        () {
-                                                                      clipList
-                                                                          .add({
-                                                                        'Text': new_item[i]
-                                                                            [
-                                                                            'Text'],
-                                                                        'image':
-                                                                            new_item[i]['image'],
-                                                                        'product_id':
-                                                                            new_item[i]['product_id'],
-                                                                      });
-                                                                    },
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            )
-                                                ],
-                                              )),
-                                                  ],
-                                                ),
-                                              ))),
-                                    )
-                                ],
-                              )
-                          ),
-                        )
+                        Age_Review(productId)
                       ],
                     ),
-                    SpaceBox.height(25), //隙間
-                    Container(
-                      width: 100,
-                      height: 300,
-                      // color: Colors.grey,
-                      // child: Text('広告'),
+                  ),
+                  SpaceBox.width(30),
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 300,
+                            // color: Colors.grey,
+                            // child: Text('広告'),
+                          ),
+                          SpaceBox.height(25),
+                          Column(
+                            children: [
+                              GestureDetector(
+                                //新商品タイトル
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 35,
+                                      child: Image.asset(
+                                          'images/icon/newgoods.png'),
+                                    ),
+                                    SpaceBox.width(10),
+                                    Text(
+                                      '新商品',
+                                      style: TextStyle(
+                                          color: HexColor('EC9361'),
+                                          fontSize: 20.0),
+                                    ),
+                                  ],
+                                ),
+                                onTap: () {
+                                  setState(() {}); //新商品ページへ
+                                },
+                              ),
+                              SpaceBox.height(10), //隙間
+                              Container(
+                                //新商品
+                                color: HexColor('F5F3EF'),
+                                child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 20, horizontal: 15),
+                                    child: Column(
+                                      children: [
+                                        for (int i = 0; i < 3; i++)
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 5),
+                                            child: Card(
+                                                child: InkWell(
+                                                    onTap: () {
+                                                      setState(
+                                                          () {}); //商品詳細ページへ
+                                                    },
+                                                    child: Container(
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            flex: 1,
+                                                            child:
+                                                                GestureDetector(
+                                                              child: Container(
+                                                                //商品画像
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(5),
+                                                                height: 90,
+                                                                width: 90,
+                                                                child: Image
+                                                                    .network(
+                                                                  new_item[i]
+                                                                      ['image'],
+                                                                  fit: BoxFit
+                                                                      .contain,
+                                                                ),
+                                                              ),
+                                                              onTap: () {
+                                                                setState(
+                                                                    () {}); //商品詳細ページへ
+                                                              },
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                              flex: 2,
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text('発売日' +
+                                                                      new_item[
+                                                                              i]
+                                                                          [
+                                                                          'date']), //発売日
+                                                                  SpaceBox
+                                                                      .height(
+                                                                          5),
+                                                                  Row(
+                                                                    children: [
+                                                                      Expanded(
+                                                                          flex:
+                                                                              3,
+                                                                          child:
+                                                                              Column(
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              GestureDetector(
+                                                                                child: Text(
+                                                                                  new_item[i]['maker'],
+                                                                                  style: TextStyle(color: HexColor('616161'), fontSize: 10),
+                                                                                ),
+                                                                                onTap: () {
+                                                                                  setState(() {}); //メーカーページへ
+                                                                                },
+                                                                              ),
+                                                                              SpaceBox.height(5),
+                                                                              GestureDetector(
+                                                                                child: Text(new_item[i]['Text']),
+                                                                                onTap: () {
+                                                                                  setState(() {}); //商品詳細ページへ
+                                                                                },
+                                                                              ),
+                                                                            ],
+                                                                          )),
+                                                                      Expanded(
+                                                                        flex: 1,
+                                                                        child:
+                                                                            ElevatedButton(
+                                                                          //クリップボタン
+                                                                          child:
+                                                                              Icon(
+                                                                            Icons.assignment_turned_in,
+                                                                          ),
+                                                                          style:
+                                                                              ElevatedButton.styleFrom(
+                                                                            padding:
+                                                                                EdgeInsets.all(11),
+                                                                            primary:
+                                                                                HexColor('EC9361'),
+                                                                            onPrimary:
+                                                                                Colors.white,
+                                                                            shape:
+                                                                                CircleBorder(
+                                                                              side: BorderSide(
+                                                                                color: Colors.transparent,
+                                                                                width: 1,
+                                                                                style: BorderStyle.solid,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          onPressed:
+                                                                              () {
+                                                                            clipList.add({
+                                                                              'Text': new_item[i]['Text'],
+                                                                              'image': new_item[i]['image'],
+                                                                              'product_id': new_item[i]['product_id'],
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                      )
+                                                                    ],
+                                                                  )
+                                                                ],
+                                                              )),
+                                                        ],
+                                                      ),
+                                                    ))),
+                                          )
+                                      ],
+                                    )),
+                              )
+                            ],
+                          ),
+                          SpaceBox.height(25), //隙間
+                          Container(
+                            width: 100,
+                            height: 300,
+                            // color: Colors.grey,
+                            // child: Text('広告'),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ))
-      ],
-    );
+                  ),
+                ],
+              ))
+            ],
+          );
+        });
   }
 
   Widget percent_indicator(String name, double persent) {
@@ -509,7 +526,7 @@ class _Age_Review extends State<Age_Review> {
               ),
             )
           ]),
-        ),
+        ), //年代別
         Divider(
           //仕切り線
           height: 20,
@@ -685,13 +702,13 @@ Widget review(productId) {
                           Container(
                             alignment: Alignment.topLeft,
                             child: RichText(
-                              //レビュー内容
-                              softWrap: true,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 3, //最大行数
-                              text: TextSpan(
-                                  text: result[i]['review_comment'],
-                                  style: TextStyle(color: Colors.black))),
+                                //レビュー内容
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 3, //最大行数
+                                text: TextSpan(
+                                    text: result[i]['review_comment'],
+                                    style: TextStyle(color: Colors.black))),
                           ),
                           GestureDetector(
                             onTap: () {
