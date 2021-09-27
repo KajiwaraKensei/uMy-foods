@@ -715,7 +715,11 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   child: Container(
                                                       width: 700,
                                                       // height: 150,
-                                                      child: Column(children: [
+                                                      child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
                                                         SelectableText(
                                                           result[
                                                               'raw_material'],
@@ -757,7 +761,11 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   child: Container(
                                                       width: 700,
                                                       // height: 100,
-                                                      child: Column(children: [
+                                                      child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
                                                         Row(children: [
                                                           for (int i = 0;
                                                               i <
@@ -797,7 +805,11 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   child: Container(
                                                       width: 700,
                                                       // height: 100,
-                                                      child: Column(children: [
+                                                      child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
                                                         SelectableText(
                                                             '${result['nutritional_ingredients'][0]} / ${result['nutritional_ingredients'][1]} / ${result['nutritional_ingredients'][2]} / ${result['nutritional_ingredients'][3]} / ${result['nutritional_ingredients'][4]} / ${result['nutritional_ingredients'][5]}',
                                                             scrollPhysics:
