@@ -12,7 +12,7 @@ class Header extends StatelessWidget with PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(80.0);
 
   var _selectedValue = 'ログイン'; //初期にフォーカスされているもの
-  var _usStates = ["ログイン", "マイページ"]; //ポップアップのリスト
+  var _usStates = ["マイページ", "ログアウト"]; //ポップアップのリスト(ログインあり)
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +51,13 @@ class Header extends StatelessWidget with PreferredSizeWidget {
               color: Colors.black,
             ),
           ),
+          suffixIcon: IconButton(
+            icon: Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onPressed: () {},
+          ),
           border: InputBorder.none,
         ),
         style: TextStyle(color: Colors.black),
@@ -70,10 +77,10 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProductselectionPage(),
-              ));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductselectionPage(),
+                        ));
                   },
                   child: Text(
                     "投稿",
@@ -97,25 +104,24 @@ class Header extends StatelessWidget with PreferredSizeWidget {
               ),
               // マイページ
               PopupMenuButton<String>(
-                child:Container(
+                child: Container(
                   margin: EdgeInsets.only(left: 50),
                   child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Colors.orange,
-                    backgroundImage: NetworkImage((UserImage == "")
-                      ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/anotherUser2.png?alt=media&token=2c965f37-f6b3-4594-9998-24080a38073f'
-                      : UserImage) 
-                  ),
+                      radius: 20,
+                      backgroundColor: Colors.orange,
+                      backgroundImage: NetworkImage((UserImage == "")
+                          ? 'images/anotherUser2.png'
+                          : UserImage)),
                 ),
-              
                 initialValue: _selectedValue,
                 onSelected: (String s) {
-                  if(s=='ログイン'){  //画面遷移
+                  if (s == 'ログイン') {
+                    //画面遷移
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Login(),
-                      ));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Login(),
+                        ));
                   }
                   // setState(() {
                   //   _selectedValue = s;
@@ -123,13 +129,15 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                 },
                 itemBuilder: (BuildContext context) {
                   return _usStates.map((String s) {
-                    return PopupMenuItem(   //ポップアップに載せる物
+                    return PopupMenuItem(
+                      //ポップアップに載せる物
                       child: Text(s),
                       value: s,
                     );
                   }).toList();
                 },
-            ),
+                offset: Offset(30, 50),
+              ),
               // Container(
               //     margin: EdgeInsets.only(left: 50),
               //     child: GestureDetector(
@@ -154,4 +162,3 @@ class Header extends StatelessWidget with PreferredSizeWidget {
     );
   }
 }
-
