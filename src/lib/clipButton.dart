@@ -22,32 +22,6 @@ const MaterialColor customSwatch = const MaterialColor(
     900: const Color(0xFFEEEAE4),
   },
 );
-final List<Map<String, dynamic>> listItems = [
-  {
-    'Text': 'カントリーマアム',
-    'image': 'https://www.toysrus.co.jp/i/5/0/8/508961100AML.jpg',
-  },
-  {
-    'Text': 'エリーゼ',
-    'image':
-        'https://www.life-netsuper.jp/k-kinkicommon/parts/data/item/04901360273010.jpg',
-  },
-  {
-    'Text': '苺トッポ',
-    'image':
-        'https://images-fe.ssl-images-amazon.com/images/I/71SBG7SSapL.__AC_SX300_SY300_QL70_ML2_.jpg',
-  },
-  {
-    'Text': 'ポッキー',
-    'image':
-        'https://images-na.ssl-images-amazon.com/images/I/71mxyAVWynL._AC_SL1500_.jpg',
-  },
-  {
-    'Text': 'パイの実',
-    'image':
-        'https://www.tanomail.com/imgcv/product/26/2621344_01.jpg?sr.dw=230&sr.dh=230',
-  },
-];
 
 class clipButton extends StatefulWidget {
   /*clipButton(this.productID);
@@ -62,65 +36,6 @@ class _clipButtonState extends State<clipButton> {
   Widget ListItemWidget = Text(""); //表示用ウィジェット
   String _textex = "";
 
-  //比較リストを返す
-  SingleChildScrollView showListItems() {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          // 3行
-          for (int x = 0; x < 3; x++)
-            Row(
-              children: [
-                // 横に4個並べる  4を変えれば変わる
-                // i = 0 +(x * 4) ・・・2列目なら4から、3列目なら8から
-                // i < 4 * (x + 1) ・・・2列目なら8まで、3列目なら12まで
-                for (int i = 0 + (x * 4); i < 4 * (x + 1); i++)
-                  if (clipList.length > i)
-                    Card(
-                      //margin: const EdgeInsets.all(10.0),
-                      child: Container(
-                        width: 180.0,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            ButtonTheme(
-                              child: ButtonBar(
-                                children: [
-                                  Tooltip(
-                                    message: 'クリップボードから削除します。',
-                                    child: IconButton(
-                                      icon: const Icon(Icons.close,
-                                          color: Colors.black),
-                                      onPressed: () {
-                                        _deleteItem(i);
-                                      },
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Image.network(
-                              (clipList[i]['image'] == "")
-                                  ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
-                                  : clipList[i]['image'],
-                              height: 120.0,
-                              width: 120.0,
-                            ),
-                            Text(
-                              clipList[i]['Text'],
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-              ],
-            ),
-        ],
-      ),
-    );
-  }
-
   void _deleteItem(i) {
     setState(() {
       clipList.removeAt(i); // 削除
@@ -131,7 +46,8 @@ class _clipButtonState extends State<clipButton> {
   Widget build(BuildContext context) {
     return Container(
       width: 120.0, //ここでクリップボタンのサイズ変更可能
-      child: FloatingActionButton(
+      child: Stack(overflow: Overflow.visible, children: [
+        FloatingActionButton(
       backgroundColor: HexColor('ec9463'),
       tooltip: 'クリップボード',
       child: Icon(Icons.assignment, color: Colors.white),
@@ -148,7 +64,27 @@ class _clipButtonState extends State<clipButton> {
         );
       },
     ),
+        Positioned(
+            top: -8,
+            left: 50,
+            child: NotificationNumberBadge(clipList.length, Colors.red))
+      ]),
     ); //This trailing comma makes auto-formatting nicer for build methods.
+  }
+  //右上の通知ボタン
+
+  Widget NotificationNumberBadge(int num, Color col) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Icon(
+          Icons.brightness_1,
+          color: col,
+          size: 20,
+        ),
+        Text(num.toString()),
+      ],
+    );
   }
 }
 
@@ -163,16 +99,15 @@ class _MyDialogState extends State<MyDialog> {
 
   SingleChildScrollView showListItems() {
     return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
       child: Column(
         children: <Widget>[
-          // 3行
-          for (int x = 0; x < 3; x++)
             Row(
               children: [
                 // 横に4個並べる  4を変えれば変わる
                 // i = 0 +(x * 4) ・・・2列目なら4から、3列目なら8から
                 // i < 4 * (x + 1) ・・・2列目なら8まで、3列目なら12まで
-                for (int i = 1 + (x * 4); i < 4 * (x + 1); i++)
+                for (int i = 0; i < 5; i++)
                   if (clipList.length > i)
                     Card(
                       //margin: const EdgeInsets.all(10.0),
@@ -204,10 +139,16 @@ class _MyDialogState extends State<MyDialog> {
                               height: 120.0,
                               width: 120.0,
                             ),
+                            Container(
+                            height: 50,
+                            child:
                             Text(
                               clipList[i]['Text'],
                               style: TextStyle(fontSize: 16),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
+                          ),
                           ],
                         ),
                       ),
@@ -233,6 +174,7 @@ class _MyDialogState extends State<MyDialog> {
       content: Container(
         width: MediaQuery.of(context).size.width * .6,
         child: ListItemWidget = showListItems(), // 比較リストを返す関数
+        height: 250,
       ),
       actions: <Widget>[
         Center(
@@ -256,7 +198,7 @@ class _MyDialogState extends State<MyDialog> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Comparison(),
+                        builder: (context) => Comparison(clipList),
                       ));
                 },
               ),
@@ -284,3 +226,5 @@ class _MyDialogState extends State<MyDialog> {
     );
   }
 }
+
+

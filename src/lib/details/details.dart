@@ -10,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; //DB
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/date_symbol_data_local.dart'; //日時用
 
 // 外部ファイル
 import 'package:umy_foods/HexColor.dart'; //16進数カラーコード
@@ -47,6 +48,8 @@ class _DetailsPageState extends State<DetailsPage> {
   String product_name = "";
   String maker = "";
   String product_id = "";
+  int numberOfReview = 0;
+  int repeatnum = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +62,13 @@ class _DetailsPageState extends State<DetailsPage> {
 
 //メーカー
 
-    Widget makerName(id) {
+    Widget makerName(String id) {
       return StreamBuilder<QuerySnapshot>(
 
           //表示したいFiresotreの保存先を指定
           stream: FirebaseFirestore.instance
               .collection('maker')
-              .where('maker_id', isEqualTo: int.parse(id))
+              .where('maker_id', isEqualTo: id)
               .snapshots(),
 
           //streamが更新されるたびに呼ばれる
@@ -83,7 +86,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
 //ブランド
 
-    Widget brandName(id) {
+    Widget brandName(String id) {
       return StreamBuilder<QuerySnapshot>(
 
           //表示したいFiresotreの保存先を指定
@@ -124,6 +127,358 @@ class _DetailsPageState extends State<DetailsPage> {
             String result = snapshot.data!.docs[0]['allergy_name'];
 
             return Text('${result}　');
+          });
+    }
+
+    //評価
+
+    Widget evaluation(String id) {
+      return StreamBuilder<QuerySnapshot>(
+
+          //表示したいFiresotreの保存先を指定
+          stream: FirebaseFirestore.instance
+              .collection('review')
+              .where('product_id', isEqualTo: id)
+              .snapshots(),
+
+          //streamが更新されるたびに呼ばれる
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            //データが取れていない時の処理
+            if (!snapshot.hasData) return const Text('Loading...');
+
+            final result = snapshot.data!.docs;
+
+            if (result.length == 0) {
+              //レビューがない場合は強制的に評価、コスパが0
+              return Row(
+                children: [
+                  Expanded(
+                      flex: 1,
+                      child: Column(
+                        //総合星評価
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SelectableText('総合評価',
+                              scrollPhysics: NeverScrollableScrollPhysics()),
+                          star(0, 30)
+                        ],
+                      )),
+                  Expanded(
+                      flex: 1,
+                      child: Column(
+                        //コスパ星評価
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SelectableText('コスパ',
+                              scrollPhysics: NeverScrollableScrollPhysics()),
+                          star(0, 30)
+                        ],
+                      )),
+                ],
+              );
+            }
+
+            List<int> evaList = [];
+            List<int> cospaList = [];
+
+            for (int j = 0; j < result.length; j++) {
+              evaList.add(result[j]['review_evaluation']);
+            }
+            double eva = evaList.reduce((a, b) => a + b) / evaList.length;
+            int evaluation = eva.round();
+
+            for (int i = 0; i < result.length; i++) {
+              cospaList.add(result[i]['review_cospa']);
+            }
+            double cos = cospaList.reduce((a, b) => a + b) / cospaList.length;
+            int cospa = cos.round();
+
+            return Row(
+              children: [
+                Expanded(
+                    flex: 1,
+                    child: Column(
+                      //総合星評価
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SelectableText('総合評価',
+                            scrollPhysics: NeverScrollableScrollPhysics()),
+                        star(evaluation, 30)
+                      ],
+                    )),
+                Expanded(
+                    flex: 1,
+                    child: Column(
+                      //コスパ星評価
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SelectableText('コスパ',
+                            scrollPhysics: NeverScrollableScrollPhysics()),
+                        star(cospa, 30)
+                      ],
+                    )),
+              ],
+            );
+          });
+    }
+
+    //リピート
+    Widget numberOfReview(id) {
+      return StreamBuilder<QuerySnapshot>(
+
+          //表示したいFiresotreの保存先を指定
+          stream: FirebaseFirestore.instance
+              .collection('review')
+              .where('product_id', isEqualTo: id)
+              .snapshots(),
+
+          //streamが更新されるたびに呼ばれる
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            //データが取れていない時の処理
+            if (!snapshot.hasData) return const Text('Loading...');
+
+            final result = snapshot.data!.docs;
+
+            return Text(result.length.toString(),
+                style: TextStyle(
+                  color: HexColor('#EC9361'),
+                  fontWeight: FontWeight.w900,
+                ));
+          });
+    }
+
+    //リピート
+    Widget numberOfRepeat(id) {
+      return StreamBuilder<QuerySnapshot>(
+
+          //表示したいFiresotreの保存先を指定
+          stream: FirebaseFirestore.instance
+              .collection('repeat')
+              .where('product_id', isEqualTo: id)
+              .snapshots(),
+
+          //streamが更新されるたびに呼ばれる
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            //データが取れていない時の処理
+            if (!snapshot.hasData) return const Text('Loading...');
+
+            final result = snapshot.data!.docs;
+            repeatnum = result.length;
+
+            return Text(result.length.toString(),
+                style: TextStyle(
+                  color: HexColor('#EC9361'),
+                  fontWeight: FontWeight.w900,
+                ));
+          });
+    }
+
+    //気になる
+    Widget numberOfConcern(id) {
+      return StreamBuilder<QuerySnapshot>(
+
+          //表示したいFiresotreの保存先を指定
+          stream: FirebaseFirestore.instance
+              .collection('Concern')
+              .where('product_id', isEqualTo: id)
+              .snapshots(),
+
+          //streamが更新されるたびに呼ばれる
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            //データが取れていない時の処理
+            if (!snapshot.hasData) return const Text('Loading...');
+
+            final result = snapshot.data!.docs;
+
+            return Text('気になる (${result.length})',
+                style: TextStyle(
+                    color: concern == true ? Colors.white : HexColor('616161'),
+                    fontSize: 17));
+          });
+    }
+
+    Widget parcentAge(List<String> userId) {
+      return StreamBuilder<QuerySnapshot>(
+
+          //表示したいFiresotreの保存先を指定
+          stream: FirebaseFirestore.instance
+              .collection('account')
+              .where('user_id', whereIn: userId)
+              .snapshots(),
+
+          //streamが更新されるたびに呼ばれる
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            //データが取れていない時の処理
+            if (!snapshot.hasData) return const Text('Loading...');
+
+            final result = snapshot.data!.docs;
+            final now = DateTime.now();
+            int teen = 0;
+            int twenties = 0;
+            int thirties = 0;
+            int forties = 0;
+            List<int> year = [];
+
+            for (int i = 0; i < result.length; i++) {
+              year.add(
+                  now.difference(result[i]['user_birthday'].toDate()).inDays);
+            }
+
+            year.forEach((y) {
+              if (y > 0 && y < 7300) {
+                teen++;
+              } else if (y >= 7300 && y < 10950) {
+                twenties++;
+              } else if (y >= 10950 && y < 14600) {
+                thirties++;
+              } else {
+                forties++;
+              }
+            });
+            return Table(
+              children: [
+                TableRow(children: [
+                  percent_indicator('~10代', teen / result.length),
+                  percent_indicator('20代', twenties / result.length),
+                ]),
+                TableRow(children: [
+                  percent_indicator('30代', thirties / result.length),
+                  percent_indicator('40代~', forties / result.length),
+                ])
+              ],
+            );
+          });
+    }
+
+    //リピート年代
+    Widget repeatAge(id) {
+      return StreamBuilder<QuerySnapshot>(
+
+          //表示したいFiresotreの保存先を指定
+          stream: FirebaseFirestore.instance
+              .collection('repeat')
+              .where('product_id', isEqualTo: id)
+              .snapshots(),
+
+          //streamが更新されるたびに呼ばれる
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            //データが取れていない時の処理
+            if (!snapshot.hasData) return const Text('Loading...');
+
+            final result = snapshot.data!.docs;
+
+            if (result.length == 0) {
+              return Container(
+                child: Column(children: [
+                  Text('この商品を「リピート」しているユーザーの年代'),
+                  Table(
+                    children: [
+                      TableRow(children: [
+                        percent_indicator('~10代', 0.0),
+                        percent_indicator('20代', 0.0),
+                      ]),
+                      TableRow(children: [
+                        percent_indicator('30代', 0.0),
+                        percent_indicator('40代~', 0.0),
+                      ])
+                    ],
+                  ),
+                ]),
+              );
+            }
+
+            List<String> userId = []; //id一覧
+            for (int i = 0; i < result.length; i++) {
+              userId.add(result[i]['user_id']);
+            }
+            return Container(
+              child: Column(children: [
+                Text('この商品を「リピート」しているユーザーの年代'),
+                parcentAge(userId),
+              ]),
+            );
+          });
+    }
+
+    //レビュー年代
+    Widget reviewAge(id) {
+      return StreamBuilder<QuerySnapshot>(
+
+          //表示したいFiresotreの保存先を指定
+          stream: FirebaseFirestore.instance
+              .collection('review')
+              .where('product_id', isEqualTo: id)
+              .snapshots(),
+
+          //streamが更新されるたびに呼ばれる
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            //データが取れていない時の処理
+            if (!snapshot.hasData) return const Text('Loading...');
+
+            final result = snapshot.data!.docs;
+
+            if (result.length == 0) {
+              return Container(
+                child: Column(children: [
+                  Text('この商品を「レビュー」しているユーザーの年代'),
+                  Table(
+                    children: [
+                      TableRow(children: [
+                        percent_indicator('~10代', 0.0),
+                        percent_indicator('20代', 0.0),
+                      ]),
+                      TableRow(children: [
+                        percent_indicator('30代', 0.0),
+                        percent_indicator('40代~', 0.0),
+                      ])
+                    ],
+                  ),
+                ]),
+              );
+            }
+
+            List<String> userId = []; //id一覧
+            for (int i = 0; i < result.length; i++) {
+              userId.add(result[i]['user_id']);
+            }
+            return Container(
+              child: Column(children: [
+                Text('この商品を「レビュー」しているユーザーの年代'),
+                parcentAge(userId),
+              ]),
+            );
+          });
+    }
+
+    //成分
+
+    Widget nutritionalIngredients(String id) {
+      return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+
+          //表示したいFiresotreの保存先を指定
+          stream: FirebaseFirestore.instance
+              .collection('product')
+              .doc(id)
+              .collection('nutritional_ingredients')
+              .doc(id)
+              .snapshots(),
+
+          //streamが更新されるたびに呼ばれる
+          builder: (context,
+              AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+            //データが取れていない時の処理
+            if (!snapshot.hasData) return const Text('Loading...');
+
+            return SelectableText(
+                '${snapshot.data!['subject']}　たんぱく質　${snapshot.data!['たんぱく質']}　/　エネルギー　${snapshot.data!['エネルギー']}　/　炭水化物　${snapshot.data!['炭水化物']}　/　脂質　${snapshot.data!['脂質']}　/　食塩相当量　${snapshot.data!['食塩相当量']}',
+                scrollPhysics: NeverScrollableScrollPhysics());
           });
     }
 
@@ -209,28 +564,17 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 children: [
                                                   SpaceBox.width(5),
                                                   Icon(
+                                                    //リピート
                                                     FontAwesomeIcons.sync,
                                                     color: Colors.grey,
                                                     size: 20,
                                                   ),
-                                                  Text('100',
-                                                      style: TextStyle(
-                                                        color:
-                                                            HexColor('#EC9361'),
-                                                        fontWeight:
-                                                            FontWeight.w900,
-                                                      )),
+                                                  numberOfRepeat(productId),
                                                   SpaceBox.width(20),
-                                                  Icon(Icons.rate_review,
+                                                  Icon(Icons.rate_review, //レビュー
                                                       color: Colors.grey,
                                                       size: 30),
-                                                  Text('100',
-                                                      style: TextStyle(
-                                                        color:
-                                                            HexColor('#EC9361'),
-                                                        fontWeight:
-                                                            FontWeight.w900,
-                                                      )),
+                                                  numberOfReview(productId),
                                                 ],
                                               ),
                                             )
@@ -340,40 +684,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   EdgeInsets.only(left: 20),
                                               child: Column(
                                                 children: [
-                                                  Row(
-                                                    children: [
-                                                      Expanded(
-                                                          flex: 1,
-                                                          child: Column(
-                                                            //総合星評価
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              SelectableText(
-                                                                  '総合評価',
-                                                                  scrollPhysics:
-                                                                      NeverScrollableScrollPhysics()),
-                                                              star(4, 30)
-                                                            ],
-                                                          )),
-                                                      Expanded(
-                                                          flex: 1,
-                                                          child: Column(
-                                                            //コスパ星評価
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              SelectableText(
-                                                                  'コスパ',
-                                                                  scrollPhysics:
-                                                                      NeverScrollableScrollPhysics()),
-                                                              star(2, 30)
-                                                            ],
-                                                          )),
-                                                    ],
-                                                  ),
+                                                  evaluation(productId),
                                                   SpaceBox.height(20),
                                                   Align(
                                                     alignment:
@@ -490,7 +801,6 @@ class _DetailsPageState extends State<DetailsPage> {
                                                           .spaceAround,
                                                   children: [
                                                     SizedBox(
-                                                        //気になるボタン
                                                         width: 170,
                                                         height: 35,
                                                         child: ElevatedButton(
@@ -519,7 +829,6 @@ class _DetailsPageState extends State<DetailsPage> {
                                                           },
                                                         )),
                                                     SizedBox(
-                                                        //気になるボタン
                                                         width: 170,
                                                         height: 35,
                                                         child: ElevatedButton(
@@ -548,7 +857,6 @@ class _DetailsPageState extends State<DetailsPage> {
                                                           },
                                                         )),
                                                     SizedBox(
-                                                        //気になるボタン
                                                         width: 170,
                                                         height: 35,
                                                         child: ElevatedButton(
@@ -610,14 +918,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                             : HexColor(
                                                                 '616161')),
                                                     SpaceBox.width(10),
-                                                    Text('気になる (435)',
-                                                        style: TextStyle(
-                                                            color: concern ==
-                                                                    true
-                                                                ? Colors.white
-                                                                : HexColor(
-                                                                    '616161'),
-                                                            fontSize: 17))
+                                                    numberOfConcern(productId),
                                                   ],
                                                 ),
                                                 onPressed: () {
@@ -653,7 +954,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                             : HexColor(
                                                                 '616161')),
                                                     SpaceBox.width(10),
-                                                    Text('リピート (435)',
+                                                    Text('リピート (${repeatnum})',
                                                         style: TextStyle(
                                                             color: repeat ==
                                                                     true
@@ -720,14 +1021,14 @@ class _DetailsPageState extends State<DetailsPage> {
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
-                                                        SelectableText(
-                                                          result[
-                                                              'raw_material'],
-                                                          scrollPhysics:
-                                                              NeverScrollableScrollPhysics(),
-                                                        ),
-                                                        SpaceBox.height(20)
-                                                      ])
+                                                            SelectableText(
+                                                              result[
+                                                                  'raw_material'],
+                                                              scrollPhysics:
+                                                                  NeverScrollableScrollPhysics(),
+                                                            ),
+                                                            SpaceBox.height(20)
+                                                          ])
                                                       // child: SelectableText(result['raw_material'],scrollPhysics: NeverScrollableScrollPhysics(),),
                                                       )),
                                               SizedBox(
@@ -766,17 +1067,18 @@ class _DetailsPageState extends State<DetailsPage> {
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
-                                                        Row(children: [
-                                                          for (int i = 0;
-                                                              i <
-                                                                  result['allergy_id']
-                                                                      .length;
-                                                              i++)
-                                                            allergyName(result[
-                                                                'allergy_id'][i])
-                                                        ]),
-                                                        SpaceBox.height(20)
-                                                      ]))),
+                                                            Row(children: [
+                                                              for (int i = 0;
+                                                                  i <
+                                                                      result['allergy_id']
+                                                                          .length;
+                                                                  i++)
+                                                                allergyName(
+                                                                    result['allergy_id']
+                                                                        [i])
+                                                            ]),
+                                                            SpaceBox.height(20)
+                                                          ]))),
                                               SizedBox(
                                                 //栄養成分ドロップダウン
                                                 width: 700,
@@ -810,12 +1112,11 @@ class _DetailsPageState extends State<DetailsPage> {
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
-                                                        SelectableText(
-                                                            '${result['nutritional_ingredients'][0]} / ${result['nutritional_ingredients'][1]} / ${result['nutritional_ingredients'][2]} / ${result['nutritional_ingredients'][3]} / ${result['nutritional_ingredients'][4]} / ${result['nutritional_ingredients'][5]}',
-                                                            scrollPhysics:
-                                                                NeverScrollableScrollPhysics()),
-                                                        SpaceBox.height(20)
-                                                      ])
+                                                            nutritionalIngredients(
+                                                                result[
+                                                                    'product_id']),
+                                                            SpaceBox.height(20)
+                                                          ])
                                                       // child: SelectableText(
                                                       //     '${result['nutritional_ingredients'][0]} / ${result['nutritional_ingredients'][1]} / ${result['nutritional_ingredients'][2]} / ${result['nutritional_ingredients'][3]} / ${result['nutritional_ingredients'][4]} / ${result['nutritional_ingredients'][5]}',scrollPhysics: NeverScrollableScrollPhysics())
 
@@ -831,45 +1132,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   EdgeInsets.only(left: 20),
                                               child: Column(
                                                 children: [
-                                                  SelectableText(
-                                                      'この商品を「気になる」しているユーザーの年代',
-                                                      scrollPhysics:
-                                                          NeverScrollableScrollPhysics()),
-                                                  Table(
-                                                    children: [
-                                                      TableRow(children: [
-                                                        percent_indicator(
-                                                            '~10代', 0.1),
-                                                        percent_indicator(
-                                                            '20代', 0.2),
-                                                      ]),
-                                                      TableRow(children: [
-                                                        percent_indicator(
-                                                            '30代', 0.9),
-                                                        percent_indicator(
-                                                            '40代~', 0.2),
-                                                      ])
-                                                    ],
-                                                  ),
+                                                  repeatAge(productId),
                                                   SpaceBox.height(20),
-                                                  Text(
-                                                      'この商品を「レビュー」しているユーザーの年代'),
-                                                  Table(
-                                                    children: [
-                                                      TableRow(children: [
-                                                        percent_indicator(
-                                                            '~10代', 0.1),
-                                                        percent_indicator(
-                                                            '20代', 0.2),
-                                                      ]),
-                                                      TableRow(children: [
-                                                        percent_indicator(
-                                                            '30代', 0.9),
-                                                        percent_indicator(
-                                                            '40代~', 0.2),
-                                                      ])
-                                                    ],
-                                                  ),
+                                                  reviewAge(productId),
                                                 ],
                                               ))),
                                     ],
@@ -939,21 +1204,21 @@ class _DetailsPageState extends State<DetailsPage> {
                           Tooltip(
                             message: 'クリップボードに保存します',
                             child: ElevatedButton(
-                            //クリップボタン
-                            child: Icon(Icons.assignment_turned_in, size: 30),
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.all(20),
-                              primary: Colors.white,
-                              onPrimary: HexColor('EC9361'),
-                              shape: CircleBorder(
-                                side: BorderSide(
-                                  color: Colors.transparent,
-                                  width: 1,
-                                  style: BorderStyle.solid,
+                              //クリップボタン
+                              child: Icon(Icons.assignment_turned_in, size: 30),
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.all(20),
+                                primary: Colors.white,
+                                onPrimary: HexColor('EC9361'),
+                                shape: CircleBorder(
+                                  side: BorderSide(
+                                    color: Colors.transparent,
+                                    width: 1,
+                                    style: BorderStyle.solid,
+                                  ),
                                 ),
                               ),
-                            ),
-                            onPressed: () {
+                              onPressed: () {
                                 clipList.add({
                                   'Text': product_name,
                                   'image': image,

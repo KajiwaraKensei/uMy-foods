@@ -10,6 +10,9 @@ class Header extends StatelessWidget with PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(90.0);
 
+  var _selectedValue = 'ログイン'; //初期にフォーカスされているもの
+  var _usStates = ["ログイン", "マイページ"]; //ポップアップのリスト
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -100,7 +103,44 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                 ),
               ),
               // マイページ
-              Tooltip(
+              PopupMenuButton<String>(
+                tooltip: 'ユーザーメニュー',
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                child: Container(
+                  margin: EdgeInsets.only(left: 50),
+                  child: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.orange,
+                      backgroundImage: NetworkImage((UserImage == "")
+                          ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/anotherUser2.png?alt=media&token=2c965f37-f6b3-4594-9998-24080a38073f'
+                          : UserImage)),
+                ),
+                initialValue: _selectedValue,
+                onSelected: (String s) {
+                  if (s == 'ログイン') {
+                    //画面遷移
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Login(),
+                        ));
+                  }
+                  // setState(() {
+                  //   _selectedValue = s;
+                  // });
+                },
+                itemBuilder: (BuildContext context) {
+                  return _usStates.map((String s) {
+                    return PopupMenuItem(
+                      //ポップアップに載せる物
+                      child: Text(s),
+                      value: s,
+                    );
+                  }).toList();
+                },
+              ),
+              /*Tooltip(
                 message: 'ログイン',
                 child: Container(
                   margin: EdgeInsets.only(left: 50),
@@ -118,7 +158,7 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                           backgroundImage: NetworkImage((UserImage == "")
                               ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/anotherUser2.png?alt=media&token=2c965f37-f6b3-4594-9998-24080a38073f'
                               : UserImage)))),
-              ),
+              ),*/
             ],
           ),
         ),

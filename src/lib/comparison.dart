@@ -9,11 +9,15 @@ import 'package:umy_foods/details/details.dart';
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart'; //パンくず
 
 class Comparison extends StatefulWidget {
+  Comparison(this.productList);
+  List<Map<String, dynamic>> productList;
   @override
-  _ComparisonState createState() => _ComparisonState();
+  _ComparisonState createState() => _ComparisonState(productList);
 }
 
 class _ComparisonState extends State<Comparison> {
+  _ComparisonState(this.productList);
+  List<Map<String, dynamic>> productList;
   bool darkMode = false;
   bool useSides = false;
   double numberOfFeatures = 6;
@@ -101,103 +105,11 @@ class _ComparisonState extends State<Comparison> {
       'Brand': 'ガルボ',
       'RelDate': '1990/01/01',
     },
-    /*{
-      'Name': 'カントリーマアム',
-      'Image': 'https://www.toysrus.co.jp/i/5/0/8/508961100AML.jpg',
-      'Eval': 5, // 総合評価
-      'Rank': 'お菓子2位',
-      'Repeat': <double>[252, 249],
-      'Con': 252, // 気になる
-      'CostP': 4, // コスパ
-      'taste': <double>[10, 0, 0, 0, 0, 0, 8],
-      'Material': 'いろいろ', // 原材料
-      'Allergy': '小麦',
-      'Nutrition': 'カロリー：10g,タンパク質：11g',
-      'Manufact': 'どこか', // メーカー
-      'RefPrice': '250円',
-      'InterCap': '100g',
-      'Brand': 'カントリーマアム',
-      'RelDate': '1990/01/01',
-    },
-    {
-      'Name': 'エリーゼ',
-      'Image': 'https://www.life-netsuper.jp/k-kinkicommon/parts/data/item/04901360273010.jpg',
-      'Eval': 5, // 総合評価
-      'Rank': 'お菓子1位',
-      'Repeat': <double>[999, 999],
-      'Con': 99999, // 気になる
-      'CostP': 5, // コスパ
-      'taste': <double>[10, 0, 0, 0, 0, 0, 10],
-      'Material': 'いろいろ', // 原材料
-      'Allergy': '小麦',
-      'Nutrition': 'カロリー：5g,タンパク質：8g',
-      'Manufact': 'ブルボン', // メーカー
-      'RefPrice': '200円',
-      'InterCap': '110g',
-      'Brand': 'エリーゼ',
-      'RelDate': '1990/01/01',
-    },
-    {
-      'Name': '苺トッポ',
-      'Image': 'https://images-fe.ssl-images-amazon.com/images/I/71SBG7SSapL.__AC_SX300_SY300_QL70_ML2_.jpg',
-      'Eval': 5, // 総合評価
-      'Rank': 'お菓子3位',
-      'Repeat': <double>[212, 200],
-      'Con': 212, // 気になる
-      'CostP': 5, // コスパ
-      'taste': <double>[8, 0, 0, 0, 0, 0, 8],
-      'Material': 'いろいろ', // 原材料
-      'Allergy': '小麦',
-      'Nutrition': 'エネルギー：10g,タンパク質：11g',
-      'Manufact': 'ロッテ', // メーカー
-      'RefPrice': '112円',
-      'InterCap': '51g',
-      'Brand': 'トッポ',
-      'RelDate': '2021/06/20',
-    },
-    {
-      'Name': 'ポッキー',
-      'Image': 'https://images-na.ssl-images-amazon.com/images/I/71mxyAVWynL._AC_SL1500_.jpg',
-      'Eval': 5, // 総合評価
-      'Rank': 'お菓子4位',
-      'Repeat': <double>[111, 80],
-      'Con': 51, // 気になる
-      'CostP': 4, // コスパ
-      'taste': <double>[7, 0, 0, 0, 0, 0, 7],
-      'Material': 'いろいろ', // 原材料
-      'Allergy': '小麦',
-      'Nutrition': 'エネルギー：10g,タンパク質：11g',
-      'Manufact': '江崎グリコ', // メーカー
-      'RefPrice': '120円',
-      'InterCap': '51g',
-      'Brand': 'ポッキー',
-      'RelDate': '2021/06/20',
-    },
-    {
-      'Name': 'パイの実',
-      'Image':
-          'https://www.tanomail.com/imgcv/product/26/2621344_01.jpg?sr.dw=230&sr.dh=230',
-      'Eval': 5, // 総合評価
-      'Rank': 'お菓子5位',
-      'Repeat': <double>[300, 250], // [レビュー数, リピしたい数]
-      'Con': 300, // 気になる
-      'CostP': 4, // コスパ
-      'taste': <double>[4, 0, 7, 0, 0, 0, 10],
-      'Material': 'いろいろ', // 原材料
-      'Allergy': '小麦',
-      'Nutrition': 'エネルギー：10g,タンパク質：11g',
-      'Manufact': '江崎グリコ', // メーカー
-      'RefPrice': '120円',
-      'InterCap': '51g',
-      'Brand': 'プリッツ',
-      'RelDate': '2021/06/20',
-    },*/
   ];
 
   @override
   Widget build(BuildContext context) {
-
-      Widget myContainer(
+    Widget myContainer(
         {double size = 300, required Color color, String text = ''}) {
       var slist = [
         "商品名",
@@ -218,25 +130,25 @@ class _ComparisonState extends State<Comparison> {
         "発売日"
       ];
 
-    return Container(
-      color: color,
-      width: size,
-      child: Column(children: [
-        Table(
-          border: TableBorder.all(),
-          children: [
-            for (int rcnt = 0; rcnt < 16; rcnt++)
-              TableRow(children: [
-                //height通常20
-                if (text == 'list')
-                  if (rcnt == 1)
-                    Container(
-                      child: Center(
+      return Container(
+        color: color,
+        width: size,
+        child: Column(children: [
+          Table(
+            border: TableBorder.all(),
+            children: [
+              for (int rcnt = 0; rcnt < 16; rcnt++)
+                TableRow(children: [
+                  //height通常20
+                  if (text == 'list')
+                    if (rcnt == 1)
+                      Container(
+                        child: Center(
                             child: Text(slist[rcnt],
                                 style: TextStyle(color: HexColor('616161')))),
-                      color: HexColor('ffdfc5'),
-                      height: 150,
-                    )
+                        color: HexColor('ffdfc5'),
+                        height: 150,
+                      )
                     else if (rcnt == 0)
                       Container(
                         child: Center(
@@ -245,15 +157,15 @@ class _ComparisonState extends State<Comparison> {
                         color: HexColor('ffdfc5'),
                         height: 28,
                       )
-                  else if (rcnt == 7)
-                    Container(
-                      child: Center(
+                    else if (rcnt == 7)
+                      Container(
+                        child: Center(
                             child: Text(slist[rcnt],
                                 style: TextStyle(color: HexColor('616161')))),
-                      color: HexColor('ffdfc5'),
-                      height: 200,
-                    )
-                  else if (rcnt == 8)
+                        color: HexColor('ffdfc5'),
+                        height: 200,
+                      )
+                    else if (rcnt == 8)
                       Container(
                         child: Center(
                             child: Text(slist[rcnt],
@@ -269,15 +181,15 @@ class _ComparisonState extends State<Comparison> {
                         color: HexColor('ffdfc5'),
                         height: 80,
                       )
-                  else
-                    Container(
-                      child: Center(
+                    else
+                      Container(
+                        child: Center(
                             child: Text(slist[rcnt],
                                 style: TextStyle(color: HexColor('616161')))),
-                      color: HexColor('ffdfc5'),
-                    )
-                else if (text == 'contents')
-                  if (rcnt == 0)
+                        color: HexColor('ffdfc5'),
+                      )
+                  else if (text == 'contents')
+                    if (rcnt == 0)
                       Container(
                         child: Center(
                             child: TextButton(
@@ -293,72 +205,72 @@ class _ComparisonState extends State<Comparison> {
                         color: Colors.white,
                       )
                     else if (rcnt == 1) //商品画像
-                    Container(
-                      child: Padding(
+                      Container(
+                        child: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Center(
                                 child: Image.network(conItems[ccnt]['Image']))),
-                      height: 150,
-                      width: 200,
-                      color: Colors.white,
-                    )
-                  else if (rcnt == 2) //総合評価
-                    Container(
-                      child: Center(
+                        height: 150,
+                        width: 200,
+                        color: Colors.white,
+                      )
+                    else if (rcnt == 2) //総合評価
+                      Container(
+                        child: Center(
                             child: Text(conItems[ccnt]['Eval'].toString(),
                                 style: TextStyle(color: Colors.black))),
-                      color: Colors.white,
-                    )
-                  else if (rcnt == 4) //リピートしたい
-                    Container(
-                      child: Center(
+                        color: Colors.white,
+                      )
+                    else if (rcnt == 4) //リピートしたい
+                      Container(
+                        child: Center(
                             child: Text(
                                 showRepeat(conItems[ccnt][conItemLabels[rcnt]]),
                                 style: TextStyle(color: Colors.black))),
-                      color: Colors.white,
-                    )
-                  else if (rcnt == 5) //気になる
-                    Container(
-                      child: Center(
+                        color: Colors.white,
+                      )
+                    else if (rcnt == 5) //気になる
+                      Container(
+                        child: Center(
                             child: Text(
                                 conItems[ccnt][conItemLabels[rcnt]].toString() +
                                     '回',
                                 style: TextStyle(color: Colors.black))),
-                      color: Colors.white,
-                    )
-                  else if (rcnt == 6) //コスパ
-                    Container(
-                      child: Center(
+                        color: Colors.white,
+                      )
+                    else if (rcnt == 6) //コスパ
+                      Container(
+                        child: Center(
                             child: Text(conItems[ccnt]['CostP'].toString(),
                                 style: TextStyle(color: Colors.black))),
-                      color: Colors.white,
-                    )
-                  else if (rcnt == 7) //レーダーチャート
-                    Container(
-                      width: 200,
-                      height: 200,
-                      color: Colors.white,
-                      //Radar Chart
-                      child: RadarChart(
-                        animate: false, // アニメーションの有無 true or false
-                        animationDuration:
+                        color: Colors.white,
+                      )
+                    else if (rcnt == 7) //レーダーチャート
+                      Container(
+                        width: 200,
+                        height: 200,
+                        color: Colors.white,
+                        //Radar Chart
+                        child: RadarChart(
+                          animate: false, // アニメーションの有無 true or false
+                          animationDuration:
                               Duration(milliseconds: 700), //アニメーションの再生速度 ミリ秒
-                        values: conItems[ccnt]['taste'],
-                        labels: [
-                          "甘味",
-                          "酸味",
-                          "塩味",
-                          "苦味",
-                          "辛味",
-                          "刺激",
-                          "うま味",
-                        ],
-                        maxValue: 10,
-                        fillColor: Colors.blue,
-                        chartRadiusFactor: 0.8,
-                      ),
-                    )
-                  else if (rcnt == 8) //原材料
+                          values: conItems[ccnt]['taste'],
+                          labels: [
+                            "甘味",
+                            "酸味",
+                            "塩味",
+                            "苦味",
+                            "辛味",
+                            "刺激",
+                            "うま味",
+                          ],
+                          maxValue: 10,
+                          fillColor: Colors.blue,
+                          chartRadiusFactor: 0.8,
+                        ),
+                      )
+                    else if (rcnt == 8) //原材料
                       Container(
                         child: Align(
                             alignment: Alignment.topLeft,
@@ -375,27 +287,27 @@ class _ComparisonState extends State<Comparison> {
                         color: Colors.white,
                         height: 80,
                       )
-                  else
-                    Container(
-                      child: Center(
+                    else
+                      Container(
+                        child: Center(
                             child: Text(conItems[ccnt][conItemLabels[rcnt]],
                                 style: TextStyle(color: Colors.black))),
-                      color: Colors.white,
-                    )
-              ])
-          ],
-        ),
-        // child: Text(
-        //   text,
-        //   style: TextStyle(
-        //       fontSize: 48,
-        //       fontWeight: FontWeight.bold,
-        //       color: Colors.white
-        //   ),
-        // ),
-      ]),
-    );
-  }
+                        color: Colors.white,
+                      )
+                ])
+            ],
+          ),
+          // child: Text(
+          //   text,
+          //   style: TextStyle(
+          //       fontSize: 48,
+          //       fontWeight: FontWeight.bold,
+          //       color: Colors.white
+          //   ),
+          // ),
+        ]),
+      );
+    }
 
     return Scaffold(
       appBar: Header(),

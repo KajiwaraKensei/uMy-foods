@@ -62,18 +62,62 @@ class _ReviewPageState extends State<ReviewPage> {
           if (!snapshot.hasData) return const Text('Loading...');
 
           final result = snapshot.data!.docs;
+          List<int> evaList = []; //評価リスト
 
           if (result.length == 0) {
             return Text('レビューはありません');
           }
 
-          int sum = 0;
           for (int j = 0; j < result.length; j++) {
-            //  sum += int.parse(result[j]['review_evaluation']);
+            //評価
+            evaList.add(result[j]['review_evaluation']);
           }
 
-          double ave = sum / result.length;
+          double ave = evaList.reduce((a, b) => a + b) / evaList.length;
           int average = ave.round();
+
+          num sweet_sum = 0;
+          num acidity_sum = 0;
+          num salty_sum = 0;
+          num bitter_sum = 0;
+          num spicy_sum = 0;
+          num umami_sum = 0;
+
+          for (int i = 0; i < result.length; i++) {
+            sweet_sum = sweet_sum + result[i]['taste'][0];
+            acidity_sum = acidity_sum + result[i]['taste'][1];
+            salty_sum = salty_sum + result[i]['taste'][2];
+            bitter_sum = bitter_sum + result[i]['taste'][3];
+            spicy_sum = spicy_sum + result[i]['taste'][4];
+            umami_sum = umami_sum + result[i]['taste'][5];
+          }
+
+          double sweet = sweet_sum / result.length; //甘味
+          double acidity = acidity_sum / result.length; //酸味
+          double salty = salty_sum / result.length; //塩味
+          double bitter = bitter_sum / result.length; //苦味
+          double spicy = spicy_sum / result.length; //辛味
+          double umami = umami_sum / result.length; //うまみ
+
+          int S_one = 0;
+          int S_two = 0;
+          int S_three = 0;
+          int S_four = 0;
+          int S_five = 0;
+          List<double> mikaku = [sweet, acidity, salty, bitter, spicy, umami];
+
+          evaList.forEach((eva) {
+            if (eva == 1)
+              S_one++;
+            else if (eva == 2)
+              S_two++;
+            else if (eva == 3)
+              S_three++;
+            else if (eva == 4)
+              S_four++;
+            else
+              S_five++;
+          });
 
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -96,22 +140,21 @@ class _ReviewPageState extends State<ReviewPage> {
                               flex: 1,
                               child: Column(
                                 children: [
-                                  star(4, 50), //星評価
-                                  SelectableText('5000件',
+                                  star(average, 50), //星評価
+                                  SelectableText(result.length.toString() + '件',
                                       scrollPhysics:
                                           NeverScrollableScrollPhysics()), //評価件数
                                   Container(
                                     height: 170,
                                     //Radar Chart
                                     child: RadarChart(
-                                      values: [1, 2, 4, 7, 9, 0, 6],
+                                      values: mikaku,
                                       labels: [
                                         "甘味",
                                         "酸味",
                                         "塩味",
                                         "苦味",
                                         "辛味",
-                                        "刺激",
                                         "うま味",
                                       ],
                                       maxValue: 10,
@@ -129,17 +172,20 @@ class _ReviewPageState extends State<ReviewPage> {
                               child: Column(
                                 children: [
                                   //評価別のパーセント
-                                  percent_indicator('5', 0.9),
-                                  percent_indicator('4', 0.4),
-                                  percent_indicator('3', 0.2),
-                                  percent_indicator('2', 0.6),
-                                  percent_indicator('1', 0.1),
+                                  percent_indicator(
+                                      '5', S_five / result.length),
+                                  percent_indicator(
+                                      '4', S_four / result.length),
+                                  percent_indicator(
+                                      '3', S_three / result.length),
+                                  percent_indicator('2', S_two / result.length),
+                                  percent_indicator('1', S_one / result.length),
                                 ],
                               ),
                             )
                           ],
                         ),
-                        Age_Review(productId)
+                        Age_Review(productId, mikaku)
                       ],
                     ),
                   ),
@@ -379,18 +425,20 @@ class _ReviewPageState extends State<ReviewPage> {
 }
 
 class Age_Review extends StatefulWidget {
-  Age_Review(this.productId);
+  Age_Review(this.productId, this.mikaku);
   final String productId;
+  final List<double> mikaku;
   @override
-  _Age_Review createState() => _Age_Review(productId);
+  _Age_Review createState() => _Age_Review(productId, mikaku);
 }
 
 //レビュー年代別
 class _Age_Review extends State<Age_Review> {
-  _Age_Review(this.productId);
+  _Age_Review(this.productId, this.mikaku);
   final String productId;
-  List<double> allage_list = [1, 2, 4, 7, 9, 0, 6]; //レーダーチャート全体
-  List<double> age_list = [5, 3, 2, 4, 5, 0, 6]; //レーダーチャート年代
+  List<double> mikaku;
+  List<double> allage_list = [1, 2, 4, 7, 9, 6]; //レーダーチャート全体
+  List<double> age_list = [5, 3, 2, 4, 5, 6]; //レーダーチャート年代
 
   @override
   Widget build(BuildContext context) {
@@ -419,6 +467,7 @@ class _Age_Review extends State<Age_Review> {
           ],
           views: [
             Container(
+              //ここで年代別の内容
               child: age_reviewbar('～10代', productId),
             ),
             Container(
@@ -446,210 +495,377 @@ class _Age_Review extends State<Age_Review> {
   }
 
   Widget age_reviewbar(String age, String productId) {
-    return Column(
-      children: [
-        Container(
-          height: 74,
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            SelectableText(age + 'の総合評価',
-                style: TextStyle(fontSize: 27.0),
-                scrollPhysics: NeverScrollableScrollPhysics()), //年代タイトル
-            Container(
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 120,
-                    height: 40,
-                    child: ElevatedButton(
-                        //表示順
-                        child: const Text('表示順'),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
-                          onPrimary: HexColor('EC9361'),
-                          side: BorderSide(color: HexColor('EC9361')),
-                        ),
-                        onPressed: () async {
-                          setState(() {});
-                          return showDialog<void>(
-                              context: context,
-                              barrierDismissible: true, // user must tap button!
-                              builder: (BuildContext context) {
-                                return SortDialog();
-                              });
-                        }),
-                  ),
-                  SpaceBox.width(20),
-                  SizedBox(
-                    width: 120,
-                    height: 40,
-                    child: ElevatedButton(
-                        //絞り込みボタン
-                        child: const Text('絞り込み'),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
-                          onPrimary: HexColor('EC9361'),
-                          side: BorderSide(color: HexColor('EC9361')),
-                        ),
-                        onPressed: () async {
-                          setState(() {});
-                          return showDialog<void>(
-                              context: context,
-                              barrierDismissible: true, // user must tap button!
-                              builder: (BuildContext context) {
-                                return Gender_FilteringDialog();
-                              });
-                        }),
-                  ),
-                  if (switchBool) //昇順降順ボタン
-                    Container(
-                      child: Transform.rotate(
-                          child: TextButton(
-                            child: Icon(
-                              Icons.sort_outlined,
-                              color: HexColor('FFDFC5'),
-                              size: 50,
-                            ),
-                            onPressed: _onPressedStart,
-                          ),
-                          angle: pi / 1),
-                    )
-                  else
-                    TextButton(
-                        child: Icon(
-                          Icons.sort_outlined,
-                          color: HexColor('FFDFC5'),
-                          size: 50,
-                        ),
-                        onPressed: _onPressedStart)
-                ],
-              ),
-            )
-          ]),
-        ), //年代別
-        Divider(
-          //仕切り線
-          height: 20,
-          thickness: 5,
-          color: HexColor('FFDFC5'),
-        ),
-        Container(
-            child: Row(
-          children: [
-            Column(
-              children: [
-                Row(
-                  children: [
-                    //総合星評価
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('総合評価', style: TextStyle(fontSize: 15)),
-                    ),
-                    SpaceBox.width(30),
-                    star(4, 50)
-                  ],
-                ),
-                Row(
-                  children: [
-                    //コスパ星評価
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('コスパ', style: TextStyle(fontSize: 15)),
-                    ),
-                    SpaceBox.width(40),
-                    star(4, 50)
-                  ],
-                )
-              ],
-            ),
-            Expanded(
-                flex: 1,
-                child: Container(
-                    child: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        reader(allage_list, '2196F3'), //全年代レーダーチャート
-                        reader(age_list, 'EC9361') //選択した年代のレーダーチャート
-                      ],
-                    ),
-                    RichText(
-                      //レーダーの色説明
-                      text: TextSpan(
-                          style: TextStyle(color: Colors.black),
+    final now = DateTime.now();
+    int max = 0;
+    int min = 0;
+    if (age == '～10代') {
+      min = 0;
+      max = 7300;
+    } else if (age == '20代') {
+      min = 7300;
+      max = 10950;
+    } else if (age == '30代') {
+      min = 10950;
+      max = 14600;
+    } else {
+      min = 14600;
+      max = 999999;
+    }
+    return StreamBuilder<QuerySnapshot>(
+
+        //表示したいFiresotreの保存先を指定
+        stream: reviewData(productId),
+
+        //streamが更新されるたびに呼ばれる
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          //データが取れていない時の処理
+          if (!snapshot.hasData) return const Text('Loading...');
+
+          final reviewResult = snapshot.data!.docs;
+          List evaList = [];
+          int evaluation = 0;
+          List cospaList = [];
+          int cospa = 0;
+          List<double> ageMikaku = [0, 0, 0, 0, 0, 0];
+
+          for (int i = 0; i < reviewResult.length; i++)
+            if (now
+                        .difference(reviewResult[i]['user_birthday'].toDate())
+                        .inDays >
+                    min &&
+                now
+                        .difference(reviewResult[i]['user_birthday'].toDate())
+                        .inDays <
+                    max) {
+              for (int j = 0; j < reviewResult.length; j++) {
+                evaList.add(reviewResult[j]['review_evaluation']);
+              }
+              double eva = evaList.reduce((a, b) => a + b) / evaList.length;
+              evaluation = eva.round();
+
+              for (int i = 0; i < reviewResult.length; i++) {
+                cospaList.add(reviewResult[i]['review_cospa']);
+              }
+              double cos = cospaList.reduce((a, b) => a + b) / cospaList.length;
+              cospa = cos.round();
+
+              num sweet_sum = 0;
+              num acidity_sum = 0;
+              num salty_sum = 0;
+              num bitter_sum = 0;
+              num spicy_sum = 0;
+              num umami_sum = 0;
+
+              for (int i = 0; i < reviewResult.length; i++) {
+                sweet_sum = sweet_sum + reviewResult[i]['taste'][0];
+                acidity_sum = acidity_sum + reviewResult[i]['taste'][1];
+                salty_sum = salty_sum + reviewResult[i]['taste'][2];
+                bitter_sum = bitter_sum + reviewResult[i]['taste'][3];
+                spicy_sum = spicy_sum + reviewResult[i]['taste'][4];
+                umami_sum = umami_sum + reviewResult[i]['taste'][5];
+              }
+
+              double sweet = sweet_sum / reviewResult.length; //甘味
+              double acidity = acidity_sum / reviewResult.length; //酸味
+              double salty = salty_sum / reviewResult.length; //塩味
+              double bitter = bitter_sum / reviewResult.length; //苦味
+              double spicy = spicy_sum / reviewResult.length; //辛味
+              double umami = umami_sum / reviewResult.length; //うまみ
+              ageMikaku = [sweet, acidity, salty, bitter, spicy, umami];
+            }
+
+          return Column(
+            children: [
+              Container(
+                height: 74,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SelectableText(age + 'の総合評価',
+                          style: TextStyle(fontSize: 27.0),
+                          scrollPhysics:
+                              NeverScrollableScrollPhysics()), //年代タイトル
+                      Container(
+                        child: Row(
                           children: [
-                            TextSpan(
-                                text: '■',
-                                style: TextStyle(
-                                    color: HexColor('2196F3'),
-                                    fontWeight: FontWeight.w900)),
-                            TextSpan(text: '全年代'),
-                            TextSpan(text: '          '),
-                            TextSpan(
-                                text: '■',
-                                style: TextStyle(
-                                    color: HexColor('EC9361'),
-                                    fontWeight: FontWeight.w900)),
-                            TextSpan(text: age),
-                          ]),
-                    )
-                  ],
-                ))),
-          ],
-        )),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: SelectableText(age + 'のコメント',
-              style: TextStyle(fontSize: 27.0),
-              scrollPhysics: NeverScrollableScrollPhysics()),
-        ),
-        SpaceBox.height(20),
-        Container(
-          child: review(productId),
-        ),
-        Container(
-            margin: EdgeInsets.symmetric(vertical: 20),
-            child: Column(
-              children: [
-                Row(
-                  //ページング
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 35,
-                      height: 50,
-                      child: ElevatedButton(
-                        child: Text(
-                          '1',
-                          style: TextStyle(fontSize: 20),
+                            SizedBox(
+                              width: 120,
+                              height: 40,
+                              child: ElevatedButton(
+                                  //表示順
+                                  child: const Text('表示順'),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.white,
+                                    onPrimary: HexColor('EC9361'),
+                                    side: BorderSide(color: HexColor('EC9361')),
+                                  ),
+                                  onPressed: () async {
+                                    setState(() {});
+                                    return showDialog<void>(
+                                        context: context,
+                                        barrierDismissible:
+                                            true, // user must tap button!
+                                        builder: (BuildContext context) {
+                                          return SortDialog();
+                                        });
+                                  }),
+                            ),
+                            SpaceBox.width(20),
+                            SizedBox(
+                              width: 120,
+                              height: 40,
+                              child: ElevatedButton(
+                                  //絞り込みボタン
+                                  child: const Text('絞り込み'),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.white,
+                                    onPrimary: HexColor('EC9361'),
+                                    side: BorderSide(color: HexColor('EC9361')),
+                                  ),
+                                  onPressed: () async {
+                                    setState(() {});
+                                    return showDialog<void>(
+                                        context: context,
+                                        barrierDismissible:
+                                            true, // user must tap button!
+                                        builder: (BuildContext context) {
+                                          return Gender_FilteringDialog();
+                                        });
+                                  }),
+                            ),
+                            if (switchBool) //昇順降順ボタン
+                              Container(
+                                child: Transform.rotate(
+                                    child: TextButton(
+                                      child: Icon(
+                                        Icons.sort_outlined,
+                                        color: HexColor('FFDFC5'),
+                                        size: 50,
+                                      ),
+                                      onPressed: _onPressedStart,
+                                    ),
+                                    angle: pi / 1),
+                              )
+                            else
+                              TextButton(
+                                  child: Icon(
+                                    Icons.sort_outlined,
+                                    color: HexColor('FFDFC5'),
+                                    size: 50,
+                                  ),
+                                  onPressed: _onPressedStart)
+                          ],
                         ),
-                        style: ElevatedButton.styleFrom(
-                          primary: HexColor('EC9361'),
-                          onPrimary: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                      )
+                    ]),
+              ), //年代別
+              Divider(
+                //仕切り線
+                height: 20,
+                thickness: 5,
+                color: HexColor('FFDFC5'),
+              ),
+              Container(
+                  child: Row(
+                children: [
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          //総合星評価
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text('総合評価', style: TextStyle(fontSize: 15)),
                           ),
-                        ),
-                        onPressed: () {},
+                          SpaceBox.width(30),
+                          star(evaluation, 50)
+                        ],
                       ),
-                    ),
-                    TextButton(
-                      //＞ボタン
-                      child: const Text(
-                        '>',
-                        style: TextStyle(fontSize: 40),
-                      ),
-                      style: TextButton.styleFrom(
-                        primary: Colors.black,
-                      ),
-                      onPressed: () {},
-                    ),
+                      Row(
+                        children: [
+                          //コスパ星評価
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text('コスパ', style: TextStyle(fontSize: 15)),
+                          ),
+                          SpaceBox.width(40),
+                          star(cospa, 50)
+                        ],
+                      )
+                    ],
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                          child: Column(
+                        children: [
+                          Stack(
+                            children: [
+                              reader(mikaku, '2196F3'), //全年代レーダーチャート
+                              reader(ageMikaku, 'EC9361') //選択した年代のレーダーチャート
+                            ],
+                          ),
+                          RichText(
+                            //レーダーの色説明
+                            text: TextSpan(
+                                style: TextStyle(color: Colors.black),
+                                children: [
+                                  TextSpan(
+                                      text: '■',
+                                      style: TextStyle(
+                                          color: HexColor('2196F3'),
+                                          fontWeight: FontWeight.w900)),
+                                  TextSpan(text: '全年代'),
+                                  TextSpan(text: '          '),
+                                  TextSpan(
+                                      text: '■',
+                                      style: TextStyle(
+                                          color: HexColor('EC9361'),
+                                          fontWeight: FontWeight.w900)),
+                                  TextSpan(text: age),
+                                ]),
+                          )
+                        ],
+                      ))),
+                ],
+              )),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: SelectableText(age + 'のコメント',
+                    style: TextStyle(fontSize: 27.0),
+                    scrollPhysics: NeverScrollableScrollPhysics()),
+              ),
+              SpaceBox.height(20),
+              Container(
+                //レビュー内容
+                child: Column(
+                  children: [
+                    for (int i = 0; i < reviewResult.length; i++)
+                      if (now
+                                  .difference(
+                                      reviewResult[i]['user_birthday'].toDate())
+                                  .inDays >
+                              min &&
+                          now
+                                  .difference(
+                                      reviewResult[i]['user_birthday'].toDate())
+                                  .inDays <
+                              max)
+                        Container(
+                          padding: EdgeInsets.only(bottom: 20),
+                          child: Row(
+                            children: [
+                              reviewUserIcon(reviewResult[i]['user_id']),
+                              reviewUserData(reviewResult[i]['user_id'],
+                                  reviewResult[i]['review_evaluation']),
+                              Expanded(
+                                flex: 6,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.topLeft,
+                                      child: RichText(
+                                          //レビュー内容
+                                          softWrap: true,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 3, //最大行数
+                                          text: TextSpan(
+                                              text: reviewResult[i]
+                                                  ['review_comment'],
+                                              style: TextStyle(
+                                                  color: Colors.black))),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        //setState(() {});
+                                      },
+                                      child: Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Text(
+                                          '続きを読む',
+                                          style: TextStyle(
+                                              color: Colors.lightBlue),
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Icon(
+                                          Icons.favorite,
+                                          color: Colors.grey,
+                                          size: 20,
+                                        ),
+                                        Text('100'),
+                                        SpaceBox.width(20),
+                                        Icon(
+                                          Icons.chat_bubble_outline,
+                                          color: Colors.grey,
+                                          size: 20,
+                                        ),
+                                        Text('100'),
+                                        SpaceBox.width(50),
+                                        Text(DateFormat("yyyy/MM/dd")
+                                            .format(reviewResult[i]
+                                                    ['review_postdate']
+                                                .toDate())
+                                            .toString()), //投稿日時
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
                   ],
                 ),
-              ],
-            ))
-      ],
-    );
+              ),
+              Container(
+                  margin: EdgeInsets.symmetric(vertical: 20),
+                  child: Column(
+                    children: [
+                      Row(
+                        //ページング
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 35,
+                            height: 50,
+                            child: ElevatedButton(
+                              child: Text(
+                                '1',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: HexColor('EC9361'),
+                                onPrimary: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                          TextButton(
+                            //＞ボタン
+                            child: const Text(
+                              '>',
+                              style: TextStyle(fontSize: 40),
+                            ),
+                            style: TextButton.styleFrom(
+                              primary: Colors.black,
+                            ),
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
+                    ],
+                  ))
+            ],
+          );
+        });
   }
 
   Widget reader(List<double> cnt, String color) {
@@ -661,7 +877,6 @@ class _Age_Review extends State<Age_Review> {
         "塩味",
         "苦味",
         "辛味",
-        "刺激",
         "うま味",
       ],
       maxValue: 10,
@@ -670,89 +885,6 @@ class _Age_Review extends State<Age_Review> {
       animationDuration: Duration(milliseconds: 500),
     );
   }
-}
-
-Widget review(productId) {
-  return StreamBuilder<QuerySnapshot>(
-
-      //表示したいFiresotreの保存先を指定
-      stream: reviewData(productId),
-
-      //streamが更新されるたびに呼ばれる
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        //データが取れていない時の処理
-        if (!snapshot.hasData) return const Text('Loading...');
-
-        final result = snapshot.data!.docs;
-
-        return Column(
-          children: [
-            for (int i = 0; i < result.length; i++)
-              Container(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Row(
-                  children: [
-                    reviewUserIcon(result[i]['user_id']),
-                    reviewUserData(
-                        result[i]['user_id'], result[i]['review_evaluation']),
-                    Expanded(
-                      flex: 6,
-                      child: Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            child: RichText(
-                                //レビュー内容
-                                softWrap: true,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 3, //最大行数
-                                text: TextSpan(
-                                    text: result[i]['review_comment'],
-                                    style: TextStyle(color: Colors.black))),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              //setState(() {});
-                            },
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                '続きを読む',
-                                style: TextStyle(color: Colors.lightBlue),
-                              ),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.favorite,
-                                color: Colors.grey,
-                                size: 20,
-                              ),
-                              Text('100'),
-                              SpaceBox.width(20),
-                              Icon(
-                                Icons.chat_bubble_outline,
-                                color: Colors.grey,
-                                size: 20,
-                              ),
-                              Text('100'),
-                              SpaceBox.width(50),
-                              Text(DateFormat("yyyy/MM/dd")
-                                  .format(result[i]['review_postdate'].toDate())
-                                  .toString()) //投稿日時
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )
-          ],
-        );
-      });
 }
 
 Stream<QuerySnapshot> reviewData(String id) {

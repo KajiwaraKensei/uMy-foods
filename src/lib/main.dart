@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:umy_foods/comparison.dart';
 import 'package:umy_foods/header.dart';
@@ -14,9 +15,7 @@ void main() => runApp(MyApp());
 
 String UID = "";
 String UserImage = "";
-List<Map<String, dynamic>> clipList = [
-  {'image': '', 'text': '', 'product_id': ''}
-];
+List<Map<String, dynamic>> clipList = [];
 
 class MyApp extends StatelessWidget {
   @override
@@ -25,6 +24,7 @@ class MyApp extends StatelessWidget {
         title: 'uMyFoods',
         theme: ThemeData(primarySwatch: Colors.blue),
         debugShowCheckedModeBanner: false,
+        scrollBehavior: MyCustomScrollBehavior(), // これを追加！
         home: Home());
   }
 }
@@ -47,36 +47,36 @@ class Home extends StatelessWidget {
         'Text': 'きのこの山とたけのこの里 12袋',
         'image':
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1iSBzQche-bz05pN4oy14EFgCi7ha7a_xiw&usqp=CAU',
-        'product_id': '0JEOwz9bBqm4p9HVuDz',
+        'product_id': 'dFpfhWF9nbaH2XFGnoD',
       },
       {
         'Text': 'ガルボチョコパウチ 76g',
         'image': 'https://livedoor.blogimg.jp/plankman/imgs/b/f/bfa6566c.jpg',
-        'product_id': '3SofU80sVw4njBWKztW',
+        'product_id': '4MrJn0IawdFPhEURGXt',
       },
       {
         'Text': '明治ホワイトチョコレート 40g',
         'image': 'https://livedoor.blogimg.jp/plankman/imgs/e/e/ee5945d2.jpg',
-        'product_id': '3rRMgFVGkqIQGj2gCOC',
+        'product_id': 'XAVe9QfDTkKDJoUHnNZ',
       },
     ];
     final List<Map<String, dynamic>> RepeatRanking = [
       {
         'Text': '明治ホワイトチョコレート 40g',
         'image': 'https://livedoor.blogimg.jp/plankman/imgs/e/e/ee5945d2.jpg',
-        'product_id': '3rRMgFVGkqIQGj2gCOC',
+        'product_id': 'XAVe9QfDTkKDJoUHnNZ',
       },
       {
         'Text': 'きのこの山とたけのこの里 12袋',
         'image':
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1iSBzQche-bz05pN4oy14EFgCi7ha7a_xiw&usqp=CAU',
-        'product_id': '0JEOwz9bBqm4p9HVuDz',
+        'product_id': 'dFpfhWF9nbaH2XFGnoD',
       },
       {
         'Text': 'マーブル 32g',
         'image':
             'https://upload.wikimedia.org/wikipedia/commons/8/89/Meiji_Marble_Chocolate.jpg',
-        'product_id': '0uUyWU7Yfp1LxgcJhXN',
+        'product_id': 'b5f2MKFBu3nTbXLrUuf',
       },
     ];
     final List<Map<String, dynamic>> user = [
@@ -564,7 +564,7 @@ class Home extends StatelessWidget {
                                                                         ),
                                                                         onPressed:
                                                                             () {
-                                                                          clipList
+                                                                              clipList
                                                                               .add({
                                                                             'Text':
                                                                                 ConcernRanking[i]['Text'],
@@ -1706,4 +1706,13 @@ class Home extends StatelessWidget {
         floatingActionButton: clipButton() //Comparison(),
         );
   }
+}
+
+//マウスドラッグ許可
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch, // 通常のタッチ入力デバイス
+        PointerDeviceKind.mouse, // これを追加！
+      };
 }
