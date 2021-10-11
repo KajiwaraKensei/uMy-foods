@@ -14,6 +14,9 @@ class Header extends StatelessWidget with PreferredSizeWidget {
   var _selectedValue = 'ログイン'; //初期にフォーカスされているもの
   var _usStates = ["マイページ", "ログアウト"]; //ポップアップのリスト(ログインあり)
 
+  final TextEditingController _categoryNameController =
+      new TextEditingController(text: '');
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -34,32 +37,47 @@ class Header extends StatelessWidget with PreferredSizeWidget {
       leadingWidth: 80,
       //titleSpacing: 300,
       title: TextField(
+        controller: _categoryNameController,
+        keyboardType: TextInputType.text,
         decoration: InputDecoration(
-          // hintText: "クチコミ・商品・ユーザを検索",
-          prefixIcon: Icon(Icons.search),
-          fillColor: Colors.white,
-          filled: true,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(2.0),
-            borderSide: BorderSide(
-              color: Colors.black,
+            hintText: "クチコミ・商品・ユーザを検索",
+            // prefixIcon: Icon(Icons.search),
+            fillColor: Colors.white,
+            filled: true,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(2.0),
+              borderSide: BorderSide(
+                color: Colors.black,
+              ),
             ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(2.0),
-            borderSide: BorderSide(
-              color: Colors.black,
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(2.0),
+              borderSide: BorderSide(
+                color: Colors.black,
+              ),
             ),
-          ),
-          suffixIcon: IconButton(
-            icon: Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black,
+            suffixIcon: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.clear_sharp, color: Colors.black),
+                      onPressed: () => _categoryNameController.clear(),
+                    ),
+                    IconButton(
+                        icon: Icon(Icons.search, color: Colors.black),
+                        onPressed: () {}),
+                  ],
+                ),
+              ],
+            )
+            // border: InputBorder.none,
             ),
-            onPressed: () {},
-          ),
-          border: InputBorder.none,
-        ),
         style: TextStyle(color: Colors.black),
       ),
       centerTitle: true,
@@ -72,7 +90,7 @@ class Header extends StatelessWidget with PreferredSizeWidget {
             children: [
               // 投稿ボタン
               Container(
-                width: 100,
+                width: 80,
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
@@ -82,14 +100,18 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                           builder: (context) => ProductselectionPage(),
                         ));
                   },
-                  child: Text(
-                    "投稿",
-                    style: TextStyle(
-                      color: HexColor('ffffff'),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  child: IconButton(
+                    icon: Icon(Icons.mode, color: Colors.white),
+                    onPressed: () => _categoryNameController.clear(),
                   ),
+                  // child: Text(
+                  //   "投稿",
+                  //   style: TextStyle(
+                  //     color: HexColor('ffffff'),
+                  //     fontSize: 16,
+                  //     fontWeight: FontWeight.w600,
+                  //   ),
+                  // ),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
