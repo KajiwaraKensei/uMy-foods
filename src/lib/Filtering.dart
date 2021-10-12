@@ -60,11 +60,19 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
           child: OutlinedButton(
             child: const Text('OK'),
             style: TextButton.styleFrom(
-              primary: HexColor('EC9361'),
+              primary:HexColor('EC9361'),
               side: BorderSide(color: HexColor('EC9361')),
             ),
             onPressed: () {
-              Navigator.of(context).pop();
+              String select='';
+              if(woman==true&&male==true){
+                select='男性,女性';
+              }else if(woman==true){
+                select='女性';
+              }else if(male==true){
+                select='男性';
+              }
+              Navigator.of(context).pop(select);
             },
           ),
         ),

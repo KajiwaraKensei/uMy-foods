@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'dart:math';
 // パッケージ
@@ -377,6 +379,8 @@ class _Age_Review extends State<Age_Review> {
     });
   }
 
+  String selected_text='';  //絞り込み取得値
+
   Widget age_reviewbar(String age, String productId) {
     return Column(
       children: [
@@ -422,15 +426,22 @@ class _Age_Review extends State<Age_Review> {
                           side: BorderSide(color: HexColor('EC9361')),
                         ),
                         onPressed: () async {
-                          setState(() {});
-                          return showDialog<void>(
+                            var selected = await showDialog<String>(  //選択したものを取得
                               context: context,
                               barrierDismissible: true, // user must tap button!
                               builder: (BuildContext context) {
                                 return Gender_FilteringDialog();
-                              });
-                        }),
+                              }
+                            );
+                            setState(() {
+                              if(selected!=null){ //何も押さず閉じた場合nullになる
+                                selected_text=selected.toString();
+                              }
+                            });
+                        }
+                      ),
                   ),
+                  Text(selected_text), //上の絞り込みボタン　テスト
                   if (switchBool) //昇順降順ボタン
                     Container(
                       child: Transform.rotate(
