@@ -93,16 +93,6 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                 width: 80,
                 height: 50,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    primary: HexColor('EC9361'), //ボタンの背景色
-                    side: BorderSide(
-                      color: HexColor('ffffff'), //枠線
-                      width: 1.5,
-                    ),
-                  ),
                   onPressed: () {
                     Navigator.push(
                         context,
@@ -117,6 +107,16 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                         MaterialPageRoute(
                           builder: (context) => ProductselectionPage(),
                         )),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    primary: HexColor('EC9361'), //ボタンの背景色
+                    side: BorderSide(
+                      color: HexColor('ffffff'), //枠線
+                      width: 1.5,
+                    ),
                   ),
                 ),
               ),
