@@ -93,25 +93,6 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                 width: 80,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductselectionPage(),
-                        ));
-                  },
-                  child: IconButton(
-                    icon: Icon(Icons.mode, color: Colors.white),
-                    onPressed: () => _categoryNameController.clear(),
-                  ),
-                  // child: Text(
-                  //   "投稿",
-                  //   style: TextStyle(
-                  //     color: HexColor('ffffff'),
-                  //     fontSize: 16,
-                  //     fontWeight: FontWeight.w600,
-                  //   ),
-                  // ),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -121,6 +102,21 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                       color: HexColor('ffffff'), //枠線
                       width: 1.5,
                     ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductselectionPage(),
+                        ));
+                  },
+                  child: IconButton(
+                    icon: Icon(Icons.mode, color: Colors.white),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductselectionPage(),
+                        )),
                   ),
                 ),
               ),
@@ -161,7 +157,6 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                 offset: Offset(30, 50),
               ),
 
-              
               // Container(
               //     margin: EdgeInsets.only(left: 50),
               //     child: GestureDetector(
