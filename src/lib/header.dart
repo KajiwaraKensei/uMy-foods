@@ -160,6 +160,8 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                 },
                 offset: Offset(30, 50),
               ),
+
+              
               // Container(
               //     margin: EdgeInsets.only(left: 50),
               //     child: GestureDetector(
