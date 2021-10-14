@@ -102,6 +102,7 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                   },
                   child: IconButton(
                     icon: Icon(Icons.mode, color: Colors.white),
+                    tooltip: '投稿',
                     onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
