@@ -575,28 +575,46 @@ class _Age_Review extends State<Age_Review> {
                         .difference(reviewResult[i]['user_birthday'].toDate())
                         .inDays <
                     max) {
-                evaList.add(reviewResult[i]['review_evaluation']);
+              evaList.add(reviewResult[i]['review_evaluation']);
 
-                cospaList.add(reviewResult[i]['review_cospa']);
+              cospaList.add(reviewResult[i]['review_cospa']);
 
-                sweet_sum = sweet_sum + reviewResult[i]['taste'][0];
-                acidity_sum = acidity_sum + reviewResult[i]['taste'][1];
-                salty_sum = salty_sum + reviewResult[i]['taste'][2];
-                bitter_sum = bitter_sum + reviewResult[i]['taste'][3];
-                spicy_sum = spicy_sum + reviewResult[i]['taste'][4];
-                umami_sum = umami_sum + reviewResult[i]['taste'][5];
+              sweet_sum = sweet_sum + reviewResult[i]['taste'][0];
+              acidity_sum = acidity_sum + reviewResult[i]['taste'][1];
+              salty_sum = salty_sum + reviewResult[i]['taste'][2];
+              bitter_sum = bitter_sum + reviewResult[i]['taste'][3];
+              spicy_sum = spicy_sum + reviewResult[i]['taste'][4];
+              umami_sum = umami_sum + reviewResult[i]['taste'][5];
             }
-            double eva = evaList.reduce((a, b) => a + b) / evaList.length;
+
+          if (evaList.length == 0) {
+            return Column(children: [
+              Container(
+                alignment: Alignment.topCenter,
+                padding: EdgeInsets.only(top: 100),
+                height: 200,
+                child: Text(
+                  'この年代のレビューはありません。',
+                  style: TextStyle(
+                    color: HexColor('ec9361'),
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ]);
+          }
+          double eva = evaList.reduce((a, b) => a + b) / evaList.length;
           evaluation = eva.round();
           double cos = cospaList.reduce((a, b) => a + b) / cospaList.length;
           cospa = cos.round();
-              double sweet = sweet_sum / reviewResult.length; //甘味
-              double acidity = acidity_sum / reviewResult.length; //酸味
-              double salty = salty_sum / reviewResult.length; //塩味
-              double bitter = bitter_sum / reviewResult.length; //苦味
-              double spicy = spicy_sum / reviewResult.length; //辛味
-              double umami = umami_sum / reviewResult.length; //うまみ
-              ageMikaku = [sweet, acidity, salty, bitter, spicy, umami];
+          double sweet = sweet_sum / reviewResult.length; //甘味
+          double acidity = acidity_sum / reviewResult.length; //酸味
+          double salty = salty_sum / reviewResult.length; //塩味
+          double bitter = bitter_sum / reviewResult.length; //苦味
+          double spicy = spicy_sum / reviewResult.length; //辛味
+          double umami = umami_sum / reviewResult.length; //うまみ
+          ageMikaku = [sweet, acidity, salty, bitter, spicy, umami];
 
           return Column(
             children: [
