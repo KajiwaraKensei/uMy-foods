@@ -19,14 +19,13 @@ class _SortDialogState extends State<SortDialog> {
           style: TextStyle(
               color: HexColor('EC9361'), fontWeight: FontWeight.w900)),
       content: Container(
-        padding: EdgeInsets.all(5),
+          padding: EdgeInsets.all(5),
           width: MediaQuery.of(context).size.width * .6,
           color: HexColor('f5f3ef'),
-        child: Table(
+          child: Table(
             children: [
-              TableRow(
-            children: [
-              RadioListTile(
+              TableRow(children: [
+                RadioListTile(
                   title: const Text('評価順'),
                   groupValue: _character,
                   value: SingingCharacter.evaluation,
@@ -47,7 +46,7 @@ class _SortDialogState extends State<SortDialog> {
                   },
                 ),
               ]),
-          TableRow(children: [
+              TableRow(children: [
                 RadioListTile(
                   title: const Text('いいね順'),
                   groupValue: _character,
@@ -70,7 +69,7 @@ class _SortDialogState extends State<SortDialog> {
                 )
               ]),
             ],
-        )),
+          )),
       actions: <Widget>[
         Center(
           child: OutlinedButton(
@@ -80,7 +79,17 @@ class _SortDialogState extends State<SortDialog> {
               side: BorderSide(color: HexColor('EC9361')),
             ),
             onPressed: () {
-              Navigator.of(context).pop();
+              String select = ''; //選択した値
+              if (_character == SingingCharacter.evaluation) {
+                select = '評価順';
+              } else if (_character == SingingCharacter.post) {
+                select = '投稿順';
+              } else if (_character == SingingCharacter.like) {
+                select = 'いいね順';
+              } else if (_character == SingingCharacter.comment) {
+                select = 'コメント数順';
+              }
+              Navigator.of(context).pop(select);
             },
           ),
         ),
@@ -88,6 +97,7 @@ class _SortDialogState extends State<SortDialog> {
     );
   }
 }
+
 enum ProductSelectionRadio { alphabetical, release }
 
 class ProductSelectionSortDialog extends StatefulWidget {

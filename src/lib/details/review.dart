@@ -391,7 +391,7 @@ class _ReviewPageState extends State<ReviewPage> {
 
   Widget percent_indicator(String name, double persent) {
     double persentsub = persent * 100; //パーセントを100表示
-    String persenttext = persentsub.toString(); //パーセントを文字化
+    String persenttext = persentsub.ceil().toString(); //パーセントを文字化
 
     return Padding(
       padding: EdgeInsets.all(0),
@@ -494,6 +494,9 @@ class _Age_Review extends State<Age_Review> {
     });
   }
 
+  String selected_text = "";
+  String sort_text = "評価順";
+
   Widget age_reviewbar(String age, String productId) {
     final now = DateTime.now();
     int max = 0;
@@ -521,12 +524,47 @@ class _Age_Review extends State<Age_Review> {
           //データが取れていない時の処理
           if (!snapshot.hasData) return const Text('Loading...');
 
-          final reviewResult = snapshot.data!.docs;
+          final result = snapshot.data!.docs;
+
+          List<QueryDocumentSnapshot> reviewResult = result;
+
+          if (result.length >= 1) {
+            if (sort_text == '評価順') {
+              for (int i = 0; i < result.length; i++) {
+                for (int j = 1; j < result.length; j++) {
+                  if (result[i]['review_evaluation'] <=
+                      result[j]['review_evaluation']) {
+                    reviewResult[i] = result[i];
+                  }
+                }
+              }
+            } else if (sort_text == '投稿順') {
+              for (int i = 0; i < result.length; i++) {
+                for (int j = 1; j < result.length; j++) {
+                  if (result[i]['review_postdate']
+                          .toDate()
+                          .isAfter(result[j]['review_postdate'].toDate()) ==
+                      false) {
+                    reviewResult[i] = result[i];
+                  }
+                }
+              }
+            }
+          } else {
+            reviewResult = result;
+          }
+
           List evaList = [];
           int evaluation = 0;
           List cospaList = [];
           int cospa = 0;
           List<double> ageMikaku = [0, 0, 0, 0, 0, 0];
+          num sweet_sum = 0;
+          num acidity_sum = 0;
+          num salty_sum = 0;
+          num bitter_sum = 0;
+          num spicy_sum = 0;
+          num umami_sum = 0;
 
           for (int i = 0; i < reviewResult.length; i++)
             if (now
@@ -537,34 +575,21 @@ class _Age_Review extends State<Age_Review> {
                         .difference(reviewResult[i]['user_birthday'].toDate())
                         .inDays <
                     max) {
-              for (int j = 0; j < reviewResult.length; j++) {
-                evaList.add(reviewResult[j]['review_evaluation']);
-              }
-              double eva = evaList.reduce((a, b) => a + b) / evaList.length;
-              evaluation = eva.round();
+                evaList.add(reviewResult[i]['review_evaluation']);
 
-              for (int i = 0; i < reviewResult.length; i++) {
                 cospaList.add(reviewResult[i]['review_cospa']);
-              }
-              double cos = cospaList.reduce((a, b) => a + b) / cospaList.length;
-              cospa = cos.round();
 
-              num sweet_sum = 0;
-              num acidity_sum = 0;
-              num salty_sum = 0;
-              num bitter_sum = 0;
-              num spicy_sum = 0;
-              num umami_sum = 0;
-
-              for (int i = 0; i < reviewResult.length; i++) {
                 sweet_sum = sweet_sum + reviewResult[i]['taste'][0];
                 acidity_sum = acidity_sum + reviewResult[i]['taste'][1];
                 salty_sum = salty_sum + reviewResult[i]['taste'][2];
                 bitter_sum = bitter_sum + reviewResult[i]['taste'][3];
                 spicy_sum = spicy_sum + reviewResult[i]['taste'][4];
                 umami_sum = umami_sum + reviewResult[i]['taste'][5];
-              }
-
+            }
+            double eva = evaList.reduce((a, b) => a + b) / evaList.length;
+          evaluation = eva.round();
+          double cos = cospaList.reduce((a, b) => a + b) / cospaList.length;
+          cospa = cos.round();
               double sweet = sweet_sum / reviewResult.length; //甘味
               double acidity = acidity_sum / reviewResult.length; //酸味
               double salty = salty_sum / reviewResult.length; //塩味
@@ -572,7 +597,6 @@ class _Age_Review extends State<Age_Review> {
               double spicy = spicy_sum / reviewResult.length; //辛味
               double umami = umami_sum / reviewResult.length; //うまみ
               ageMikaku = [sweet, acidity, salty, bitter, spicy, umami];
-            }
 
           return Column(
             children: [
@@ -600,14 +624,20 @@ class _Age_Review extends State<Age_Review> {
                                     side: BorderSide(color: HexColor('EC9361')),
                                   ),
                                   onPressed: () async {
-                                    setState(() {});
-                                    return showDialog<void>(
+                                    var selected = await showDialog<String>(
                                         context: context,
                                         barrierDismissible:
                                             true, // user must tap button!
                                         builder: (BuildContext context) {
                                           return SortDialog();
                                         });
+                                    setState(() {
+                                      if (selected != null) {
+                                        //何も押さず閉じた場合nullになる
+                                        sort_text = selected
+                                            .toString(); //同じクラス内にString selected_text='';
+                                      }
+                                    });
                                   }),
                             ),
                             SpaceBox.width(20),
@@ -623,16 +653,24 @@ class _Age_Review extends State<Age_Review> {
                                     side: BorderSide(color: HexColor('EC9361')),
                                   ),
                                   onPressed: () async {
-                                    setState(() {});
-                                    return showDialog<void>(
+                                    var selected = await showDialog<String>(
+                                        //選択したものを取得、 <String>←取得する型
                                         context: context,
                                         barrierDismissible:
                                             true, // user must tap button!
                                         builder: (BuildContext context) {
                                           return Gender_FilteringDialog();
                                         });
+                                    setState(() {
+                                      if (selected != null) {
+                                        //何も押さず閉じた場合nullになる
+                                        selected_text = selected
+                                            .toString(); //同じクラス内にString selected_text='';
+                                      }
+                                    });
                                   }),
                             ),
+                            //Text(sort_text.toString()),//動作確認用
                             if (switchBool) //昇順降順ボタン
                               Container(
                                 child: Transform.rotate(
@@ -741,84 +779,138 @@ class _Age_Review extends State<Age_Review> {
                 child: Column(
                   children: [
                     for (int i = 0; i < reviewResult.length; i++)
-                      if (now
-                                  .difference(
-                                      reviewResult[i]['user_birthday'].toDate())
-                                  .inDays >
-                              min &&
-                          now
-                                  .difference(
-                                      reviewResult[i]['user_birthday'].toDate())
-                                  .inDays <
-                              max)
-                        Container(
-                          padding: EdgeInsets.only(bottom: 20),
-                          child: Row(
-                            children: [
-                              reviewUserIcon(reviewResult[i]['user_id']),
-                              reviewUserData(reviewResult[i]['user_id'],
-                                  reviewResult[i]['review_evaluation']),
-                              Expanded(
-                                flex: 6,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          //レビュー内容
-                                          softWrap: true,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 3, //最大行数
-                                          text: TextSpan(
-                                              text: reviewResult[i]
-                                                  ['review_comment'],
-                                              style: TextStyle(
-                                                  color: Colors.black))),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        //setState(() {});
-                                      },
-                                      child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Text(
-                                          '続きを読む',
-                                          style: TextStyle(
-                                              color: Colors.lightBlue),
-                                        ),
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                      if (selected_text != '男性' ||
+                          reviewResult[i]['user_gender'] != 'female')
+                        if (selected_text != '女性' ||
+                            reviewResult[i]['user_gender'] != 'male')
+                          if (now
+                                      .difference(reviewResult[i]
+                                              ['user_birthday']
+                                          .toDate())
+                                      .inDays >
+                                  min &&
+                              now
+                                      .difference(reviewResult[i]
+                                              ['user_birthday']
+                                          .toDate())
+                                      .inDays <
+                                  max)
+                            Container(
+                              padding: EdgeInsets.only(bottom: 20),
+                              child: Row(
+                                children: [
+                                  reviewUserIcon(reviewResult[i]['user_id']),
+                                  reviewUserData(reviewResult[i]['user_id'],
+                                      reviewResult[i]['review_evaluation']),
+                                  Expanded(
+                                    flex: 6,
+                                    child: Column(
                                       children: [
-                                        Icon(
-                                          Icons.favorite,
-                                          color: Colors.grey,
-                                          size: 20,
+                                        Container(
+                                          alignment: Alignment.topLeft,
+                                          child: RichText(
+                                              //レビュー内容
+                                              softWrap: true,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 3, //最大行数
+                                              text: TextSpan(
+                                                  text: reviewResult[i]
+                                                      ['review_comment'],
+                                                  style: TextStyle(
+                                                      color: Colors.black))),
                                         ),
-                                        Text('100'),
-                                        SpaceBox.width(20),
-                                        Icon(
-                                          Icons.chat_bubble_outline,
-                                          color: Colors.grey,
-                                          size: 20,
+                                        GestureDetector(
+                                          onTap: () {
+                                            //setState(() {});
+                                          },
+                                          child: Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Text(
+                                              '続きを読む',
+                                              style: TextStyle(
+                                                  color: Colors.lightBlue),
+                                            ),
+                                          ),
                                         ),
-                                        Text('100'),
-                                        SpaceBox.width(50),
-                                        Text(DateFormat("yyyy/MM/dd")
-                                            .format(reviewResult[i]
-                                                    ['review_postdate']
-                                                .toDate())
-                                            .toString()), //投稿日時
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.favorite,
+                                              color: Colors.grey,
+                                              size: 20,
+                                            ),
+                                            StreamBuilder<QuerySnapshot>(
+
+                                                //表示したいFiresotreの保存先を指定
+                                                stream: FirebaseFirestore
+                                                    .instance
+                                                    .collection('/review/' +
+                                                        reviewResult[i]
+                                                            ['review_id'] +
+                                                        '/favorite/')
+                                                    .snapshots(),
+
+                                                //streamが更新されるたびに呼ばれる
+                                                builder: (BuildContext context,
+                                                    AsyncSnapshot<QuerySnapshot>
+                                                        snapshot) {
+                                                  //データが取れていない時の処理
+                                                  if (!snapshot.hasData)
+                                                    return const Text(
+                                                        'Loading...');
+
+                                                  final result =
+                                                      snapshot.data!.docs;
+                                                  return Text(
+                                                      result.length.toString());
+                                                }),
+                                            SpaceBox.width(20),
+                                            Icon(
+                                              Icons.chat_bubble_outline,
+                                              color: Colors.grey,
+                                              size: 20,
+                                            ),
+                                            StreamBuilder<QuerySnapshot>(
+
+                                                //表示したいFiresotreの保存先を指定
+                                                stream: FirebaseFirestore
+                                                    .instance
+                                                    .collection('/review/' +
+                                                        reviewResult[i]
+                                                            ['review_id'] +
+                                                        '/comment/')
+                                                    .snapshots(),
+
+                                                //streamが更新されるたびに呼ばれる
+                                                builder: (BuildContext context,
+                                                    AsyncSnapshot<QuerySnapshot>
+                                                        snapshot) {
+                                                  //データが取れていない時の処理
+                                                  if (!snapshot.hasData)
+                                                    return const Text(
+                                                        'Loading...');
+
+                                                  final result =
+                                                      snapshot.data!.docs;
+                                                  return Text(
+                                                      result.length.toString());
+                                                }),
+                                            SpaceBox.width(50),
+                                            Text(DateFormat("yyyy/MM/dd")
+                                                .format(reviewResult[i]
+                                                        ['review_postdate']
+                                                    .toDate())
+                                                .toString()), //投稿日時
+                                          ],
+                                        ),
                                       ],
-                                    )
-                                  ],
-                                ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        )
+                            )
                   ],
                 ),
               ),

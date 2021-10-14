@@ -5,30 +5,28 @@ import 'package:umy_foods/main.dart';
 import 'package:umy_foods/login/login.dart';
 import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/review_post/product_selection.dart';
+import 'package:umy_foods/list_page/brand.dart';
 
 class Header extends StatelessWidget with PreferredSizeWidget {
   @override
-  Size get preferredSize => Size.fromHeight(90.0);
+  Size get preferredSize => Size.fromHeight(80.0);
 
   var _selectedValue = 'ログイン'; //初期にフォーカスされているもの
-  var _usStates = ["ログイン", "マイページ"]; //ポップアップのリスト
+  var _usStates = ["マイページ", "ログアウト"]; //ポップアップのリスト(ログインあり)
+
+  final TextEditingController _categoryNameController =
+      new TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: Container(
-        padding: EdgeInsets.only(top: 2, right: 2, bottom: 2, left: 50),
-        child: OverflowBox(
-          maxWidth: 110,
-          child: Tooltip(
-            message: 'トップページへ',
-            child: GestureDetector(
-              child: CircleAvatar(
+      leading: IconButton(
+        icon: CircleAvatar(
           backgroundImage: AssetImage('images/uMyFoods_icon.png'),
           backgroundColor: Colors.transparent, // 背景色
-          radius: 40, // 表示したいサイズの半径を指定
+          radius: 90, // 表示したいサイズの半径を指定
         ),
-        onTap: () {
+        onPressed: () {
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -36,31 +34,50 @@ class Header extends StatelessWidget with PreferredSizeWidget {
               ));
         },
       ),
-          ),
-        ),
-      ),
       leadingWidth: 80,
-      titleSpacing: 100,
+      //titleSpacing: 300,
       title: TextField(
+        controller: _categoryNameController,
+        keyboardType: TextInputType.text,
         decoration: InputDecoration(
-          // hintText: "クチコミ・商品・ユーザを検索",
-          prefixIcon: Icon(Icons.search),
-          fillColor: Colors.white,
-          filled: true,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(2.0),
-            borderSide: BorderSide(
-              color: Colors.black,
+            hintText: "クチコミ・商品・ユーザを検索",
+            // prefixIcon: Icon(Icons.search),
+            fillColor: Colors.white,
+            filled: true,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(2.0),
+              borderSide: BorderSide(
+                color: Colors.black,
+              ),
             ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(2.0),
-            borderSide: BorderSide(
-              color: Colors.black,
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(2.0),
+              borderSide: BorderSide(
+                color: Colors.black,
+              ),
             ),
-          ),
-          border: InputBorder.none,
-        ),
+            suffixIcon: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.clear_sharp, color: Colors.black),
+                      onPressed: () => _categoryNameController.clear(),
+                    ),
+                    IconButton(
+                        icon: Icon(Icons.search, color: Colors.black),
+                        onPressed: () {}),
+                  ],
+                ),
+              ],
+            )
+            // border: InputBorder.none,
+            ),
         style: TextStyle(color: Colors.black),
       ),
       centerTitle: true,
@@ -69,26 +86,31 @@ class Header extends StatelessWidget with PreferredSizeWidget {
         Container(
           margin: EdgeInsets.only(right: 50, left: 50),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // 投稿ボタン
+
+              // 投稿ボタン
               Container(
-                width: 100,
+                width: 80,
                 height: 50,
+                child: Tooltip(
+                  message: 'レビューを投稿する',
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProductselectionPage(),
-              ));
+                        context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductselectionPage(),
+                          ));
                   },
-                  child: Text(
-                    "投稿",
-                    style: TextStyle(
-                      color: HexColor('ffffff'),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  child: IconButton(
+                      icon: Icon(Icons.mode, color: Colors.white),
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductselectionPage(),
+                          )),
                   ),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -101,19 +123,17 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                     ),
                   ),
                 ),
+                ),
               ),
               // マイページ
               PopupMenuButton<String>(
-                tooltip: 'ユーザーメニュー',
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15.0))),
                 child: Container(
                   margin: EdgeInsets.only(left: 50),
                   child: CircleAvatar(
-                      radius: 30,
+                      radius: 20,
                       backgroundColor: Colors.orange,
                       backgroundImage: NetworkImage((UserImage == "")
-                          ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/anotherUser2.png?alt=media&token=2c965f37-f6b3-4594-9998-24080a38073f'
+                          ? 'images/anotherUser2.png'
                           : UserImage)),
                 ),
                 initialValue: _selectedValue,
@@ -139,26 +159,24 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                     );
                   }).toList();
                 },
+                offset: Offset(30, 50),
               ),
-              /*Tooltip(
-                message: 'ログイン',
-                child: Container(
-                  margin: EdgeInsets.only(left: 50),
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Login(),
-                            ));
-                      },
-                      child: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.orange,
-                          backgroundImage: NetworkImage((UserImage == "")
-                              ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/anotherUser2.png?alt=media&token=2c965f37-f6b3-4594-9998-24080a38073f'
-                              : UserImage)))),
-              ),*/
+              // Container(
+              //     margin: EdgeInsets.only(left: 50),
+              //     child: GestureDetector(
+              //         onTap: () {
+              //           Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                 builder: (context) => Login(),
+              //               ));
+              //         },
+              //         child: CircleAvatar(
+              //             radius: 30,
+              //             backgroundColor: Colors.orange,
+              //             backgroundImage: NetworkImage((UserImage == "")
+              //                 ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/anotherUser2.png?alt=media&token=2c965f37-f6b3-4594-9998-24080a38073f'
+              //                 : UserImage)))),
             ],
           ),
         ),

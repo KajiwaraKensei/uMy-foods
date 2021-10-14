@@ -1,6 +1,7 @@
 import 'dart:html';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:umy_foods/comparison.dart';
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
@@ -10,12 +11,17 @@ import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/star.dart';
 import 'package:umy_foods/list_page/brand.dart';
 import 'package:umy_foods/new_item/newitem.dart';
+import 'package:umy_foods/ranking/ranking.dart';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; //DB
 
 void main() => runApp(MyApp());
 
 String UID = "";
 String UserImage = "";
 List<Map<String, dynamic>> clipList = [];
+String Id = 'LCIkEagsi1WjzcNHQLC3kjG6Cuw2';
 
 class MyApp extends StatelessWidget {
   @override
@@ -41,6 +47,8 @@ class Home extends StatelessWidget {
       'images/icon/second.png',
       'images/icon/third.png'
     ];
+
+    CarouselController buttonCarouselController = CarouselController();
 
     final List<Map<String, dynamic>> ConcernRanking = [
       {
@@ -169,6 +177,692 @@ class Home extends StatelessWidget {
         'image': 'https://livedoor.blogimg.jp/plankman/imgs/b/f/bfa6566c.jpg',
       },
     ];
+
+    // ランキングカルーセル用のリスト
+    // 2個セットのRowのリスト
+    List<Widget> rankingSliders = [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: media_width * 0.26,
+            child: Column(
+              children: [
+                SelectableText(
+                  '気になるランキング',
+                  scrollPhysics: NeverScrollableScrollPhysics(),
+                  style: TextStyle(
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                // ランキングのカテゴリ
+                SelectableText(
+                  testcategory[0] +
+                      '>' +
+                      testcategory[1] +
+                      '>' +
+                      testcategory[2],
+                  scrollPhysics: NeverScrollableScrollPhysics(),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: HexColor('616161'),
+                  ),
+                ),
+                // カード部分
+                for (var i = 0; i < 3; i++) //ConcernRanking
+                  Card(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    child: new InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailsPage(
+                                  ConcernRanking[i]['product_id'], 'TOP'),
+                            ));
+                      },
+                      child: Container(
+                        width: media_width * 0.245,
+                        height: media_height * 0.185,
+                        child: Row(
+                          // レイアウト追加　間隔均等配置
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Stack(
+                              children: [
+                                // 画像
+                                Center(
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 1),
+                                    width: media_width * 0.1,
+                                    height: media_height * 0.13,
+                                    child: Image.network(
+                                      (ConcernRanking[i]['image'] == "")
+                                          ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
+                                          : ConcernRanking[i]['image'],
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                                // ランキング順位
+                                Container(
+                                  margin: EdgeInsets.only(top: 5, left: 15),
+                                  width: media_width * 0.03,
+                                  height: media_height * 0.06,
+                                  child: Center(
+                                    child: Image.asset(
+                                      rankicon[i],
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            // 商品名等
+                            Container(
+                              width: media_width * 0.14,
+                              margin: EdgeInsets.only(top: 5, left: 5),
+                              child: Column(
+                                // レイアウト追加 間隔均等配置
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                // ベースラインに揃えて配置
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+
+                                // ベースラインの指定
+                                textBaseline: TextBaseline.alphabetic,
+                                children: [
+                                  SelectableText(
+                                    ConcernRanking[i]['Text'],
+                                    maxLines: 2,
+                                    scrollPhysics:
+                                        NeverScrollableScrollPhysics(),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  // スターレーティング部分
+                                  star(5, 20),
+                                  // きになるリピートアイコン
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.priority_high,
+                                      ),
+                                      Text('1'),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 7),
+                                        child: Icon(Icons.sync,
+                                            color: Colors.blue),
+                                      ),
+                                      Text('100'),
+                                      // クリップボタン
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: 20, bottom: 4),
+                                        child: Tooltip(
+                                          message: 'クリップボードに保存します',
+                                          child: ElevatedButton(
+                                            //クリップボタン
+                                            child: Icon(
+                                              Icons.assignment_turned_in,
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                            padding: EdgeInsets.all(12),
+                                              primary: HexColor('EC9361'),
+                                              onPrimary: Colors.white,
+                                              shape: CircleBorder(
+                                                side: BorderSide(
+                                                color: Colors.transparent,
+                                                  width: 1,
+                                                  style: BorderStyle.solid,
+                                                ),
+                                              ),
+                                            ),
+                                          onPressed: () {
+                                            FirebaseFirestore.instance
+                                                  .collection("/account/" +
+                                                      Id +
+                                                      "/clip_list")
+                                                  .doc(ConcernRanking[i]
+                                                      ['product_id'])
+                                                  .set({
+                                                'product_name':
+                                                    ConcernRanking[i]['Text'],
+                                                'image_url': ConcernRanking[i]
+                                                    ['image'],
+                                                'product_id': ConcernRanking[i]
+                                                    ['product_id'],
+                                              });
+                                            },
+                                        ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          Container(
+            width: media_width * 0.26,
+            child: Column(
+              children: [
+                SelectableText(
+                  'リピートランキング',
+                  scrollPhysics: NeverScrollableScrollPhysics(),
+                  style: TextStyle(
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                // ランキングのカテゴリ
+                SelectableText(
+                  testcategory[0] +
+                      '>' +
+                      testcategory[1] +
+                      '>' +
+                      testcategory[2],
+                  scrollPhysics: NeverScrollableScrollPhysics(),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: HexColor('616161'),
+                  ),
+                ),
+                // リピートカード部分
+                for (var i = 0; i < 3; i++)
+                  Card(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    child: new InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailsPage(
+                                  RepeatRanking[i]['product_id'], 'TOP'),
+                            ));
+                      },
+                      child: Container(
+                        width: media_width * 0.245,
+                        height: media_height * 0.185,
+                        child: Row(
+                          // レイアウト追加　間隔均等配置
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Stack(
+                              children: [
+                                Center(
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 1),
+                                    width: media_width * 0.1,
+                                    height: media_height * 0.13,
+                                    child: Image.network(
+                                      (RepeatRanking[i]['image'] == "")
+                                          ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
+                                          : RepeatRanking[i]['image'],
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 5, left: 15),
+                                  width: media_width * 0.03,
+                                  height: media_height * 0.06,
+                                  child: Center(
+                                    child: Image.asset(
+                                      rankicon[i],
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              width: media_width * 0.14,
+                              margin: EdgeInsets.only(top: 5, left: 5),
+                              child: Column(
+                                // レイアウト追加 間隔均等配置
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                // ベースラインに揃えて配置
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+
+                                // ベースラインの指定
+                                textBaseline: TextBaseline.alphabetic,
+                                children: [
+                                  SelectableText(
+                                    RepeatRanking[i]['Text'],
+                                    maxLines: 2,
+                                    scrollPhysics:
+                                        NeverScrollableScrollPhysics(),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  // スターレーティング部分
+                                  star(5, 20),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.priority_high,
+                                      ),
+                                      Text('1'),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 7),
+                                        child: Icon(Icons.sync,
+                                            color: Colors.blue),
+                                      ),
+                                      Text('100'),
+                                      // クリップボタン
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: 20, bottom: 4),
+                                        child: Tooltip(
+                                          message: 'クリップボードに保存します',
+                                          child: ElevatedButton(
+                                            //クリップボタン
+                                            child: Icon(
+                                              Icons.assignment_turned_in,
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              padding: EdgeInsets.all(12),
+                                              primary: HexColor('EC9361'),
+                                              onPrimary: Colors.white,
+                                              shape: CircleBorder(
+                                                side: BorderSide(
+                                                  color: Colors.transparent,
+                                                  width: 1,
+                                                  style: BorderStyle.solid,
+                                                ),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              FirebaseFirestore.instance
+                                                  .collection("/account/" +
+                                                      Id +
+                                                      "/clip_list")
+                                                  .doc(RepeatRanking[i]
+                                                      ['product_id'])
+                                                  .set({
+                                                'product_name': RepeatRanking[i]
+                                                    ['Text'],
+                                                'image_url': RepeatRanking[i]
+                                                    ['image'],
+                                                'product_id': RepeatRanking[i]
+                                                    ['product_id'],
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ], // Row1個目
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: media_width * 0.26,
+            child: Column(
+              children: [
+                SelectableText(
+                  '評価ランキング',
+                  scrollPhysics: NeverScrollableScrollPhysics(),
+                  style: TextStyle(
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                // ランキングのカテゴリ
+                SelectableText(
+                  testcategory[0] +
+                      '>' +
+                      testcategory[1] +
+                      '>' +
+                      testcategory[2],
+                  scrollPhysics: NeverScrollableScrollPhysics(),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: HexColor('616161'),
+                  ),
+                ),
+                // リピートカード部分
+                for (var i = 0; i < 3; i++)
+                  Card(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    child: new InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailsPage(
+                                  RepeatRanking[i]['product_id'], 'TOP'),
+                            ));
+                      },
+                      child: Container(
+                        width: media_width * 0.245,
+                        height: media_height * 0.185,
+                        child: Row(
+                          // レイアウト追加　間隔均等配置
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Stack(
+                              children: [
+                                Center(
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 1),
+                                    width: media_width * 0.1,
+                                    height: media_height * 0.13,
+                                    child: Image.network(
+                                      (RepeatRanking[i]['image'] == "")
+                                          ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
+                                          : RepeatRanking[i]['image'],
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 5, left: 15),
+                                  width: media_width * 0.03,
+                                  height: media_height * 0.06,
+                                  child: Center(
+                                    child: Image.asset(
+                                      rankicon[i],
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              width: media_width * 0.14,
+                              margin: EdgeInsets.only(top: 5, left: 5),
+                              child: Column(
+                                // レイアウト追加 間隔均等配置
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                // ベースラインに揃えて配置
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+
+                                // ベースラインの指定
+                                textBaseline: TextBaseline.alphabetic,
+                                children: [
+                                  SelectableText(
+                                    RepeatRanking[i]['Text'],
+                                    maxLines: 2,
+                                    scrollPhysics:
+                                        NeverScrollableScrollPhysics(),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  // スターレーティング部分
+                                  star(5, 20),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.priority_high,
+                                      ),
+                                      Text('1'),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 7),
+                                        child: Icon(Icons.sync,
+                                            color: Colors.blue),
+                                      ),
+                                      Text('100'),
+                                      // クリップボタン
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: 20, bottom: 4),
+                                        child:
+                                        Tooltip(
+                                          message: 'クリップボードに保存します',
+                                          child: ElevatedButton(
+                                            //クリップボタン
+                                          child: Icon(
+                                              Icons.assignment_turned_in,
+                                            ),
+                                          style: ElevatedButton.styleFrom(
+                                              padding: EdgeInsets.all(12),
+                                              primary: HexColor('EC9361'),
+                                              onPrimary: Colors.white,
+                                              shape: CircleBorder(
+                                                side: BorderSide(
+                                                  color: Colors.transparent,
+                                                  width: 1,
+                                                  style: BorderStyle.solid,
+                                                ),
+                                              ),
+                                            ),
+                                          onPressed: () {
+                                              FirebaseFirestore.instance
+                                                  .collection("/account/" +
+                                                      Id +
+                                                      "/clip_list")
+                                                  .doc(RepeatRanking[i]
+                                                      ['product_id'])
+                                                  .set({
+                                                'product_name': RepeatRanking[i]
+                                                    ['Text'],
+                                                'image_url': RepeatRanking[i]
+                                                    ['image'],
+                                                'product_id': RepeatRanking[i]
+                                                    ['product_id'],
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          Container(
+            width: media_width * 0.26,
+            child: Column(
+              children: [
+                SelectableText(
+                  '炭酸水ランキング',
+                  scrollPhysics: NeverScrollableScrollPhysics(),
+                  style: TextStyle(
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                // ランキングのカテゴリ
+                SelectableText(
+                  testcategory[0] +
+                      '>' +
+                      testcategory[1] +
+                      '>' +
+                      testcategory[2],
+                  scrollPhysics: NeverScrollableScrollPhysics(),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: HexColor('616161'),
+                  ),
+                ),
+                // リピートカード部分
+                for (var i = 0; i < 3; i++)
+                  Card(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    child: new InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailsPage(
+                                  RepeatRanking[i]['product_id'], 'TOP'),
+                            ));
+                      },
+                      child: Container(
+                        width: media_width * 0.245,
+                        height: media_height * 0.185,
+                        child: Row(
+                          // レイアウト追加　間隔均等配置
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Stack(
+                              children: [
+                                Center(
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 1),
+                                    width: media_width * 0.1,
+                                    height: media_height * 0.13,
+                                    child: Image.network(
+                                      (RepeatRanking[i]['image'] == "")
+                                          ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
+                                          : RepeatRanking[i]['image'],
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 5, left: 15),
+                                  width: media_width * 0.03,
+                                  height: media_height * 0.06,
+                                  child: Center(
+                                    child: Image.asset(
+                                      rankicon[i],
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              width: media_width * 0.14,
+                              margin: EdgeInsets.only(top: 5, left: 5),
+                              child: Column(
+                                // レイアウト追加 間隔均等配置
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                // ベースラインに揃えて配置
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+
+                                // ベースラインの指定
+                                textBaseline: TextBaseline.alphabetic,
+                                children: [
+                                  SelectableText(
+                                    RepeatRanking[i]['Text'],
+                                    maxLines: 2,
+                                    scrollPhysics:
+                                        NeverScrollableScrollPhysics(),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  // スターレーティング部分
+                                  star(5, 20),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.priority_high,
+                                      ),
+                                      Text('1'),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 7),
+                                        child: Icon(Icons.sync,
+                                            color: Colors.blue),
+                                      ),
+                                      Text('100'),
+                                      // クリップボタン
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: 20, bottom: 4),
+                                        child:
+                                        Tooltip(
+                                          message: 'クリップボードに保存します',
+                                          child: ElevatedButton(
+                                            //クリップボタン
+                                          child: Icon(
+                                              Icons.assignment_turned_in,
+                                            ),
+                                          style: ElevatedButton.styleFrom(
+                                              padding: EdgeInsets.all(12),
+                                              primary: HexColor('EC9361'),
+                                              onPrimary: Colors.white,
+                                              shape: CircleBorder(
+                                                side: BorderSide(
+                                                  color: Colors.transparent,
+                                                  width: 1,
+                                                  style: BorderStyle.solid,
+                                                ),
+                                              ),
+                                            ),
+                                          onPressed: () {
+                                              FirebaseFirestore.instance
+                                                  .collection("/account/" +
+                                                      Id +
+                                                      "/clip_list")
+                                                  .doc(RepeatRanking[i]
+                                                      ['product_id'])
+                                                  .set({
+                                                'product_name': RepeatRanking[i]
+                                                    ['Text'],
+                                                'image_url': RepeatRanking[i]
+                                                    ['image'],
+                                                'product_id': RepeatRanking[i]
+                                                    ['product_id'],
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ], // Row2個目
+      ),
+    ];
+
     return Scaffold(
         appBar: Header(),
         body: SingleChildScrollView(
@@ -182,8 +876,8 @@ class Home extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                          width: media_width * 0.995,
-                          height: media_height * 0.35,
+                          width: media_width * 1.0,
+                          height: media_height * 0.4,
                           child: Image.asset(
                             'images/headerwoman.png',
                             fit: BoxFit.fill,
@@ -201,7 +895,13 @@ class Home extends StatelessWidget {
                             width: 140,
                             height: 50,
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => RankingPage(),
+                                    ));
+                              },
                               child: Text(
                                 "ランキング",
                                 style: TextStyle(
@@ -265,7 +965,7 @@ class Home extends StatelessWidget {
                               ),
                             ),
                           ),
-                          // ブランド
+                          // 新商品ボタン
                           Container(
                             width: 140,
                             height: 50,
@@ -274,11 +974,11 @@ class Home extends StatelessWidget {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => BrandListPage(),
+                                      builder: (context) => NewItemPage(),
                                     ));
                               },
                               child: Text(
-                                "ブランド",
+                                "新商品",
                                 style: TextStyle(
                                   color: HexColor('ec9361'),
                                   fontSize: 16,
@@ -317,7 +1017,7 @@ class Home extends StatelessWidget {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => NewItemPage(),
+                                            builder: (context) => RankingPage(),
                                           ));
                                     },
                                     child: Container(
@@ -347,7 +1047,7 @@ class Home extends StatelessWidget {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        NewItemPage(),
+                                                        RankingPage(),
                                                   ));
                                             },
                                           ),
@@ -362,451 +1062,49 @@ class Home extends StatelessWidget {
                                     height: media_height * 0.75,
                                     color: HexColor('F5F3EF'),
                                     child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Container(
-                                          width: media_width * 0.3,
-                                          child: Column(
-                                            children: [
-                                              SelectableText(
-                                                '気になるランキング',
-                                                scrollPhysics:
-                                                    NeverScrollableScrollPhysics(),
-                                                style: TextStyle(
-                                                  fontSize: 16.5,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              // ランキングのカテゴリ
-                                              SelectableText(
-                                                testcategory[0] +
-                                                    '>' +
-                                                    testcategory[1] +
-                                                    '>' +
-                                                    testcategory[2],
-                                                scrollPhysics:
-                                                    NeverScrollableScrollPhysics(),
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: HexColor('616161'),
-                                                ),
-                                              ),
-                                              // カード部分
-                                              for (var i = 0;
-                                                  i < 3;
-                                                  i++) //ConcernRanking
-                                                Card(
-                                                  margin: EdgeInsets.symmetric(
-                                                      vertical: 10),
-                                                  child: new InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                DetailsPage(
-                                                                    ConcernRanking[
-                                                                            i][
-                                                                        'product_id'],
-                                                                    'TOP'),
-                                                          ));
-                                                    },
-                                                    child: Container(
-                                                      width: media_width * 0.28,
-                                                      height:
-                                                          media_height * 0.185,
-                                                      child: Row(
-                                                        // レイアウト追加　間隔均等配置
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          // ランキング順位
-                                                          Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    top: 5),
-                                                            width: media_width *
-                                                                0.03,
-                                                            height:
-                                                                media_height *
-                                                                    0.06,
-                                                            child: Center(
-                                                              child:
-                                                                  Image.asset(
-                                                                rankicon[i],
-                                                                fit: BoxFit
-                                                                    .contain,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          // 画像
-                                                          Center(
-                                                            child: Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      left: 5),
-                                                              width:
-                                                                  media_width *
-                                                                      0.1,
-                                                              height:
-                                                                  media_height *
-                                                                      0.13,
-                                                              child:
-                                                                  Image.network(
-                                                                (ConcernRanking[i]
-                                                                            [
-                                                                            'image'] ==
-                                                                        "")
-                                                                    ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
-                                                                    : ConcernRanking[
-                                                                            i][
-                                                                        'image'],
-                                                                fit: BoxFit
-                                                                    .contain,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          // 商品名等
-                                                          Container(
-                                                            width: media_width *
-                                                                0.14,
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    top: 5,
-                                                                    left: 5),
-                                                            child: Column(
-                                                              // レイアウト追加 間隔均等配置
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceEvenly,
-                                                              // ベースラインに揃えて配置
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .baseline,
-
-                                                              // ベースラインの指定
-                                                              textBaseline:
-                                                                  TextBaseline
-                                                                      .alphabetic,
-                                                              children: [
-                                                                SelectableText(
-                                                                  ConcernRanking[
-                                                                          i]
-                                                                      ['Text'],
-                                                                  maxLines: 2,
-                                                                  scrollPhysics:
-                                                                      NeverScrollableScrollPhysics(),
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                  ),
-                                                                ),
-                                                                // スターレーティング部分
-                                                                star(5, 20),
-                                                                // きになるリピートアイコン
-                                                                Row(
-                                                                  children: [
-                                                                    Icon(
-                                                                      Icons
-                                                                          .priority_high,
-                                                                    ),
-                                                                    Text('1'),
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(
-                                                                          left:
-                                                                              7),
-                                                                      child: Icon(
-                                                                          Icons
-                                                                              .sync,
-                                                                          color:
-                                                                              Colors.blue),
-                                                                    ),
-                                                                    Text('100'),
-                                                                    // クリップボタン
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(
-                                                                          left:
-                                                                              20,
-                                                                          bottom:
-                                                                              4),
-                                                                      child:
-                                                                          ElevatedButton(
-                                                                        //クリップボタン
-                                                                        child:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .assignment_turned_in,
-                                                                        ),
-                                                                        style: ElevatedButton
-                                                                            .styleFrom(
-                                                                          padding:
-                                                                              EdgeInsets.all(12),
-                                                                          primary:
-                                                                              HexColor('EC9361'),
-                                                                          onPrimary:
-                                                                              Colors.white,
-                                                                          shape:
-                                                                              CircleBorder(
-                                                                            side:
-                                                                                BorderSide(
-                                                                              color: Colors.transparent,
-                                                                              width: 1,
-                                                                              style: BorderStyle.solid,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                        onPressed:
-                                                                            () {
-                                                                              clipList
-                                                                              .add({
-                                                                            'Text':
-                                                                                ConcernRanking[i]['Text'],
-                                                                            'image':
-                                                                                ConcernRanking[i]['image'],
-                                                                            'product_id':
-                                                                                ConcernRanking[i]['product_id'],
-                                                                          });
-                                                                        },
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                            ],
+                                        GestureDetector(
+                                          onTap: () {
+                                            // 前のスライドに移動、 duration...スライド速度  curve...アニメーションの設定
+                                            buttonCarouselController
+                                                .previousPage(
+                                                    duration: Duration(
+                                                        milliseconds: 400),
+                                                    curve: Curves.linear);
+                                          },
+                                          child: Icon(
+                                            Icons.arrow_back_ios,
                                           ),
+                                          //カルーセル
                                         ),
                                         Container(
-                                          width: media_width * 0.3,
-                                          child: Column(
-                                            children: [
-                                              SelectableText(
-                                                'リピートランキング',
-                                                scrollPhysics:
-                                                    NeverScrollableScrollPhysics(),
-                                                style: TextStyle(
-                                                  fontSize: 16.5,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              // ランキングのカテゴリ
-                                              SelectableText(
-                                                testcategory[0] +
-                                                    '>' +
-                                                    testcategory[1] +
-                                                    '>' +
-                                                    testcategory[2],
-                                                scrollPhysics:
-                                                    NeverScrollableScrollPhysics(),
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: HexColor('616161'),
-                                                ),
-                                              ),
-                                              // リピートカード部分
-                                              for (var i = 0; i < 3; i++)
-                                                Card(
-                                                  margin: EdgeInsets.symmetric(
-                                                      vertical: 10),
-                                                  child: new InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                DetailsPage(
-                                                                    RepeatRanking[
-                                                                            i][
-                                                                        'product_id'],
-                                                                    'TOP'),
-                                                          ));
-                                                    },
-                                                    child: Container(
-                                                      width: media_width * 0.28,
-                                                      height:
-                                                          media_height * 0.185,
-                                                      child: Row(
-                                                        // レイアウト追加　間隔均等配置
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    top: 5),
-                                                            width: media_width *
-                                                                0.03,
-                                                            height:
-                                                                media_height *
-                                                                    0.06,
-                                                            child: Center(
-                                                              child:
-                                                                  Image.asset(
-                                                                rankicon[i],
-                                                                fit: BoxFit
-                                                                    .contain,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Center(
-                                                            child: Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      left: 5),
-                                                              width:
-                                                                  media_width *
-                                                                      0.1,
-                                                              height:
-                                                                  media_height *
-                                                                      0.13,
-                                                              child:
-                                                                  Image.network(
-                                                                (RepeatRanking[i]
-                                                                            [
-                                                                            'image'] ==
-                                                                        "")
-                                                                    ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
-                                                                    : RepeatRanking[
-                                                                            i][
-                                                                        'image'],
-                                                                fit: BoxFit
-                                                                    .contain,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: media_width *
-                                                                0.14,
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    top: 5,
-                                                                    left: 5),
-                                                            child: Column(
-                                                              // レイアウト追加 間隔均等配置
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceEvenly,
-                                                              // ベースラインに揃えて配置
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .baseline,
-
-                                                              // ベースラインの指定
-                                                              textBaseline:
-                                                                  TextBaseline
-                                                                      .alphabetic,
-                                                              children: [
-                                                                SelectableText(
-                                                                  RepeatRanking[
-                                                                          i]
-                                                                      ['Text'],
-                                                                  maxLines: 2,
-                                                                  scrollPhysics:
-                                                                      NeverScrollableScrollPhysics(),
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                  ),
-                                                                ),
-                                                                // スターレーティング部分
-                                                                star(5, 20),
-                                                                Row(
-                                                                  children: [
-                                                                    Icon(
-                                                                      Icons
-                                                                          .priority_high,
-                                                                    ),
-                                                                    Text('1'),
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(
-                                                                          left:
-                                                                              7),
-                                                                      child: Icon(
-                                                                          Icons
-                                                                              .sync,
-                                                                          color:
-                                                                              Colors.blue),
-                                                                    ),
-                                                                    Text('100'),
-                                                                    // クリップボタン
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(
-                                                                          left:
-                                                                              20,
-                                                                          bottom:
-                                                                              4),
-                                                                      child:
-                                                                          ElevatedButton(
-                                                                        //クリップボタン
-                                                                        child:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .assignment_turned_in,
-                                                                        ),
-                                                                        style: ElevatedButton
-                                                                            .styleFrom(
-                                                                          padding:
-                                                                              EdgeInsets.all(12),
-                                                                          primary:
-                                                                              HexColor('EC9361'),
-                                                                          onPrimary:
-                                                                              Colors.white,
-                                                                          shape:
-                                                                              CircleBorder(
-                                                                            side:
-                                                                                BorderSide(
-                                                                              color: Colors.transparent,
-                                                                              width: 1,
-                                                                              style: BorderStyle.solid,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                        onPressed:
-                                                                            () {
-                                                                          clipList
-                                                                              .add({
-                                                                            'Text':
-                                                                                RepeatRanking[i]['Text'],
-                                                                            'image':
-                                                                                RepeatRanking[i]['image'],
-                                                                            'product_id':
-                                                                                RepeatRanking[i]['product_id'],
-                                                                          });
-                                                                        },
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                            ],
+                                          width: media_width * 0.54,
+                                          height: media_height * 0.75,
+                                          child: CarouselSlider(
+                                            items: rankingSliders, // スライドさせるリスト
+                                            carouselController:
+                                                buttonCarouselController, // ボタンでスライドするためのコントローラー
+                                            options: CarouselOptions(
+                                              autoPlay: false, // 自動スライド オフ
+                                              enlargeCenterPage:
+                                                  false, // 画像切り替えの時に中心の画像拡大、他縮小させるか
+                                              viewportFraction:
+                                                  1.0, // 各ページが占めるビューポートの割合
+                                            ),
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            // 次のスライドへ
+                                            buttonCarouselController.nextPage(
+                                                duration:
+                                                    Duration(milliseconds: 400),
+                                                curve: Curves.linear);
+                                          },
+                                          child: Icon(
+                                            Icons.arrow_forward_ios,
                                           ),
                                         ),
                                       ],
@@ -1617,7 +1915,11 @@ class Home extends StatelessWidget {
                                                             MainAxisAlignment
                                                                 .end,
                                                         children: [
-                                                          ElevatedButton(
+                                                          Tooltip(
+                                                            message:
+                                                                'クリップボードに保存します',
+                                                            child:
+                                                                ElevatedButton(
                                                             //クリップボタン
                                                             child: Icon(
                                                               Icons
@@ -1647,19 +1949,27 @@ class Home extends StatelessWidget {
                                                               ),
                                                             ),
                                                             onPressed: () {
-                                                              clipList.add({
-                                                                'Text':
+                                                              FirebaseFirestore
+                                                                    .instance
+                                                                    .collection(
+                                                                        "/account/" +
+                                                                            Id +
+                                                                            "/clip_list")
+                                                                    .doc(new_item[
+                                                                            i][
+                                                                        'product_id'])
+                                                                    .set({
+                                                                  'product_name':
                                                                     new_item[i][
                                                                         'Text'],
-                                                                'image':
+                                                                'image_url':
                                                                     new_item[i][
                                                                         'image'],
-                                                                /*'product_id':
-                                                                    new_item[
-                                                                            i][
-                                                                        'product_id'],*/
+                                                                'product_id':
+                                                                      '',
                                                               });
                                                             },
+                                                          ),
                                                           ),
                                                         ],
                                                       ),

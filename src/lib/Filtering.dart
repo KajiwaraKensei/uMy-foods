@@ -3,6 +3,8 @@ import 'package:umy_foods/HexColor.dart'; //16進数カラーコード
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:umy_foods/SpaceBox.dart'; //年代別レビュー
 
+bool male = false;
+bool woman = false;
 //性別のフィルタリング表示
 class Gender_FilteringDialog extends StatefulWidget {
   @override
@@ -10,8 +12,6 @@ class Gender_FilteringDialog extends StatefulWidget {
 }
 
 class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
-  bool male = false;
-  bool woman = false;
 
 
 
@@ -64,7 +64,15 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
               side: BorderSide(color: HexColor('EC9361')),
             ),
             onPressed: () {
-              Navigator.of(context).pop();
+              String select = ''; //選択した値
+              if (woman == true && male == true) {
+                select = '男性,女性';
+              } else if (woman == true) {
+                select = '女性';
+              } else if (male == true) {
+                select = '男性';
+              }
+              Navigator.of(context).pop(select);
             },
           ),
         ),

@@ -11,6 +11,7 @@ import 'package:umy_foods/star.dart'; //星評価
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/clipButton.dart';
+import 'package:umy_foods/main.dart';
 
 /*void main() {
   initializeDateFormatting().then((_) => runApp(MyApp())); //翻訳して実行
@@ -129,19 +130,29 @@ class _NewItemPageState extends State<NewItemPage> {
               //パンくずリスト
               items: <BreadCrumbItem>[
                 BreadCrumbItem(
-                    content: GestureDetector(
-                  child: Text('パン'),
-                  onTap: () {
-                    setState(() {});
-                  },
-                )),
-                BreadCrumbItem(
-                    content: GestureDetector(
-                  child: Text('くず'),
-                  onTap: () {
-                    setState(() {});
-                  },
-                )),
+                          content: TextButton(
+                        child: Text(
+                          'TOP',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => MyApp()));
+                        }),
+                  ),
+                  BreadCrumbItem(
+                          content: TextButton(
+                        child: Text(
+                          '新商品',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => NewItemPage()));
+                        }),
+                  ),
               ],
               divider: Icon(Icons.chevron_right),
             ),

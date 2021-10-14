@@ -1219,10 +1219,14 @@ class _DetailsPageState extends State<DetailsPage> {
                                 ),
                               ),
                               onPressed: () {
-                                clipList.add({
-                                  'Text': product_name,
-                                  'image': image,
-                                  'product_id': product_id,
+                                FirebaseFirestore.instance
+                                    .collection(
+                                        "/account/" + Id + "/clip_list/")
+                                    .doc(productId)
+                                    .set({
+                                  'product_name': product_name,
+                                  'image_url': image,
+                                  'product_id': productId,
                                 });
                               },
                             ),
@@ -1241,7 +1245,7 @@ class _DetailsPageState extends State<DetailsPage> {
 //割合棒グラフ
 Widget percent_indicator(String name, double persent) {
   double persentsub = persent * 100; //パーセントを100表示
-  String persenttext = persentsub.toString(); //パーセントを文字化
+  String persenttext = persentsub.ceil().toString(); //パーセントを文字化
 
   return Padding(
     padding: EdgeInsets.all(15.0),
