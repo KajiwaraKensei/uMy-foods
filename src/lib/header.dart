@@ -17,8 +17,10 @@ class _HeaderState extends State<Header> {
   var _selectedValue = 'ログイン'; //初期にフォーカスされているもの
   var _usStates = ["マイページ", "ログアウト"]; //ポップアップのリスト(ログインあり)
   String _value = 'one';
+
   final TextEditingController _categoryNameController =
       new TextEditingController(text: '');
+
   @override
   Widget build(BuildContext context) {
     var DropDown = Container(
@@ -36,8 +38,8 @@ class _HeaderState extends State<Header> {
           value: _value,
           items: <DropdownMenuItem<String>>[
             new DropdownMenuItem(
-              child: new Text('My Page'),
-              value: 'one',
+              child: new Text('クチコミ'),
+              value: _value,
             ),
           ],
           onChanged: (String? value) {
@@ -67,7 +69,7 @@ class _HeaderState extends State<Header> {
         controller: _categoryNameController,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-            hintText: "クチコミ・商品・ユーザを検索",
+            hintText: "検索",
             // prefixIcon: Icon(Icons.search),
             fillColor: Colors.white,
             filled: true,
