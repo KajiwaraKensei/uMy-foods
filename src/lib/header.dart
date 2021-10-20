@@ -1,5 +1,4 @@
 import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:umy_foods/main.dart';
 import 'package:umy_foods/login/login.dart';
@@ -7,18 +6,46 @@ import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/review_post/product_selection.dart';
 import 'package:umy_foods/list_page/brand.dart';
 
-class Header extends StatelessWidget with PreferredSizeWidget {
+class Header extends StatefulWidget with PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(80.0);
+  @override
+  _HeaderState createState() => _HeaderState();
+}
 
+class _HeaderState extends State<Header> {
   var _selectedValue = 'ログイン'; //初期にフォーカスされているもの
   var _usStates = ["マイページ", "ログアウト"]; //ポップアップのリスト(ログインあり)
-
+  String _value = 'one';
   final TextEditingController _categoryNameController =
       new TextEditingController(text: '');
-
   @override
   Widget build(BuildContext context) {
+    var DropDown = Container(
+      decoration: new BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          right: BorderSide(width: 0.5, color: Colors.grey),
+        ),
+      ),
+      height: 45.0,
+      margin: const EdgeInsets.all(3.0),
+      //width: 300.0,
+      child: DropdownButtonHideUnderline(
+        child: new DropdownButton<String>(
+          value: _value,
+          items: <DropdownMenuItem<String>>[
+            new DropdownMenuItem(
+              child: new Text('My Page'),
+              value: 'one',
+            ),
+          ],
+          onChanged: (String? value) {
+            setState(() => _value = value!);
+          },
+        ),
+      ),
+    );
     return AppBar(
       leading: IconButton(
         icon: CircleAvatar(
@@ -56,6 +83,7 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                 color: Colors.black,
               ),
             ),
+            prefixIcon: DropDown,
             suffixIcon: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.end,
@@ -89,34 +117,37 @@ class Header extends StatelessWidget with PreferredSizeWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // 投稿ボタン
+              // 投稿ボタン
               Container(
                 width: 80,
                 height: 50,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductselectionPage(),
-                        ));
-                  },
-                  child: IconButton(
-                    icon: Icon(Icons.mode, color: Colors.white),
-                    tooltip: '投稿',
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductselectionPage(),
-                        )),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                child: Tooltip(
+                  message: 'レビューを投稿する',
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductselectionPage(),
+                          ));
+                    },
+                    child: IconButton(
+                      icon: Icon(Icons.mode, color: Colors.white),
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductselectionPage(),
+                          )),
                     ),
-                    primary: HexColor('EC9361'), //ボタンの背景色
-                    side: BorderSide(
-                      color: HexColor('ffffff'), //枠線
-                      width: 1.5,
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      primary: HexColor('EC9361'), //ボタンの背景色
+                      side: BorderSide(
+                        color: HexColor('ffffff'), //枠線
+                        width: 1.5,
+                      ),
                     ),
                   ),
                 ),
@@ -157,7 +188,6 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                 },
                 offset: Offset(30, 50),
               ),
-
               // Container(
               //     margin: EdgeInsets.only(left: 50),
               //     child: GestureDetector(
