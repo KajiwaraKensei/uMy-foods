@@ -25,23 +25,24 @@ class _HeaderState extends State<Header> {
       decoration: new BoxDecoration(
         color: Colors.white,
         border: Border(
-          right: BorderSide(width: 0.5, color: Colors.grey),
+          right: BorderSide(color: Colors.black),
         ),
       ),
-      height: 45.0,
-      margin: const EdgeInsets.all(3.0),
-      //width: 300.0,
+      margin: const EdgeInsets.all(3),
+      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+      // width: 100,
       child: DropdownButtonHideUnderline(
         child: new DropdownButton<String>(
           value: _value,
           items: <DropdownMenuItem<String>>[
             new DropdownMenuItem(
-              child: new Text('商品'),
+              child: new Text(
+                '商品',
+              ),
               value: 'one',
-              style:
             ),
             new DropdownMenuItem(
-              child: new Text('ユーザ'),
+              child: new Text('ユーザー'),
               value: 'two',
             ),
             new DropdownMenuItem(
