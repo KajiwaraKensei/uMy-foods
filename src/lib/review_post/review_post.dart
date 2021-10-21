@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';  //アップロード
 import 'package:workspace/HexColor.dart';   //16進数カラーコード
 import 'package:workspace/SpaceBox.dart';   //空間
 
+//フッターは901行目あたり
 // void main() {
 //   runApp(MyApp());
 // }
