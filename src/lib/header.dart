@@ -17,10 +17,8 @@ class _HeaderState extends State<Header> {
   var _selectedValue = 'ログイン'; //初期にフォーカスされているもの
   var _usStates = ["マイページ", "ログアウト"]; //ポップアップのリスト(ログインあり)
   String _value = 'one';
-
   final TextEditingController _categoryNameController =
       new TextEditingController(text: '');
-
   @override
   Widget build(BuildContext context) {
     var DropDown = Container(
@@ -38,8 +36,17 @@ class _HeaderState extends State<Header> {
           value: _value,
           items: <DropdownMenuItem<String>>[
             new DropdownMenuItem(
-              child: new Text('クチコミ'),
-              value: _value,
+              child: new Text('商品'),
+              value: 'one',
+              style:
+            ),
+            new DropdownMenuItem(
+              child: new Text('ユーザ'),
+              value: 'two',
+            ),
+            new DropdownMenuItem(
+              child: new Text('レビュー'),
+              value: 'three',
             ),
           ],
           onChanged: (String? value) {
