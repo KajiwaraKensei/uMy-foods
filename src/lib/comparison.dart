@@ -1,23 +1,31 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:multi_charts/multi_charts.dart';
 import 'package:umy_foods/HexColor.dart';
+import 'package:umy_foods/clipButton.dart';
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/main.dart';
 import 'package:umy_foods/details/details.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; //DB
+import "package:intl/intl.dart";
+import 'package:intl/date_symbol_data_local.dart'; //日時用
 
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart'; //パンくず
+import 'package:umy_foods/star.dart'; //星評価
 
 class Comparison extends StatefulWidget {
-  Comparison(this.productList);
-  List<Map<String, dynamic>> productList;
+  Comparison({Key? key, required this.productList}) : super(key: key);
+  List<String> productList;
   @override
   _ComparisonState createState() => _ComparisonState(productList);
 }
 
 class _ComparisonState extends State<Comparison> {
   _ComparisonState(this.productList);
-  List<Map<String, dynamic>> productList;
+  List<String> productList;
   bool darkMode = false;
   bool useSides = false;
   double numberOfFeatures = 6;
@@ -38,79 +46,19 @@ class _ComparisonState extends State<Comparison> {
     'Allergy',
     'Nutrition',
     'Manufact',
-    'RefPrice',
-    'InterCap',
     'Brand',
     'RelDate',
   ];
   // 味覚以外のリスト
-  final List<Map<String, dynamic>> conItems = [
-    {
-      'Name': '明治ホワイトチョコレート 40g',
-      'Image': 'https://livedoor.blogimg.jp/plankman/imgs/e/e/ee5945d2.jpg',
-      'Eval': 3, // 総合評価
-      'Rank': 'お菓子9位',
-      'Repeat': <double>[252, 59],
-      'Con': 452, // 気になる
-      'CostP': 2, // コスパ
-      'taste': <double>[10, 1, 0, 1, 0, 0, 4],
-      'Material': '砂糖、全粉乳、ココアバター、植物油脂、脱脂粉乳／乳化剤、香料、（一部に乳成分・大豆を含む）', // 原材料
-      'Allergy': '乳、大豆',
-      'Nutrition':
-          '栄養成分表示 1枚（40g）あたり / たんぱく質　3.4g / エネルギー　235kcal / 炭水化物　19.7g / 脂質　15.9g / 食塩相当量　0.10g',
-      'Manufact': '明治', // メーカー
-      'RefPrice': '250円',
-      'InterCap': '100g',
-      'Brand': 'ミルクチョコレート',
-      'RelDate': '1990/01/01',
-    },
-    {
-      'Name': 'きのこの山とたけのこの里 12袋',
-      'Image':
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1iSBzQche-bz05pN4oy14EFgCi7ha7a_xiw&usqp=CAU',
-      'Eval': 4, // 総合評価
-      'Rank': 'お菓子2位',
-      'Repeat': <double>[252, 249],
-      'Con': 252, // 気になる
-      'CostP': 4, // コスパ
-      'taste': <double>[10, 1, 3, 2, 0, 0, 4],
-      'Material':
-          '＜きのこの山＞砂糖（外国製造、国内製造）、小麦粉、カカオマス、植物油脂、全粉乳、ココアバター、乳糖、ショートニング、練乳加工品、脱脂粉乳、クリーミングパウダー、異性化液糖、麦芽エキス、食塩、イースト／乳化剤、膨脹剤、香料、（一部に小麦・乳成分・大豆を含む）＜たけのこの里＞砂糖（外国製造、国内製造）、小麦粉、全粉乳、カカオマス、ショートニング、鶏卵、植物油脂、ココアバター、卵白、マーガリン、アーモンドペースト、乳糖、脱脂粉乳、食塩、クリーミングパウダー、麦芽エキス／乳化剤、膨脹剤、香料、（一部に小麦・卵・乳成分・アーモンド・大豆を含む', // 原材料
-      'Allergy': '小麦、卵、乳、大豆',
-      'Nutrition':
-          '栄養成分表示 きのこの山 1袋（12g）あたり / たんぱく質　1.0g / エネルギー　69kcal / 炭水化物　6.4g / 脂質　4.3g / 食塩相当量　0.04g',
-      'Manufact': '明治', // メーカー
-      'RefPrice': '250円',
-      'InterCap': '100g',
-      'Brand': 'きのこの山とたけのこの里',
-      'RelDate': '1990/01/01',
-    },
-    {
-      'Name': 'ガルボチョコパウチ 76g',
-      'Image': 'https://livedoor.blogimg.jp/plankman/imgs/b/f/bfa6566c.jpg',
-      'Eval': 3, // 総合評価
-      'Rank': 'お菓子4位',
-      'Repeat': <double>[111, 80],
-      'Con': 132, // 気になる
-      'CostP': 2, // コスパ
-      'taste': <double>[10, 1, 0, 5, 0, 0, 3],
-      'Material':
-          '砂糖（外国製造、国内製造）、カカオマス、植物油脂、全粉乳、ココアバター、鶏卵、小麦粉、植物油脂加工食品、脱脂粉乳、練乳パウダー、ココアパウダー、還元水あめ／加工デンプン、乳化剤、光沢剤、香料、セルロース、膨脹剤、（一部に小麦・卵・乳成分・大豆を含む）', // 原材料
-      'Allergy': '小麦、卵、乳、大豆、りんご',
-      'Nutrition':
-          '栄養成分表示 1袋（76g）あたり / たんぱく質　5.3g / エネルギー　428kcal / 炭水化物　43.0g / 脂質　26.1g / 食塩相当量　0.10g',
-      'Manufact': '明治', // メーカー
-      'RefPrice': '250円',
-      'InterCap': '100g',
-      'Brand': 'ガルボ',
-      'RelDate': '1990/01/01',
-    },
-  ];
+  final List<Map<String, dynamic>> conItems = [];
+  final List<int> _items = List<int>.generate(50, (int index) => index);
 
   @override
   Widget build(BuildContext context) {
-    Widget myContainer(
-        {double size = 300, required Color color, String text = ''}) {
+    Widget myContainer({
+      double size = 300,
+      String text = '',
+    }) {
       var slist = [
         "商品名",
         "商品画像",
@@ -124,20 +72,21 @@ class _ComparisonState extends State<Comparison> {
         "アレルギー",
         "栄養成分表示",
         "メーカー",
-        "参考価格",
-        "内容量",
         "ブランド",
-        "発売日"
+        "発売日" //削除？
       ];
 
       return Container(
-        color: color,
         width: size,
         child: Column(children: [
+          Container(
+            //スペースとるためのコンテナ
+            height: 69,
+          ),
           Table(
             border: TableBorder.all(),
             children: [
-              for (int rcnt = 0; rcnt < 16; rcnt++)
+              for (int rcnt = 0; rcnt < 14; rcnt++)
                 TableRow(children: [
                   //height通常20
                   if (text == 'list')
@@ -155,7 +104,7 @@ class _ComparisonState extends State<Comparison> {
                             child: Text(slist[rcnt],
                                 style: TextStyle(color: HexColor('616161')))),
                         color: HexColor('ffdfc5'),
-                        height: 28,
+                        height: 27.5,
                       )
                     else if (rcnt == 7)
                       Container(
@@ -198,7 +147,7 @@ class _ComparisonState extends State<Comparison> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => DetailsPage(
-                                              '0JEOwz9bBqm4p9HVuDz', '比較')));
+                                              conItems[ccnt]['ID'], '比較')));
                                 },
                                 child: Text(conItems[ccnt][conItemLabels[rcnt]],
                                     style: TextStyle(color: Colors.black)))),
@@ -209,7 +158,10 @@ class _ComparisonState extends State<Comparison> {
                         child: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Center(
-                                child: Image.network(conItems[ccnt]['Image']))),
+                                child: Image.network((conItems[ccnt]['Image'] ==
+                                        "")
+                                    ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
+                                    : conItems[ccnt]['Image']))),
                         height: 150,
                         width: 200,
                         color: Colors.white,
@@ -224,9 +176,10 @@ class _ComparisonState extends State<Comparison> {
                     else if (rcnt == 4) //リピートしたい
                       Container(
                         child: Center(
-                            child: Text(
+                            /*child: Text(
                                 showRepeat(conItems[ccnt][conItemLabels[rcnt]]),
-                                style: TextStyle(color: Colors.black))),
+                                style: TextStyle(color: Colors.black))*/
+                            ),
                         color: Colors.white,
                       )
                     else if (rcnt == 5) //気になる
@@ -262,7 +215,6 @@ class _ComparisonState extends State<Comparison> {
                             "塩味",
                             "苦味",
                             "辛味",
-                            "刺激",
                             "うま味",
                           ],
                           maxValue: 10,
@@ -297,25 +249,27 @@ class _ComparisonState extends State<Comparison> {
                 ])
             ],
           ),
-          // child: Text(
-          //   text,
-          //   style: TextStyle(
-          //       fontSize: 48,
-          //       fontWeight: FontWeight.bold,
-          //       color: Colors.white
-          //   ),
-          // ),
         ]),
       );
+    }
+
+    String showRepeat(List lists) {
+      const base_namber = 1; // 四捨五入する小数点の場所  1(小数点第1) 10(第2) 100(第3) ...
+      String tmp =
+          (((lists[1] / lists[0] * 100) * base_namber).round() / base_namber)
+                  .toString() +
+              '%';
+      return tmp;
     }
 
     return Scaffold(
       appBar: Header(),
       body: ListView(children: [
         Padding(
-            padding: EdgeInsets.symmetric(horizontal: 60, vertical: 60),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          padding: EdgeInsets.symmetric(horizontal: 60, vertical: 60),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               BreadCrumb(
                 //パンくずリスト
                 items: <BreadCrumbItem>[
@@ -326,8 +280,7 @@ class _ComparisonState extends State<Comparison> {
                           style: TextStyle(color: Colors.black),
                         ),
                         onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => MyApp()));
+                          Navigator.pop(context);
                         }),
                   ),
                   BreadCrumbItem(
@@ -341,105 +294,75 @@ class _ComparisonState extends State<Comparison> {
                 ],
                 divider: Icon(Icons.chevron_right),
               ),
-              SingleChildScrollView(
-                // SingleChildScrollViewで子ウィジェットをラップ
-                scrollDirection: Axis.horizontal, // スクロールの向きを水平方向に指定
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // 入れ替えボタン
-                    Container(
-                      margin: EdgeInsets.fromLTRB(120, 0, 0, 0),
-                      child: Row(
-                        children: <Widget>[
-                          for (ccnt = 0; ccnt < conItems.length; ccnt++)
-                            Container(
-                              //color: HexColor('ff9999'), // 確認用
-                              width: 300, // 商品一覧コンテナと同じ数値
-                              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    //color: HexColor('ffff99'), // 確認用
-                                    width: 200,
-                                    margin: EdgeInsets.fromLTRB(50, 0, 0, 0),
-                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        showGL(ccnt),
-                                        showGR(ccnt),
-                                      ],
+              LimitedBox(
+                maxHeight: 1100, //最大の高さを指定
+                child: ReorderableListView(
+                  header: Container(
+                    child: myContainer(size: 120, text: 'list'),
+                  ),
+                  scrollDirection: Axis.horizontal, // スクロールの向きを水平方向に指定
+                  buildDefaultDragHandles: false,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+                  onReorder: (int oldIndex, int newIndex) {
+                    setState(() {
+                      if (oldIndex < newIndex) {
+                        newIndex -= 1;
+                      }
+                      final item = productList.removeAt(oldIndex);
+                      productList.insert(newIndex, item);
+                    });
+                  },
+                  children: <Widget>[
+                    for (int index = 0; index < productList.length; index++)
+                      Card(
+                        key: Key('$index'),
+                        child: Column(children: [
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 64,
+                                  height: 64,
+                                  padding: const EdgeInsets.all(8),
+                                  child: ReorderableDragStartListener(
+                                    index: index,
+                                    child: Icon(
+                                      Icons.drag_handle_outlined,
                                     ),
                                   ),
-                                  Container(
-                                    //color: Colors.blue, // 確認用
-                                    width: 50,
-                                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                    child: showGX(ccnt),
-                                  ),
-                                ],
-                              ),
-                            ),
-                        ],
+                                ),
+                                showGX(index, productList[index]),
+                              ]),
+                          data(productList[index]),
+                        ]),
                       ),
-                    ),
-                    // 比較する商品一覧
-                    Row(
-                      children: [
-                        myContainer(
-                            size: 120, color: Colors.blue, text: 'list'),
-                        for (ccnt = 0; ccnt < conItems.length; ccnt++)
-                          myContainer(color: Colors.orange, text: 'contents'),
-                      ],
-                    ),
                   ],
                 ),
               ),
-            ])),
+            ],
+          ),
+        ),
         FooterCreate(),
       ]),
     );
   }
 
-  String showRepeat(List lists) {
-    const base_namber = 1; // 四捨五入する小数点の場所  1(小数点第1) 10(第2) 100(第3) ...
-    String tmp =
-        (((lists[1] / lists[0] * 100) * base_namber).round() / base_namber)
-                .toString() +
-            '%';
-    return tmp;
-  }
-
-  // < を表示
-  GestureDetector showGL(int i) {
-    return GestureDetector(
-        onTap: () => {changeListL(i)},
-        child: Icon(
-          Icons.chevron_left,
-          color: HexColor('696969'),
-          size: 40,
-        ));
-  }
-
-  // > を表示
-  GestureDetector showGR(int i) {
-    return GestureDetector(
-        onTap: () => {changeListR(i)},
-        child: Icon(
-          Icons.chevron_right,
-          color: HexColor('696969'),
-          size: 40,
-        ));
+  // リストの要素削除
+  void deleteList(int i, product_id) {
+    setState(() {
+      FirebaseFirestore.instance
+          .collection('/account/' + Id + '/clip_list/')
+          .doc(product_id)
+          .delete();
+      productList.removeAt(i); // 添え字xの要素を削除
+    });
   }
 
   // X を表示
-  GestureDetector showGX(int i) {
+  GestureDetector showGX(int i, product_id) {
     return GestureDetector(
-        onTap: () => {deleteList(i)},
+        onTap: () => {deleteList(i, product_id)},
         child: Icon(
           Icons.close,
           color: HexColor('696969'),
@@ -447,33 +370,444 @@ class _ComparisonState extends State<Comparison> {
         ));
   }
 
-  // リストの入れ替え
-  void changeListR(int x) {
-    // x・・・対象の添え字
-    if (x != -1) {
-      var temp = conItems[x];
-      setState(() {
-        conItems[x] = conItems[x + 1];
-        conItems[x + 1] = temp;
-      });
-    }
-  }
+  Widget data(product_id) {
+    return StreamBuilder<QuerySnapshot>(
+        //key: Key(product_id),
 
-  // リストの入れ替え(左移動)
-  void changeListL(int x) {
-    if (x != 0) {
-      var temp = conItems[x];
-      setState(() {
-        conItems[x] = conItems[x - 1];
-        conItems[x - 1] = temp;
-      });
-    }
-  }
+        //表示したいFiresotreの保存先を指定
+        stream: FirebaseFirestore.instance
+            .collection('product')
+            .where('product_id', isEqualTo: product_id)
+            .snapshots(),
 
-  // リストの要素削除
-  void deleteList(int x) {
-    setState(() {
-      conItems.removeAt(x); // 添え字xの要素を削除
-    });
+        //streamが更新されるたびに呼ばれる
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          //データが取れていない時の処理
+          if (!snapshot.hasData) return const Text('Loading...');
+
+          final result = snapshot.data!.docs[0];
+          return Container(
+              width: 300,
+              child: Column(
+                children: [
+                  Table(border: TableBorder.all(), children: [
+                    TableRow(children: [
+                      Container(
+                        //商品名
+                        child: Center(
+                            child: TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => DetailsPage(
+                                              result['product_id'], '比較')));
+                                },
+                                child: Text(result['product_name'],
+                                    style: TextStyle(color: Colors.black)))),
+                        color: Colors.white,
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Container(
+                        //画像
+                        child: Padding(
+                            padding: EdgeInsets.all(5.0),
+                            child: Center(
+                                child: Image.network((result['images'][0] == "")
+                                    ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
+                                    : result['Images'][0]))),
+                        height: 150,
+                        width: 200,
+                        color: Colors.white,
+                      ),
+                    ]),
+                    TableRow(children: [
+                      elevalation(result['product_id']),
+                    ]),
+                    TableRow(children: [
+                      Container(
+                        //ランキング
+                        child: Center(
+                            child: Text('ランキング',
+                                style: TextStyle(color: Colors.black))),
+                        color: Colors.white,
+                      ),
+                    ]),
+                    TableRow(children: [repeat(result['product_id'])]),
+                    TableRow(children: [
+                      concern(result['product_id']),
+                    ]),
+                    TableRow(children: [
+                      cospa(result['product_id']),
+                    ]),
+                    TableRow(children: [
+                      mikaku(result['product_id']),
+                    ]),
+                    TableRow(children: [
+                      Container(
+                        //原材料
+                        child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(result['raw_material'],
+                                style: TextStyle(color: Colors.black))),
+                        color: Colors.white,
+                        height: 300,
+                      ),
+                    ]),
+                    TableRow(children: [
+                      allergyName(result['product_id']),
+                    ]),
+                    TableRow(children: [
+                      nutritionalIngredients(result['product_id']),
+                    ]),
+                    TableRow(children: [
+                      makerName(result['maker_id']),
+                    ]),
+                    TableRow(children: [
+                      brandName(result['maker_id'], result['brand_id'])
+                    ]),
+                    TableRow(children: [
+                      Container(
+                        //発売日
+                        child: Center(
+                            child: Text(
+                                DateFormat("yyyy/MM/dd")
+                                    .format(result['release_date'].toDate())
+                                    .toString(),
+                                style: TextStyle(color: Colors.black))),
+                        color: Colors.white,
+                      ),
+                    ]),
+                  ]),
+                ],
+              ));
+        });
   }
 }
+
+review(product_id) {
+  return FirebaseFirestore.instance
+      .collection('review')
+      .where('product_id', isEqualTo: product_id)
+      .snapshots();
+}
+
+Widget elevalation(product_id) {
+  return StreamBuilder<QuerySnapshot>(
+
+      //表示したいFiresotreの保存先を指定
+      stream: review(product_id),
+
+      //streamが更新されるたびに呼ばれる
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        //データが取れていない時の処理
+        if (!snapshot.hasData) return const Text('Loading...');
+
+        final result = snapshot.data!.docs;
+        List<int> evaList = []; //評価リスト
+
+        if (result.length == 0) {
+          return Container(
+              //評価
+              child: Center(child: Text('レビューなし')));
+        }
+
+        for (int j = 0; j < result.length; j++) {
+          //評価
+          evaList.add(result[j]['review_evaluation']);
+        }
+
+        double ave = evaList.reduce((a, b) => a + b) / evaList.length;
+        int average = ave.round();
+
+        return Container(
+            //評価
+            child: Center(
+          child: star(average, 20),
+        ));
+      });
+}
+
+Widget repeat(product_id) {
+  return StreamBuilder<QuerySnapshot>(
+
+      //表示したいFiresotreの保存先を指定
+      stream: FirebaseFirestore.instance
+          .collection('repeat')
+          .where('product_id', isEqualTo: product_id)
+          .snapshots(),
+
+      //streamが更新されるたびに呼ばれる
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        //データが取れていない時の処理
+        if (!snapshot.hasData) return const Text('Loading...');
+
+        final result = snapshot.data!.docs;
+
+        return Container(
+          //リピート
+          child: Center(
+              child: Text(result.length.toString(),
+                  style: TextStyle(color: Colors.black))),
+          color: Colors.white,
+        );
+      });
+}
+
+Widget concern(product_id) {
+  return StreamBuilder<QuerySnapshot>(
+
+      //表示したいFiresotreの保存先を指定
+      stream: FirebaseFirestore.instance
+          .collection('concern')
+          .where('product_id', isEqualTo: product_id)
+          .snapshots(),
+
+      //streamが更新されるたびに呼ばれる
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        //データが取れていない時の処理
+        if (!snapshot.hasData) return const Text('Loading...');
+
+        final result = snapshot.data!.docs;
+
+        return Container(
+          //リピート
+          child: Center(
+              child: Text(result.length.toString() + '回',
+                  style: TextStyle(color: Colors.black))),
+          color: Colors.white,
+        );
+      });
+}
+
+Widget cospa(product_id) {
+  return StreamBuilder<QuerySnapshot>(
+
+      //表示したいFiresotreの保存先を指定
+      stream: review(product_id),
+
+      //streamが更新されるたびに呼ばれる
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        //データが取れていない時の処理
+        if (!snapshot.hasData) return const Text('Loading...');
+
+        final result = snapshot.data!.docs;
+        List<int> cospaList = []; //評価リスト
+
+        if (result.length == 0) {
+          return Container(
+              //評価
+              child: Center(child: Text('レビューなし')));
+        }
+
+        for (int j = 0; j < result.length; j++) {
+          //評価
+          cospaList.add(result[j]['review_cospa']);
+        }
+
+        double ave = cospaList.reduce((a, b) => a + b) / cospaList.length;
+        int average = ave.round();
+
+        return Container(
+            //評価
+            child: Center(
+          child: star(average, 20),
+        ));
+      });
+}
+
+Widget mikaku(product_id) {
+  return StreamBuilder<QuerySnapshot>(
+
+      //表示したいFiresotreの保存先を指定
+      stream: review(product_id),
+
+      //streamが更新されるたびに呼ばれる
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        //データが取れていない時の処理
+        if (!snapshot.hasData) return const Text('Loading...');
+
+        final result = snapshot.data!.docs;
+        List<int> cospaList = []; //評価リスト
+
+        if (result.length == 0) {
+          List<double> mikaku = [0, 0, 0, 0, 0, 0];
+        }
+
+        num sweet_sum = 0;
+        num acidity_sum = 0;
+        num salty_sum = 0;
+        num bitter_sum = 0;
+        num spicy_sum = 0;
+        num umami_sum = 0;
+
+        for (int i = 0; i < result.length; i++) {
+          sweet_sum = sweet_sum + result[i]['taste'][0];
+          acidity_sum = acidity_sum + result[i]['taste'][1];
+          salty_sum = salty_sum + result[i]['taste'][2];
+          bitter_sum = bitter_sum + result[i]['taste'][3];
+          spicy_sum = spicy_sum + result[i]['taste'][4];
+          umami_sum = umami_sum + result[i]['taste'][5];
+        }
+
+        double sweet = sweet_sum / result.length; //甘味
+        double acidity = acidity_sum / result.length; //酸味
+        double salty = salty_sum / result.length; //塩味
+        double bitter = bitter_sum / result.length; //苦味
+        double spicy = spicy_sum / result.length; //辛味
+        double umami = umami_sum / result.length; //うまみ
+        List<double> mikaku = [sweet, acidity, salty, bitter, spicy, umami];
+
+        return Container(
+          //味覚
+          width: 200,
+          height: 200,
+          color: Colors.white,
+          //Radar Chart
+          child: RadarChart(
+            animate: false, // アニメーションの有無 true or false
+            animationDuration: Duration(milliseconds: 700), //アニメーションの再生速度 ミリ秒
+            values: mikaku,
+            labels: [
+              "甘味",
+              "酸味",
+              "塩味",
+              "苦味",
+              "辛味",
+              "うま味",
+            ],
+            maxValue: 10,
+            fillColor: Colors.blue,
+            chartRadiusFactor: 0.8,
+          ),
+        );
+      });
+}
+Widget allergyName(id) {
+  return StreamBuilder<QuerySnapshot>(
+
+      //表示したいFiresotreの保存先を指定
+      stream: FirebaseFirestore.instance
+          .collection('allergy')
+          .where('allergy_id', isEqualTo: id)
+          .snapshots(),
+
+      //streamが更新されるたびに呼ばれる
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        //データが取れていない時の処理
+        if (!snapshot.hasData) return const Text('Loading...');
+
+        final result = snapshot.data!.docs;
+
+        if (result.length == 0) {
+          return Container(
+            //アレルギー
+            child: Center(child: Text('No Data')),
+            color: Colors.white,
+          );
+        }
+
+        return Container(
+          //アレルギー
+          child: Center(child: Text('${result[0]['allergy_name']}　')),
+          color: Colors.white,
+        );
+      });
+}
+
+Widget nutritionalIngredients(String id) {
+  return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+
+      //表示したいFiresotreの保存先を指定
+      stream: FirebaseFirestore.instance
+          .collection('product')
+          .doc(id)
+          .collection('nutritional_ingredients')
+          .doc(id)
+          .snapshots(),
+
+      //streamが更新されるたびに呼ばれる
+      builder: (context,
+          AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+        //データが取れていない時の処理
+        if (!snapshot.hasData) return const Text('Loading...');
+
+        return Container(
+          //栄養成分
+          child: Center(
+              child: SelectableText(
+                  '${snapshot.data!['subject']}　たんぱく質　${snapshot.data!['たんぱく質']}　/　エネルギー　${snapshot.data!['エネルギー']}　/　炭水化物　${snapshot.data!['炭水化物']}　/　脂質　${snapshot.data!['脂質']}　/　食塩相当量　${snapshot.data!['食塩相当量']}',
+                  scrollPhysics: NeverScrollableScrollPhysics())),
+          color: Colors.white,
+          height: 80,
+        );
+      });
+}
+
+    Widget makerName(String id) {
+  return StreamBuilder<QuerySnapshot>(
+
+      //表示したいFiresotreの保存先を指定
+      stream: FirebaseFirestore.instance
+          .collection('maker')
+          .where('maker_id', isEqualTo: id)
+          .snapshots(),
+
+      //streamが更新されるたびに呼ばれる
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        //データが取れていない時の処理
+        if (!snapshot.hasData) return const Text('Loading...');
+
+        final result = snapshot.data!.docs;
+
+        if (result.length == 0) {
+          return Container(
+            //アレルギー
+            child: Center(child: Text('No Data')),
+            color: Colors.white,
+          );
+        }
+
+        return Container(
+          //メーカー
+          child: Center(child: Text(result[0]['maker_name'])),
+          color: Colors.white,
+        );
+      });
+}
+
+    //ブランド
+
+Widget brandName(String maker_id, String brand_id) {
+  return StreamBuilder<QuerySnapshot>(
+
+      //表示したいFiresotreの保存先を指定
+      stream: FirebaseFirestore.instance
+          .collection('/maker/' + maker_id + '/brand/')
+          .where('brand_id', isEqualTo: brand_id)
+          .snapshots(),
+
+      //streamが更新されるたびに呼ばれる
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        //データが取れていない時の処理
+        if (!snapshot.hasData) return const Text('Loading...');
+
+        final result = snapshot.data!.docs;
+
+        if (result.length == 0) {
+          return Container(
+            //アレルギー
+            child: Center(child: Text('No Data')),
+            color: Colors.white,
+          );
+        }
+
+        return Container(
+          //ブランド
+          child: Center(child: Text(result[0]['brand_name'])),
+          color: Colors.white,
+        );
+      });
+    }
+

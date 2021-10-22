@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 // パッケージ
@@ -22,6 +24,7 @@ import 'package:umy_foods/header.dart'; //ヘッダー
 import 'package:umy_foods/main.dart';
 import 'package:umy_foods/review_post/review_post.dart'; //レビュー投稿
 import 'package:umy_foods/clipButton.dart';
+import 'package:umy_foods/comparison.dart';
 
 class DetailsPage extends StatefulWidget {
   DetailsPage(this.productID, this.where);
@@ -86,13 +89,13 @@ class _DetailsPageState extends State<DetailsPage> {
 
 //ブランド
 
-    Widget brandName(String id) {
+    Widget brandName(String maker_id, String brand_id) {
       return StreamBuilder<QuerySnapshot>(
 
           //表示したいFiresotreの保存先を指定
           stream: FirebaseFirestore.instance
-              .collection('brand')
-              .where('brand_id', isEqualTo: id)
+              .collection('/maker/' + maker_id + '/brand/')
+              .where('brand_id', isEqualTo: brand_id)
               .snapshots(),
 
           //streamが更新されるたびに呼ばれる
@@ -125,6 +128,10 @@ class _DetailsPageState extends State<DetailsPage> {
             if (!snapshot.hasData) return const Text('Loading...');
 
             String result = snapshot.data!.docs[0]['allergy_name'];
+
+            if (result.length == 0) {
+              return Text('No Data');
+            }
 
             return Text('${result}　');
           });
@@ -503,10 +510,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     style: TextStyle(color: Colors.black),
                                   ),
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => MyApp()));
+                                    Navigator.pop(context);
                                   }),
                             ),
                             BreadCrumbItem(
@@ -731,6 +735,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics()),
                                                         brandName(
+                                                            result['maker_id'],
                                                             result['brand_id']),
                                                         SpaceBox.height(30),
                                                       ]),

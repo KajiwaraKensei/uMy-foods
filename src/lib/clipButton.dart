@@ -176,8 +176,11 @@ class _MyDialogState extends State<MyDialog> {
         .delete();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
+    List<String> clipList = [];
     return StreamBuilder<QuerySnapshot>(
 
         //表示したいFiresotreの保存先を指定
@@ -191,6 +194,9 @@ class _MyDialogState extends State<MyDialog> {
           if (!snapshot.hasData) return const Text('Loading...');
 
           final result = snapshot.data!.docs;
+          for (int i = 0; i < result.length; i++) {
+            clipList.add(result[i]['product_id']);
+          }
           return AlertDialog(
             backgroundColor: HexColor('f5f3ef'),
             title: const Text('Food List'),
@@ -221,7 +227,8 @@ class _MyDialogState extends State<MyDialog> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Comparison(clipList),
+                              builder: (context) =>
+                                  Comparison(productList: clipList),
                             ));
                       },
                     ),

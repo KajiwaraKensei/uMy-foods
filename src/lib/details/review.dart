@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'dart:math';
 // パッケージ
@@ -98,13 +100,13 @@ class _ReviewPageState extends State<ReviewPage> {
           double bitter = bitter_sum / result.length; //苦味
           double spicy = spicy_sum / result.length; //辛味
           double umami = umami_sum / result.length; //うまみ
+          List<double> mikaku = [sweet, acidity, salty, bitter, spicy, umami];
 
           int S_one = 0;
           int S_two = 0;
           int S_three = 0;
           int S_four = 0;
           int S_five = 0;
-          List<double> mikaku = [sweet, acidity, salty, bitter, spicy, umami];
 
           evaList.forEach((eva) {
             if (eva == 1)
@@ -213,8 +215,8 @@ class _ReviewPageState extends State<ReviewPage> {
                                   children: [
                                     Container(
                                       width: 35,
-                                      child: Image.asset(
-                                          'images/icon/newgoods.png'),
+                                      child:
+                                          Image.asset('images/new_goods.png'),
                                     ),
                                     SpaceBox.width(10),
                                     Text(
@@ -350,10 +352,10 @@ class _ReviewPageState extends State<ReviewPage> {
                                                                           ),
                                                                           onPressed:
                                                                               () {
-                                                                            clipList.add({
-                                                                              'Text': new_item[i]['Text'],
-                                                                              'image': new_item[i]['image'],
-                                                                              'product_id': new_item[i]['product_id'],
+                                                                            FirebaseFirestore.instance.collection("/account/" + Id + "/clip_list").doc(new_item[i]['product_id']).set({
+                                                                              'product_name': new_item[i]['Text'],
+                                                                              'image_url': new_item[i]['image'],
+                                                                              'product_id': '',
                                                                             });
                                                                           },
                                                                         ),
@@ -517,7 +519,7 @@ class _Age_Review extends State<Age_Review> {
     return StreamBuilder<QuerySnapshot>(
 
         //表示したいFiresotreの保存先を指定
-        stream: reviewData(productId),
+        stream: sortedReviewData(productId),
 
         //streamが更新されるたびに呼ばれる
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -527,31 +529,77 @@ class _Age_Review extends State<Age_Review> {
           final result = snapshot.data!.docs;
 
           List<QueryDocumentSnapshot> reviewResult = result;
+          QueryDocumentSnapshot some;
 
-          if (result.length >= 1) {
-            if (sort_text == '評価順') {
-              for (int i = 0; i < result.length; i++) {
-                for (int j = 1; j < result.length; j++) {
+          if (sort_text == '評価順') {
+            for (int i = 0; i < result.length; i++) {
+              for (int j = i + 1; j < result.length; j++) {
+                if (switchBool == false) {
                   if (result[i]['review_evaluation'] <=
                       result[j]['review_evaluation']) {
-                    reviewResult[i] = result[i];
+                    some = reviewResult[i];
+                    reviewResult[i] = reviewResult[j];
+                    reviewResult[j] = some;
                   }
-                }
-              }
-            } else if (sort_text == '投稿順') {
-              for (int i = 0; i < result.length; i++) {
-                for (int j = 1; j < result.length; j++) {
-                  if (result[i]['review_postdate']
-                          .toDate()
-                          .isAfter(result[j]['review_postdate'].toDate()) ==
-                      false) {
-                    reviewResult[i] = result[i];
+                } else if (switchBool == true) {
+                  if (result[i]['review_evaluation'] >
+                      result[j]['review_evaluation']) {
+                    some = reviewResult[i];
+                    reviewResult[i] = reviewResult[j];
+                    reviewResult[j] = some;
                   }
                 }
               }
             }
-          } else {
-            reviewResult = result;
+          } else if (sort_text == '投稿順') {
+            for (int i = 0; i < result.length; i++) {
+              for (int j = i + 1; j < result.length; j++) {
+                if (result[i]['review_postdate']
+                        .toDate()
+                        .isAfter(result[j]['review_postdate'].toDate()) ==
+                    switchBool) {
+                  some = reviewResult[i];
+                  reviewResult[i] = reviewResult[j];
+                  reviewResult[j] = some;
+                }
+              }
+            }
+          } else if (sort_text == 'いいね順') {
+            for (int i = 0; i < result.length; i++) {
+              for (int j = i + 1; j < result.length; j++) {
+                if (switchBool == false) {
+                  if (result[i]['favorite_sum'] <= result[j]['favorite_sum']) {
+                    some = reviewResult[i];
+                    reviewResult[i] = reviewResult[j];
+                    reviewResult[j] = some;
+                  }
+                } else if (switchBool == true) {
+                  if (result[i]['favorite_sum'] > result[j]['favorite_sum']) {
+                    some = reviewResult[i];
+                    reviewResult[i] = reviewResult[j];
+                    reviewResult[j] = some;
+                  }
+                }
+              }
+            }
+          } else if (sort_text == 'コメント数順') {
+            for (int i = 0; i < result.length; i++) {
+              for (int j = i + 1; j < result.length; j++) {
+                if (switchBool == false) {
+                  if (result[i]['comment_sum'] <= result[j]['comment_sum']) {
+                    some = reviewResult[i];
+                    reviewResult[i] = reviewResult[j];
+                    reviewResult[j] = some;
+                  }
+                } else if (switchBool == true) {
+                  if (result[i]['comment_sum'] > result[j]['comment_sum']) {
+                    some = reviewResult[i];
+                    reviewResult[i] = reviewResult[j];
+                    reviewResult[j] = some;
+                  }
+                }
+              }
+            }
           }
 
           List evaList = [];
@@ -709,7 +757,7 @@ class _Age_Review extends State<Age_Review> {
                                     color: HexColor('FFDFC5'),
                                     size: 50,
                                   ),
-                                  onPressed: _onPressedStart)
+                                  onPressed: _onPressedStart),
                           ],
                         ),
                       )
@@ -1001,6 +1049,14 @@ Stream<QuerySnapshot> reviewData(String id) {
   return FirebaseFirestore.instance
       .collection('review')
       .where('product_id', isEqualTo: id)
+      .snapshots();
+}
+
+Stream<QuerySnapshot> sortedReviewData(String id) {
+  return FirebaseFirestore.instance
+      .collection('review')
+      .where('product_id', isEqualTo: id)
+      .orderBy('review_evaluation', descending: false)
       .snapshots();
 }
 

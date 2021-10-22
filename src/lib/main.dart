@@ -12,6 +12,7 @@ import 'package:umy_foods/star.dart';
 import 'package:umy_foods/list_page/brand.dart';
 import 'package:umy_foods/new_item/newitem.dart';
 import 'package:umy_foods/ranking/ranking.dart';
+import 'package:umy_foods/carousel_list.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; //DB
@@ -20,7 +21,6 @@ void main() => runApp(MyApp());
 
 String UID = "";
 String UserImage = "";
-List<Map<String, dynamic>> clipList = [];
 String Id = 'LCIkEagsi1WjzcNHQLC3kjG6Cuw2';
 
 class MyApp extends StatelessWidget {
@@ -49,18 +49,19 @@ class Home extends StatelessWidget {
     ];
 
     CarouselController buttonCarouselController = CarouselController();
+    CarouselController reviewbuttonCarouselController = CarouselController();
 
     final List<Map<String, dynamic>> ConcernRanking = [
       {
         'Text': 'きのこの山とたけのこの里 12袋',
         'image':
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1iSBzQche-bz05pN4oy14EFgCi7ha7a_xiw&usqp=CAU',
-        'product_id': 'dFpfhWF9nbaH2XFGnoD',
+        'product_id': 'ZVHwc73pOtwxEaUZJHh',
       },
       {
         'Text': 'ガルボチョコパウチ 76g',
         'image': 'https://livedoor.blogimg.jp/plankman/imgs/b/f/bfa6566c.jpg',
-        'product_id': '4MrJn0IawdFPhEURGXt',
+        'product_id': 'SqmSD7f4cQz6Zl2u73l',
       },
       {
         'Text': '明治ホワイトチョコレート 40g',
@@ -78,13 +79,13 @@ class Home extends StatelessWidget {
         'Text': 'きのこの山とたけのこの里 12袋',
         'image':
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1iSBzQche-bz05pN4oy14EFgCi7ha7a_xiw&usqp=CAU',
-        'product_id': 'dFpfhWF9nbaH2XFGnoD',
+        'product_id': 'ZVHwc73pOtwxEaUZJHh',
       },
       {
         'Text': 'マーブル 32g',
         'image':
             'https://upload.wikimedia.org/wikipedia/commons/8/89/Meiji_Marble_Chocolate.jpg',
-        'product_id': 'b5f2MKFBu3nTbXLrUuf',
+        'product_id': 'FeCbGMxsQd3OwE6dlQc',
       },
     ];
     final List<Map<String, dynamic>> user = [
@@ -181,686 +182,715 @@ class Home extends StatelessWidget {
     // ランキングカルーセル用のリスト
     // 2個セットのRowのリスト
     List<Widget> rankingSliders = [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: media_width * 0.26,
-            child: Column(
-              children: [
-                SelectableText(
-                  '気になるランキング',
-                  scrollPhysics: NeverScrollableScrollPhysics(),
-                  style: TextStyle(
-                    fontSize: 16.5,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                // ランキングのカテゴリ
-                SelectableText(
-                  testcategory[0] +
-                      '>' +
-                      testcategory[1] +
-                      '>' +
-                      testcategory[2],
-                  scrollPhysics: NeverScrollableScrollPhysics(),
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: HexColor('616161'),
-                  ),
-                ),
-                // カード部分
-                for (var i = 0; i < 3; i++) //ConcernRanking
-                  Card(
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    child: new InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailsPage(
-                                  ConcernRanking[i]['product_id'], 'TOP'),
-                            ));
-                      },
-                      child: Container(
-                        width: media_width * 0.245,
-                        height: media_height * 0.185,
-                        child: Row(
-                          // レイアウト追加　間隔均等配置
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Stack(
-                              children: [
-                                // 画像
-                                Center(
-                                  child: Container(
-                                    margin: EdgeInsets.only(left: 1),
-                                    width: media_width * 0.1,
-                                    height: media_height * 0.13,
-                                    child: Image.network(
-                                      (ConcernRanking[i]['image'] == "")
-                                          ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
-                                          : ConcernRanking[i]['image'],
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                ),
-                                // ランキング順位
-                                Container(
-                                  margin: EdgeInsets.only(top: 5, left: 15),
-                                  width: media_width * 0.03,
-                                  height: media_height * 0.06,
-                                  child: Center(
-                                    child: Image.asset(
-                                      rankicon[i],
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            // 商品名等
-                            Container(
-                              width: media_width * 0.14,
-                              margin: EdgeInsets.only(top: 5, left: 5),
-                              child: Column(
-                                // レイアウト追加 間隔均等配置
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                // ベースラインに揃えて配置
-                                crossAxisAlignment: CrossAxisAlignment.baseline,
-
-                                // ベースラインの指定
-                                textBaseline: TextBaseline.alphabetic,
-                                children: [
-                                  SelectableText(
-                                    ConcernRanking[i]['Text'],
-                                    maxLines: 2,
-                                    scrollPhysics:
-                                        NeverScrollableScrollPhysics(),
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  // スターレーティング部分
-                                  star(5, 20),
-                                  // きになるリピートアイコン
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.priority_high,
-                                      ),
-                                      Text('1'),
-                                      Container(
-                                        margin: EdgeInsets.only(left: 7),
-                                        child: Icon(Icons.sync,
-                                            color: Colors.blue),
-                                      ),
-                                      Text('100'),
-                                      // クリップボタン
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                            left: 20, bottom: 4),
-                                        child: Tooltip(
-                                          message: 'クリップボードに保存します',
-                                          child: ElevatedButton(
-                                            //クリップボタン
-                                            child: Icon(
-                                              Icons.assignment_turned_in,
-                                            ),
-                                            style: ElevatedButton.styleFrom(
-                                            padding: EdgeInsets.all(12),
-                                              primary: HexColor('EC9361'),
-                                              onPrimary: Colors.white,
-                                              shape: CircleBorder(
-                                                side: BorderSide(
-                                                color: Colors.transparent,
-                                                  width: 1,
-                                                  style: BorderStyle.solid,
-                                                ),
-                                              ),
-                                            ),
-                                          onPressed: () {
-                                            FirebaseFirestore.instance
-                                                  .collection("/account/" +
-                                                      Id +
-                                                      "/clip_list")
-                                                  .doc(ConcernRanking[i]
-                                                      ['product_id'])
-                                                  .set({
-                                                'product_name':
-                                                    ConcernRanking[i]['Text'],
-                                                'image_url': ConcernRanking[i]
-                                                    ['image'],
-                                                'product_id': ConcernRanking[i]
-                                                    ['product_id'],
-                                              });
-                                            },
-                                        ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          Container(
-            width: media_width * 0.26,
-            child: Column(
-              children: [
-                SelectableText(
-                  'リピートランキング',
-                  scrollPhysics: NeverScrollableScrollPhysics(),
-                  style: TextStyle(
-                    fontSize: 16.5,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                // ランキングのカテゴリ
-                SelectableText(
-                  testcategory[0] +
-                      '>' +
-                      testcategory[1] +
-                      '>' +
-                      testcategory[2],
-                  scrollPhysics: NeverScrollableScrollPhysics(),
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: HexColor('616161'),
-                  ),
-                ),
-                // リピートカード部分
-                for (var i = 0; i < 3; i++)
-                  Card(
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    child: new InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailsPage(
-                                  RepeatRanking[i]['product_id'], 'TOP'),
-                            ));
-                      },
-                      child: Container(
-                        width: media_width * 0.245,
-                        height: media_height * 0.185,
-                        child: Row(
-                          // レイアウト追加　間隔均等配置
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Stack(
-                              children: [
-                                Center(
-                                  child: Container(
-                                    margin: EdgeInsets.only(left: 1),
-                                    width: media_width * 0.1,
-                                    height: media_height * 0.13,
-                                    child: Image.network(
-                                      (RepeatRanking[i]['image'] == "")
-                                          ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
-                                          : RepeatRanking[i]['image'],
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 5, left: 15),
-                                  width: media_width * 0.03,
-                                  height: media_height * 0.06,
-                                  child: Center(
-                                    child: Image.asset(
-                                      rankicon[i],
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              width: media_width * 0.14,
-                              margin: EdgeInsets.only(top: 5, left: 5),
-                              child: Column(
-                                // レイアウト追加 間隔均等配置
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                // ベースラインに揃えて配置
-                                crossAxisAlignment: CrossAxisAlignment.baseline,
-
-                                // ベースラインの指定
-                                textBaseline: TextBaseline.alphabetic,
-                                children: [
-                                  SelectableText(
-                                    RepeatRanking[i]['Text'],
-                                    maxLines: 2,
-                                    scrollPhysics:
-                                        NeverScrollableScrollPhysics(),
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  // スターレーティング部分
-                                  star(5, 20),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.priority_high,
-                                      ),
-                                      Text('1'),
-                                      Container(
-                                        margin: EdgeInsets.only(left: 7),
-                                        child: Icon(Icons.sync,
-                                            color: Colors.blue),
-                                      ),
-                                      Text('100'),
-                                      // クリップボタン
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                            left: 20, bottom: 4),
-                                        child: Tooltip(
-                                          message: 'クリップボードに保存します',
-                                          child: ElevatedButton(
-                                            //クリップボタン
-                                            child: Icon(
-                                              Icons.assignment_turned_in,
-                                            ),
-                                            style: ElevatedButton.styleFrom(
-                                              padding: EdgeInsets.all(12),
-                                              primary: HexColor('EC9361'),
-                                              onPrimary: Colors.white,
-                                              shape: CircleBorder(
-                                                side: BorderSide(
-                                                  color: Colors.transparent,
-                                                  width: 1,
-                                                  style: BorderStyle.solid,
-                                                ),
-                                              ),
-                                            ),
-                                            onPressed: () {
-                                              FirebaseFirestore.instance
-                                                  .collection("/account/" +
-                                                      Id +
-                                                      "/clip_list")
-                                                  .doc(RepeatRanking[i]
-                                                      ['product_id'])
-                                                  .set({
-                                                'product_name': RepeatRanking[i]
-                                                    ['Text'],
-                                                'image_url': RepeatRanking[i]
-                                                    ['image'],
-                                                'product_id': RepeatRanking[i]
-                                                    ['product_id'],
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ], // Row1個目
+      rankingcarousel(
+        context,
+        media_width,
+        media_height,
+        rankicon,
+        '気になる',
+        ConcernRanking,
+        testcategory,
+        'リピート',
+        RepeatRanking,
+        testcategory,
       ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: media_width * 0.26,
-            child: Column(
-              children: [
-                SelectableText(
-                  '評価ランキング',
-                  scrollPhysics: NeverScrollableScrollPhysics(),
-                  style: TextStyle(
-                    fontSize: 16.5,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                // ランキングのカテゴリ
-                SelectableText(
-                  testcategory[0] +
-                      '>' +
-                      testcategory[1] +
-                      '>' +
-                      testcategory[2],
-                  scrollPhysics: NeverScrollableScrollPhysics(),
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: HexColor('616161'),
-                  ),
-                ),
-                // リピートカード部分
-                for (var i = 0; i < 3; i++)
-                  Card(
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    child: new InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailsPage(
-                                  RepeatRanking[i]['product_id'], 'TOP'),
-                            ));
-                      },
-                      child: Container(
-                        width: media_width * 0.245,
-                        height: media_height * 0.185,
-                        child: Row(
-                          // レイアウト追加　間隔均等配置
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Stack(
-                              children: [
-                                Center(
-                                  child: Container(
-                                    margin: EdgeInsets.only(left: 1),
-                                    width: media_width * 0.1,
-                                    height: media_height * 0.13,
-                                    child: Image.network(
-                                      (RepeatRanking[i]['image'] == "")
-                                          ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
-                                          : RepeatRanking[i]['image'],
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 5, left: 15),
-                                  width: media_width * 0.03,
-                                  height: media_height * 0.06,
-                                  child: Center(
-                                    child: Image.asset(
-                                      rankicon[i],
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              width: media_width * 0.14,
-                              margin: EdgeInsets.only(top: 5, left: 5),
-                              child: Column(
-                                // レイアウト追加 間隔均等配置
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                // ベースラインに揃えて配置
-                                crossAxisAlignment: CrossAxisAlignment.baseline,
-
-                                // ベースラインの指定
-                                textBaseline: TextBaseline.alphabetic,
-                                children: [
-                                  SelectableText(
-                                    RepeatRanking[i]['Text'],
-                                    maxLines: 2,
-                                    scrollPhysics:
-                                        NeverScrollableScrollPhysics(),
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  // スターレーティング部分
-                                  star(5, 20),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.priority_high,
-                                      ),
-                                      Text('1'),
-                                      Container(
-                                        margin: EdgeInsets.only(left: 7),
-                                        child: Icon(Icons.sync,
-                                            color: Colors.blue),
-                                      ),
-                                      Text('100'),
-                                      // クリップボタン
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                            left: 20, bottom: 4),
-                                        child:
-                                        Tooltip(
-                                          message: 'クリップボードに保存します',
-                                          child: ElevatedButton(
-                                            //クリップボタン
-                                          child: Icon(
-                                              Icons.assignment_turned_in,
-                                            ),
-                                          style: ElevatedButton.styleFrom(
-                                              padding: EdgeInsets.all(12),
-                                              primary: HexColor('EC9361'),
-                                              onPrimary: Colors.white,
-                                              shape: CircleBorder(
-                                                side: BorderSide(
-                                                  color: Colors.transparent,
-                                                  width: 1,
-                                                  style: BorderStyle.solid,
-                                                ),
-                                              ),
-                                            ),
-                                          onPressed: () {
-                                              FirebaseFirestore.instance
-                                                  .collection("/account/" +
-                                                      Id +
-                                                      "/clip_list")
-                                                  .doc(RepeatRanking[i]
-                                                      ['product_id'])
-                                                  .set({
-                                                'product_name': RepeatRanking[i]
-                                                    ['Text'],
-                                                'image_url': RepeatRanking[i]
-                                                    ['image'],
-                                                'product_id': RepeatRanking[i]
-                                                    ['product_id'],
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          Container(
-            width: media_width * 0.26,
-            child: Column(
-              children: [
-                SelectableText(
-                  '炭酸水ランキング',
-                  scrollPhysics: NeverScrollableScrollPhysics(),
-                  style: TextStyle(
-                    fontSize: 16.5,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                // ランキングのカテゴリ
-                SelectableText(
-                  testcategory[0] +
-                      '>' +
-                      testcategory[1] +
-                      '>' +
-                      testcategory[2],
-                  scrollPhysics: NeverScrollableScrollPhysics(),
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: HexColor('616161'),
-                  ),
-                ),
-                // リピートカード部分
-                for (var i = 0; i < 3; i++)
-                  Card(
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    child: new InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailsPage(
-                                  RepeatRanking[i]['product_id'], 'TOP'),
-                            ));
-                      },
-                      child: Container(
-                        width: media_width * 0.245,
-                        height: media_height * 0.185,
-                        child: Row(
-                          // レイアウト追加　間隔均等配置
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Stack(
-                              children: [
-                                Center(
-                                  child: Container(
-                                    margin: EdgeInsets.only(left: 1),
-                                    width: media_width * 0.1,
-                                    height: media_height * 0.13,
-                                    child: Image.network(
-                                      (RepeatRanking[i]['image'] == "")
-                                          ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
-                                          : RepeatRanking[i]['image'],
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 5, left: 15),
-                                  width: media_width * 0.03,
-                                  height: media_height * 0.06,
-                                  child: Center(
-                                    child: Image.asset(
-                                      rankicon[i],
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              width: media_width * 0.14,
-                              margin: EdgeInsets.only(top: 5, left: 5),
-                              child: Column(
-                                // レイアウト追加 間隔均等配置
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                // ベースラインに揃えて配置
-                                crossAxisAlignment: CrossAxisAlignment.baseline,
-
-                                // ベースラインの指定
-                                textBaseline: TextBaseline.alphabetic,
-                                children: [
-                                  SelectableText(
-                                    RepeatRanking[i]['Text'],
-                                    maxLines: 2,
-                                    scrollPhysics:
-                                        NeverScrollableScrollPhysics(),
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  // スターレーティング部分
-                                  star(5, 20),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.priority_high,
-                                      ),
-                                      Text('1'),
-                                      Container(
-                                        margin: EdgeInsets.only(left: 7),
-                                        child: Icon(Icons.sync,
-                                            color: Colors.blue),
-                                      ),
-                                      Text('100'),
-                                      // クリップボタン
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                            left: 20, bottom: 4),
-                                        child:
-                                        Tooltip(
-                                          message: 'クリップボードに保存します',
-                                          child: ElevatedButton(
-                                            //クリップボタン
-                                          child: Icon(
-                                              Icons.assignment_turned_in,
-                                            ),
-                                          style: ElevatedButton.styleFrom(
-                                              padding: EdgeInsets.all(12),
-                                              primary: HexColor('EC9361'),
-                                              onPrimary: Colors.white,
-                                              shape: CircleBorder(
-                                                side: BorderSide(
-                                                  color: Colors.transparent,
-                                                  width: 1,
-                                                  style: BorderStyle.solid,
-                                                ),
-                                              ),
-                                            ),
-                                          onPressed: () {
-                                              FirebaseFirestore.instance
-                                                  .collection("/account/" +
-                                                      Id +
-                                                      "/clip_list")
-                                                  .doc(RepeatRanking[i]
-                                                      ['product_id'])
-                                                  .set({
-                                                'product_name': RepeatRanking[i]
-                                                    ['Text'],
-                                                'image_url': RepeatRanking[i]
-                                                    ['image'],
-                                                'product_id': RepeatRanking[i]
-                                                    ['product_id'],
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ], // Row2個目
+      rankingcarousel(
+        context,
+        media_width,
+        media_height,
+        rankicon,
+        '炭酸水',
+        ConcernRanking,
+        testcategory,
+        '総合評価',
+        RepeatRanking,
+        testcategory,
       ),
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   children: [
+      //     Container(
+      //       width: media_width * 0.26,
+      //       child: Column(
+      //         children: [
+      //           SelectableText(
+      //             '気になるランキング',
+      //             scrollPhysics: NeverScrollableScrollPhysics(),
+      //             style: TextStyle(
+      //               fontSize: 16.5,
+      //               fontWeight: FontWeight.w600,
+      //             ),
+      //           ),
+      //           // ランキングのカテゴリ
+      //           SelectableText(
+      //             testcategory[0] +
+      //                 '>' +
+      //                 testcategory[1] +
+      //                 '>' +
+      //                 testcategory[2],
+      //             scrollPhysics: NeverScrollableScrollPhysics(),
+      //             style: TextStyle(
+      //               fontSize: 12,
+      //               color: HexColor('616161'),
+      //             ),
+      //           ),
+      //           // カード部分
+      //           for (var i = 0; i < 3; i++) //ConcernRanking
+      //             Card(
+      //               margin: EdgeInsets.symmetric(vertical: 10),
+      //               child: new InkWell(
+      //                 onTap: () {
+      //                   Navigator.push(
+      //                       context,
+      //                       MaterialPageRoute(
+      //                         builder: (context) => DetailsPage(
+      //                             ConcernRanking[i]['product_id'], 'TOP'),
+      //                       ));
+      //                 },
+      //                 child: Container(
+      //                   width: media_width * 0.245,
+      //                   height: media_height * 0.185,
+      //                   child: Row(
+      //                     // レイアウト追加　間隔均等配置
+      //                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //                     crossAxisAlignment: CrossAxisAlignment.start,
+      //                     children: [
+      //                       Stack(
+      //                         children: [
+      //                           // 画像
+      //                           Center(
+      //                             child: Container(
+      //                               margin: EdgeInsets.only(left: 1),
+      //                               width: media_width * 0.1,
+      //                               height: media_height * 0.13,
+      //                               child: Image.network(
+      //                                 (ConcernRanking[i]['image'] == "")
+      //                                     ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
+      //                                     : ConcernRanking[i]['image'],
+      //                                 fit: BoxFit.contain,
+      //                               ),
+      //                             ),
+      //                           ),
+      //                           // ランキング順位
+      //                           Container(
+      //                             margin: EdgeInsets.only(top: 5, left: 15),
+      //                             width: media_width * 0.03,
+      //                             height: media_height * 0.06,
+      //                             child: Center(
+      //                               child: Image.asset(
+      //                                 rankicon[i],
+      //                                 fit: BoxFit.contain,
+      //                               ),
+      //                             ),
+      //                           ),
+      //                         ],
+      //                       ),
+      //                       // 商品名等
+      //                       Container(
+      //                         width: media_width * 0.14,
+      //                         margin: EdgeInsets.only(top: 5, left: 5),
+      //                         child: Column(
+      //                           // レイアウト追加 間隔均等配置
+      //                           mainAxisAlignment:
+      //                               MainAxisAlignment.spaceEvenly,
+      //                           // ベースラインに揃えて配置
+      //                           crossAxisAlignment: CrossAxisAlignment.baseline,
+
+      //                           // ベースラインの指定
+      //                           textBaseline: TextBaseline.alphabetic,
+      //                           children: [
+      //                             SelectableText(
+      //                               ConcernRanking[i]['Text'],
+      //                               maxLines: 2,
+      //                               scrollPhysics:
+      //                                   NeverScrollableScrollPhysics(),
+      //                               style: TextStyle(
+      //                                 fontSize: 14,
+      //                                 fontWeight: FontWeight.w600,
+      //                               ),
+      //                             ),
+      //                             // スターレーティング部分
+      //                             star(5, 20),
+      //                             // きになるリピートアイコン
+      //                             Row(
+      //                               children: [
+      //                                 Icon(
+      //                                   Icons.priority_high,
+      //                                 ),
+      //                                 Text('1'),
+      //                                 Container(
+      //                                   margin: EdgeInsets.only(left: 7),
+      //                                   child: Icon(Icons.sync,
+      //                                       color: Colors.blue),
+      //                                 ),
+      //                                 Text('100'),
+      //                                 // クリップボタン
+      //                                 Container(
+      //                                   margin: EdgeInsets.only(
+      //                                       left: 20, bottom: 4),
+      //                                   child: Tooltip(
+      //                                     message: 'クリップボードに保存します',
+      //                                     child: ElevatedButton(
+      //                                       //クリップボタン
+      //                                       child: Icon(
+      //                                         Icons.assignment_turned_in,
+      //                                       ),
+      //                                       style: ElevatedButton.styleFrom(
+      //                                       padding: EdgeInsets.all(12),
+      //                                         primary: HexColor('EC9361'),
+      //                                         onPrimary: Colors.white,
+      //                                         shape: CircleBorder(
+      //                                           side: BorderSide(
+      //                                           color: Colors.transparent,
+      //                                             width: 1,
+      //                                             style: BorderStyle.solid,
+      //                                           ),
+      //                                         ),
+      //                                       ),
+      //                                     onPressed: () {
+      //                                       FirebaseFirestore.instance
+      //                                             .collection("/account/" +
+      //                                                 Id +
+      //                                                 "/clip_list")
+      //                                             .doc(ConcernRanking[i]
+      //                                                 ['product_id'])
+      //                                             .set({
+      //                                           'product_name':
+      //                                               ConcernRanking[i]['Text'],
+      //                                           'image_url': ConcernRanking[i]
+      //                                               ['image'],
+      //                                           'product_id': ConcernRanking[i]
+      //                                               ['product_id'],
+      //                                         });
+      //                                       },
+      //                                   ),
+      //                                   ),
+      //                                 ),
+      //                               ],
+      //                             ),
+      //                           ],
+      //                         ),
+      //                       ),
+      //                     ],
+      //                   ),
+      //                 ),
+      //               ),
+      //             ),
+      //         ],
+      //       ),
+      //     ),
+      //     Container(
+      //       width: media_width * 0.26,
+      //       child: Column(
+      //         children: [
+      //           SelectableText(
+      //             'リピートランキング',
+      //             scrollPhysics: NeverScrollableScrollPhysics(),
+      //             style: TextStyle(
+      //               fontSize: 16.5,
+      //               fontWeight: FontWeight.w600,
+      //             ),
+      //           ),
+      //           // ランキングのカテゴリ
+      //           SelectableText(
+      //             testcategory[0] +
+      //                 '>' +
+      //                 testcategory[1] +
+      //                 '>' +
+      //                 testcategory[2],
+      //             scrollPhysics: NeverScrollableScrollPhysics(),
+      //             style: TextStyle(
+      //               fontSize: 12,
+      //               color: HexColor('616161'),
+      //             ),
+      //           ),
+      //           // リピートカード部分
+      //           for (var i = 0; i < 3; i++)
+      //             Card(
+      //               margin: EdgeInsets.symmetric(vertical: 10),
+      //               child: new InkWell(
+      //                 onTap: () {
+      //                   Navigator.push(
+      //                       context,
+      //                       MaterialPageRoute(
+      //                         builder: (context) => DetailsPage(
+      //                             RepeatRanking[i]['product_id'], 'TOP'),
+      //                       ));
+      //                 },
+      //                 child: Container(
+      //                   width: media_width * 0.245,
+      //                   height: media_height * 0.185,
+      //                   child: Row(
+      //                     // レイアウト追加　間隔均等配置
+      //                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //                     crossAxisAlignment: CrossAxisAlignment.start,
+      //                     children: [
+      //                       Stack(
+      //                         children: [
+      //                           Center(
+      //                             child: Container(
+      //                               margin: EdgeInsets.only(left: 1),
+      //                               width: media_width * 0.1,
+      //                               height: media_height * 0.13,
+      //                               child: Image.network(
+      //                                 (RepeatRanking[i]['image'] == "")
+      //                                     ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
+      //                                     : RepeatRanking[i]['image'],
+      //                                 fit: BoxFit.contain,
+      //                               ),
+      //                             ),
+      //                           ),
+      //                           Container(
+      //                             margin: EdgeInsets.only(top: 5, left: 15),
+      //                             width: media_width * 0.03,
+      //                             height: media_height * 0.06,
+      //                             child: Center(
+      //                               child: Image.asset(
+      //                                 rankicon[i],
+      //                                 fit: BoxFit.contain,
+      //                               ),
+      //                             ),
+      //                           ),
+      //                         ],
+      //                       ),
+      //                       Container(
+      //                         width: media_width * 0.14,
+      //                         margin: EdgeInsets.only(top: 5, left: 5),
+      //                         child: Column(
+      //                           // レイアウト追加 間隔均等配置
+      //                           mainAxisAlignment:
+      //                               MainAxisAlignment.spaceEvenly,
+      //                           // ベースラインに揃えて配置
+      //                           crossAxisAlignment: CrossAxisAlignment.baseline,
+
+      //                           // ベースラインの指定
+      //                           textBaseline: TextBaseline.alphabetic,
+      //                           children: [
+      //                             SelectableText(
+      //                               RepeatRanking[i]['Text'],
+      //                               maxLines: 2,
+      //                               scrollPhysics:
+      //                                   NeverScrollableScrollPhysics(),
+      //                               style: TextStyle(
+      //                                 fontSize: 14,
+      //                                 fontWeight: FontWeight.w600,
+      //                               ),
+      //                             ),
+      //                             // スターレーティング部分
+      //                             star(5, 20),
+      //                             Row(
+      //                               children: [
+      //                                 Icon(
+      //                                   Icons.priority_high,
+      //                                 ),
+      //                                 Text('1'),
+      //                                 Container(
+      //                                   margin: EdgeInsets.only(left: 7),
+      //                                   child: Icon(Icons.sync,
+      //                                       color: Colors.blue),
+      //                                 ),
+      //                                 Text('100'),
+      //                                 // クリップボタン
+      //                                 Container(
+      //                                   margin: EdgeInsets.only(
+      //                                       left: 20, bottom: 4),
+      //                                   child: Tooltip(
+      //                                     message: 'クリップボードに保存します',
+      //                                     child: ElevatedButton(
+      //                                       //クリップボタン
+      //                                       child: Icon(
+      //                                         Icons.assignment_turned_in,
+      //                                       ),
+      //                                       style: ElevatedButton.styleFrom(
+      //                                         padding: EdgeInsets.all(12),
+      //                                         primary: HexColor('EC9361'),
+      //                                         onPrimary: Colors.white,
+      //                                         shape: CircleBorder(
+      //                                           side: BorderSide(
+      //                                             color: Colors.transparent,
+      //                                             width: 1,
+      //                                             style: BorderStyle.solid,
+      //                                           ),
+      //                                         ),
+      //                                       ),
+      //                                       onPressed: () {
+      //                                         FirebaseFirestore.instance
+      //                                             .collection("/account/" +
+      //                                                 Id +
+      //                                                 "/clip_list")
+      //                                             .doc(RepeatRanking[i]
+      //                                                 ['product_id'])
+      //                                             .set({
+      //                                           'product_name': RepeatRanking[i]
+      //                                               ['Text'],
+      //                                           'image_url': RepeatRanking[i]
+      //                                               ['image'],
+      //                                           'product_id': RepeatRanking[i]
+      //                                               ['product_id'],
+      //                                         });
+      //                                       },
+      //                                     ),
+      //                                   ),
+      //                                 ),
+      //                               ],
+      //                             )
+      //                           ],
+      //                         ),
+      //                       ),
+      //                     ],
+      //                   ),
+      //                 ),
+      //               ),
+      //             ),
+      //         ],
+      //       ),
+      //     ),
+      //   ], // Row1個目
+      // ),
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   children: [
+      //     Container(
+      //       width: media_width * 0.26,
+      //       child: Column(
+      //         children: [
+      //           SelectableText(
+      //             '評価ランキング',
+      //             scrollPhysics: NeverScrollableScrollPhysics(),
+      //             style: TextStyle(
+      //               fontSize: 16.5,
+      //               fontWeight: FontWeight.w600,
+      //             ),
+      //           ),
+      //           // ランキングのカテゴリ
+      //           SelectableText(
+      //             testcategory[0] +
+      //                 '>' +
+      //                 testcategory[1] +
+      //                 '>' +
+      //                 testcategory[2],
+      //             scrollPhysics: NeverScrollableScrollPhysics(),
+      //             style: TextStyle(
+      //               fontSize: 12,
+      //               color: HexColor('616161'),
+      //             ),
+      //           ),
+      //           // リピートカード部分
+      //           for (var i = 0; i < 3; i++)
+      //             Card(
+      //               margin: EdgeInsets.symmetric(vertical: 10),
+      //               child: new InkWell(
+      //                 onTap: () {
+      //                   Navigator.push(
+      //                       context,
+      //                       MaterialPageRoute(
+      //                         builder: (context) => DetailsPage(
+      //                             RepeatRanking[i]['product_id'], 'TOP'),
+      //                       ));
+      //                 },
+      //                 child: Container(
+      //                   width: media_width * 0.245,
+      //                   height: media_height * 0.185,
+      //                   child: Row(
+      //                     // レイアウト追加　間隔均等配置
+      //                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //                     crossAxisAlignment: CrossAxisAlignment.start,
+      //                     children: [
+      //                       Stack(
+      //                         children: [
+      //                           Center(
+      //                             child: Container(
+      //                               margin: EdgeInsets.only(left: 1),
+      //                               width: media_width * 0.1,
+      //                               height: media_height * 0.13,
+      //                               child: Image.network(
+      //                                 (RepeatRanking[i]['image'] == "")
+      //                                     ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
+      //                                     : RepeatRanking[i]['image'],
+      //                                 fit: BoxFit.contain,
+      //                               ),
+      //                             ),
+      //                           ),
+      //                           Container(
+      //                             margin: EdgeInsets.only(top: 5, left: 15),
+      //                             width: media_width * 0.03,
+      //                             height: media_height * 0.06,
+      //                             child: Center(
+      //                               child: Image.asset(
+      //                                 rankicon[i],
+      //                                 fit: BoxFit.contain,
+      //                               ),
+      //                             ),
+      //                           ),
+      //                         ],
+      //                       ),
+      //                       Container(
+      //                         width: media_width * 0.14,
+      //                         margin: EdgeInsets.only(top: 5, left: 5),
+      //                         child: Column(
+      //                           // レイアウト追加 間隔均等配置
+      //                           mainAxisAlignment:
+      //                               MainAxisAlignment.spaceEvenly,
+      //                           // ベースラインに揃えて配置
+      //                           crossAxisAlignment: CrossAxisAlignment.baseline,
+
+      //                           // ベースラインの指定
+      //                           textBaseline: TextBaseline.alphabetic,
+      //                           children: [
+      //                             SelectableText(
+      //                               RepeatRanking[i]['Text'],
+      //                               maxLines: 2,
+      //                               scrollPhysics:
+      //                                   NeverScrollableScrollPhysics(),
+      //                               style: TextStyle(
+      //                                 fontSize: 14,
+      //                                 fontWeight: FontWeight.w600,
+      //                               ),
+      //                             ),
+      //                             // スターレーティング部分
+      //                             star(5, 20),
+      //                             Row(
+      //                               children: [
+      //                                 Icon(
+      //                                   Icons.priority_high,
+      //                                 ),
+      //                                 Text('1'),
+      //                                 Container(
+      //                                   margin: EdgeInsets.only(left: 7),
+      //                                   child: Icon(Icons.sync,
+      //                                       color: Colors.blue),
+      //                                 ),
+      //                                 Text('100'),
+      //                                 // クリップボタン
+      //                                 Container(
+      //                                   margin: EdgeInsets.only(
+      //                                       left: 20, bottom: 4),
+      //                                   child:
+      //                                   Tooltip(
+      //                                     message: 'クリップボードに保存します',
+      //                                     child: ElevatedButton(
+      //                                       //クリップボタン
+      //                                     child: Icon(
+      //                                         Icons.assignment_turned_in,
+      //                                       ),
+      //                                     style: ElevatedButton.styleFrom(
+      //                                         padding: EdgeInsets.all(12),
+      //                                         primary: HexColor('EC9361'),
+      //                                         onPrimary: Colors.white,
+      //                                         shape: CircleBorder(
+      //                                           side: BorderSide(
+      //                                             color: Colors.transparent,
+      //                                             width: 1,
+      //                                             style: BorderStyle.solid,
+      //                                           ),
+      //                                         ),
+      //                                       ),
+      //                                     onPressed: () {
+      //                                         FirebaseFirestore.instance
+      //                                             .collection("/account/" +
+      //                                                 Id +
+      //                                                 "/clip_list")
+      //                                             .doc(RepeatRanking[i]
+      //                                                 ['product_id'])
+      //                                             .set({
+      //                                           'product_name': RepeatRanking[i]
+      //                                               ['Text'],
+      //                                           'image_url': RepeatRanking[i]
+      //                                               ['image'],
+      //                                           'product_id': RepeatRanking[i]
+      //                                               ['product_id'],
+      //                                         });
+      //                                       },
+      //                                     ),
+      //                                   ),
+      //                                 ),
+      //                               ],
+      //                             )
+      //                           ],
+      //                         ),
+      //                       ),
+      //                     ],
+      //                   ),
+      //                 ),
+      //               ),
+      //             ),
+      //         ],
+      //       ),
+      //     ),
+      //     Container(
+      //       width: media_width * 0.26,
+      //       child: Column(
+      //         children: [
+      //           SelectableText(
+      //             '炭酸水ランキング',
+      //             scrollPhysics: NeverScrollableScrollPhysics(),
+      //             style: TextStyle(
+      //               fontSize: 16.5,
+      //               fontWeight: FontWeight.w600,
+      //             ),
+      //           ),
+      //           // ランキングのカテゴリ
+      //           SelectableText(
+      //             testcategory[0] +
+      //                 '>' +
+      //                 testcategory[1] +
+      //                 '>' +
+      //                 testcategory[2],
+      //             scrollPhysics: NeverScrollableScrollPhysics(),
+      //             style: TextStyle(
+      //               fontSize: 12,
+      //               color: HexColor('616161'),
+      //             ),
+      //           ),
+      //           // リピートカード部分
+      //           for (var i = 0; i < 3; i++)
+      //             Card(
+      //               margin: EdgeInsets.symmetric(vertical: 10),
+      //               child: new InkWell(
+      //                 onTap: () {
+      //                   Navigator.push(
+      //                       context,
+      //                       MaterialPageRoute(
+      //                         builder: (context) => DetailsPage(
+      //                             RepeatRanking[i]['product_id'], 'TOP'),
+      //                       ));
+      //                 },
+      //                 child: Container(
+      //                   width: media_width * 0.245,
+      //                   height: media_height * 0.185,
+      //                   child: Row(
+      //                     // レイアウト追加　間隔均等配置
+      //                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //                     crossAxisAlignment: CrossAxisAlignment.start,
+      //                     children: [
+      //                       Stack(
+      //                         children: [
+      //                           Center(
+      //                             child: Container(
+      //                               margin: EdgeInsets.only(left: 1),
+      //                               width: media_width * 0.1,
+      //                               height: media_height * 0.13,
+      //                               child: Image.network(
+      //                                 (RepeatRanking[i]['image'] == "")
+      //                                     ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
+      //                                     : RepeatRanking[i]['image'],
+      //                                 fit: BoxFit.contain,
+      //                               ),
+      //                             ),
+      //                           ),
+      //                           Container(
+      //                             margin: EdgeInsets.only(top: 5, left: 15),
+      //                             width: media_width * 0.03,
+      //                             height: media_height * 0.06,
+      //                             child: Center(
+      //                               child: Image.asset(
+      //                                 rankicon[i],
+      //                                 fit: BoxFit.contain,
+      //                               ),
+      //                             ),
+      //                           ),
+      //                         ],
+      //                       ),
+      //                       Container(
+      //                         width: media_width * 0.14,
+      //                         margin: EdgeInsets.only(top: 5, left: 5),
+      //                         child: Column(
+      //                           // レイアウト追加 間隔均等配置
+      //                           mainAxisAlignment:
+      //                               MainAxisAlignment.spaceEvenly,
+      //                           // ベースラインに揃えて配置
+      //                           crossAxisAlignment: CrossAxisAlignment.baseline,
+
+      //                           // ベースラインの指定
+      //                           textBaseline: TextBaseline.alphabetic,
+      //                           children: [
+      //                             SelectableText(
+      //                               RepeatRanking[i]['Text'],
+      //                               maxLines: 2,
+      //                               scrollPhysics:
+      //                                   NeverScrollableScrollPhysics(),
+      //                               style: TextStyle(
+      //                                 fontSize: 14,
+      //                                 fontWeight: FontWeight.w600,
+      //                               ),
+      //                             ),
+      //                             // スターレーティング部分
+      //                             star(5, 20),
+      //                             Row(
+      //                               children: [
+      //                                 Icon(
+      //                                   Icons.priority_high,
+      //                                 ),
+      //                                 Text('1'),
+      //                                 Container(
+      //                                   margin: EdgeInsets.only(left: 7),
+      //                                   child: Icon(Icons.sync,
+      //                                       color: Colors.blue),
+      //                                 ),
+      //                                 Text('100'),
+      //                                 // クリップボタン
+      //                                 Container(
+      //                                   margin: EdgeInsets.only(
+      //                                       left: 20, bottom: 4),
+      //                                   child:
+      //                                   Tooltip(
+      //                                     message: 'クリップボードに保存します',
+      //                                     child: ElevatedButton(
+      //                                       //クリップボタン
+      //                                     child: Icon(
+      //                                         Icons.assignment_turned_in,
+      //                                       ),
+      //                                     style: ElevatedButton.styleFrom(
+      //                                         padding: EdgeInsets.all(12),
+      //                                         primary: HexColor('EC9361'),
+      //                                         onPrimary: Colors.white,
+      //                                         shape: CircleBorder(
+      //                                           side: BorderSide(
+      //                                             color: Colors.transparent,
+      //                                             width: 1,
+      //                                             style: BorderStyle.solid,
+      //                                           ),
+      //                                         ),
+      //                                       ),
+      //                                     onPressed: () {
+      //                                         FirebaseFirestore.instance
+      //                                             .collection("/account/" +
+      //                                                 Id +
+      //                                                 "/clip_list")
+      //                                             .doc(RepeatRanking[i]
+      //                                                 ['product_id'])
+      //                                             .set({
+      //                                           'product_name': RepeatRanking[i]
+      //                                               ['Text'],
+      //                                           'image_url': RepeatRanking[i]
+      //                                               ['image'],
+      //                                           'product_id': RepeatRanking[i]
+      //                                               ['product_id'],
+      //                                         });
+      //                                       },
+      //                                     ),
+      //                                   ),
+      //                                 ),
+      //                               ],
+      //                             )
+      //                           ],
+      //                         ),
+      //                       ),
+      //                     ],
+      //                   ),
+      //                 ),
+      //               ),
+      //             ),
+      //         ],
+      //       ),
+      //     ),
+      //   ], // Row2個目
+      // ),
+    ];
+    List<Widget> newreviewSliders = [
+      newreviewcarousel(media_width, media_height, review, 0),
+      newreviewcarousel(media_width, media_height, review, 1),
+      newreviewcarousel(media_width, media_height, review, 2),
     ];
 
     return Scaffold(
@@ -1469,104 +1499,49 @@ class Home extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        for (var i = 0; i < 3; i++)
-                                          Card(
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 8),
-                                            child: Container(
-                                              //margin: EdgeInsets.only(left: 5),
-                                              width: media_width * 0.18,
-                                              height: media_height * 0.5,
-                                              child: Column(
-                                                // レイアウト追加　間隔均等配置
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                // ベースラインに揃えて配置
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.baseline,
-
-                                                // ベースラインの指定
-                                                textBaseline:
-                                                    TextBaseline.alphabetic,
-                                                children: [
-                                                  // 商品画面
-                                                  Center(
-                                                    child: Container(
-                                                      width: media_width * 0.16,
-                                                      height:
-                                                          media_height * 0.24,
-                                                      //color: HexColor('ff2222'), // 範囲確認用
-                                                      child: Image.network(
-                                                        review[i]['image'],
-                                                        fit: BoxFit.contain,
-                                                      ),
-                                                    ),
-                                                  ),
-
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 20),
-                                                    height: media_height * 0.24,
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        // 投稿者
-                                                        Container(
-                                                          child: SelectableText(
-                                                              review[i]
-                                                                      ['name'] +
-                                                                  '　' +
-                                                                  review[i]
-                                                                      ['age'] +
-                                                                  '・' +
-                                                                  review[i][
-                                                                      'gender']),
-                                                        ),
-
-                                                        // 商品名
-                                                        Container(
-                                                          child: SelectableText(
-                                                              review[i]
-                                                                  ['product'],
-                                                              maxLines: 1,
-                                                              style: TextStyle(
-                                                                fontSize: 14,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                              )),
-                                                        ),
-                                                        // スターレーティング　用改良
-                                                        Container(
-                                                          child: star(
-                                                              review[i]['star'],
-                                                              16),
-                                                        ),
-                                                        // レビュー本文
-                                                        Container(
-                                                          //height: media_height * 0.1,
-                                                          width: media_width *
-                                                              0.17,
-                                                          child: SelectableText(
-                                                            review[i]['Text'],
-                                                            maxLines: 3,
-                                                            scrollPhysics:
-                                                                NeverScrollableScrollPhysics(),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            // 前のスライドに移動、 duration...スライド速度  curve...アニメーションの設定
+                                            reviewbuttonCarouselController
+                                                .previousPage(
+                                                    duration: Duration(
+                                                        milliseconds: 400),
+                                                    curve: Curves.linear);
+                                          },
+                                          child: Icon(
+                                            Icons.arrow_back_ios,
+                                          ),
+                                        ),
+                                        Container(
+                                          width: media_width * 0.52,
+                                          height: media_height * 0.6,
+                                          child: CarouselSlider(
+                                            items:
+                                                newreviewSliders, // スライドさせるリスト
+                                            carouselController:
+                                                reviewbuttonCarouselController, // ボタンでスライドするためのコントローラー
+                                            options: CarouselOptions(
+                                              autoPlay: true, // 自動スライド オン
+                                              enlargeCenterPage:
+                                                  false, // 画像切り替えの時に中心の画像拡大、他縮小させるか
+                                              viewportFraction:
+                                                  0.48, // 各ページが占めるビューポートの割合
                                             ),
                                           ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            // 前のスライドに移動、 duration...スライド速度  curve...アニメーションの設定
+                                            reviewbuttonCarouselController
+                                                .nextPage(
+                                                    duration: Duration(
+                                                        milliseconds: 400),
+                                                    curve: Curves.linear);
+                                          },
+                                          child: Icon(
+                                            Icons.arrow_forward_ios,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ), // 新着レビュー終わり
