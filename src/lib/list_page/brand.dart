@@ -22,6 +22,8 @@ class BrandListPage extends StatefulWidget {
 }
 
 class _BrandListState extends State<BrandListPage> {
+  List docList = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,17 +67,28 @@ class _BrandListState extends State<BrandListPage> {
                     color: HexColor('EC9361'),
                     width: 4,
                   ))),
-                  child: SelectableText(' ブランド一覧',
-                      style: TextStyle(
-                          color: Colors.black.withOpacity(0.6),
-                          fontSize: 23,
-                          fontWeight: FontWeight.bold),
-                      scrollPhysics: NeverScrollableScrollPhysics()),
+                  child: SelectableText(' ブランド一覧', style: TextStyle(color: Colors.black.withOpacity(0.6), fontSize: 23, fontWeight: FontWeight.bold), scrollPhysics: NeverScrollableScrollPhysics()),
                 ),
-                SpaceBox.height(30),
-                Container(
-                  child: buildTaskList('brand/'),
-                ),
+                // for文でメーカー名から繰り返し表示
+                for (var i = 0; i < 3; i++)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SpaceBox.height(30),
+                      // メーカー名
+                      Container(
+                        child: SelectableText(
+                          '明治',
+                          style: TextStyle(color: Colors.black.withOpacity(0.6), fontSize: 23, fontWeight: FontWeight.bold),
+                          scrollPhysics: NeverScrollableScrollPhysics(),
+                        ),
+                      ),
+                      // メーカー毎のブランド一覧
+                      Container(
+                        child: buildTaskList('/maker/02zzgbAq1OxeXVMxoEhq/brand/'), // 明治を指定中
+                      ),
+                    ],
+                  ),
                 FooterCreate(),
               ],
             )));
@@ -104,8 +117,8 @@ class _BrandListState extends State<BrandListPage> {
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               final data = document.data() as Map<String, dynamic>;
               return Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  padding: EdgeInsets.symmetric(horizontal: 15),
                   child: Card(
                       child: InkWell(
                           onTap: () {
@@ -119,9 +132,7 @@ class _BrandListState extends State<BrandListPage> {
                             children: [
                               SizedBox(
                                 height: 20,
-                                child: SelectableText(' ${data['brand_name']}',
-                                    scrollPhysics:
-                                        NeverScrollableScrollPhysics()),
+                                child: SelectableText(' ${data['brand_name']}', scrollPhysics: NeverScrollableScrollPhysics()),
                               ),
                               Icon(
                                 Icons.chevron_right_outlined,
