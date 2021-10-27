@@ -160,7 +160,8 @@ rankingcarousel(
                                           'product_name': Rankinglist1[i]
                                               ['Text'],
                                           'image_url': Rankinglist1[i]['image'],
-                                          'product_id': '',
+                                          'product_id': Rankinglist1[i]
+                                              ['product_id'],
                                         });
                                       },
                                     ),

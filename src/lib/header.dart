@@ -6,6 +6,11 @@ import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/review_post/product_selection.dart';
 import 'package:umy_foods/list_page/brand.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; //DB
+
+
 class Header extends StatefulWidget with PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(80.0);
@@ -56,6 +61,7 @@ class _HeaderState extends State<Header> {
         ),
       ),
     );
+
     return AppBar(
       leading: IconButton(
         icon: CircleAvatar(
@@ -174,7 +180,7 @@ class _HeaderState extends State<Header> {
                           : UserImage)),
                 ),
                 initialValue: _selectedValue,
-                onSelected: (String s) {
+                onSelected: (String s) async {
                   if (s == 'ログイン') {
                     //画面遷移
                     Navigator.push(
@@ -182,19 +188,41 @@ class _HeaderState extends State<Header> {
                         MaterialPageRoute(
                           builder: (context) => Login(),
                         ));
+                  } else if (s == 'ログアウト') {
+                    // ログアウト処理
+                    //uid = null;
+                    await googleSignIn.signOut();
+                    await auth.signOut(); //ログアウト完了
+                    await Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) {
+                        return Login(); //ログイン画面に戻る
+                      }),
+                    );
                   }
                   // setState(() {
                   //   _selectedValue = s;
                   // });
                 },
                 itemBuilder: (BuildContext context) {
-                  return _usStates.map((String s) {
-                    return PopupMenuItem(
-                      //ポップアップに載せる物
-                      child: Text(s),
-                      value: s,
-                    );
-                  }).toList();
+                  final snapshot = FirebaseAuth.instance.currentUser;
+                  if (snapshot != null)
+                    return _usStates.map((String s) {
+                      return PopupMenuItem(
+                        //ポップアップに載せる物
+                        child: Text(s),
+                        value: s,
+                      );
+                    }).toList();
+                  else
+                    return [
+                      PopupMenuItem(
+                        //ポップアップに載せる物
+                        child: Text(_selectedValue),
+                        value: _selectedValue,
+                      )
+                    ];
+
+
                 },
                 offset: Offset(30, 50),
               ),

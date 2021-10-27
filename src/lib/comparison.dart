@@ -15,6 +15,14 @@ import 'package:intl/date_symbol_data_local.dart'; //日時用
 
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart'; //パンくず
 import 'package:umy_foods/star.dart'; //星評価
+import 'package:umy_foods/SpaceBox.dart'; //空間
+
+double nameheight = 27.5;
+double imageheight = 150;
+double evaheight = 20.6;
+double tastehight = 200;
+double materialheight = 300;
+double nutritionalheight = 160;
 
 class Comparison extends StatefulWidget {
   Comparison({Key? key, required this.productList}) : super(key: key);
@@ -56,7 +64,7 @@ class _ComparisonState extends State<Comparison> {
   @override
   Widget build(BuildContext context) {
     Widget myContainer({
-      double size = 300,
+      double size = 350,
       String text = '',
     }) {
       var slist = [
@@ -64,7 +72,7 @@ class _ComparisonState extends State<Comparison> {
         "商品画像",
         "総合評価",
         "ランキング",
-        "リピートしたい",
+        "リピート",
         "気になる",
         "コスパ",
         "味覚",
@@ -96,7 +104,7 @@ class _ComparisonState extends State<Comparison> {
                             child: Text(slist[rcnt],
                                 style: TextStyle(color: HexColor('616161')))),
                         color: HexColor('ffdfc5'),
-                        height: 150,
+                        height: imageheight,
                       )
                     else if (rcnt == 0)
                       Container(
@@ -104,7 +112,23 @@ class _ComparisonState extends State<Comparison> {
                             child: Text(slist[rcnt],
                                 style: TextStyle(color: HexColor('616161')))),
                         color: HexColor('ffdfc5'),
-                        height: 27.5,
+                        height: nameheight,
+                      )
+                    else if (rcnt == 2)
+                      Container(
+                        child: Center(
+                            child: Text(slist[rcnt],
+                                style: TextStyle(color: HexColor('616161')))),
+                        color: HexColor('ffdfc5'),
+                        height: evaheight,
+                      )
+                    else if (rcnt == 6)
+                      Container(
+                        child: Center(
+                            child: Text(slist[rcnt],
+                                style: TextStyle(color: HexColor('616161')))),
+                        color: HexColor('ffdfc5'),
+                        height: evaheight,
                       )
                     else if (rcnt == 7)
                       Container(
@@ -112,7 +136,7 @@ class _ComparisonState extends State<Comparison> {
                             child: Text(slist[rcnt],
                                 style: TextStyle(color: HexColor('616161')))),
                         color: HexColor('ffdfc5'),
-                        height: 200,
+                        height: tastehight,
                       )
                     else if (rcnt == 8)
                       Container(
@@ -120,7 +144,7 @@ class _ComparisonState extends State<Comparison> {
                             child: Text(slist[rcnt],
                                 style: TextStyle(color: HexColor('616161')))),
                         color: HexColor('ffdfc5'),
-                        height: 300,
+                        height: materialheight,
                       )
                     else if (rcnt == 10)
                       Container(
@@ -128,7 +152,7 @@ class _ComparisonState extends State<Comparison> {
                             child: Text(slist[rcnt],
                                 style: TextStyle(color: HexColor('616161')))),
                         color: HexColor('ffdfc5'),
-                        height: 80,
+                        height: nutritionalheight,
                       )
                     else
                       Container(
@@ -136,115 +160,6 @@ class _ComparisonState extends State<Comparison> {
                             child: Text(slist[rcnt],
                                 style: TextStyle(color: HexColor('616161')))),
                         color: HexColor('ffdfc5'),
-                      )
-                  else if (text == 'contents')
-                    if (rcnt == 0)
-                      Container(
-                        child: Center(
-                            child: TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => DetailsPage(
-                                              conItems[ccnt]['ID'], '比較')));
-                                },
-                                child: Text(conItems[ccnt][conItemLabels[rcnt]],
-                                    style: TextStyle(color: Colors.black)))),
-                        color: Colors.white,
-                      )
-                    else if (rcnt == 1) //商品画像
-                      Container(
-                        child: Padding(
-                            padding: EdgeInsets.all(5.0),
-                            child: Center(
-                                child: Image.network((conItems[ccnt]['Image'] ==
-                                        "")
-                                    ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
-                                    : conItems[ccnt]['Image']))),
-                        height: 150,
-                        width: 200,
-                        color: Colors.white,
-                      )
-                    else if (rcnt == 2) //総合評価
-                      Container(
-                        child: Center(
-                            child: Text(conItems[ccnt]['Eval'].toString(),
-                                style: TextStyle(color: Colors.black))),
-                        color: Colors.white,
-                      )
-                    else if (rcnt == 4) //リピートしたい
-                      Container(
-                        child: Center(
-                            /*child: Text(
-                                showRepeat(conItems[ccnt][conItemLabels[rcnt]]),
-                                style: TextStyle(color: Colors.black))*/
-                            ),
-                        color: Colors.white,
-                      )
-                    else if (rcnt == 5) //気になる
-                      Container(
-                        child: Center(
-                            child: Text(
-                                conItems[ccnt][conItemLabels[rcnt]].toString() +
-                                    '回',
-                                style: TextStyle(color: Colors.black))),
-                        color: Colors.white,
-                      )
-                    else if (rcnt == 6) //コスパ
-                      Container(
-                        child: Center(
-                            child: Text(conItems[ccnt]['CostP'].toString(),
-                                style: TextStyle(color: Colors.black))),
-                        color: Colors.white,
-                      )
-                    else if (rcnt == 7) //レーダーチャート
-                      Container(
-                        width: 200,
-                        height: 200,
-                        color: Colors.white,
-                        //Radar Chart
-                        child: RadarChart(
-                          animate: false, // アニメーションの有無 true or false
-                          animationDuration:
-                              Duration(milliseconds: 700), //アニメーションの再生速度 ミリ秒
-                          values: conItems[ccnt]['taste'],
-                          labels: [
-                            "甘味",
-                            "酸味",
-                            "塩味",
-                            "苦味",
-                            "辛味",
-                            "うま味",
-                          ],
-                          maxValue: 10,
-                          fillColor: Colors.blue,
-                          chartRadiusFactor: 0.8,
-                        ),
-                      )
-                    else if (rcnt == 8) //原材料
-                      Container(
-                        child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(conItems[ccnt][conItemLabels[rcnt]],
-                                style: TextStyle(color: Colors.black))),
-                        color: Colors.white,
-                        height: 300,
-                      )
-                    else if (rcnt == 10)
-                      Container(
-                        child: Center(
-                            child: Text(conItems[ccnt][conItemLabels[rcnt]],
-                                style: TextStyle(color: Colors.black))),
-                        color: Colors.white,
-                        height: 80,
-                      )
-                    else
-                      Container(
-                        child: Center(
-                            child: Text(conItems[ccnt][conItemLabels[rcnt]],
-                                style: TextStyle(color: Colors.black))),
-                        color: Colors.white,
                       )
                 ])
             ],
@@ -295,7 +210,7 @@ class _ComparisonState extends State<Comparison> {
                 divider: Icon(Icons.chevron_right),
               ),
               LimitedBox(
-                maxHeight: 1100, //最大の高さを指定
+                maxHeight: 1165, //最大の高さを指定
                 child: ReorderableListView(
                   header: Container(
                     child: myContainer(size: 120, text: 'list'),
@@ -321,18 +236,28 @@ class _ComparisonState extends State<Comparison> {
                           Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                SpaceBox.width(110),
                                 Container(
                                   width: 64,
                                   height: 64,
                                   padding: const EdgeInsets.all(8),
                                   child: ReorderableDragStartListener(
                                     index: index,
-                                    child: Icon(
-                                      Icons.drag_handle_outlined,
-                                    ),
+                                    child: IconButton(
+                                        icon: Icon(
+                                          Icons.drag_handle_outlined,
+                                        ),
+                                        onPressed: () {}),
                                   ),
                                 ),
-                                showGX(index, productList[index]),
+                                SpaceBox.width(90),
+                                Align(
+                                  child: Tooltip(
+                                    message: 'クリップボードから削除します',
+                                    child: showGX(index, productList[index]),
+                                  ),
+                                  alignment: Alignment.centerRight,
+                                ),
                               ]),
                           data(productList[index]),
                         ]),
@@ -362,7 +287,30 @@ class _ComparisonState extends State<Comparison> {
   // X を表示
   GestureDetector showGX(int i, product_id) {
     return GestureDetector(
-        onTap: () => {deleteList(i, product_id)},
+        onTap: () => {
+              showDialog<int>(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('確認'),
+                    content: Text('クリップボードから削除します。よろしいですか。'),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text('削除'),
+                        onPressed: () {
+                          deleteList(i, product_id);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      FlatButton(
+                        child: Text('戻る'),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            },
         child: Icon(
           Icons.close,
           color: HexColor('696969'),
@@ -414,10 +362,22 @@ class _ComparisonState extends State<Comparison> {
                         child: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Center(
-                                child: Image.network((result['images'][0] == "")
+                                child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.white,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DetailsPage(
+                                            result['product_id'], '比較')));
+                              },
+                              child: Image.network((result['images'][0] == "")
                                     ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
-                                    : result['Images'][0]))),
-                        height: 150,
+                                    : result['images'][0]),
+                            ))),
+                        height: imageheight,
                         width: 200,
                         color: Colors.white,
                       ),
@@ -448,11 +408,17 @@ class _ComparisonState extends State<Comparison> {
                       Container(
                         //原材料
                         child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(result['raw_material'],
-                                style: TextStyle(color: Colors.black))),
+                          alignment: Alignment.topLeft,
+                          child: Scrollbar(
+                            isAlwaysShown: false,
+                            child: SingleChildScrollView(
+                                child: Text(result['raw_material'],
+                                    style: TextStyle(color: Colors.black))),
+                          ),
+                        ),
                         color: Colors.white,
-                        height: 300,
+                        height: materialheight,
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                       ),
                     ]),
                     TableRow(children: [
@@ -471,11 +437,16 @@ class _ComparisonState extends State<Comparison> {
                       Container(
                         //発売日
                         child: Center(
-                            child: Text(
-                                DateFormat("yyyy/MM/dd")
-                                    .format(result['release_date'].toDate())
-                                    .toString(),
-                                style: TextStyle(color: Colors.black))),
+                            child: (DateFormat("yyyy/MM/dd")
+                                        .format(result['release_date'].toDate())
+                                        .toString() ==
+                                    '0001/01/01')
+                                ? Text('')
+                                : Text(
+                                    DateFormat("yyyy/MM/dd")
+                                        .format(result['release_date'].toDate())
+                                        .toString(),
+                                    style: TextStyle(color: Colors.black))),
                         color: Colors.white,
                       ),
                     ]),
@@ -509,6 +480,7 @@ Widget elevalation(product_id) {
 
         if (result.length == 0) {
           return Container(
+              height: evaheight,
               //評価
               child: Center(child: Text('レビューなし')));
         }
@@ -574,7 +546,7 @@ Widget concern(product_id) {
         return Container(
           //リピート
           child: Center(
-              child: Text(result.length.toString() + '回',
+              child: Text(result.length.toString(),
                   style: TextStyle(color: Colors.black))),
           color: Colors.white,
         );
@@ -597,6 +569,7 @@ Widget cospa(product_id) {
 
         if (result.length == 0) {
           return Container(
+              height: evaheight,
               //評価
               child: Center(child: Text('レビューなし')));
         }
@@ -610,10 +583,11 @@ Widget cospa(product_id) {
         int average = ave.round();
 
         return Container(
+            height: evaheight,
             //評価
             child: Center(
-          child: star(average, 20),
-        ));
+              child: star(average, 20),
+            ));
       });
 }
 
@@ -662,7 +636,7 @@ Widget mikaku(product_id) {
         return Container(
           //味覚
           width: 200,
-          height: 200,
+          height: tastehight,
           color: Colors.white,
           //Radar Chart
           child: RadarChart(
@@ -684,6 +658,7 @@ Widget mikaku(product_id) {
         );
       });
 }
+
 Widget allergyName(id) {
   return StreamBuilder<QuerySnapshot>(
 
@@ -703,7 +678,7 @@ Widget allergyName(id) {
         if (result.length == 0) {
           return Container(
             //アレルギー
-            child: Center(child: Text('No Data')),
+            child: Center(child: Text('')),
             color: Colors.white,
           );
         }
@@ -735,17 +710,31 @@ Widget nutritionalIngredients(String id) {
 
         return Container(
           //栄養成分
-          child: Center(
-              child: SelectableText(
-                  '${snapshot.data!['subject']}　たんぱく質　${snapshot.data!['たんぱく質']}　/　エネルギー　${snapshot.data!['エネルギー']}　/　炭水化物　${snapshot.data!['炭水化物']}　/　脂質　${snapshot.data!['脂質']}　/　食塩相当量　${snapshot.data!['食塩相当量']}',
-                  scrollPhysics: NeverScrollableScrollPhysics())),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SelectableText('${snapshot.data!['subject']}',
+                  scrollPhysics: NeverScrollableScrollPhysics()),
+              SelectableText('たんぱく質　　　　　${snapshot.data!['たんぱく質']}',
+                  scrollPhysics: NeverScrollableScrollPhysics()),
+              SelectableText('エネルギー　　　　　${snapshot.data!['エネルギー']}',
+                  scrollPhysics: NeverScrollableScrollPhysics()),
+              SelectableText('炭水化物　　　　　　${snapshot.data!['炭水化物']}',
+                  scrollPhysics: NeverScrollableScrollPhysics()),
+              SelectableText('脂質　　　　　　　　${snapshot.data!['脂質']}',
+                  scrollPhysics: NeverScrollableScrollPhysics()),
+              SelectableText('食塩相当量　　　　　${snapshot.data!['食塩相当量']}',
+                  scrollPhysics: NeverScrollableScrollPhysics()),
+            ],
+          ),
           color: Colors.white,
-          height: 80,
+          height: nutritionalheight,
+          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
         );
       });
 }
 
-    Widget makerName(String id) {
+Widget makerName(String id) {
   return StreamBuilder<QuerySnapshot>(
 
       //表示したいFiresotreの保存先を指定
@@ -763,7 +752,6 @@ Widget nutritionalIngredients(String id) {
 
         if (result.length == 0) {
           return Container(
-            //アレルギー
             child: Center(child: Text('No Data')),
             color: Colors.white,
           );
@@ -777,7 +765,7 @@ Widget nutritionalIngredients(String id) {
       });
 }
 
-    //ブランド
+//ブランド
 
 Widget brandName(String maker_id, String brand_id) {
   return StreamBuilder<QuerySnapshot>(
@@ -809,5 +797,4 @@ Widget brandName(String maker_id, String brand_id) {
           color: Colors.white,
         );
       });
-    }
-
+}

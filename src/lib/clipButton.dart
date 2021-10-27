@@ -5,9 +5,13 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/comparison.dart';
+import 'package:umy_foods/login/signup.dart';
 import 'package:umy_foods/main.dart';
+import 'package:umy_foods/login/login.dart';
+import 'package:umy_foods/login/signup.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; //DB
 
 const MaterialColor customSwatch = const MaterialColor(
@@ -39,36 +43,97 @@ class _clipButtonState extends State<clipButton> {
   Widget ListItemWidget = Text(""); //表示用ウィジェット
   String _textex = "";
 
+
   @override
   Widget build(BuildContext context) {
+    var media_width = MediaQuery.of(context).size.width;
+    var media_height = MediaQuery.of(context).size.height;
     return Container(
-      width: 120.0, //ここでクリップボタンのサイズ変更可能
+      width: 200.0, //ここでクリップボタンのサイズ変更可能
       child: Stack(overflow: Overflow.visible, children: [
-        FloatingActionButton(
-          backgroundColor: HexColor('ec9463'),
-          tooltip: 'クリップボード',
-          child: Icon(Icons.assignment, color: Colors.white),
-          onPressed: () async {
-            // MyHomePageと同期をとるだけのsetState
-            setState(() {});
-            return showDialog<void>(
-              context: context,
-              barrierDismissible: true, // user must tap button!
-              builder: (BuildContext context) {
-                //Statefulなダイアログのクラスを作成したので呼び出し
-                return MyDialog();
-              },
-            );
-          },
+        //tooltip: 'クリップボード',
+        Container(
+          width: media_width * 0.15,
+          height: media_height * 0.15,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: CircleBorder(),
+              primary: HexColor('ec9463'),
+            ),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Icon(
+                Icons.assignment,
+                color: Colors.white,
+                size: 40,
+              ),
+              Text(
+                '比較',
+              ),
+            ]),
+            onPressed: () async {
+              // MyHomePageと同期をとるだけのsetState
+              final snapshot = FirebaseAuth.instance.currentUser;
+              setState(() {});
+              if (snapshot != null)
+              return showDialog<void>(
+                  context: context,
+                  barrierDismissible: true, // user must tap button!
+                  builder: (BuildContext context) {
+                    //Statefulなダイアログのクラスを作成したので呼び出し
+                    return MyDialog();
+                  },
+                );
+              else
+                return showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: Text('このサービスをご利用になるにはアカウントの登録、ログインが必要です。'),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('戻る'),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                        FlatButton(
+                          child: Text('新規登録'),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Signup(),
+                                ));
+                          },
+                        ),
+                        FlatButton(
+                          child: Text('ログイン画面へ'),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Login(),
+                                ));
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+            },
+          ),
         ),
         Positioned(
-            top: -8, left: 50, child: NotificationNumberBadge(Colors.red))
+            top: -13,
+            left: 110,
+            child: NotificationNumberBadge(HexColor('fea675'))) //通知
       ]),
     ); //This trailing comma makes auto-formatting nicer for build methods.
   }
   //右上の通知ボタン
 
+
   Widget NotificationNumberBadge(Color col) {
+    //String Uid = getUID().toString();
     return StreamBuilder<QuerySnapshot>(
 
         //表示したいFiresotreの保存先を指定
@@ -82,15 +147,20 @@ class _clipButtonState extends State<clipButton> {
           if (!snapshot.hasData) return const Text('Loading...');
 
           final result = snapshot.data!.docs;
+
           return Stack(
             alignment: Alignment.center,
             children: [
               Icon(
                 Icons.brightness_1,
                 color: col,
-                size: 20,
+                size: 50,
               ),
-              Text(result.length.toString()),
+              Text(
+                (result.length == 0) ? '0' : result.length.toString(),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
             ],
           );
         });
@@ -134,7 +204,31 @@ class _MyDialogState extends State<MyDialog> {
                                     icon: const Icon(Icons.close,
                                         color: Colors.black),
                                     onPressed: () {
-                                      _deleteItem(result[i]['product_id']);
+                                      showDialog<int>(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('確認'),
+                                            content:
+                                                Text('クリップボードから削除します。よろしいですか。'),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text('削除'),
+                                                onPressed: () {
+                                                  _deleteItem(
+                                                      result[i]['product_id']);
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                              FlatButton(
+                                                child: Text('戻る'),
+                                                onPressed: () =>
+                                                    Navigator.of(context).pop(),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                     },
                                   ),
                                 )
@@ -168,7 +262,9 @@ class _MyDialogState extends State<MyDialog> {
     );
   }
 
+
   void _deleteItem(product_id) {
+    //String Uid = getUID().toString(); //ログイン中のユーザーIDをDBから取得
     // 削除
     FirebaseFirestore.instance
         .collection('/account/' + Id + '/clip_list/')
@@ -176,11 +272,11 @@ class _MyDialogState extends State<MyDialog> {
         .delete();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     List<String> clipList = [];
+    //String Uid = getUID().toString(); //ログイン中のユーザーIDをDBから取得
+
     return StreamBuilder<QuerySnapshot>(
 
         //表示したいFiresotreの保存先を指定
@@ -237,12 +333,35 @@ class _MyDialogState extends State<MyDialog> {
                     ),
                     TextButton.icon(
                       onPressed: () {
-                        for (int i = 0; i < result.length; i++) {
+                        showDialog<int>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('確認'),
+                              content: Text('全てのアイテムをクリップボードから削除します。よろしいですか。'),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('削除'),
+                                  onPressed: () {
+                                    for (int i = 0; i < result.length; i++) {
                           FirebaseFirestore.instance
-                              .collection('/account/' + Id + '/clip_list/')
+                              .collection(
+                                              '/account/' + Id + '/clip_list/')
                               .doc(result[i]['product_id'])
                               .delete();
                         }
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                FlatButton(
+                                  child: Text('戻る'),
+                                  onPressed: () => Navigator.of(context).pop(),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+
                       },
                       icon: Icon(
                         Icons.delete_outlined,

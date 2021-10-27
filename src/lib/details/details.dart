@@ -130,7 +130,7 @@ class _DetailsPageState extends State<DetailsPage> {
             String result = snapshot.data!.docs[0]['allergy_name'];
 
             if (result.length == 0) {
-              return Text('No Data');
+              return Text('');
             }
 
             return Text('${result}　');
@@ -1072,6 +1072,11 @@ class _DetailsPageState extends State<DetailsPage> {
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
+                                                            (result['allergy_id']
+                                                                        [0] ==
+                                                                    '')
+                                                                ? Text('')
+                                                                :
                                                             Row(children: [
                                                               for (int i = 0;
                                                                   i <
