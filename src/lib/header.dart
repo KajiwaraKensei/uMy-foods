@@ -5,6 +5,7 @@ import 'package:umy_foods/login/login.dart';
 import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/review_post/product_selection.dart';
 import 'package:umy_foods/list_page/brand.dart';
+import 'package:umy_foods/change_pw.dart';
 
 class Header extends StatefulWidget with PreferredSizeWidget {
   @override
@@ -15,10 +16,9 @@ class Header extends StatefulWidget with PreferredSizeWidget {
 
 class _HeaderState extends State<Header> {
   var _selectedValue = 'ログイン'; //初期にフォーカスされているもの
-  var _usStates = ["マイページ", "ログアウト"]; //ポップアップのリスト(ログインあり)
+  var _usStates = ["マイページ", "設定", "ログアウト"]; //ポップアップのリスト(ログインあり)
   String _value = 'one';
-  final TextEditingController _categoryNameController =
-      new TextEditingController(text: '');
+  final TextEditingController _categoryNameController = new TextEditingController(text: '');
   @override
   Widget build(BuildContext context) {
     var DropDown = Container(
@@ -107,9 +107,7 @@ class _HeaderState extends State<Header> {
                       icon: Icon(Icons.clear_sharp, color: Colors.black),
                       onPressed: () => _categoryNameController.clear(),
                     ),
-                    IconButton(
-                        icon: Icon(Icons.search, color: Colors.black),
-                        onPressed: () {}),
+                    IconButton(icon: Icon(Icons.search, color: Colors.black), onPressed: () {}),
                   ],
                 ),
               ],
@@ -166,12 +164,7 @@ class _HeaderState extends State<Header> {
               PopupMenuButton<String>(
                 child: Container(
                   margin: EdgeInsets.only(left: 50),
-                  child: CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Colors.orange,
-                      backgroundImage: NetworkImage((UserImage == "")
-                          ? 'images/anotherUser2.png'
-                          : UserImage)),
+                  child: CircleAvatar(radius: 20, backgroundColor: Colors.orange, backgroundImage: NetworkImage((UserImage == "") ? 'images/anotherUser2.png' : UserImage)),
                 ),
                 initialValue: _selectedValue,
                 onSelected: (String s) {
@@ -181,6 +174,13 @@ class _HeaderState extends State<Header> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => Login(),
+                        ));
+                  }
+                  if (s == "設定") {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChangePw(),
                         ));
                   }
                   // setState(() {
