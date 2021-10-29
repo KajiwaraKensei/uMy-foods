@@ -20,9 +20,10 @@ import 'package:cloud_firestore/cloud_firestore.dart'; //DB
 
 void main() => runApp(MyApp());
 
-String UID = "";
+//String UID = "";
 String UserImage = "";
 String Id = 'LCIkEagsi1WjzcNHQLC3kjG6Cuw2';
+String UID = ''; //FirebaseAuth.instance.currentUser.toString();
 
 class MyApp extends StatelessWidget {
   @override
@@ -36,7 +37,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _Home();
+}
+
+class _Home extends State<Home> {
   @override
   Widget build(BuildContext context) {
     var media_width = MediaQuery.of(context).size.width;
@@ -217,6 +223,21 @@ class Home extends StatelessWidget {
     final snapshot = FirebaseAuth.instance.currentUser;
     final Uid = snapshot?.uid; //ログイン中のユーザーIDをDBから取得
 
+    _getUid() async {
+      final user = await FirebaseAuth.instance.currentUser;
+      setState(() {
+        final data = user?.uid;
+        if (data != null) {
+          UID = data;
+        }
+      });
+    }
+
+    @override
+    void initState() {
+      _getUid();
+    }
+
     return Scaffold(
         appBar: Header(),
         body: SingleChildScrollView(
@@ -239,7 +260,18 @@ class Home extends StatelessWidget {
                         ),
                       ],
                     ),
-                    //Text(getUID()),
+                    // FutureBuilder(
+                    //   future: _uid(),
+                    //   builder: (BuildContext context,
+                    //       AsyncSnapshot<String> snapshot) {
+                    //     if (snapshot.hasData) {
+                    //       return Text(snapshot.data.toString());
+                    //     } else {
+                    //       return Text("データが存在しません");
+                    //     }
+                    //   },
+                    // ),
+                    Text(UID),
                     Container(
                       margin: EdgeInsets.only(top: 20, right: 30),
                       child: Row(
@@ -1321,6 +1353,19 @@ class Home extends StatelessWidget {
         floatingActionButton: clipButton() //Comparison(),
         );
   }
+
+  // Future<String> _uid() async {
+  //   final snapshot = await FirebaseAuth.instance.currentUser?.uid;
+  //   //ログイン中のユーザーIDをDBから取得
+  //   if (snapshot != null) {
+  //     final String id = snapshot.toString();
+  //     setState(() {
+  //       UID = id;
+  //     });
+  //     return id;
+  //   } else
+  //     return 'null';
+  // }
 }
 
 //マウスドラッグ許可
@@ -1332,14 +1377,13 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
       };
 }
 
-Future<String> Uid() async {
-  final snapshot = await FirebaseAuth.instance.currentUser;
-  //ログイン中のユーザーIDをDBから取得
-  String? id = snapshot?.uid;
-  return id!;
-}
-
 String getUID() {
-  final String uid = Uid() as String;
-  return uid;
+  final user = FirebaseAuth.instance.currentUser?.uid;
+  if (user != null) {
+    final uid = user.toString();
+    return uid;
+  } else
+    return 'null';
+  // String id = Uid() as String;
+  // return id;
 }

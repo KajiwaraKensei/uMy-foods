@@ -374,8 +374,8 @@ class _ComparisonState extends State<Comparison> {
                                             result['product_id'], '比較')));
                               },
                               child: Image.network((result['images'][0] == "")
-                                    ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
-                                    : result['images'][0]),
+                                  ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
+                                  : result['images'][0]),
                             ))),
                         height: imageheight,
                         width: 200,
@@ -422,7 +422,7 @@ class _ComparisonState extends State<Comparison> {
                       ),
                     ]),
                     TableRow(children: [
-                      allergyName(result['product_id']),
+                      allergyName(result['allergy_id']),
                     ]),
                     TableRow(children: [
                       nutritionalIngredients(result['product_id']),
@@ -660,35 +660,42 @@ Widget mikaku(product_id) {
 }
 
 Widget allergyName(id) {
-  return StreamBuilder<QuerySnapshot>(
+  return Container(
+    //アレルギー
+    child: Center(
+      child: StreamBuilder<QuerySnapshot>(
 
-      //表示したいFiresotreの保存先を指定
-      stream: FirebaseFirestore.instance
-          .collection('allergy')
-          .where('allergy_id', isEqualTo: id)
-          .snapshots(),
+          //表示したいFiresotreの保存先を指定
+          stream: FirebaseFirestore.instance
+              .collection('allergy')
+              .where('allergy_id', whereIn: id)
+              .snapshots(),
 
-      //streamが更新されるたびに呼ばれる
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        //データが取れていない時の処理
-        if (!snapshot.hasData) return const Text('Loading...');
+          //streamが更新されるたびに呼ばれる
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            //データが取れていない時の処理
+            if (!snapshot.hasData) return const Text('Loading...');
 
-        final result = snapshot.data!.docs;
+            final result = snapshot.data!.docs;
+            String allergyList = '';
 
-        if (result.length == 0) {
-          return Container(
-            //アレルギー
-            child: Center(child: Text('')),
-            color: Colors.white,
-          );
-        }
+            for (int i = 0; i < result.length; i++) {
+              if (i == 0)
+                allergyList += result[i]['allergy_name'];
+              else
+                allergyList += '、' + result[i]['allergy_name'];
+            }
 
-        return Container(
-          //アレルギー
-          child: Center(child: Text('${result[0]['allergy_name']}　')),
-          color: Colors.white,
-        );
-      });
+            if (result.length == 0) {
+              return Text('');
+            }
+
+            return Text(allergyList);
+          }),
+    ),
+    color: Colors.white,
+  );
 }
 
 Widget nutritionalIngredients(String id) {

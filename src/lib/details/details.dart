@@ -547,6 +547,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
                               return Column(
                                 children: [
+                                  Text(getUID()),
                                   Row(
                                     children: [
                                       Expanded(
