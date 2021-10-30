@@ -72,3 +72,7 @@ RUN flutter config --enable-web
 RUN flutter doctor
 
 EXPOSE ${WEB_SERVER_PORT}
+
+#npmをインストール
+RUN apt update
+RUN apt install nodejs npm -y
