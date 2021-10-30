@@ -9,7 +9,7 @@
 # ブラウザで
 - http://localhost:8888
 
-# デプロイ
+# webデプロイ
 - npm install -g firebase-tools
 - firebase login --no-localhost
 - ディレクトリをusr/local/workspaceに変更
