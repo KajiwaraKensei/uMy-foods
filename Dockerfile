@@ -76,3 +76,4 @@ EXPOSE ${WEB_SERVER_PORT}
 #npmをインストール
 RUN apt update
 RUN apt-get -y install nodejs npm
+RUN npm install -y -g firebase-tools
