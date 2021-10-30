@@ -75,4 +75,4 @@ EXPOSE ${WEB_SERVER_PORT}
 
 #npmをインストール
 RUN apt update
-RUN apt install nodejs npm -y
+RUN apt-get -y install nodejs npm
