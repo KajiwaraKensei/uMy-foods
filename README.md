@@ -19,5 +19,6 @@
   - 使用するプロジェクトを選択しEnter
   - 「? What do you want to use as your public directory?」に 「build/web」 を入力
   - 「? Configure as a single-page app (rewrite all urls to /index.html)?」に 「N」 を入力
+  - 「? Set up automatic builds and deploys with GitHub? (y/N) 」
 - flutter build web
 - firebase deploy
