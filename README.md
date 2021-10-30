@@ -13,7 +13,7 @@
 - firebase login --no-localhost
   - 「? Allow Firebase to collect CLI usage and error reporting information? (Y/n)」に「Y」を入力
   - URLをcontrolキーを押しながらクリックし、googleログインを実行
-  -「 ? Paste authorization code here:」にブラウザに表示されたコードを入力
+  - 「 ? Paste authorization code here:」にブラウザに表示されたコードを入力
 - ディレクトリをusr/local/workspaceに変更
 - firebase init
   - 「Hosting」を選択しEnter
