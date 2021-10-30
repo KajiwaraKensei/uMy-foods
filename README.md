@@ -12,6 +12,7 @@
 # デプロイ
 - npm install -g firebase-tools
 - firebase login --no-localhost
+- ディレクトリをusr/local/workspaceに変更
 - firebase init
   - 「Hosting」を選択しEnter
   - 「Use an existing project」を選択しEnter
