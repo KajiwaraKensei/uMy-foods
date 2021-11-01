@@ -9,6 +9,7 @@ import 'package:percent_indicator/percent_indicator.dart'; //割合棒グラフ
 // import 'package:multi_charts/multi_charts.dart'; //レーダーチャート
 // import 'package:contained_tab_bar_view/contained_tab_bar_view.dart'; //年代別レビュー
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; //DB
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -25,6 +26,7 @@ import 'package:umy_foods/main.dart';
 import 'package:umy_foods/review_post/review_post.dart'; //レビュー投稿
 import 'package:umy_foods/clipButton.dart';
 import 'package:umy_foods/comparison.dart';
+import 'package:umy_foods/alert.dart';
 
 class DetailsPage extends StatefulWidget {
   DetailsPage(this.productID, this.where);
@@ -1076,17 +1078,14 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                         [0] ==
                                                                     '')
                                                                 ? Text('')
-                                                                :
-                                                            Row(children: [
-                                                              for (int i = 0;
-                                                                  i <
-                                                                      result['allergy_id']
-                                                                          .length;
-                                                                  i++)
-                                                                allergyName(
-                                                                    result['allergy_id']
-                                                                        [i])
-                                                            ]),
+                                                                : Row(
+                                                                    children: [
+                                                                        for (int i =
+                                                                                0;
+                                                                            i < result['allergy_id'].length;
+                                                                            i++)
+                                                                          allergyName(result['allergy_id'][i])
+                                                                      ]),
                                                             SpaceBox.height(20)
                                                           ]))),
                                               SizedBox(
@@ -1213,33 +1212,82 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                           Tooltip(
                             message: 'クリップボードに保存します',
-                            child: ElevatedButton(
-                              //クリップボタン
-                              child: Icon(Icons.assignment_turned_in, size: 30),
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.all(20),
-                                primary: Colors.white,
-                                onPrimary: HexColor('EC9361'),
-                                shape: CircleBorder(
-                                  side: BorderSide(
-                                    color: Colors.transparent,
-                                    width: 1,
-                                    style: BorderStyle.solid,
-                                  ),
-                                ),
-                              ),
-                              onPressed: () {
-                                FirebaseFirestore.instance
-                                    .collection(
-                                        "/account/" + Id + "/clip_list/")
-                                    .doc(productId)
-                                    .set({
-                                  'product_name': product_name,
-                                  'image_url': image,
-                                  'product_id': productId,
-                                });
-                              },
-                            ),
+                            child: StreamBuilder(
+                                stream:
+                                    FirebaseAuth.instance.authStateChanges(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  }
+
+                                  if (snapshot.hasData) {
+                                    final user =
+                                        FirebaseAuth.instance.currentUser;
+                                    final data = user?.uid;
+                                    if (data != null) {
+                                      String uid = data.toString();
+                                      return ElevatedButton(
+                                        //クリップボタン
+                                        child: Icon(Icons.assignment_turned_in,
+                                            size: 30),
+                                        style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.all(20),
+                                          primary: Colors.white,
+                                          onPrimary: HexColor('EC9361'),
+                                          shape: CircleBorder(
+                                            side: BorderSide(
+                                              color: Colors.transparent,
+                                              width: 1,
+                                              style: BorderStyle.solid,
+                                            ),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          FirebaseFirestore.instance
+                                              .collection("/account/" +
+                                                  uid +
+                                                  "/clip_list/")
+                                              .doc(productId)
+                                              .set({
+                                            'product_name': product_name,
+                                            'image_url': image,
+                                            'product_id': productId,
+                                          });
+                                        },
+                                      );
+                                    }
+                                  }
+                                  return ElevatedButton(
+                                      //クリップボタン
+                                      child: Icon(Icons.assignment_turned_in,
+                                          size: 30),
+                                      style: ElevatedButton.styleFrom(
+                                        padding: EdgeInsets.all(20),
+                                        primary: Colors.white,
+                                        onPrimary: HexColor('EC9361'),
+                                        shape: CircleBorder(
+                                          side: BorderSide(
+                                            color: Colors.transparent,
+                                            width: 1,
+                                            style: BorderStyle.solid,
+                                          ),
+                                        ),
+                                        ),
+                                        onPressed: () async {
+                                        final snapshot =
+                                            FirebaseAuth.instance.currentUser;
+                                        if (snapshot == null) {
+                                          return showDialog<void>(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return LoginAlert();
+                                            },
+                                          );
+                                        }
+                                      });
+                                }),
                           ),
                         ],
                       ),

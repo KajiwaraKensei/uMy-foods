@@ -2,6 +2,7 @@ import 'dart:html';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:umy_foods/clipAddButton.dart';
 import 'package:umy_foods/comparison.dart';
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
@@ -123,19 +124,22 @@ class _Home extends State<Home> {
         'image': 'https://img07.shop-pro.jp/PA01350/082/product/137945030.jpg',
         'date': '2021/09/16',
         'maker': 'レッドブル・ジャパン',
+        'product_id': '',
       },
       {
         'Text': 'ガルボチョコパウチ 76g',
         'image': 'https://livedoor.blogimg.jp/plankman/imgs/b/f/bfa6566c.jpg',
         'date': '2021/08/30',
-        'maker': '明治'
+        'maker': '明治',
+        'product_id': '',
       },
       {
         'Text': 'ウィルキンソン',
         'image':
             'https://m.media-amazon.com/images/I/61KZUmru1sL._AC_SL1500_.jpg',
         'date': '2021/09/16',
-        'maker': 'アサヒ飲料'
+        'maker': 'アサヒ飲料',
+        'product_id': '',
       },
     ];
     final List<Map<String, dynamic>> review = [
@@ -243,25 +247,25 @@ class _Home extends State<Home> {
                         ),
                       ],
                     ),
-                    StreamBuilder(
-                      stream: FirebaseAuth.instance.authStateChanges(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        }
+                    // StreamBuilder(//ログイン確認用
+                    //   stream: FirebaseAuth.instance.authStateChanges(),
+                    //   builder: (context, snapshot) {
+                    //     if (snapshot.connectionState ==
+                    //         ConnectionState.waiting) {
+                    //       return Center(child: CircularProgressIndicator());
+                    //     }
 
-                        if (snapshot.hasData) {
-                          final user = FirebaseAuth.instance.currentUser;
-                          final data = user?.uid;
-                          if (data != null) {
-                            return Text(data.toString());
-                          } else
-                            return Text('ログイン中');
-                        }
-                        return Text('');
-                      },
-                    ),
+                    //     if (snapshot.hasData) {
+                    //       final user = FirebaseAuth.instance.currentUser;
+                    //       final data = user?.uid;
+                    //       if (data != null) {
+                    //         return Text(data.toString());
+                    //       } else
+                    //         return Text('ログイン中');
+                    //     }
+                    //     return Text('');
+                    //   },
+                    // ),
                     Container(
                       margin: EdgeInsets.only(top: 20, right: 30),
                       child: Row(
@@ -1239,67 +1243,13 @@ class _Home extends State<Home> {
                                                             MainAxisAlignment
                                                                 .end,
                                                         children: [
-                                                          Tooltip(
-                                                            message:
-                                                                'クリップボードに保存します',
-                                                            child:
-                                                                ElevatedButton(
-                                                              //クリップボタン
-                                                              child: Icon(
-                                                                Icons
-                                                                    .assignment_turned_in,
-                                                              ),
-                                                              style:
-                                                                  ElevatedButton
-                                                                      .styleFrom(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(
-                                                                            12),
-                                                                primary: HexColor(
-                                                                    'EC9361'),
-                                                                onPrimary:
-                                                                    Colors
-                                                                        .white,
-                                                                shape:
-                                                                    CircleBorder(
-                                                                  side:
-                                                                      BorderSide(
-                                                                    color: Colors
-                                                                        .transparent,
-                                                                    width: 1,
-                                                                    style: BorderStyle
-                                                                        .solid,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              onPressed: () {
-                                                                FirebaseFirestore
-                                                                    .instance
-                                                                    .collection(
-                                                                        "/account/" +
-                                                                            Id +
-                                                                            "/clip_list")
-                                                                    .doc(new_item[
-                                                                            i][
-                                                                        'product_id'])
-                                                                    .set({
-                                                                  'product_name':
-                                                                      new_item[
-                                                                              i]
-                                                                          [
-                                                                          'Text'],
-                                                                  'image_url':
-                                                                      new_item[
-                                                                              i]
-                                                                          [
-                                                                          'image'],
-                                                                  'product_id':
-                                                                      '',
-                                                                });
-                                                              },
-                                                            ),
-                                                          ),
+                                                          defaultClipAddButton(
+                                                              new_item[i][
+                                                                  'product_id'],
+                                                              new_item[i]
+                                                                  ['image'],
+                                                              new_item[i]
+                                                                  ['image'])
                                                         ],
                                                       ),
                                                     ),

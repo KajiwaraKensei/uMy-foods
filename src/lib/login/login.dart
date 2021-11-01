@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:umy_foods/login/signup.dart';
@@ -42,6 +44,7 @@ class _LoginState extends State<Login> {
   var _userpassword = TextEditingController();
   var address_error = '';
   var password_error = '';
+  String errmsg = '';
 
   bool _flag = true;
   bool _showPassword = true;
@@ -248,42 +251,47 @@ class _LoginState extends State<Login> {
                                 child: Container(
                                   margin: EdgeInsets.only(top: 20),
                                   width: 170,
-                                  height: 40,
-                                  child: ElevatedButton(
-                                    onPressed: () async {
-                                      try {
-                                        // メール/パスワードでログイン
-                                        final result = await auth
-                                            .signInWithEmailAndPassword(
-                                          email: _useraddress.text,
-                                          password: _userpassword.text,
-                                        );
-                                        // ログインに成功した場合
-                                        // 遷移＋ログイン画面を破棄
-                                        await Navigator.of(context)
-                                            .pushReplacement(
-                                          MaterialPageRoute(builder: (context) {
-                                            return AuthComplete(result.user!);
-                                          }),
-                                        );
-                                      } catch (e) {
+                                  height: 300, //40,
+                                  child: Column(children: [
+                                    ElevatedButton(
+                                      onPressed: () async {
                                         address_error = '';
                                         password_error = '';
-
-                                        if (e.toString() ==
-                                            '[firebase_auth/invalid-email] The email address is badly formatted.') {
-                                          setState(() {
-                                            address_error =
-                                                "正しいメールアドレスを入力してください。";
-                                          });
-                                        } else if (e.toString() ==
-                                            '[firebase_auth/wrong-password] The password is invalid or the user does not have a password.') {
-                                          password_error = "正しいパスワードを入力してください。";
+                                        try {
+                                          // メール/パスワードでログイン
+                                          final result = await auth
+                                              .signInWithEmailAndPassword(
+                                            email: _useraddress.text,
+                                            password: _userpassword.text,
+                                          );
+                                          // ログインに成功した場合
+                                          // 遷移＋ログイン画面を破棄
+                                          await Navigator.of(context)
+                                              .pushReplacement(
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                              return AuthComplete(result.user!);
+                                            }),
+                                          );
+                                        } on FirebaseAuthException catch (e) {
+                                          errmsg = e.code;
+                                          if (e.toString() ==
+                                              '[firebase_auth/invalid-email] The email address is badly formatted.') {
+                                            setState(() {
+                                              address_error =
+                                                  "正しいメールアドレスを入力してください。";
+                                            });
+                                          } else if (e.toString() ==
+                                              '[firebase_auth/wrong-password] The password is invalid or the user does not have a password.') {
+                                            setState(() {
+                                              password_error =
+                                                  "正しいパスワードを入力してください。";
+                                            });
+                                          }
+                                          // ログインに失敗した場合
                                         }
-                                        // ログインに失敗した場合
-                                      }
-                                    },
-                                    /*{
+                                      },
+                                      /*{
                             // 確認用
                             setState(() {
                               _text = _useraddress.text;
@@ -291,18 +299,20 @@ class _LoginState extends State<Login> {
                               _text += _userpassword.text;
                             });
                           },*/
-                                    child: Text(
-                                      "ログイン",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
+                                      child: Text(
+                                        "ログイン",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: HexColor('ec9463'), //ボタンの背景色
                                       ),
                                     ),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: HexColor('ec9463'), //ボタンの背景色
-                                    ),
-                                  ),
+                                    Text(errmsg),
+                                  ]),
                                 ),
                               ),
                               // 新規会員登録リンク

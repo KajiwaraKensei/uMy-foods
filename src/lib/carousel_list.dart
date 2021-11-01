@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:umy_foods/clipAddButton.dart';
 import 'package:umy_foods/details/details.dart';
 import 'package:umy_foods/clipButton.dart';
 import 'package:umy_foods/star.dart';
@@ -138,129 +139,10 @@ rankingcarousel(
                                   Container(
                                     margin:
                                         EdgeInsets.only(left: 20, bottom: 4),
-                                    child: StreamBuilder(
-                                        stream: FirebaseAuth.instance
-                                            .authStateChanges(),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return Center(
-                                                child:
-                                                    CircularProgressIndicator());
-                                          }
-
-                                          if (snapshot.hasData) {
-                                            final user = FirebaseAuth
-                                                .instance.currentUser;
-                                            final data = user?.uid;
-                                            if (data != null) {
-                                              String uid = data.toString();
-                                              return ElevatedButton(
-                                                //クリップボタン
-                                                child: Icon(
-                                                  Icons.assignment_turned_in,
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  padding: EdgeInsets.all(12),
-                                                  primary: HexColor('EC9361'),
-                                                  onPrimary: Colors.white,
-                                                  shape: CircleBorder(
-                                                    side: BorderSide(
-                                                      color: Colors.transparent,
-                                                      width: 1,
-                                                      style: BorderStyle.solid,
-                                                    ),
-                                                  ),
-                                                ),
-                                                onPressed: () async {
-                                                  FirebaseFirestore.instance
-                                                      .collection(
-                                                            "/account/" +
-                                                          uid +
-                                                          "/clip_list")
-                                                      .doc(Rankinglist1[i]
-                                                          ['product_id'])
-                                                      .set({
-                                                      'product_name':
-                                                        Rankinglist1[i]['Text'],
-                                                    'image_url': Rankinglist1[i]
-                                                        ['image'],
-                                                    'product_id':
-                                                        Rankinglist1[i]
-                                                            ['product_id'],
-                                                  });
-                                                },
-                                              );
-                                            }
-                                          }
-                                          return ElevatedButton(
-                                              //クリップボタン
-                                              child: Icon(
-                                                Icons.assignment_turned_in,
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                padding: EdgeInsets.all(12),
-                                                primary: HexColor('EC9361'),
-                                                onPrimary: Colors.white,
-                                                shape: CircleBorder(
-                                                  side: BorderSide(
-                                                    color: Colors.transparent,
-                                                    width: 1,
-                                                    style: BorderStyle.solid,
-                                                  ),
-                                                ),
-                                              ),
-                                              onPressed: () async {
-                                                final snapshot = FirebaseAuth
-                                                    .instance.currentUser;
-                                                if (snapshot == null) {
-                                                  return showDialog<void>(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return AlertDialog(
-                                                        content: Text(
-                                                            'このサービスをご利用になるにはアカウントの登録、ログインが必要です。'),
-                                                        actions: <Widget>[
-                                                          FlatButton(
-                                                            child: Text('戻る'),
-                                                            onPressed: () =>
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop(),
-                                                          ),
-                                                          FlatButton(
-                                                            child: Text('新規登録'),
-                                                            onPressed: () {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            Signup(),
-                                                                  ));
-                                                            },
-                                                          ),
-                                                          FlatButton(
-                                                            child:
-                                                                Text('ログイン画面へ'),
-                                                            onPressed: () {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            Login(),
-                                                                  ));
-                                                            },
-                                                          ),
-                                                        ],
-                                                      );
-                                                    },
-                                                  );
-                                                }
-                                              });
-                                        }),
+                                    child: defaultClipAddButton(
+                                          Rankinglist1[i]['product_id'],
+                                          Rankinglist1[i]['Text'],
+                                          Rankinglist1[i]['image'])
                                   ),
                                 ],
                               ),
@@ -383,128 +265,12 @@ rankingcarousel(
                                   Container(
                                     margin:
                                         EdgeInsets.only(left: 20, bottom: 4),
-                                    child: StreamBuilder(
-                                        stream: FirebaseAuth.instance
-                                            .authStateChanges(),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return Center(
-                                                child:
-                                                    CircularProgressIndicator());
-                                          }
-
-                                          if (snapshot.hasData) {
-                                            final user = FirebaseAuth
-                                                .instance.currentUser;
-                                            final data = user?.uid;
-                                            if (data != null) {
-                                              String uid = data.toString();
-                                              return ElevatedButton(
-                                                //クリップボタン
-                                                child: Icon(
-                                                  Icons.assignment_turned_in,
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  padding: EdgeInsets.all(12),
-                                                  primary: HexColor('EC9361'),
-                                                  onPrimary: Colors.white,
-                                                  shape: CircleBorder(
-                                                    side: BorderSide(
-                                                      color: Colors.transparent,
-                                                      width: 1,
-                                                      style: BorderStyle.solid,
-                                                    ),
-                                                  ),
-                                                ),
-                                                onPressed: () async {
-                                                  FirebaseFirestore.instance
-                                            .collection(
-                                                "/account/" +
-                                                          uid +
-                                                          "/clip_list")
-                                            .doc(Rankinglist2[i]['product_id'])
-                                            .set({
-                                          'product_name': Rankinglist2[i]
-                                              ['Text'],
-                                          'image_url': Rankinglist2[i]['image'],
-                                          'product_id': Rankinglist2[i]
-                                              ['product_id'],
-                                        });
-                                                },
-                                              );
-                                            }
-                                          }
-                                          return ElevatedButton(
-                                              //クリップボタン
-                                              child: Icon(
-                                                Icons.assignment_turned_in,
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                padding: EdgeInsets.all(12),
-                                                primary: HexColor('EC9361'),
-                                                onPrimary: Colors.white,
-                                                shape: CircleBorder(
-                                                  side: BorderSide(
-                                                    color: Colors.transparent,
-                                                    width: 1,
-                                                    style: BorderStyle.solid,
-                                                  ),
-                                                ),
-                                              ),
-                                              onPressed: () async {
-                                                final snapshot = FirebaseAuth
-                                                    .instance.currentUser;
-                                                if (snapshot == null) {
-                                                  return showDialog<void>(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return AlertDialog(
-                                                        content: Text(
-                                                            'このサービスをご利用になるにはアカウントの登録、ログインが必要です。'),
-                                                        actions: <Widget>[
-                                                          FlatButton(
-                                                            child: Text('戻る'),
-                                                            onPressed: () =>
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop(),
-                                                          ),
-                                                          FlatButton(
-                                                            child: Text('新規登録'),
-                                                            onPressed: () {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            Signup(),
-                                                                  ));
-                                                            },
-                                                          ),
-                                                          FlatButton(
-                                                            child:
-                                                                Text('ログイン画面へ'),
-                                                            onPressed: () {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            Login(),
-                                                                  ));
-                                                            },
-                                                          ),
-                                                        ],
-                                                      );
-                                                    },
-                                                  );
-                                                }
-                                              });
-                                        }),
-                                  ),
-                                ],
+                                    child: defaultClipAddButton(
+                                      Rankinglist2[i]['product_id'],
+                                      Rankinglist2[i]['Text'],
+                                      Rankinglist2[i]['image']),
+                                ),
+                              ]
                               )
                             ],
                           ),

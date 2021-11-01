@@ -258,7 +258,50 @@ class _HeaderState extends State<Header> {
                     } else
                       return Text('pleaseWait');
                   }
-                  return Text('');
+                  return PopupMenuButton<String>(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 50),
+                      child: CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.orange,
+                          backgroundImage:
+                              NetworkImage('images/anotherUser2.png')),
+                    ),
+                    initialValue: _selectedValue,
+                    onSelected: (String s) async {
+                      if (s == 'ログイン') {
+                        //画面遷移
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Login(),
+                            ));
+                      }
+                      // setState(() {
+                      //   _selectedValue = s;
+                      // });
+                    },
+                    itemBuilder: (BuildContext context) {
+                      final snapshot = FirebaseAuth.instance.currentUser;
+                      if (snapshot != null)
+                        return _usStates.map((String s) {
+                          return PopupMenuItem(
+                            //ポップアップに載せる物
+                            child: Text(s),
+                            value: s,
+                          );
+                        }).toList();
+                      else
+                        return [
+                          PopupMenuItem(
+                            //ポップアップに載せる物
+                            child: Text(_selectedValue),
+                            value: _selectedValue,
+                          )
+                        ];
+                    },
+                    offset: Offset(30, 50),
+                  );
                 },
               ),
               // Container(

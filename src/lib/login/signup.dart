@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:umy_foods/login/auth_complete.dart';
+import 'package:umy_foods/login/login.dart';
 import 'package:umy_foods/login/signup_confirm.dart';
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
@@ -426,7 +427,12 @@ class _SignupState extends State<Signup> {
                                     primary: Colors.blue,
                                   ),
                                   onPressed: () {
-                                    //パスワード忘れ画面へ
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Login(),
+                                        ));
+                                    //ログイン画面へ
                                   },
                                 ),
                               ),
