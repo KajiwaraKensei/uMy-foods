@@ -547,7 +547,6 @@ class _DetailsPageState extends State<DetailsPage> {
 
                               return Column(
                                 children: [
-                                  Text(getUID()),
                                   Row(
                                     children: [
                                       Expanded(
@@ -1077,17 +1076,14 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                         [0] ==
                                                                     '')
                                                                 ? Text('')
-                                                                :
-                                                            Row(children: [
-                                                              for (int i = 0;
-                                                                  i <
-                                                                      result['allergy_id']
-                                                                          .length;
-                                                                  i++)
-                                                                allergyName(
-                                                                    result['allergy_id']
-                                                                        [i])
-                                                            ]),
+                                                                : Row(
+                                                                    children: [
+                                                                        for (int i =
+                                                                                0;
+                                                                            i < result['allergy_id'].length;
+                                                                            i++)
+                                                                          allergyName(result['allergy_id'][i])
+                                                                      ]),
                                                             SpaceBox.height(20)
                                                           ]))),
                                               SizedBox(

@@ -10,7 +10,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; //DB
 
-
 class Header extends StatefulWidget with PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(80.0);
@@ -169,62 +168,98 @@ class _HeaderState extends State<Header> {
                 ),
               ),
               // マイページ
-              PopupMenuButton<String>(
-                child: Container(
-                  margin: EdgeInsets.only(left: 50),
-                  child: CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Colors.orange,
-                      backgroundImage: NetworkImage((UserImage == "")
-                          ? 'images/anotherUser2.png'
-                          : UserImage)),
-                ),
-                initialValue: _selectedValue,
-                onSelected: (String s) async {
-                  if (s == 'ログイン') {
-                    //画面遷移
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Login(),
-                        ));
-                  } else if (s == 'ログアウト') {
-                    // ログアウト処理
-                    //uid = null;
-                    await googleSignIn.signOut();
-                    await auth.signOut(); //ログアウト完了
-                    await Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) {
-                        return Login(); //ログイン画面に戻る
-                      }),
-                    );
+              StreamBuilder(
+                stream: FirebaseAuth.instance.authStateChanges(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
                   }
-                  // setState(() {
-                  //   _selectedValue = s;
-                  // });
-                },
-                itemBuilder: (BuildContext context) {
-                  final snapshot = FirebaseAuth.instance.currentUser;
-                  if (snapshot != null)
-                    return _usStates.map((String s) {
-                      return PopupMenuItem(
-                        //ポップアップに載せる物
-                        child: Text(s),
-                        value: s,
-                      );
-                    }).toList();
-                  else
-                    return [
-                      PopupMenuItem(
-                        //ポップアップに載せる物
-                        child: Text(_selectedValue),
-                        value: _selectedValue,
-                      )
-                    ];
 
+                  if (snapshot.hasData) {
+                    final user = FirebaseAuth.instance.currentUser;
+                    final data = user?.uid;
+                    if (data != null) {
+                      String id = data.toString();
 
+                      return StreamBuilder<QuerySnapshot>(
+
+                          //表示したいFiresotreの保存先を指定
+                          stream: FirebaseFirestore.instance
+                              .collection('/account/')
+                              .where('user_id', isEqualTo: id)
+                              .snapshots(),
+
+                          //streamが更新されるたびに呼ばれる
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            //データが取れていない時の処理
+                            if (!snapshot.hasData)
+                              return Center(child: CircularProgressIndicator());
+
+                            final result = snapshot.data!.docs[0];
+                            return PopupMenuButton<String>(
+                              child: Container(
+                                margin: EdgeInsets.only(left: 50),
+                                child: CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: Colors.orange,
+                                    backgroundImage: NetworkImage(
+                                        (result['user_icon'] == "")
+                                            ? 'images/anotherUser2.png'
+                                            : result['user_icon'])),
+                              ),
+                              initialValue: _selectedValue,
+                              onSelected: (String s) async {
+                                if (s == 'ログイン') {
+                                  //画面遷移
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Login(),
+                                      ));
+                                } else if (s == 'ログアウト') {
+                                  // ログアウト処理
+                                  //uid = null;
+                                  await googleSignIn.signOut();
+                                  await auth.signOut(); //ログアウト完了
+                                  await Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(builder: (context) {
+                                      return Login(); //ログイン画面に戻る
+                                    }),
+                                  );
+                                }
+                                // setState(() {
+                                //   _selectedValue = s;
+                                // });
+                              },
+                              itemBuilder: (BuildContext context) {
+                                final snapshot =
+                                    FirebaseAuth.instance.currentUser;
+                                if (snapshot != null)
+                                  return _usStates.map((String s) {
+                                    return PopupMenuItem(
+                                      //ポップアップに載せる物
+                                      child: Text(s),
+                                      value: s,
+                                    );
+                                  }).toList();
+                                else
+                                  return [
+                                    PopupMenuItem(
+                                      //ポップアップに載せる物
+                                      child: Text(_selectedValue),
+                                      value: _selectedValue,
+                                    )
+                                  ];
+                              },
+                              offset: Offset(30, 50),
+                            );
+                          });
+                    } else
+                      return Text('pleaseWait');
+                  }
+                  return Text('');
                 },
-                offset: Offset(30, 50),
               ),
               // Container(
               //     margin: EdgeInsets.only(left: 50),
