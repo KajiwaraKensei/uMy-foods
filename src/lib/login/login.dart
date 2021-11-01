@@ -251,7 +251,7 @@ class _LoginState extends State<Login> {
                                 child: Container(
                                   margin: EdgeInsets.only(top: 20),
                                   width: 170,
-                                  height: 300, //40,
+                                  height: 40,
                                   child: Column(children: [
                                     ElevatedButton(
                                       onPressed: () async {
@@ -311,7 +311,7 @@ class _LoginState extends State<Login> {
                                         primary: HexColor('ec9463'), //ボタンの背景色
                                       ),
                                     ),
-                                    Text(errmsg),
+                                    //Text(errmsg),
                                   ]),
                                 ),
                               ),
