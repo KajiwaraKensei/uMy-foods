@@ -81,6 +81,41 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
     );
   }
 }
+//メーカーの選択表示（お気に入りのメーカー用）
+class Maker_FilteringDialog extends StatefulWidget {
+  @override
+  Maker_FilteringDialogState createState() => Maker_FilteringDialogState();
+}
+
+class Maker_FilteringDialogState extends State<Maker_FilteringDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.white,
+      title: Text('メーカー一覧',style: TextStyle(color: HexColor('EC9361'),fontWeight: FontWeight.w900 )),
+      content: Container(
+        padding: EdgeInsets.all(5),
+        width: MediaQuery.of(context).size.width * .6,
+        color: HexColor('f5f3ef'),
+        child: Maker(),
+      ),
+      actions: <Widget>[
+        Center(
+          child: OutlinedButton(
+            child: const Text('OK'),
+            style: TextButton.styleFrom(
+              primary:HexColor('EC9361'),
+              side: BorderSide(color: HexColor('EC9361')),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop(like_maker);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
 
 //メーカー、ブランド、カテゴリーのフィルタリング表示
 class Details_FilteringDialog extends StatefulWidget {
@@ -436,7 +471,9 @@ class _Brand extends State<Brand>{
     );
   }
 }
-//メーカー一覧
+//メーカー表示
+  final List<int> _makerkeep = [];  // 選択された要素のidを保管する
+  final List<String> like_maker=[]; // 選択された要素のメーカー名を保管する
 class Maker extends StatefulWidget {
   @override
   _Maker createState() => _Maker();
@@ -448,10 +485,9 @@ class _Maker extends State<Maker>{
     ["メーカー3", "003"],
   ];
 
-  // 選択された要素のidを保管する
-  final List<int> _makerkeep = [];
+  bool test=true;
 
-  void _brandCheckbox(int index,bool e) {
+  void _makerCheckbox(int index,bool e) {
     setState(() {
       // 選択が解除されたらリストから消す
       if (_makerkeep.contains(index)) {
@@ -463,6 +499,17 @@ class _Maker extends State<Maker>{
     });
   }
 
+  void _makerName(String name,bool e){
+    setState(() {
+      // 選択が解除されたらリストから消す
+      if (like_maker.contains(name)) {
+        like_maker.remove(name);
+      } else {
+        // 選択されたらリストに追加する
+        like_maker.add(name);
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
       return Scaffold(
@@ -490,13 +537,19 @@ class _Maker extends State<Maker>{
               controlAffinity: ListTileControlAffinity.leading,
               value: _makerkeep.contains(int.parse(maker[m_cnt][1])),
               onChanged: (e){
-                _brandCheckbox(int.parse(maker[m_cnt][1]),e!);
+                _makerCheckbox(int.parse(maker[m_cnt][1]),e!);
+                _makerName(maker[m_cnt][0],e);
               },
             ),
+          // for(int c=0;c<_makerkeep.length;c++)
+          //   Text(_makerkeep[c].toString()),
+          // for(int c=0;c<like_maker.length;c++)
+          //   Text(like_maker[c])
         ],
       )
     );
   }
 }
+
 
 
