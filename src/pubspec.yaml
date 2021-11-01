@@ -50,6 +50,11 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+  cupertino_icons: ^1.0.2         #アイコン
+  flutter_breadcrumb: ^1.0.1      #パンくず
+  flutter_dropzone: ^2.0.1 #ドラッグアンドドロップ
+  image_picker: ^0.8.4+1  #アルバムから画像を選択
+  font_awesome_flutter: ^9.1.0    #font_awesome
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
