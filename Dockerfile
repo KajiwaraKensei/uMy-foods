@@ -72,3 +72,8 @@ RUN flutter config --enable-web
 RUN flutter doctor
 
 EXPOSE ${WEB_SERVER_PORT}
+
+#firebase-toolsをインストール
+RUN apt update
+RUN apt-get -y install nodejs npm
+RUN npm install -y -g firebase-tools
