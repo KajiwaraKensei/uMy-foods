@@ -44,6 +44,20 @@ class _clipButtonState extends State<clipButton> {
   String _textex = "";
 
   @override
+  void initState() {
+    super.initState();
+    Future(() async {
+      final user = await FirebaseAuth.instance.currentUser;
+      setState(() {
+        final data = user?.uid;
+        if (data != null) {
+          UID = data;
+        }
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     var media_width = MediaQuery.of(context).size.width;
     var media_height = MediaQuery.of(context).size.height;
@@ -130,31 +144,45 @@ class _clipButtonState extends State<clipButton> {
   }
   //右上の通知ボタン
 
-  @override
   Widget NotificationNumberBadge(Color col) {
+    Future<String> _uid() async {
+      final snapshot = await FirebaseAuth.instance.currentUser?.uid.toString();
+      //ログイン中のユーザーIDをDBから取得
+      if (snapshot != null) {
+        final String id = snapshot;
+        setState(() {});
+        return id;
+      } else
+        return 'null';
+    }
+
     //String Uid = getUID().toString();
     //String Uid = getUID();
-    return FutureBuilder(
-        future: _uid(),
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          if (!snapshot.hasData) {
-            //  return Text(snapshot.data.toString());
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
 
-            return Text("データが存在しません");
-          } else {
-            String Uid = snapshot.data.toString();
+        if (snapshot.hasData) {
+          final user = FirebaseAuth.instance.currentUser;
+          final data = user?.uid;
+          if (data != null) {
+            String id = data.toString();
             return StreamBuilder<QuerySnapshot>(
 
                 //表示したいFiresotreの保存先を指定
                 stream: FirebaseFirestore.instance
-                    .collection('/account/' + Uid + '/clip_list')
+                    .collection('/account/' + id + '/clip_list')
                     .snapshots(),
 
                 //streamが更新されるたびに呼ばれる
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   //データが取れていない時の処理
-                  if (!snapshot.hasData) return const Text('Loading...');
+                  if (!snapshot.hasData)
+                    return Center(child: CircularProgressIndicator());
 
                   final result = snapshot.data!.docs;
 
@@ -167,15 +195,34 @@ class _clipButtonState extends State<clipButton> {
                         size: 50,
                       ),
                       Text(
-                        (result.length == 0) ? '0' : result.length.toString(),
+                        result.length.toString(),
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ],
                   );
                 });
-          }
-        });
+            //Text(data.toString());
+          } else
+            return Text('pleaseWait');
+        }
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            Icon(
+              Icons.brightness_1,
+              color: col,
+              size: 50,
+            ),
+            Text(
+              '0',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
@@ -188,7 +235,7 @@ class MyDialog extends StatefulWidget {
 class _MyDialogState extends State<MyDialog> {
   Widget ListItemWidget = Text("");
 
-  SingleChildScrollView showListItems(result) {
+  SingleChildScrollView showListItems(result, uid) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Column(
@@ -228,7 +275,8 @@ class _MyDialogState extends State<MyDialog> {
                                                 child: Text('削除'),
                                                 onPressed: () {
                                                   _deleteItem(
-                                                      result[i]['product_id']);
+                                                      result[i]['product_id'],
+                                                      uid);
                                                   Navigator.of(context).pop();
                                                 },
                                               ),
@@ -274,11 +322,11 @@ class _MyDialogState extends State<MyDialog> {
     );
   }
 
-  void _deleteItem(product_id) {
+  void _deleteItem(product_id, uid) {
     //String Uid = getUID().toString(); //ログイン中のユーザーIDをDBから取得
     // 削除
     FirebaseFirestore.instance
-        .collection('/account/' + Id + '/clip_list/')
+        .collection('/account/' + uid + '/clip_list/')
         .doc(product_id)
         .delete();
   }
@@ -288,114 +336,131 @@ class _MyDialogState extends State<MyDialog> {
     List<String> clipList = [];
     //String Uid = getUID().toString(); //ログイン中のユーザーIDをDBから取得
 
-    return StreamBuilder<QuerySnapshot>(
-
-        //表示したいFiresotreの保存先を指定
-        stream: FirebaseFirestore.instance
-            .collection('/account/' + Id + '/clip_list')
-            .snapshots(),
-
-        //streamが更新されるたびに呼ばれる
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          //データが取れていない時の処理
-          if (!snapshot.hasData) return const Text('Loading...');
-
-          final result = snapshot.data!.docs;
-          for (int i = 0; i < result.length; i++) {
-            clipList.add(result[i]['product_id']);
+    return StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
           }
-          return AlertDialog(
-            backgroundColor: HexColor('f5f3ef'),
-            title: const Text('Food List'),
-            content: Container(
-              width: MediaQuery.of(context).size.width * .6,
-              child: ListItemWidget = showListItems(result), // 比較リストを返す関数
-              height: 250,
-            ),
-            actions: <Widget>[
-              Center(
-                child: Row(
-                  // 均等配置
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Opacity(
-                      opacity: 0.0,
-                    ),
-                    Opacity(
-                      opacity: 0.0,
-                    ),
-                    Opacity(
-                      opacity: 0.0,
-                    ),
-                    OutlinedButton(
-                      child: const Text('比較'),
-                      style: TextButton.styleFrom(primary: Colors.black),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  Comparison(productList: clipList),
-                            ));
-                      },
-                    ),
-                    Opacity(
-                      opacity: 0.0,
-                    ),
-                    TextButton.icon(
-                      onPressed: () {
-                        showDialog<int>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('確認'),
-                              content: Text('全てのアイテムをクリップボードから削除します。よろしいですか。'),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text('削除'),
-                                  onPressed: () {
-                                    for (int i = 0; i < result.length; i++) {
-                                      FirebaseFirestore.instance
-                                          .collection(
-                                              '/account/' + Id + '/clip_list/')
-                                          .doc(result[i]['product_id'])
-                                          .delete();
-                                    }
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                FlatButton(
-                                  child: Text('戻る'),
-                                  onPressed: () => Navigator.of(context).pop(),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      icon: Icon(
-                        Icons.delete_outlined,
+
+          if (snapshot.hasData) {
+            final user = FirebaseAuth.instance.currentUser;
+            final data = user?.uid;
+            if (data != null) {
+              String uid = data.toString();
+              return StreamBuilder<QuerySnapshot>(
+
+                  //表示したいFiresotreの保存先を指定
+                  stream: FirebaseFirestore.instance
+                      .collection('/account/' + uid + '/clip_list')
+                      .snapshots(),
+
+                  //streamが更新されるたびに呼ばれる
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    //データが取れていない時の処理
+                    if (!snapshot.hasData) return const Text('Loading...');
+
+                    final result = snapshot.data!.docs;
+                    for (int i = 0; i < result.length; i++) {
+                      clipList.add(result[i]['product_id']);
+                    }
+                    return AlertDialog(
+                      backgroundColor: HexColor('f5f3ef'),
+                      title: const Text('Food List'),
+                      content: Container(
+                        width: MediaQuery.of(context).size.width * .6,
+                        child: ListItemWidget =
+                            showListItems(result, uid), // 比較リストを返す関数
+                        height: 250,
                       ),
-                      label: Text('全体削除'),
-                      style: TextButton.styleFrom(
-                        primary: HexColor('8c6e63'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
+                      actions: <Widget>[
+                        Center(
+                          child: Row(
+                            // 均等配置
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Opacity(
+                                opacity: 0.0,
+                              ),
+                              Opacity(
+                                opacity: 0.0,
+                              ),
+                              Opacity(
+                                opacity: 0.0,
+                              ),
+                              OutlinedButton(
+                                child: const Text('比較'),
+                                style:
+                                    TextButton.styleFrom(primary: Colors.black),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            Comparison(productList: clipList),
+                                      ));
+                                },
+                              ),
+                              Opacity(
+                                opacity: 0.0,
+                              ),
+                              TextButton.icon(
+                                onPressed: () {
+                                  showDialog<int>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('確認'),
+                                        content: Text(
+                                            '全てのアイテムをクリップボードから削除します。よろしいですか。'),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            child: Text('削除'),
+                                            onPressed: () {
+                                              for (int i = 0;
+                                                  i < result.length;
+                                                  i++) {
+                                                FirebaseFirestore.instance
+                                                    .collection('/account/' +
+                                                        uid +
+                                                        '/clip_list/')
+                                                    .doc(
+                                                        result[i]['product_id'])
+                                                    .delete();
+                                              }
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          FlatButton(
+                                            child: Text('戻る'),
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                icon: Icon(
+                                  Icons.delete_outlined,
+                                ),
+                                label: Text('全体削除'),
+                                style: TextButton.styleFrom(
+                                  primary: HexColor('8c6e63'),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  });
+            }
+          } else {
+            Text('pleaseWait');
+          }
+          return Text('pleaseLogin.');
         });
   }
-}
-
-Future<String> _uid() async {
-  final snapshot = await FirebaseAuth.instance.currentUser?.uid.toString();
-  //ログイン中のユーザーIDをDBから取得
-  if (snapshot != null) {
-    final String id = snapshot;
-    return id;
-  } else
-    return 'null';
 }

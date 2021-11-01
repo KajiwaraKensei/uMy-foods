@@ -722,6 +722,9 @@ Widget nutritionalIngredients(String id) {
             children: [
               SelectableText('${snapshot.data!['subject']}',
                   scrollPhysics: NeverScrollableScrollPhysics()),
+                  Container(
+                height: 5,
+              ),
               SelectableText('たんぱく質　　　　　${snapshot.data!['たんぱく質']}',
                   scrollPhysics: NeverScrollableScrollPhysics()),
               SelectableText('エネルギー　　　　　${snapshot.data!['エネルギー']}',
