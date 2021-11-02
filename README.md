@@ -10,10 +10,12 @@
 - http://localhost:8888
 
 # webデプロイ
+- docker-compose down
+- docker-compose build
 - firebase login --no-localhost
   - 「? Allow Firebase to collect CLI usage and error reporting information? (Y/n)」に「Y」を入力
   - URLをcontrolキーを押しながらクリックし、googleログインを実行
-  - 「 ? Paste authorization code here:」にブラウザに表示されたコードを入力
+  - 「? Paste authorization code here:」にブラウザに表示されたコードを入力
 - cd workspace/
 - firebase init
   - 「Hosting: Configure files for Firebase Hosting and (optionally) set up GitHub Action deploys」にspaceキーを押しEnter
@@ -25,5 +27,5 @@
   - 「? File build/web/404.html already exists. Overwrite? (y/N)」に「N」を入力
   - 「? File build/web/index.html already exists. Overwrite?」に「N」を入力
 - flutter create .
-- flutter build web
+- flutter build web --release --web-renderer html
 - firebase deploy
