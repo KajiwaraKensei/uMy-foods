@@ -5,6 +5,7 @@ import 'package:umy_foods/login/login.dart';
 import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/review_post/product_selection.dart';
 import 'package:umy_foods/list_page/brand.dart';
+import 'package:umy_foods/profile/profile.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -227,6 +228,13 @@ class _HeaderState extends State<Header> {
                                       return Login(); //ログイン画面に戻る
                                     }),
                                   );
+                                }
+                                else if (s == 'マイページ') {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ProfilePage(),
+                                      ));
                                 }
                                 // setState(() {
                                 //   _selectedValue = s;

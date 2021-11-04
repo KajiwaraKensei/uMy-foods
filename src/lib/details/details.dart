@@ -565,25 +565,25 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 ),
                                                 scrollPhysics:
                                                     NeverScrollableScrollPhysics()), //商品名
-                                            Container(
-                                              child: Row(
-                                                children: [
-                                                  SpaceBox.width(5),
-                                                  Icon(
-                                                    //リピート
-                                                    FontAwesomeIcons.sync,
-                                                    color: Colors.grey,
-                                                    size: 20,
-                                                  ),
-                                                  numberOfRepeat(productId),
-                                                  SpaceBox.width(20),
-                                                  Icon(Icons.rate_review, //レビュー
-                                                      color: Colors.grey,
-                                                      size: 30),
-                                                  numberOfReview(productId),
-                                                ],
-                                              ),
-                                            )
+                                            // Container(
+                                            //   child: Row(
+                                            //     children: [
+                                            //       SpaceBox.width(5),
+                                            //       Icon(
+                                            //         //リピート
+                                            //         FontAwesomeIcons.sync,
+                                            //         color: Colors.grey,
+                                            //         size: 20,
+                                            //       ),
+                                            //       numberOfRepeat(productId),
+                                            //       SpaceBox.width(20),
+                                            //       Icon(Icons.rate_review, //レビュー
+                                            //           color: Colors.grey,
+                                            //           size: 30),
+                                            //       numberOfReview(productId),
+                                            //     ],
+                                            //   ),
+                                            // )
                                           ],
                                         ),
                                       ),
@@ -616,7 +616,19 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   size: 20,
                                                 ),
                                                 color: Colors.white,
-                                                onPressed: () {},
+                                                onPressed: () async {
+                                                  if (await canLaunch(
+                                                      "https://twitter.com/intent/tweet?text=" +
+                                                          result[
+                                                              'product_name'] +
+                                                          "がいい！NEWS&url=https://umyfoods-rac.web.app/#/")) {
+                                                    await launch(
+                                                        "https://twitter.com/intent/tweet?text=" +
+                                                            result[
+                                                                'product_name'] +
+                                                            "がいい！NEWS&url=https://umyfoods-rac.web.app/#/");
+                                                  }
+                                                },
                                               ),
                                             ),
                                             SpaceBox.width(10),
@@ -657,7 +669,13 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   size: 20,
                                                 ),
                                                 color: Colors.white,
-                                                onPressed: () {},
+                                                onPressed: () async {
+                                                  if (await canLaunch(
+                                                      "https://www.facebook.com/sharer.php?u=https://umyfoods-rac.web.app/#/")) {
+                                                    await launch(
+                                                        "https://www.facebook.com/sharer.php?u=https://umyfoods-rac.web.app/#/");
+                                                  }
+                                                },
                                               ),
                                             ),
                                           ],
@@ -819,7 +837,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                 Colors.white,
                                                           ),
                                                           child: Text(
-                                                              'Amazonで購入する',
+                                                              'Amazonで購入',
                                                               style: TextStyle(
                                                                   fontSize:
                                                                       12)),
@@ -847,7 +865,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                 Colors.white,
                                                           ),
                                                           child: Text(
-                                                              '楽天市場で購入する',
+                                                              '楽天市場で購入',
                                                               style: TextStyle(
                                                                   fontSize:
                                                                       12)),
@@ -875,7 +893,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                 Colors.white,
                                                           ),
                                                           child: Text(
-                                                              'Y！ショッピングで購入する',
+                                                              'Y！ショッピングで購入',
                                                               style: TextStyle(
                                                                   fontSize:
                                                                       12)),
@@ -1295,7 +1313,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   ))),
         ],
       ),
-      floatingActionButton: clipButton(),
+      floatingActionButton: clipButton('商品詳細'),
     );
   }
 }

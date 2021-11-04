@@ -523,6 +523,6 @@ class _ProductselectionPageState extends State<ProductselectionPage> {
                 )),
                 FooterCreate(),
               ])),
-        floatingActionButton: clipButton());
+        floatingActionButton: clipButton('レビュー選択'));
   }
 }

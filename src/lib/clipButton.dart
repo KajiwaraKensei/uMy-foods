@@ -30,13 +30,15 @@ const MaterialColor customSwatch = const MaterialColor(
 );
 
 class clipButton extends StatefulWidget {
-  /*clipButton(this.productID);
-  final String productID;*/
+  clipButton(this.where);
+  final String where;
   @override
-  _clipButtonState createState() => _clipButtonState();
+  _clipButtonState createState() => _clipButtonState(where);
 }
 
 class _clipButtonState extends State<clipButton> {
+  _clipButtonState(this.where);
+  String where;
   int _counter = 0;
 
   Widget ListItemWidget = Text(""); //表示用ウィジェット
@@ -93,7 +95,7 @@ class _clipButtonState extends State<clipButton> {
                   barrierDismissible: true, // user must tap button!
                   builder: (BuildContext context) {
                     //Statefulなダイアログのクラスを作成したので呼び出し
-                    return MyDialog();
+                    return MyDialog(where);
                   },
                 );
               else
@@ -198,99 +200,16 @@ class _clipButtonState extends State<clipButton> {
 
 //Statefulなダイアログクラス
 class MyDialog extends StatefulWidget {
+  MyDialog(this.where);
+  String where;
   @override
-  _MyDialogState createState() => _MyDialogState();
+  _MyDialogState createState() => _MyDialogState(where);
 }
 
 class _MyDialogState extends State<MyDialog> {
+  _MyDialogState(this.where);
+  String where;
   Widget ListItemWidget = Text("");
-
-  SingleChildScrollView showListItems(result, uid) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: [
-              // 横に4個並べる  4を変えれば変わる
-              // i = 0 +(x * 4) ・・・2列目なら4から、3列目なら8から
-              // i < 4 * (x + 1) ・・・2列目なら8まで、3列目なら12まで
-              for (int i = 0; i < 5; i++)
-                if (result.length > i)
-                  Card(
-                    //margin: const EdgeInsets.all(10.0),
-                    child: Container(
-                      width: 180.0,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          ButtonTheme(
-                            child: ButtonBar(
-                              children: [
-                                Tooltip(
-                                  message: 'クリップボードから削除します。',
-                                  child: IconButton(
-                                    icon: const Icon(Icons.close,
-                                        color: Colors.black),
-                                    onPressed: () {
-                                      showDialog<int>(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text('確認'),
-                                            content:
-                                                Text('クリップボードから削除します。よろしいですか。'),
-                                            actions: <Widget>[
-                                              FlatButton(
-                                                child: Text('削除'),
-                                                onPressed: () {
-                                                  _deleteItem(
-                                                      result[i]['product_id'],
-                                                      uid);
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                              FlatButton(
-                                                child: Text('戻る'),
-                                                onPressed: () =>
-                                                    Navigator.of(context).pop(),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Image.network(
-                            (result[i]['image_url'] == "")
-                                ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
-                                : result[i]['image_url'],
-                            height: 120.0,
-                            width: 120.0,
-                          ),
-                          Container(
-                            height: 50,
-                            child: Text(
-                              result[i]['product_name'],
-                              style: TextStyle(fontSize: 16),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 
   void _deleteItem(product_id, uid) {
     //String Uid = getUID().toString(); //ログイン中のユーザーIDをDBから取得
@@ -305,6 +224,95 @@ class _MyDialogState extends State<MyDialog> {
   Widget build(BuildContext context) {
     List<String> clipList = [];
     //String Uid = getUID().toString(); //ログイン中のユーザーIDをDBから取得
+    SingleChildScrollView showListItems(result, uid) {
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: [
+                // 横に4個並べる  4を変えれば変わる
+                // i = 0 +(x * 4) ・・・2列目なら4から、3列目なら8から
+                // i < 4 * (x + 1) ・・・2列目なら8まで、3列目なら12まで
+                for (int i = 0; i < 5; i++)
+                  if (result.length > i)
+                    Card(
+                      //margin: const EdgeInsets.all(10.0),
+                      child: Container(
+                        width: 180.0,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            ButtonTheme(
+                              child: ButtonBar(
+                                children: [
+                                  Tooltip(
+                                    message: 'クリップボードから削除します。',
+                                    child: IconButton(
+                                      icon: const Icon(Icons.close,
+                                          color: Colors.black),
+                                      onPressed: () {
+                                        showDialog<int>(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text('確認'),
+                                              content: Text(
+                                                  'クリップボードから削除します。よろしいですか。'),
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                  child: Text('削除'),
+                                                  onPressed: () {
+                                                    _deleteItem(
+                                                        result[i]['product_id'],
+                                                        uid);
+                                                    //clipList.removeAt(i);
+                                                    clipList = [];
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                                FlatButton(
+                                                  child: Text('戻る'),
+                                                  onPressed: () =>
+                                                      Navigator.of(context)
+                                                          .pop(),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Image.network(
+                              (result[i]['image_url'] == "")
+                                  ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
+                                  : result[i]['image_url'],
+                              height: 120.0,
+                              width: 120.0,
+                            ),
+                            Container(
+                              height: 50,
+                              child: Text(
+                                result[i]['product_name'],
+                                style: TextStyle(fontSize: 16),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
 
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
@@ -330,7 +338,7 @@ class _MyDialogState extends State<MyDialog> {
                       AsyncSnapshot<QuerySnapshot> snapshot) {
                     //データが取れていない時の処理
                     if (!snapshot.hasData) return const Text('Loading...');
-
+                    clipList = [];
                     final result = snapshot.data!.docs;
                     for (int i = 0; i < result.length; i++) {
                       clipList.add(result[i]['product_id']);
@@ -367,8 +375,9 @@ class _MyDialogState extends State<MyDialog> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            Comparison(productList: clipList),
+                                        builder: (context) => Comparison(
+                                            productList: clipList,
+                                            where: where),
                                       ));
                                 },
                               ),
@@ -399,6 +408,7 @@ class _MyDialogState extends State<MyDialog> {
                                                         result[i]['product_id'])
                                                     .delete();
                                               }
+                                              clipList = [];
                                               Navigator.of(context).pop();
                                             },
                                           ),

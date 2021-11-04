@@ -7,10 +7,14 @@ class Signup_Confirm extends StatelessWidget {
     Key? key,
     required this.address,
     required this.username,
+    required this.newcreate,
+    required this.uid,
   }) : super(key: key);
 
   final String address;
   final String username;
+  final String newcreate;
+  final String uid;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +28,7 @@ class Signup_Confirm extends StatelessWidget {
           child: Center(
             child: Column(
               children: [
+                Text(uid),
                 Text(
                   '登録内容の確認',
                   style: TextStyle(
@@ -70,7 +75,7 @@ class Signup_Confirm extends StatelessWidget {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 20),
-                  width: 200,
+                  width: 240,
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () {},

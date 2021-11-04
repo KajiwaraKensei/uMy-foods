@@ -19,7 +19,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; //DB
 
-void main() => runApp(MyApp());
+void main() async {
+  // 初期化処理を追加
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 //String UID = "";
 String UserImage = "";
@@ -1292,7 +1297,7 @@ class _Home extends State<Home> {
             ],
           ),
         ),
-        floatingActionButton: clipButton() //Comparison(),
+        floatingActionButton: clipButton('TOP') //Comparison(),
         );
   }
 }

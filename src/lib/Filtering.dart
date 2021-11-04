@@ -3,8 +3,6 @@ import 'package:umy_foods/HexColor.dart'; //16進数カラーコード
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:umy_foods/SpaceBox.dart'; //年代別レビュー
 
-bool male = false;
-bool woman = false;
 //性別のフィルタリング表示
 class Gender_FilteringDialog extends StatefulWidget {
   @override
@@ -13,7 +11,10 @@ class Gender_FilteringDialog extends StatefulWidget {
 
 class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
 
+  bool male = false;
+  bool woman = false;
 
+  List _gender_keep = [];
 
   @override
   Widget build(BuildContext context) {
@@ -24,21 +25,27 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
               color: HexColor('EC9361'), fontWeight: FontWeight.w900)),
       content: Container(
         padding: EdgeInsets.all(5),
-          width: MediaQuery.of(context).size.width * .6,
+        width: MediaQuery.of(context).size.width * .6,
           color: HexColor('f5f3ef'),
         child: Table(
             children: [
               TableRow(
             children: [
               CheckboxListTile(
-                  value: male,
+                value: male,
                   title: Text('男性'),
                   controlAffinity: ListTileControlAffinity.leading,
                   onChanged: (value) {
                     setState(() {
                       male = value!;
+                    if (woman != true) {
+                        _gender_keep.remove('男性');
+                      } else {
+                        // 選択されたらリストに追加する
+                        _gender_keep.add('男性');
+                      }
                   });
-                  },
+                },
                 ),
                 CheckboxListTile(
                   value: woman,
@@ -49,8 +56,14 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
                   onChanged: (value) {
                     setState(() {
                       woman = value!;
+                    if (woman != true) {
+                        _gender_keep.remove('女性');
+                      } else {
+                        // 選択されたらリストに追加する
+                        _gender_keep.add('女性');
+                      }
                   });
-                  },
+                },
                 ),
               ]),
             ],
@@ -64,15 +77,44 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
               side: BorderSide(color: HexColor('EC9361')),
             ),
             onPressed: () {
-              String select = ''; //選択した値
-              if (woman == true && male == true) {
-                select = '男性,女性';
-              } else if (woman == true) {
-                select = '女性';
-              } else if (male == true) {
-                select = '男性';
-              }
-              Navigator.of(context).pop(select);
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+//メーカーの選択表示（お気に入りのメーカー用）
+class Maker_FilteringDialog extends StatefulWidget {
+  @override
+  Maker_FilteringDialogState createState() => Maker_FilteringDialogState();
+}
+
+class Maker_FilteringDialogState extends State<Maker_FilteringDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.white,
+      title: Text('メーカー一覧',
+          style: TextStyle(
+              color: HexColor('EC9361'), fontWeight: FontWeight.w900)),
+      content: Container(
+        padding: EdgeInsets.all(5),
+        width: MediaQuery.of(context).size.width * .6,
+        color: HexColor('f5f3ef'),
+        child: Maker(),
+      ),
+      actions: <Widget>[
+        Center(
+          child: OutlinedButton(
+            child: const Text('OK'),
+            style: TextButton.styleFrom(
+              primary: HexColor('EC9361'),
+              side: BorderSide(color: HexColor('EC9361')),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop(like_maker);
             },
           ),
         ),
@@ -81,20 +123,7 @@ class _Gender_FilteringDialogState extends State<Gender_FilteringDialog> {
   }
 }
 
-class Gender extends StatefulWidget {
-  @override
-  _Gender createState() => _Gender();
-}
-
-class _Gender extends State<Gender> {
-  @override
-  Widget build(BuildContext context) {
-    return Text('aaa');
-  }
-}
-
-//メーカー、ブランド、カテゴリー
-
+//メーカー、ブランド、カテゴリーのフィルタリング表示
 class Details_FilteringDialog extends StatefulWidget {
   @override
   _Details_FilteringDialogState createState() =>
@@ -164,7 +193,7 @@ class _Details_FilteringDialogState extends State<Details_FilteringDialog> {
     );
   }
 }
-
+//カテゴリ一覧
 class Category extends StatefulWidget {
   @override
   _Category createState() => _Category();
@@ -253,7 +282,7 @@ class _Category extends State<Category> {
   @override
   Widget build(BuildContext context) {
   return Scaffold(
-        body: ListView(
+    body: ListView(
       children: [
         GestureDetector(
           child: Row(
@@ -412,7 +441,7 @@ class _Category extends State<Category> {
     ));
   }
 }
-
+//ブランド一覧
 class Brand extends StatefulWidget {
   @override
   _Brand createState() => _Brand();
@@ -443,7 +472,7 @@ class _Brand extends State<Brand> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
-      children: [
+        children: [
         GestureDetector(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -475,7 +504,9 @@ class _Brand extends State<Brand> {
       ));
   }
 }
-
+//メーカー表示
+final List<int> _makerkeep = []; // 選択された要素のidを保管する
+final List<String> like_maker = []; // 選択された要素のメーカー名を保管する
 class Maker extends StatefulWidget {
   @override
   _Maker createState() => _Maker();
@@ -487,10 +518,9 @@ class _Maker extends State<Maker> {
     ["メーカー3", "003"],
   ];
 
-  // 選択された要素のidを保管する
-  final List<int> _makerkeep = [];
+  bool test = true;
 
-  void _brandCheckbox(int index, bool e) {
+  void _makerCheckbox(int index, bool e) {
     setState(() {
       // 選択が解除されたらリストから消す
       if (_makerkeep.contains(index)) {
@@ -502,10 +532,21 @@ class _Maker extends State<Maker> {
     });
   }
 
+  void _makerName(String name, bool e) {
+    setState(() {
+      // 選択が解除されたらリストから消す
+      if (like_maker.contains(name)) {
+        like_maker.remove(name);
+      } else {
+        // 選択されたらリストに追加する
+        like_maker.add(name);
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
       return Scaffold(
-        body: ListView(
+      body: ListView(
       children: [
         GestureDetector(
           child: Row(
@@ -531,10 +572,15 @@ class _Maker extends State<Maker> {
             controlAffinity: ListTileControlAffinity.leading,
             value: _makerkeep.contains(int.parse(maker[m_cnt][1])),
               onChanged: (e) {
-              _brandCheckbox(int.parse(maker[m_cnt][1]), e!);
+              _makerCheckbox(int.parse(maker[m_cnt][1]), e!);
+              _makerName(maker[m_cnt][0], e);
             },
           ),
-      ],
+          // for(int c=0;c<_makerkeep.length;c++)
+        //   Text(_makerkeep[c].toString()),
+        // for(int c=0;c<like_maker.length;c++)
+        //   Text(like_maker[c])
+        ],
       ));
   }
 }

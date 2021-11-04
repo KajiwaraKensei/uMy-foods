@@ -9,6 +9,7 @@ import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/main.dart';
 import 'package:umy_foods/details/details.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; //DB
 import "package:intl/intl.dart";
 import 'package:intl/date_symbol_data_local.dart'; //日時用
@@ -23,17 +24,21 @@ double evaheight = 20.6;
 double tastehight = 200;
 double materialheight = 300;
 double nutritionalheight = 160;
+double defaultheight = 20;
 
 class Comparison extends StatefulWidget {
-  Comparison({Key? key, required this.productList}) : super(key: key);
+  Comparison({Key? key, required this.productList, required this.where})
+      : super(key: key);
   List<String> productList;
+  String where;
   @override
-  _ComparisonState createState() => _ComparisonState(productList);
+  _ComparisonState createState() => _ComparisonState(productList, where);
 }
 
 class _ComparisonState extends State<Comparison> {
-  _ComparisonState(this.productList);
+  _ComparisonState(this.productList, this.where);
   List<String> productList;
+  String where;
   bool darkMode = false;
   bool useSides = false;
   double numberOfFeatures = 6;
@@ -160,6 +165,7 @@ class _ComparisonState extends State<Comparison> {
                             child: Text(slist[rcnt],
                                 style: TextStyle(color: HexColor('616161')))),
                         color: HexColor('ffdfc5'),
+                        height: defaultheight,
                       )
                 ])
             ],
@@ -191,10 +197,11 @@ class _ComparisonState extends State<Comparison> {
                   BreadCrumbItem(
                     content: TextButton(
                         child: Text(
-                          'TOP',
+                          where,
                           style: TextStyle(color: Colors.black),
                         ),
                         onPressed: () {
+                          productList = [];
                           Navigator.pop(context);
                         }),
                   ),
@@ -210,7 +217,7 @@ class _ComparisonState extends State<Comparison> {
                 divider: Icon(Icons.chevron_right),
               ),
               LimitedBox(
-                maxHeight: 1165, //最大の高さを指定
+                maxHeight: 1185, //最大の高さを指定
                 child: ReorderableListView(
                   header: Container(
                     child: myContainer(size: 120, text: 'list'),
@@ -274,10 +281,10 @@ class _ComparisonState extends State<Comparison> {
   }
 
   // リストの要素削除
-  void deleteList(int i, product_id) {
+  void deleteList(int i, product_id, uid) {
     setState(() {
       FirebaseFirestore.instance
-          .collection('/account/' + Id + '/clip_list/')
+          .collection('/account/' + uid + '/clip_list/')
           .doc(product_id)
           .delete();
       productList.removeAt(i); // 添え字xの要素を削除
@@ -291,25 +298,58 @@ class _ComparisonState extends State<Comparison> {
               showDialog<int>(
                 context: context,
                 builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('確認'),
-                    content: Text('クリップボードから削除します。よろしいですか。'),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text('削除'),
-                        onPressed: () {
-                          deleteList(i, product_id);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      FlatButton(
-                        child: Text('戻る'),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                    ],
+                  return StreamBuilder(
+                    stream: FirebaseAuth.instance.authStateChanges(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+
+                      if (snapshot.hasData) {
+                        final user = FirebaseAuth.instance.currentUser;
+                        final data = user?.uid;
+                        if (data != null) {
+                          String uid = data.toString();
+                          return AlertDialog(
+                            title: Text('確認'),
+                            content: Text('クリップボードから削除します。よろしいですか。'),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text('削除'),
+                                onPressed: () {
+                                  deleteList(i, product_id, uid);
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              FlatButton(
+                                child: Text('戻る'),
+                                onPressed: () => Navigator.of(context).pop(),
+                              ),
+                            ],
+                          );
+                        }
+                      }
+                      return AlertDialog(
+                        title: Text('確認'),
+                        content: Text('クリップボードから削除します。よろしいですか。'),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text('削除'),
+                            onPressed: () {
+                              deleteList(i, product_id, '');
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          FlatButton(
+                            child: Text('戻る'),
+                            onPressed: () => Navigator.of(context).pop(),
+                          ),
+                        ],
+                      );
+                    },
                   );
                 },
-              ),
+              )
             },
         child: Icon(
           Icons.close,
@@ -392,6 +432,7 @@ class _ComparisonState extends State<Comparison> {
                             child: Text('ランキング',
                                 style: TextStyle(color: Colors.black))),
                         color: Colors.white,
+                        height: defaultheight,
                       ),
                     ]),
                     TableRow(children: [repeat(result['product_id'])]),
@@ -448,6 +489,7 @@ class _ComparisonState extends State<Comparison> {
                                         .toString(),
                                     style: TextStyle(color: Colors.black))),
                         color: Colors.white,
+                        height: defaultheight,
                       ),
                     ]),
                   ]),
@@ -523,6 +565,7 @@ Widget repeat(product_id) {
               child: Text(result.length.toString(),
                   style: TextStyle(color: Colors.black))),
           color: Colors.white,
+          height: defaultheight,
         );
       });
 }
@@ -549,6 +592,7 @@ Widget concern(product_id) {
               child: Text(result.length.toString(),
                   style: TextStyle(color: Colors.black))),
           color: Colors.white,
+          height: defaultheight,
         );
       });
 }
@@ -695,6 +739,7 @@ Widget allergyName(id) {
           }),
     ),
     color: Colors.white,
+    height: defaultheight,
   );
 }
 
@@ -722,7 +767,7 @@ Widget nutritionalIngredients(String id) {
             children: [
               SelectableText('${snapshot.data!['subject']}',
                   scrollPhysics: NeverScrollableScrollPhysics()),
-                  Container(
+              Container(
                 height: 5,
               ),
               SelectableText('たんぱく質　　　　　${snapshot.data!['たんぱく質']}',

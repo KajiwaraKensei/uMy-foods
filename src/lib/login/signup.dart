@@ -7,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:umy_foods/login/auth_complete.dart';
 import 'package:umy_foods/login/login.dart';
 import 'package:umy_foods/login/signup_confirm.dart';
+import 'package:umy_foods/profile/profile_edit.dart';
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/HexColor.dart';
@@ -91,6 +92,7 @@ class _SignupState extends State<Signup> {
 
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
     return Scaffold(
       appBar: Header(),
       body: SingleChildScrollView(
@@ -173,49 +175,49 @@ class _SignupState extends State<Signup> {
                             ),
                           ),
                         ),
-                        // ユーザー名
-                        Text(
-                          'ユーザー名',
-                          style: TextStyle(
-                            color: HexColor('000000'),
-                          ),
-                        ),
-                        // ユーザー名入力欄
-                        TextField(
-                          //focusNode: myFocusNode,
-                          cursorColor: Colors.orange, // カーソルの色
-                          controller: _username, // 入力文字取得するために多分必要
-                          decoration: InputDecoration(
-                            // フォーカスされていないとき
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0), //角のまるさ
-                              // 枠線の設定
-                              borderSide: BorderSide(
-                                color: HexColor('ec9463'),
-                                width: 1.5,
-                              ),
-                            ),
-                            // フォーカスされているとき
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: HexColor('ec9463'),
-                                width: 3.5,
-                              ),
-                            ),
-                            hintText: 'ユーザー名を入力',
-                          ),
-                        ),
-                        // ユーザー名エラー
-                        Container(
-                          margin: EdgeInsets.only(top: 3, bottom: 25),
-                          child: Text(
-                            username_error,
-                            style: TextStyle(
-                              color: Colors.red,
-                            ),
-                          ),
-                        ),
+                        // // ユーザー名
+                        // Text(
+                        //   'ユーザー名',
+                        //   style: TextStyle(
+                        //     color: HexColor('000000'),
+                        //   ),
+                        // ),
+                        // // ユーザー名入力欄
+                        // TextField(
+                        //   //focusNode: myFocusNode,
+                        //   cursorColor: Colors.orange, // カーソルの色
+                        //   controller: _username, // 入力文字取得するために多分必要
+                        //   decoration: InputDecoration(
+                        //     // フォーカスされていないとき
+                        //     enabledBorder: OutlineInputBorder(
+                        //       borderRadius: BorderRadius.circular(10.0), //角のまるさ
+                        //       // 枠線の設定
+                        //       borderSide: BorderSide(
+                        //         color: HexColor('ec9463'),
+                        //         width: 1.5,
+                        //       ),
+                        //     ),
+                        //     // フォーカスされているとき
+                        //     focusedBorder: OutlineInputBorder(
+                        //       borderRadius: BorderRadius.circular(10.0),
+                        //       borderSide: BorderSide(
+                        //         color: HexColor('ec9463'),
+                        //         width: 3.5,
+                        //       ),
+                        //     ),
+                        //     hintText: 'ユーザー名を入力',
+                        //   ),
+                        // ),
+                        // // ユーザー名エラー
+                        // Container(
+                        //   margin: EdgeInsets.only(top: 3, bottom: 25),
+                        //   child: Text(
+                        //     username_error,
+                        //     style: TextStyle(
+                        //       color: Colors.red,
+                        //     ),
+                        //   ),
+                        // ),
                         Text(
                           'パスワード',
                           style: TextStyle(
@@ -356,7 +358,7 @@ class _SignupState extends State<Signup> {
                             height: 40,
                             child: ElevatedButton(
                               onPressed: () {
-                                setState(() {
+                                setState(() async {
                                   address_error = '';
                                   username_error = '';
                                   password_error = '';
@@ -365,14 +367,14 @@ class _SignupState extends State<Signup> {
                                     address_error = 'メールアドレスが正しくありません。';
                                     _flag = false;
                                   }
-                                  if (_username.text.length < 1) {
-                                    username_error = 'ユーザー名を入力してください。';
-                                    _flag = false;
-                                  }
-                                  if (_username.text.length > 15) {
-                                    username_error = 'ユーザー名は15文字以内で入力してください。';
-                                    _flag = false;
-                                  }
+                                  // if (_username.text.length < 1) {
+                                  //   username_error = 'ユーザー名を入力してください。';
+                                  //   _flag = false;
+                                  // }
+                                  // if (_username.text.length > 15) {
+                                  //   username_error = 'ユーザー名は15文字以内で入力してください。';
+                                  //   _flag = false;
+                                  // }
                                   if (validatePassword(_userpassword.text)) {
                                     password_error = 'パスワードは半角6文字以上で入力してください。';
                                     _flag = false;
@@ -387,13 +389,60 @@ class _SignupState extends State<Signup> {
                                     username_error = '';
                                     password_error = '';
                                     passwordCon_error = '';
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => Signup_Confirm(
-                                              address: _useraddress.text,
-                                              username: _username.text),
-                                        ));
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (context) => Signup_Confirm(
+                                    //           address: _useraddress.text,
+                                    //           username: _username.text),
+                                    //     ));
+                                    try {
+                                      // メール/パスワードでユーザー登録
+                                      final FirebaseAuth auth =
+                                          FirebaseAuth.instance;
+                                      await auth
+                                          .createUserWithEmailAndPassword(
+                                        email: _useraddress.text,
+                                        password: _userpassword.text,
+                                      )
+                                          .then((currentUser) {
+                                        final uid =
+                                            currentUser.user?.uid.toString();
+
+                                        FirebaseFirestore.instance
+                                            .collection('account')
+                                            .doc(uid!)
+                                            .set({
+                                          'user_id': uid,
+                                          'user_name': 'ユーザー',
+                                          'user_profile': '',
+                                          'user_icon': '',
+                                          'user_gender': '',
+                                          'user_favorite': [''],
+                                          'delete_flag': false,
+                                          'user_birthday':
+                                              FieldValue.serverTimestamp(),
+                                          'delete_date':
+                                              FieldValue.serverTimestamp(),
+                                          'regist_date':
+                                              FieldValue.serverTimestamp(),
+                                        });
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ProfileEditPage('new', uid),
+                                            ));
+                                      });
+                                      // ユーザー登録に成功した場合
+                                      // accountコレクションを作成
+
+                                    } catch (e) {
+                                      // ユーザー登録に失敗した場合
+                                      setState(() {
+                                        _text = "登録に失敗しました：${e.toString()}";
+                                      });
+                                    }
                                   } else
                                     _flag = true;
                                 });
@@ -444,102 +493,102 @@ class _SignupState extends State<Signup> {
                       ],
                     ),
                   ),
-                  // 縦線
-                  Container(
-                    margin: EdgeInsets.only(left: 8),
-                    width: 700,
-                    height: 3,
-                    color: HexColor('ffdfc5'),
-                  ),
-                  // 他サービス欄
-                  Container(
-                    margin: EdgeInsets.only(top: 30, left: 8),
-                    width: 400,
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(bottom: 20),
-                          child: Text(
-                            '他サービスIDで新規登録',
-                            style: TextStyle(
-                              color: HexColor('8c6e63'),
-                              fontSize: 25,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 300,
-                          height: 50,
-                          child: ElevatedButton.icon(
-                            icon: FaIcon(FontAwesomeIcons.google,
-                                color: Colors.red),
-                            label: Text('Google'),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.white,
-                              onPrimary: Colors.black,
-                            ),
-                            onPressed: () async {
-                              await signInWithGoogle().then((result) {
-                                //googleログイン用のクラスを呼んで、ユーザー情報を取得
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    fullscreenDialog: true,
-                                    builder: (context) => GoogleAuthComplete(
-                                        result), //auth_compleet.dartのGoogleAuthCompleteにresult(ユーザー情報)を送る
-                                  ),
-                                );
-                              }).catchError((e) {
-                                print('ログインに失敗しました： $e');
-                              });
-                              // Googleでログイン処理
-                            },
-                          ),
-                        ),
-                        /*
-                        Container(
-                          width: 300,
-                          height: 50,
-                          margin: EdgeInsets.only(top: 20),
-                          child: ElevatedButton.icon(
-                            icon: Ink(
-                              width: 30,
-                              decoration: ShapeDecoration(
-                                color: Colors.blue,
-                                shape: CircleBorder(),
-                              ),
-                              child: Center(
-                                child: FaIcon(FontAwesomeIcons.twitter,
-                                    color: Colors.white, size: 19),
-                              ),
-                            ),
-                            label: Text('Twitter'),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.white,
-                              onPrimary: Colors.black,
-                            ),
-                            onPressed: () {},
-                          ),
-                        ),
-                        Container(
-                          width: 300,
-                          height: 50,
-                          margin: EdgeInsets.only(top: 20),
-                          child: ElevatedButton.icon(
-                            icon: FaIcon(FontAwesomeIcons.facebook,
-                                color: Colors.indigo),
-                            label: Text('Facebook'),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.white,
-                              onPrimary: Colors.black,
-                            ),
-                            onPressed: () {},
-                          ),
-                        ),*/
-                      ],
-                    ),
-                  ),
+                  // // 縦線
+                  // Container(
+                  //   margin: EdgeInsets.only(left: 8),
+                  //   width: 700,
+                  //   height: 3,
+                  //   color: HexColor('ffdfc5'),
+                  // ),
+                  // // 他サービス欄
+                  // Container(
+                  //   margin: EdgeInsets.only(top: 30, left: 8),
+                  //   width: 400,
+                  //   child: Column(
+                  //     children: [
+                  //       Container(
+                  //         margin: EdgeInsets.only(bottom: 20),
+                  //         child: Text(
+                  //           '他サービスIDで新規登録',
+                  //           style: TextStyle(
+                  //             color: HexColor('8c6e63'),
+                  //             fontSize: 25,
+                  //             fontWeight: FontWeight.w600,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       Container(
+                  //         width: 300,
+                  //         height: 50,
+                  //         child: ElevatedButton.icon(
+                  //           icon: FaIcon(FontAwesomeIcons.google,
+                  //               color: Colors.red),
+                  //           label: Text('Google'),
+                  //           style: ElevatedButton.styleFrom(
+                  //             primary: Colors.white,
+                  //             onPrimary: Colors.black,
+                  //           ),
+                  //           onPressed: () async {
+                  //             await signInWithGoogle().then((result) {
+                  //               //googleログイン用のクラスを呼んで、ユーザー情報を取得
+                  //               Navigator.of(context).pop();
+                  //               Navigator.of(context).pushReplacement(
+                  //                 MaterialPageRoute(
+                  //                   fullscreenDialog: true,
+                  //                   builder: (context) => GoogleAuthComplete(
+                  //                       result), //auth_compleet.dartのGoogleAuthCompleteにresult(ユーザー情報)を送る
+                  //                 ),
+                  //               );
+                  //             }).catchError((e) {
+                  //               print('ログインに失敗しました： $e');
+                  //             });
+                  //             // Googleでログイン処理
+                  //           },
+                  //         ),
+                  //       ),
+                  //       /*
+                  //       Container(
+                  //         width: 300,
+                  //         height: 50,
+                  //         margin: EdgeInsets.only(top: 20),
+                  //         child: ElevatedButton.icon(
+                  //           icon: Ink(
+                  //             width: 30,
+                  //             decoration: ShapeDecoration(
+                  //               color: Colors.blue,
+                  //               shape: CircleBorder(),
+                  //             ),
+                  //             child: Center(
+                  //               child: FaIcon(FontAwesomeIcons.twitter,
+                  //                   color: Colors.white, size: 19),
+                  //             ),
+                  //           ),
+                  //           label: Text('Twitter'),
+                  //           style: ElevatedButton.styleFrom(
+                  //             primary: Colors.white,
+                  //             onPrimary: Colors.black,
+                  //           ),
+                  //           onPressed: () {},
+                  //         ),
+                  //       ),
+                  //       Container(
+                  //         width: 300,
+                  //         height: 50,
+                  //         margin: EdgeInsets.only(top: 20),
+                  //         child: ElevatedButton.icon(
+                  //           icon: FaIcon(FontAwesomeIcons.facebook,
+                  //               color: Colors.indigo),
+                  //           label: Text('Facebook'),
+                  //           style: ElevatedButton.styleFrom(
+                  //             primary: Colors.white,
+                  //             onPrimary: Colors.black,
+                  //           ),
+                  //           onPressed: () {},
+                  //         ),
+                  //       ),*/
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),

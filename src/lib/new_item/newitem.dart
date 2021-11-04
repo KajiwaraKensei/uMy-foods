@@ -121,7 +121,7 @@ class _NewItemPageState extends State<NewItemPage> {
 
     return Scaffold(
     appBar: Header(),
-    floatingActionButton: clipButton(),
+    floatingActionButton: clipButton('新商品'),
           body: Container(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
         child: ListView(
