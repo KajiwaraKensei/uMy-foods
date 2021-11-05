@@ -49,7 +49,6 @@ class Home extends StatefulWidget {
 }
 
 class _Home extends State<Home> {
-
   @override
   Widget build(BuildContext context) {
     var media_width = MediaQuery.of(context).size.width;
@@ -224,11 +223,11 @@ class _Home extends State<Home> {
         testcategory,
       ),
     ];
-    List<Widget> newreviewSliders = [
-      newreviewcarousel(media_width, media_height, review, 0),
-      newreviewcarousel(media_width, media_height, review, 1),
-      newreviewcarousel(media_width, media_height, review, 2),
-    ];
+    // List<Widget> newreviewSliders = [
+    //   newreviewcarousel(media_width, media_height, review, 0),
+    //   newreviewcarousel(media_width, media_height, review, 1),
+    //   newreviewcarousel(media_width, media_height, review, 2),
+    // ];
 
     return Scaffold(
         appBar: Header(),
@@ -873,19 +872,46 @@ class _Home extends State<Home> {
                                         Container(
                                           width: media_width * 0.52,
                                           height: media_height * 0.6,
-                                          child: CarouselSlider(
-                                            items:
-                                                newreviewSliders, // スライドさせるリスト
-                                            carouselController:
-                                                reviewbuttonCarouselController, // ボタンでスライドするためのコントローラー
-                                            options: CarouselOptions(
-                                              autoPlay: true, // 自動スライド オン
-                                              enlargeCenterPage:
-                                                  false, // 画像切り替えの時に中心の画像拡大、他縮小させるか
-                                              viewportFraction:
-                                                  0.48, // 各ページが占めるビューポートの割合
-                                            ),
-                                          ),
+                                          child: StreamBuilder<QuerySnapshot>(
+
+                                              //表示したいFiresotreの保存先を指定
+                                              stream: FirebaseFirestore.instance
+                                                  .collection('review')
+                                                  .orderBy('review_postdate',
+                                                      descending: true)
+                                                  .limit(3)
+                                                  .snapshots(),
+
+                                              //streamが更新されるたびに呼ばれる
+                                              builder: (BuildContext context,
+                                                  AsyncSnapshot<QuerySnapshot>
+                                                      snapshot) {
+                                                //データが取れていない時の処理
+                                                if (!snapshot.hasData)
+                                                  return const Text(
+                                                      'Loading...');
+                                                final result =
+                                                    snapshot.data!.docs;
+                                                return CarouselSlider(
+                                                  items: [
+                                                    for (int i = 0; i < 3; i++)
+                                                      newreviewcarousel(
+                                                          media_width,
+                                                          media_height,
+                                                          result[i]),
+                                                  ],
+                                                  //newreviewSliders, // スライドさせるリスト
+                                                  carouselController:
+                                                      reviewbuttonCarouselController, // ボタンでスライドするためのコントローラー
+                                                  options: CarouselOptions(
+                                                    autoPlay: true, // 自動スライド オン
+                                                    enlargeCenterPage:
+                                                        false, // 画像切り替えの時に中心の画像拡大、他縮小させるか
+                                                    viewportFraction:
+                                                        0.48, // 各ページが占めるビューポートの割合
+                                                  ),
+                                                );
+                                              }),
                                         ),
                                         GestureDetector(
                                           onTap: () {

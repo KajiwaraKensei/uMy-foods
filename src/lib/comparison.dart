@@ -76,7 +76,6 @@ class _ComparisonState extends State<Comparison> {
         "商品名",
         "商品画像",
         "総合評価",
-        "ランキング",
         "リピート",
         "気になる",
         "コスパ",
@@ -99,7 +98,7 @@ class _ComparisonState extends State<Comparison> {
           Table(
             border: TableBorder.all(),
             children: [
-              for (int rcnt = 0; rcnt < 14; rcnt++)
+              for (int rcnt = 0; rcnt < 13; rcnt++)
                 TableRow(children: [
                   //height通常20
                   if (text == 'list')
@@ -127,7 +126,7 @@ class _ComparisonState extends State<Comparison> {
                         color: HexColor('ffdfc5'),
                         height: evaheight,
                       )
-                    else if (rcnt == 6)
+                    else if (rcnt == 5)
                       Container(
                         child: Center(
                             child: Text(slist[rcnt],
@@ -135,7 +134,7 @@ class _ComparisonState extends State<Comparison> {
                         color: HexColor('ffdfc5'),
                         height: evaheight,
                       )
-                    else if (rcnt == 7)
+                    else if (rcnt == 6)
                       Container(
                         child: Center(
                             child: Text(slist[rcnt],
@@ -143,7 +142,7 @@ class _ComparisonState extends State<Comparison> {
                         color: HexColor('ffdfc5'),
                         height: tastehight,
                       )
-                    else if (rcnt == 8)
+                    else if (rcnt == 7)
                       Container(
                         child: Center(
                             child: Text(slist[rcnt],
@@ -151,7 +150,7 @@ class _ComparisonState extends State<Comparison> {
                         color: HexColor('ffdfc5'),
                         height: materialheight,
                       )
-                    else if (rcnt == 10)
+                    else if (rcnt == 9)
                       Container(
                         child: Center(
                             child: Text(slist[rcnt],
@@ -217,7 +216,7 @@ class _ComparisonState extends State<Comparison> {
                 divider: Icon(Icons.chevron_right),
               ),
               LimitedBox(
-                maxHeight: 1185, //最大の高さを指定
+                maxHeight: 1150, //最大の高さを指定
                 child: ReorderableListView(
                   header: Container(
                     child: myContainer(size: 120, text: 'list'),
@@ -425,16 +424,16 @@ class _ComparisonState extends State<Comparison> {
                     TableRow(children: [
                       elevalation(result['product_id']),
                     ]),
-                    TableRow(children: [
-                      Container(
-                        //ランキング
-                        child: Center(
-                            child: Text('ランキング',
-                                style: TextStyle(color: Colors.black))),
-                        color: Colors.white,
-                        height: defaultheight,
-                      ),
-                    ]),
+                    // TableRow(children: [
+                    //   Container(
+                    //     //ランキング
+                    //     child: Center(
+                    //         child: Text('',
+                    //             style: TextStyle(color: Colors.black))),
+                    //     color: Colors.white,
+                    //     height: defaultheight,
+                    //   ),
+                    // ]),
                     TableRow(children: [repeat(result['product_id'])]),
                     TableRow(children: [
                       concern(result['product_id']),

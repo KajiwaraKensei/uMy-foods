@@ -199,6 +199,7 @@ class _HeaderState extends State<Header> {
 
                             final result = snapshot.data!.docs[0];
                             return PopupMenuButton<String>(
+                              tooltip: "マイページ",
                               child: Container(
                                 margin: EdgeInsets.only(left: 50),
                                 child: CircleAvatar(

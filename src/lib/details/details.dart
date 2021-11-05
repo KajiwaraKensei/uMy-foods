@@ -1,4 +1,6 @@
 import 'dart:html';
+import "package:intl/intl.dart";
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:flutter/material.dart';
 
@@ -485,9 +487,15 @@ class _DetailsPageState extends State<DetailsPage> {
             //データが取れていない時の処理
             if (!snapshot.hasData) return const Text('Loading...');
 
-            return SelectableText(
-                '${snapshot.data!['subject']}　たんぱく質　${snapshot.data!['たんぱく質']}　/　エネルギー　${snapshot.data!['エネルギー']}　/　炭水化物　${snapshot.data!['炭水化物']}　/　脂質　${snapshot.data!['脂質']}　/　食塩相当量　${snapshot.data!['食塩相当量']}',
-                scrollPhysics: NeverScrollableScrollPhysics());
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SelectableText('${snapshot.data!['subject']}',
+                      scrollPhysics: NeverScrollableScrollPhysics()),
+                  SelectableText(
+                      'たんぱく質　${snapshot.data!['たんぱく質']}　/　エネルギー　${snapshot.data!['エネルギー']}　/　炭水化物　${snapshot.data!['炭水化物']}　/　脂質　${snapshot.data!['脂質']}　/　食塩相当量　${snapshot.data!['食塩相当量']}',
+                      scrollPhysics: NeverScrollableScrollPhysics()),
+                ]);
           });
     }
 
@@ -621,12 +629,12 @@ class _DetailsPageState extends State<DetailsPage> {
                                                       "https://twitter.com/intent/tweet?text=" +
                                                           result[
                                                               'product_name'] +
-                                                          "がいい！NEWS&url=https://umyfoods-rac.web.app/#/")) {
+                                                          "がいい！&url=https://umyfoods-rac.web.app/#/")) {
                                                     await launch(
                                                         "https://twitter.com/intent/tweet?text=" +
                                                             result[
                                                                 'product_name'] +
-                                                            "がいい！NEWS&url=https://umyfoods-rac.web.app/#/");
+                                                            "がいい！&url=https://umyfoods-rac.web.app/#/");
                                                   }
                                                 },
                                               ),
@@ -759,6 +767,42 @@ class _DetailsPageState extends State<DetailsPage> {
                                                             result['brand_id']),
                                                         SpaceBox.height(30),
                                                       ]),
+                                                      TableRow(children: [
+                                                        SelectableText('内容量',
+                                                            scrollPhysics:
+                                                                NeverScrollableScrollPhysics()),
+                                                        SelectableText(
+                                                            result[
+                                                                'Internal_capacity'],
+                                                            scrollPhysics:
+                                                                NeverScrollableScrollPhysics()),
+                                                        SpaceBox.height(30),
+                                                      ]),
+                                                      TableRow(children: [
+                                                        SelectableText('発売日',
+                                                            scrollPhysics:
+                                                                NeverScrollableScrollPhysics()),
+                                                        (DateFormat("yyyy/MM/dd")
+                                                                    .format(result[
+                                                                            'release_date']
+                                                                        .toDate())
+                                                                    .toString() ==
+                                                                '0001/01/01')
+                                                            ? SelectableText(
+                                                                'データなし',
+                                                                scrollPhysics:
+                                                                    NeverScrollableScrollPhysics())
+                                                            : SelectableText(
+                                                                DateFormat(
+                                                                        "yyyy/MM/dd")
+                                                                    .format(result[
+                                                                            'release_date']
+                                                                        .toDate())
+                                                                    .toString(),
+                                                                scrollPhysics:
+                                                                    NeverScrollableScrollPhysics()),
+                                                        SpaceBox.height(30),
+                                                      ]),
                                                     ],
                                                   )
                                                 ],
@@ -864,8 +908,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                             onPrimary:
                                                                 Colors.white,
                                                           ),
-                                                          child: Text(
-                                                              '楽天市場で購入',
+                                                          child: Text('楽天市場で購入',
                                                               style: TextStyle(
                                                                   fontSize:
                                                                       12)),
@@ -1292,8 +1335,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                             style: BorderStyle.solid,
                                           ),
                                         ),
-                                        ),
-                                        onPressed: () async {
+                                      ),
+                                      onPressed: () async {
                                         final snapshot =
                                             FirebaseAuth.instance.currentUser;
                                         if (snapshot == null) {

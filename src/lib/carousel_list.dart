@@ -137,13 +137,12 @@ rankingcarousel(
                                   Text('100'),
                                   // クリップボタン
                                   Container(
-                                    margin:
-                                        EdgeInsets.only(left: 20, bottom: 4),
-                                    child: defaultClipAddButton(
+                                      margin:
+                                          EdgeInsets.only(left: 20, bottom: 4),
+                                      child: defaultClipAddButton(
                                           Rankinglist1[i]['product_id'],
                                           Rankinglist1[i]['Text'],
-                                          Rankinglist1[i]['image'])
-                                  ),
+                                          Rankinglist1[i]['image'])),
                                 ],
                               ),
                             ],
@@ -250,28 +249,25 @@ rankingcarousel(
                               ),
                               // スターレーティング部分
                               star(5, 20),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.priority_high,
-                                  ),
-                                  Text('1'),
-                                  Container(
-                                    margin: EdgeInsets.only(left: 7),
-                                    child: Icon(Icons.sync, color: Colors.blue),
-                                  ),
-                                  Text('100'),
-                                  // クリップボタン
-                                  Container(
-                                    margin:
-                                        EdgeInsets.only(left: 20, bottom: 4),
-                                    child: defaultClipAddButton(
+                              Row(children: [
+                                Icon(
+                                  Icons.priority_high,
+                                ),
+                                Text('1'),
+                                Container(
+                                  margin: EdgeInsets.only(left: 7),
+                                  child: Icon(Icons.sync, color: Colors.blue),
+                                ),
+                                Text('100'),
+                                // クリップボタン
+                                Container(
+                                  margin: EdgeInsets.only(left: 20, bottom: 4),
+                                  child: defaultClipAddButton(
                                       Rankinglist2[i]['product_id'],
                                       Rankinglist2[i]['Text'],
                                       Rankinglist2[i]['image']),
                                 ),
-                              ]
-                              )
+                              ])
                             ],
                           ),
                         ),
@@ -287,8 +283,31 @@ rankingcarousel(
   );
 }
 
-newreviewcarousel(
-    var mwidth, var mheight, List<Map<String, dynamic>> review, int i) {
+newreviewcarousel(var mwidth, var mheight, review) {
+  //編集時ユーザー名、商品名も変更する。
+  String age = '';
+  final now = DateTime.now();
+
+  final old = now.difference(review['user_birthday'].toDate()).inDays;
+
+  if (old > 0 && old < 7300) {
+    age == '10代以下';
+  } else if (old >= 7300 && old < 10950) {
+    age = '20代';
+  } else if (old >= 10950 && old < 14600) {
+    age = '30代';
+  } else {
+    age = '40代以上';
+  }
+
+  String gender = "";
+  if (review['user_gender'] == "male") {
+    gender = '男性';
+  } else if (review['user_gender'] == 'female') {
+    gender = '女性';
+  } else {
+    gender = '秘密';
+  }
   return Container(
     child: Card(
       margin: EdgeInsets.symmetric(horizontal: 8),
@@ -311,10 +330,15 @@ newreviewcarousel(
                 width: mwidth * 0.16,
                 height: mheight * 0.24,
                 //color: HexColor('ff2222'), // 範囲確認用
-                child: Image.network(
-                  review[i]['image'],
-                  fit: BoxFit.contain,
-                ),
+                child: (review['url'] == "")
+                    ? Image.network(
+                        'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf',
+                        fit: BoxFit.contain,
+                      )
+                    : Image.network(
+                        review['url'],
+                        fit: BoxFit.contain,
+                      ),
               ),
             ),
 
@@ -327,16 +351,17 @@ newreviewcarousel(
                 children: [
                   // 投稿者
                   Container(
-                    child: SelectableText(review[i]['name'] +
+                    child: SelectableText(
+                        review['user_name'] +
                         '　' +
-                        review[i]['age'] +
+                        age +
                         '・' +
-                        review[i]['gender']),
+                        gender),
                   ),
 
                   // 商品名
                   Container(
-                    child: SelectableText(review[i]['product'],
+                    child: SelectableText(review['product_name'],
                         maxLines: 1,
                         style: TextStyle(
                           fontSize: 14,
@@ -345,14 +370,14 @@ newreviewcarousel(
                   ),
                   // スターレーティング　用改良
                   Container(
-                    child: star(review[i]['star'], 16),
+                    child: star(review['review_evaluation'], 16),
                   ),
                   // レビュー本文
                   Container(
                     //height: mheight * 0.1,
                     width: mwidth * 0.17,
                     child: SelectableText(
-                      review[i]['Text'],
+                      review['review_comment'],
                       maxLines: 3,
                       scrollPhysics: NeverScrollableScrollPhysics(),
                     ),
