@@ -46,10 +46,10 @@
 
 # バージョンを変更する場合
 
-- PATH="$PATH":"$HOME/.pub-cache/bin"
-- fvm install <version>
+1. PATH="$PATH":"$HOME/.pub-cache/bin"
+2. fvm install <version>
   - 例 fvm install 2.2.3
-- fvm use <version>
+3. fvm use <version>
   - 例 fvm use 2.2.3 --global
-- 最初にfvmを付けるとそのバージョンにできる
+4. 最初にfvmを付けるとそのバージョンにできる
   - 例 fvm flutter --version
