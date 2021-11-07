@@ -77,3 +77,7 @@ EXPOSE ${WEB_SERVER_PORT}
 RUN apt update
 RUN apt-get -y install nodejs npm
 RUN npm install -y -g firebase-tools
+
+#fvmをインストール
+RUN dart pub global activate fvm
+# ENV PATH="$PATH":"$HOME/.pub-cache/bin"
