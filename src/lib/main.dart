@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:workspace/profile/profile.dart';   //プロフィール
+import 'package:umy_foods/search/search_results.dart';   //プロフィール
 void main() {
   runApp(MyApp());
 }
@@ -25,6 +25,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return ProfilePage();
+    return SearchResultsPage();
   }
 }
