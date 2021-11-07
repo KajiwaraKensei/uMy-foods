@@ -6,7 +6,7 @@
 3. docker-compose up -d
 4. docker exec -it flutter bash
 5. cd ${APP_CODE_PATH_CONTAINER} ; flutter create .
-6. flutter run -d web-server --web-port=${WEB_SERVER_PORT} --web-hostname 0.0.0.0
+6. flutter run -d web-server --web-port=${WEB_SERVER_PORT} --web-hostname 0.0.0.0 --web-renderer html
 
 # ブラウザで
 
