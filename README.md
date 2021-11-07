@@ -43,3 +43,13 @@
 - Error: Failed to list Firebase projects. See firebase-debug.log for more info.
   1. firebase logout
   2. webデプロイの3から始めてください
+
+# バージョンを変更する場合
+
+- PATH="$PATH":"$HOME/.pub-cache/bin"
+- fvm install <version>
+  - 例 fvm install 2.2.3
+- fvm use <version>
+  - 例 fvm use 2.2.3
+- 最初にfvmを付けるとそのバージョンにできる
+  - 例 fvm flutter --version
