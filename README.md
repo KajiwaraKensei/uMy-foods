@@ -41,4 +41,5 @@
 # firebase initでエラーが起こった場合
 
 - Error: Failed to list Firebase projects. See firebase-debug.log for more info.
-  - firebase logout でOK
+  - firebase logout
+  - webデプロイの3から始めてください
