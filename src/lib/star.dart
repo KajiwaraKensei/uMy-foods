@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:workspace/HexColor.dart';   //16進数カラーコード
+import 'package:umy_foods/HexColor.dart';   //16進数カラーコード
 
 //星評価
 star(int star,int size){
