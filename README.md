@@ -50,6 +50,6 @@
 - fvm install <version>
   - 例 fvm install 2.2.3
 - fvm use <version>
-  - 例 fvm use 2.2.3
+  - 例 fvm use 2.2.3 --global
 - 最初にfvmを付けるとそのバージョンにできる
   - 例 fvm flutter --version
