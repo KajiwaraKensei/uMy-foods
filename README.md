@@ -34,6 +34,10 @@
 7. flutter build web --release --web-renderer html
 8. firebase deploy
 
+# 2回目以降デプロイする場合
+
+- webデプロイの6から始めてください
+
 # firebase initでエラーが起こった場合
 
 - Error: Failed to list Firebase projects. See firebase-debug.log for more info.
