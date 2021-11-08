@@ -395,32 +395,44 @@ class _LoginState extends State<Login> {
                                   ),
                                   onPressed: () async {
                                     await signInWithGoogle().then((result) {
-                                      //googleログイン用のクラスを呼んで、ユーザー情報を取得
-                                        FirebaseFirestore.instance
+                                      final account = FirebaseFirestore.instance
                                           .collection('account')
-                                          .doc(result?.uid)
-                                          .set({
-                                        'user_id': result?.uid,
-                                        'user_name': result?.displayName,
-                                        'user_profile': '',
-                                        'user_icon': '',
-                                        'user_gender': '',
-                                        'user_favorite': [''],
-                                        'delete_flag': false,
-                                        'user_birthday':
-                                            FieldValue.serverTimestamp(),
-                                        'delete_date':
-                                            FieldValue.serverTimestamp(),
-                                        'regist_date':
-                                            FieldValue.serverTimestamp(),
+                                          .where('user_id',
+                                              isEqualTo: result?.uid)
+                                          .get();
+                                      account.then((account) {
+                                        if (account.docs.length == 0)
+                                          //googleログイン用のクラスを呼んで、ユーザー情報を取得
+                                          FirebaseFirestore.instance
+                                              .collection('account')
+                                              .doc(result?.uid)
+                                              .set({
+                                            'user_id': result?.uid,
+                                            'user_name': result?.displayName,
+                                            'user_profile': '',
+                                            'user_icon':
+                                                (result?.photoURL == null)
+                                                    ? ''
+                                                    : result?.photoURL,
+                                            'user_gender': '',
+                                            'user_favorite': [''],
+                                            'delete_flag': false,
+                                            'user_birthday':
+                                                FieldValue.serverTimestamp(),
+                                            'delete_date':
+                                                FieldValue.serverTimestamp(),
+                                            'regist_date':
+                                                FieldValue.serverTimestamp(),
+                                          });
+
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              fullscreenDialog: true,
+                                              builder: (context) =>
+                                                  MyApp() //GoogleAuthComplete(result), //auth_compleet.dartのGoogleAuthCompleteにresult(ユーザー情報)を送る
+                                              ),
+                                        );
                                       });
-                                      Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                          fullscreenDialog: true,
-                                          builder: (context) =>
-                                                MyApp() //GoogleAuthComplete(result), //auth_compleet.dartのGoogleAuthCompleteにresult(ユーザー情報)を送る
-                                        ),
-                                      );
                                     }).catchError((e) {
                                       print('ログインに失敗しました： $e');
                                     });

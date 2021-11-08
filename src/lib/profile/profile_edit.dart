@@ -8,6 +8,9 @@ import 'package:flutter/rendering.dart';
 // パッケージ
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart'; //パンくず
 import 'package:image_picker/image_picker.dart'; //画像アップロード
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; //DB
 
 // 外部ファイル
 import 'package:umy_foods/HexColor.dart'; //16進数カラーコード
@@ -55,8 +58,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
 //選択画像
   final picker = ImagePicker(); //画像を取得
   XFile? icon_image; //URLに変更前
-  String icon_url =
-      'https://images-na.ssl-images-amazon.com/images/I/71qJYwkBWwL._SX402_.jpg'; //仮で初期はポケモン
+  String icon_url = 'images/anotherUser2.png';
+  //'https://images-na.ssl-images-amazon.com/images/I/71qJYwkBWwL._SX402_.jpg'; //仮で初期はポケモン
 
   GenderRadioValue _gValue = GenderRadioValue.FIRST; //ラジオボタン初期値
   String gender = ''; //選択した性別の値
@@ -205,6 +208,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
 
   List<String> like_maker = []; //選択したメーカー
 
+  var uname = TextEditingController();
+  var uprofile = TextEditingController();
+
   // 選択した生年月日と初期値を入れ替え
   void _handleChange(String newValue, int num) {
     setState(() {
@@ -251,9 +257,16 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     print(age.toString()); //確認用
   }
 
+  @override
   Widget build(BuildContext context) {
     var media_width = MediaQuery.of(context).size.width; //学校販売PCの場合1280
     var media_height = MediaQuery.of(context).size.height; //学校販売PCの場合609
+
+    taste = '薄味派'; //デフォルト値
+    flavor = '甘口派';
+    quantity = '量派';
+
+    gender = '男性';
 
     return Scaffold(
         appBar: Header(),
@@ -346,6 +359,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           //ユーザーネーム入力
                           width: media_width * 0.454,
                           child: TextField(
+                            controller: uname,
                             minLines: 1,
                             maxLines: 1,
                             inputFormatters: [
@@ -455,7 +469,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                 Tooltip(
                                     //年代の説明
                                     preferBelow: false,
-                                    message: '生年月日を設定すると年代にピッタリな情報をお届けできます',
+                                    message:
+                                        '生年月日を設定すると年代にピッタリな情報をお届けできます(他のユーザーには年代で表示します)',
                                     child: Icon(
                                       Icons.help_outlined,
                                       color: HexColor('EC9361'),
@@ -789,6 +804,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           //自己紹介入力欄
                           width: media_width * 0.454,
                           child: TextField(
+                            controller: uprofile,
                             minLines: 6,
                             maxLines: 6,
                             inputFormatters: [
@@ -839,22 +855,162 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                               },
                             ),
                           ),
-                          SizedBox(
-                            //更新ボタン
-                            width: media_width * 0.15,
-                            height: media_height * 0.049,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: HexColor('EC9361'),
-                              ),
-                              child: Text(
-                                '更新',
-                              ),
-                              onPressed: () async {},
-                            ),
-                          ),
+                          StreamBuilder(
+                              stream: FirebaseAuth.instance.authStateChanges(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  final user =
+                                      FirebaseAuth.instance.currentUser;
+                                  final data = user?.uid;
+                                  if (data != null) {
+                                    String uid = data.toString();
+                                    return StreamBuilder<QuerySnapshot>(
+
+                                        //表示したいFiresotreの保存先を指定
+                                        stream: FirebaseFirestore.instance
+                                            .collection('/account/')
+                                            .where('user_id', isEqualTo: uid)
+                                            .snapshots(),
+
+                                        //streamが更新されるたびに呼ばれる
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<QuerySnapshot>
+                                                snapshot) {
+                                          //データが取れていない時の処理
+
+                                          final result = snapshot.data!.docs[0];
+
+                                          var user_name =
+                                              result['user_name']; //変更ユーザー名
+                                          var user_gender =
+                                              result['user_gender']; //性別
+                                          var user_birthday =
+                                              result['user_birthday']
+                                                  .toDate(); //生年月日
+                                          var user_favorite =
+                                              result['user_favorite']; //好み
+                                          var user_profile =
+                                              result['user_profile']; //自己紹介
+
+                                          return Row(children: [
+                                            SizedBox(
+                                              //更新ボタン
+                                              width: media_width * 0.15,
+                                              height: media_height * 0.049,
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: HexColor('EC9361'),
+                                                ),
+                                                child: Text(
+                                                  '更新',
+                                                ),
+                                                onPressed: () async {
+                                                  user_name =
+                                                      uname.text.toString();
+                                                  user_profile =
+                                                      uprofile.text.toString();
+                                                  user_gender = gender; //性別
+                                                  user_birthday = Timestamp
+                                                      .fromDate(DateTime(
+                                                          int.parse(
+                                                              year_defaultValue),
+                                                          int.parse(
+                                                              month_defaultValue),
+                                                          int.parse(
+                                                              day_defaultValue))); //生年月日
+                                                  user_favorite = [
+                                                    taste,
+                                                    flavor,
+                                                    quantity
+                                                  ]; //好み
+                                                  showDialog<int>(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          title: Text('変更確認'),
+                                                          content: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                    'ユーザー情報を以下の通りに変更します。よろしいですか。'),
+                                                                Container(
+                                                                    height: 40),
+                                                                Text('ユーザー名：' +
+                                                                    user_name),
+                                                                Text('性　　　別：' +
+                                                                    user_gender),
+                                                                Text('生年月日　：' +
+                                                                    DateTime(
+                                                                            int.parse(year_defaultValue),
+                                                                            int.parse(month_defaultValue),
+                                                                            int.parse(day_defaultValue))
+                                                                        .toString()),
+                                                                Text('食品の好み：' +
+                                                                    user_favorite[
+                                                                        0] +
+                                                                    '・' +
+                                                                    user_favorite[
+                                                                        1] +
+                                                                    '・' +
+                                                                    user_favorite[
+                                                                        2]),
+                                                                Text('自己紹介　：'),
+                                                                Text(
+                                                                    user_profile),
+                                                              ]),
+                                                          actions: <Widget>[
+                                                            FlatButton(
+                                                              child: Text('変更'),
+                                                              onPressed: () {
+                                                                FirebaseFirestore
+                                                                    .instance
+                                                                    .collection(
+                                                                        'account')
+                                                                    .doc(uid)
+                                                                    .update({
+                                                                  'user_name':
+                                                                      user_name,
+                                                                  'user_gender':
+                                                                      user_gender,
+                                                                  'user_birthday':
+                                                                      user_birthday,
+                                                                  'user_favorite':
+                                                                      user_favorite,
+                                                                  'user_profile':
+                                                                      user_profile,
+                                                                });
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                ProfilePage()));
+                                                              },
+                                                            ),
+                                                            FlatButton(
+                                                              child: Text('戻る'),
+                                                              onPressed: () =>
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop(),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      });
+                                                },
+                                              ),
+                                            ),
+                                          ]);
+                                        });
+                                  }
+                                }
+                                return Text('Nodata');
+                              }),
                         ],
-                      ))
+                      )),
                 ],
               ),
             ),

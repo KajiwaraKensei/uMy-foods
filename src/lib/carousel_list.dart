@@ -290,14 +290,14 @@ newreviewcarousel(var mwidth, var mheight, review) {
 
   final old = now.difference(review['user_birthday'].toDate()).inDays;
 
-  if (old > 0 && old < 7300) {
-    age == '10代以下';
+  if (old < 7300) {
+    age = '～10代';
   } else if (old >= 7300 && old < 10950) {
     age = '20代';
   } else if (old >= 10950 && old < 14600) {
     age = '30代';
   } else {
-    age = '40代以上';
+    age = '40代～';
   }
 
   String gender = "";

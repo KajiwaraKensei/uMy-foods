@@ -12,6 +12,10 @@ import 'package:umy_foods/profile/profile_edit.dart'; //プロフィール編集
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; //DB
+
 // void main() {
 //   runApp(MyApp());
 // }
@@ -113,132 +117,192 @@ class _ProfilePageState extends State<ProfilePage> {
                       )
                     ],
                   ),
-                  Container(
-                    //プロフィール
-                    margin: EdgeInsets.symmetric(vertical: media_height * 0.05),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: media_width * 0.02),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          //アイコン・フォローボタン
-                          children: [
-                            Container(
-                                //アイコン
-                                height: media_height * 0.2052,
-                                width: media_width * 0.0976,
-                                decoration: new BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    shape: BoxShape.circle,
-                                    image: new DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: NetworkImage(
-                                            'https://images-na.ssl-images-amazon.com/images/I/71qJYwkBWwL._SX402_.jpg')))),
-                            SpaceBox.height(media_height * 0.08),
-                            SizedBox(
-                              //フォローボタン
-                              width: media_width * 0.1,
-                              height: media_height * 0.059,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: follow == true
-                                      ? HexColor('EC9361')
-                                      : Colors.white,
-                                  side: BorderSide(color: HexColor('EC9361')),
-                                ),
-                                child: Text(
-                                  follow == true ? 'フォロー中' : 'フォローする',
-                                  style: TextStyle(
-                                      color: follow == true
-                                          ? Colors.white
-                                          : HexColor('EC9361')),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    follow = !follow;
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        SpaceBox.width(media_width * 0.05125),
-                        Column(
-                          //プロフィール情報
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SelectableText('れもん',
-                                style: TextStyle(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                scrollPhysics: NeverScrollableScrollPhysics()),
-                            SelectableText('20代 / 女性 / 甘党 / 薄味 / 派量派',
-                                scrollPhysics: NeverScrollableScrollPhysics()),
-                            Row(
-                              //ランキング
-                              children: [
-                                FaIcon(FontAwesomeIcons.crown,
-                                    color: HexColor('FFDF4C')),
-                                SelectableText('今日のランキング1680位　',
-                                    style: TextStyle(color: HexColor('EC9361')),
-                                    scrollPhysics:
-                                        NeverScrollableScrollPhysics()),
-                                FaIcon(FontAwesomeIcons.crown,
-                                    color: HexColor('FFDF4C')),
-                                SelectableText('週間ランキング1680位　',
-                                    style: TextStyle(color: HexColor('EC9361')),
-                                    scrollPhysics:
-                                        NeverScrollableScrollPhysics()),
-                                FaIcon(FontAwesomeIcons.crown,
-                                    color: HexColor('FFDF4C')),
-                                SelectableText('月間ランキング1680位　',
-                                    style: TextStyle(color: HexColor('EC9361')),
-                                    scrollPhysics:
-                                        NeverScrollableScrollPhysics()),
-                              ],
-                            ),
-                            SpaceBox.height(media_height * 0.017),
-                            SelectableText.rich(TextSpan(//投稿・フォロワーなどの数値
-                                children: [
-                              TextSpan(
-                                  text: '72',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              TextSpan(text: 'フォロー　|　'),
-                              TextSpan(
-                                  text: '1728',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              TextSpan(text: 'フォロワー　|　'),
-                              TextSpan(
-                                  text: '482',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              TextSpan(text: 'いいね　|　'),
-                              TextSpan(
-                                  text: '50',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              TextSpan(text: '投稿'),
-                            ])),
-                            SpaceBox.height(media_height * 0.017),
-                            SelectableText(
-                                //自己紹介（改行→https://qiita.com/gkn/items/f031bab66899e5886ce0 ）
-                                '９歳の娘ちゃんと猫ちゃん♀と暮らしてます。\n旦那は海外単身赴任中。\nまんまるころころかわいいもの大好き。\nチョコ、モンブラン、おこちゃまおやつ大好き。\n流行りにとらわれず、自分の好きなもの、食べたいものを口コミしていきます。\nのんびりのんびり(=^ェ^=)',
-                                scrollPhysics: NeverScrollableScrollPhysics()
-                                // ,minLines: 9,maxLines: 9,
-                                )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
+                  StreamBuilder(
+                      stream: FirebaseAuth.instance.authStateChanges(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        if (snapshot.hasData) {
+                          final user = FirebaseAuth.instance.currentUser;
+                          final data = user?.uid;
+                          if (data != null) {
+                            String uid = data.toString();
+                            return StreamBuilder<QuerySnapshot>(
+
+                                //表示したいFiresotreの保存先を指定
+                                stream: FirebaseFirestore.instance
+                                    .collection('/account/')
+                                    .where('user_id', isEqualTo: uid)
+                                    .snapshots(),
+
+                                //streamが更新されるたびに呼ばれる
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  //データが取れていない時の処理
+
+                                  final result = snapshot.data!.docs[0];
+
+                                  DateTime now = DateTime.now(); //現在
+
+                                  String age = '20代前半';
+
+                                  return Container(
+                                    //プロフィール
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: media_height * 0.05),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: media_width * 0.02),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          //アイコン・フォローボタン
+                                          children: [
+                                            Container(
+                                                //アイコン
+                                                height: media_height * 0.2052,
+                                                width: media_width * 0.0976,
+                                                decoration: new BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.grey),
+                                                    shape: BoxShape.circle,
+                                                    image: new DecorationImage(
+                                                        fit: BoxFit.cover,
+                                                        image: NetworkImage(
+                                                            'https://images-na.ssl-images-amazon.com/images/I/71qJYwkBWwL._SX402_.jpg')))),
+                                            SpaceBox.height(
+                                                media_height * 0.08),
+                                            // SizedBox(
+                                            //   //フォローボタン
+                                            //   width: media_width * 0.1,
+                                            //   height: media_height * 0.059,
+                                            //   child: ElevatedButton(
+                                            //     style: ElevatedButton.styleFrom(
+                                            //       primary: follow == true
+                                            //           ? HexColor('EC9361')
+                                            //           : Colors.white,
+                                            //       side: BorderSide(
+                                            //           color:
+                                            //               HexColor('EC9361')),
+                                            //     ),
+                                            //     child: Text(
+                                            //       follow == true
+                                            //           ? 'フォロー中'
+                                            //           : 'フォローする',
+                                            //       style: TextStyle(
+                                            //           color: follow == true
+                                            //               ? Colors.white
+                                            //               : HexColor('EC9361')),
+                                            //     ),
+                                            //     onPressed: () {
+                                            //       setState(() {
+                                            //         follow = !follow;
+                                            //       });
+                                            //     },
+                                            //   ),
+                                            // ),
+                                          ],
+                                        ),
+                                        SpaceBox.width(media_width * 0.05125),
+                                        Column(
+                                          //プロフィール情報
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SelectableText(result['user_name'],
+                                                style: TextStyle(
+                                                  fontSize: 40,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                scrollPhysics:
+                                                    NeverScrollableScrollPhysics()),
+                                            SelectableText(
+                                                '20代 / 女性 / 甘党 / 薄味 / 派量派',
+                                                scrollPhysics:
+                                                    NeverScrollableScrollPhysics()),
+                                            Row(
+                                              //ランキング
+                                              children: [
+                                                FaIcon(FontAwesomeIcons.crown,
+                                                    color: HexColor('FFDF4C')),
+                                                SelectableText('今日のランキング0位　',
+                                                    style: TextStyle(
+                                                        color:
+                                                            HexColor('EC9361')),
+                                                    scrollPhysics:
+                                                        NeverScrollableScrollPhysics()),
+                                                FaIcon(FontAwesomeIcons.crown,
+                                                    color: HexColor('FFDF4C')),
+                                                SelectableText('週間ランキング0位　',
+                                                    style: TextStyle(
+                                                        color:
+                                                            HexColor('EC9361')),
+                                                    scrollPhysics:
+                                                        NeverScrollableScrollPhysics()),
+                                                FaIcon(FontAwesomeIcons.crown,
+                                                    color: HexColor('FFDF4C')),
+                                                SelectableText('月間ランキング0位　',
+                                                    style: TextStyle(
+                                                        color:
+                                                            HexColor('EC9361')),
+                                                    scrollPhysics:
+                                                        NeverScrollableScrollPhysics()),
+                                              ],
+                                            ),
+                                            SpaceBox.height(
+                                                media_height * 0.017),
+                                            SelectableText.rich(
+                                                TextSpan(//投稿・フォロワーなどの数値
+                                                    children: [
+                                              TextSpan(
+                                                  text: '72',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  )),
+                                              TextSpan(text: 'フォロー　|　'),
+                                              TextSpan(
+                                                  text: '0',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  )),
+                                              TextSpan(text: 'フォロワー　|　'),
+                                              TextSpan(
+                                                  text: '0',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  )),
+                                              TextSpan(text: 'いいね　|　'),
+                                              TextSpan(
+                                                  text: '0',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  )),
+                                              TextSpan(text: '投稿'),
+                                            ])),
+                                            SpaceBox.height(
+                                                media_height * 0.017),
+                                            SelectableText(
+                                                //自己紹介（改行→https://qiita.com/gkn/items/f031bab66899e5886ce0 ）
+                                                result[
+                                                    'user_profile'] //'９歳の娘ちゃんと猫ちゃん♀と暮らしてます。\n旦那は海外単身赴任中。\nまんまるころころかわいいもの大好き。\nチョコ、モンブラン、おこちゃまおやつ大好き。\n流行りにとらわれず、自分の好きなもの、食べたいものを口コミしていきます。\nのんびりのんびり(=^ェ^=)'
+                                                ,
+                                                scrollPhysics:
+                                                    NeverScrollableScrollPhysics()
+                                                // ,minLines: 9,maxLines: 9,
+                                                )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                });
+                          }
+                        }
+                        return Text('情報なし');
+                      }),
                   Divider(
                     //仕切り線
                     height: 10,
