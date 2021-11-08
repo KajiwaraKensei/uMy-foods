@@ -49,7 +49,7 @@
 1. PATH="$PATH":"$HOME/.pub-cache/bin"
 2. fvm install <version>
      - 例 fvm install 2.2.3
-3. fvm use <version>
+3. fvm use <version> --global
      - 例 fvm use 2.2.3 --global
 4. 最初にfvmを付けるとそのバージョンで実行できる
      - 例 fvm flutter --version
