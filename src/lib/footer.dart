@@ -31,7 +31,7 @@ class FooterCreate extends StatelessWidget {
                               Text(
                                 'ようこそ',
                                 style: TextStyle(
-                                  fontSize: 25.sp.sp,
+                                  fontSize: 25.sp,
                                   color: HexColor('8C6E63'),
                                 ),
                               ),
@@ -81,7 +81,7 @@ class FooterCreate extends StatelessWidget {
                               Text(
                                 '',
                                 style: TextStyle(
-                                  fontSize: 25.sp.sp,
+                                  fontSize: 25.sp,
                                   color: HexColor('8C6E63'),
                                 ),
                               ),
