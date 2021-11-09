@@ -8,6 +8,7 @@ import 'package:umy_foods/alert.dart';
 import 'package:umy_foods/comparison.dart';
 import 'package:umy_foods/login/signup.dart';
 import 'package:umy_foods/main.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -63,7 +64,7 @@ class _clipButtonState extends State<clipButton> {
     var media_width = MediaQuery.of(context).size.width;
     var media_height = MediaQuery.of(context).size.height;
     return Container(
-      width: 200.0, //ここでクリップボタンのサイズ変更可能
+      width: 200.0.w, //ここでクリップボタンのサイズ変更可能
       child: Stack(overflow: Overflow.visible, children: [
         //tooltip: 'クリップボード',
         Container(
@@ -79,10 +80,11 @@ class _clipButtonState extends State<clipButton> {
               Icon(
                 Icons.assignment,
                 color: Colors.white,
-                size: 40,
+                size: 40.sp,
               ),
               Text(
-                '比較',
+                '比較'
+                ,style: TextStyle(fontSize: 14.sp)
               ),
             ]),
             onPressed: () async {
@@ -108,8 +110,8 @@ class _clipButtonState extends State<clipButton> {
           ),
         ),
         Positioned(
-            top: -13,
-            left: 110,
+            top: -13.h,
+            left: 110.w,
             child: NotificationNumberBadge(HexColor('fea675'))) //通知
       ]),
     ); //This trailing comma makes auto-formatting nicer for build methods.
@@ -164,7 +166,7 @@ class _clipButtonState extends State<clipButton> {
                       Icon(
                         Icons.brightness_1,
                         color: col,
-                        size: 50,
+                        size: 50.sp,
                       ),
                       Text(
                         result.length.toString(),
@@ -184,12 +186,12 @@ class _clipButtonState extends State<clipButton> {
             Icon(
               Icons.brightness_1,
               color: col,
-              size: 50,
+              size: 50.sp,
             ),
             Text(
               '0',
               style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  TextStyle(fontSize: 14.sp,color: Colors.white, fontWeight: FontWeight.bold),
             ),
           ],
         );

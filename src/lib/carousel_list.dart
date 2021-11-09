@@ -7,6 +7,7 @@ import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/main.dart';
 import 'package:umy_foods/login/login.dart';
 import 'package:umy_foods/login/signup.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,7 +36,7 @@ rankingcarousel(
               rankingtitle1 + 'ランキング',
               scrollPhysics: NeverScrollableScrollPhysics(),
               style: TextStyle(
-                fontSize: 16.5,
+                fontSize: 16.5.sp,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -44,14 +45,14 @@ rankingcarousel(
               category1[0] + '>' + category1[1] + '>' + category1[2],
               scrollPhysics: NeverScrollableScrollPhysics(),
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 12.sp,
                 color: HexColor('616161'),
               ),
             ),
             // カード部分
             for (var i = 0; i < 3; i++)
               Card(
-                margin: EdgeInsets.symmetric(vertical: 10),
+                margin: EdgeInsets.symmetric(vertical: 10.h),
                 child: new InkWell(
                   onTap: () {
                     Navigator.push(
@@ -74,7 +75,7 @@ rankingcarousel(
                             // 画像
                             Center(
                               child: Container(
-                                margin: EdgeInsets.only(left: 1),
+                                margin: EdgeInsets.only(left: 1.w),
                                 width: mwidth * 0.1,
                                 height: mheight * 0.13,
                                 child: Image.network(
@@ -87,7 +88,7 @@ rankingcarousel(
                             ),
                             // ランキング順位
                             Container(
-                              margin: EdgeInsets.only(top: 5, left: 15),
+                              margin: EdgeInsets.only(top: 5.h, left: 15.w),
                               width: mwidth * 0.03,
                               height: mheight * 0.06,
                               child: Center(
@@ -102,7 +103,7 @@ rankingcarousel(
                         // 商品名等
                         Container(
                           width: mwidth * 0.14,
-                          margin: EdgeInsets.only(top: 5, left: 5),
+                          margin: EdgeInsets.only(top: 5.h, left: 5.w),
                           child: Column(
                             // レイアウト追加 間隔均等配置
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -117,7 +118,7 @@ rankingcarousel(
                                 maxLines: 2,
                                 scrollPhysics: NeverScrollableScrollPhysics(),
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -128,17 +129,18 @@ rankingcarousel(
                                 children: [
                                   Icon(
                                     Icons.priority_high,
+                                    size:24.sp
                                   ),
-                                  Text('1'),
+                                  Text('1',style: TextStyle(fontSize: 14.sp)),
                                   Container(
-                                    margin: EdgeInsets.only(left: 7),
-                                    child: Icon(Icons.sync, color: Colors.blue),
+                                    margin: EdgeInsets.only(left: 7.w),
+                                    child: Icon(Icons.sync, color: Colors.blue,size:24.sp),
                                   ),
-                                  Text('100'),
+                                  Text('100',style: TextStyle(fontSize: 14.sp)),
                                   // クリップボタン
                                   Container(
                                       margin:
-                                          EdgeInsets.only(left: 20, bottom: 4),
+                                          EdgeInsets.only(left: 20.w, bottom: 4.h),
                                       child: defaultClipAddButton(
                                           Rankinglist1[i]['product_id'],
                                           Rankinglist1[i]['Text'],
@@ -164,7 +166,7 @@ rankingcarousel(
               rankingtitle2 + 'ランキング',
               scrollPhysics: NeverScrollableScrollPhysics(),
               style: TextStyle(
-                fontSize: 16.5,
+                fontSize: 16.5.sp,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -173,14 +175,14 @@ rankingcarousel(
               category2[0] + '>' + category2[1] + '>' + category2[2],
               scrollPhysics: NeverScrollableScrollPhysics(),
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 12.sp,
                 color: HexColor('616161'),
               ),
             ),
             // リピートカード部分
             for (var i = 0; i < 3; i++)
               Card(
-                margin: EdgeInsets.symmetric(vertical: 10),
+                margin: EdgeInsets.symmetric(vertical: 10.h),
                 child: new InkWell(
                   onTap: () {
                     Navigator.push(
@@ -202,7 +204,7 @@ rankingcarousel(
                           children: [
                             Center(
                               child: Container(
-                                margin: EdgeInsets.only(left: 1),
+                                margin: EdgeInsets.only(left: 1.w),
                                 width: mwidth * 0.1,
                                 height: mheight * 0.13,
                                 child: Image.network(
@@ -214,7 +216,7 @@ rankingcarousel(
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(top: 5, left: 15),
+                              margin: EdgeInsets.only(top: 5.h, left: 15.w),
                               width: mwidth * 0.03,
                               height: mheight * 0.06,
                               child: Center(
@@ -228,7 +230,7 @@ rankingcarousel(
                         ),
                         Container(
                           width: mwidth * 0.14,
-                          margin: EdgeInsets.only(top: 5, left: 5),
+                          margin: EdgeInsets.only(top: 5.h, left: 5.w),
                           child: Column(
                             // レイアウト追加 間隔均等配置
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -243,7 +245,7 @@ rankingcarousel(
                                 maxLines: 2,
                                 scrollPhysics: NeverScrollableScrollPhysics(),
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -252,16 +254,17 @@ rankingcarousel(
                               Row(children: [
                                 Icon(
                                   Icons.priority_high,
+                                  size:24.sp
                                 ),
-                                Text('1'),
+                                Text('1',style: TextStyle(fontSize: 14.sp)),
                                 Container(
-                                  margin: EdgeInsets.only(left: 7),
-                                  child: Icon(Icons.sync, color: Colors.blue),
+                                  margin: EdgeInsets.only(left: 7.w),
+                                  child: Icon(Icons.sync, color: Colors.blue,size:24.sp),
                                 ),
-                                Text('100'),
+                                Text('100',style: TextStyle(fontSize: 14.sp)),
                                 // クリップボタン
                                 Container(
-                                  margin: EdgeInsets.only(left: 20, bottom: 4),
+                                  margin: EdgeInsets.only(left: 20.w, bottom: 4.h),
                                   child: defaultClipAddButton(
                                       Rankinglist2[i]['product_id'],
                                       Rankinglist2[i]['Text'],
@@ -343,7 +346,7 @@ newreviewcarousel(var mwidth, var mheight, review) {
             ),
 
             Container(
-              margin: EdgeInsets.only(left: 20),
+              margin: EdgeInsets.only(left: 20.w),
               height: mheight * 0.24,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -364,7 +367,7 @@ newreviewcarousel(var mwidth, var mheight, review) {
                     child: SelectableText(review['product_name'],
                         maxLines: 1,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
                         )),
                   ),
@@ -379,6 +382,7 @@ newreviewcarousel(var mwidth, var mheight, review) {
                     child: SelectableText(
                       review['review_comment'],
                       maxLines: 3,
+                      style: TextStyle(fontSize: 14.sp),
                       scrollPhysics: NeverScrollableScrollPhysics(),
                     ),
                   ),

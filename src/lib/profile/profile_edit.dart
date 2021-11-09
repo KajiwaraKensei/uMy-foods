@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart'; //画像アップロード
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; //DB
+import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
 
 // 外部ファイル
 import 'package:umy_foods/HexColor.dart'; //16進数カラーコード
@@ -315,7 +316,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                       primary: HexColor('B8AA8E'),
                                     ),
                                     child: Text(
-                                      'プロフィール画像を変更',
+                                      media_height.toString()
+                                      ,style: TextStyle(fontSize: 14.sp)
                                     ),
                                     onPressed: () async {
                                       XFile? image = await picker.pickImage(
@@ -351,6 +353,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                     TextSpan(
                                         text: '（必須）',
                                         style: TextStyle(
+                                          fontSize: 14.sp,
                                             color: HexColor('EC9361'))),
                                   ],
                                 ),
@@ -375,8 +378,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                     BorderSide(color: Colors.grey, width: 1.5),
                               ),
                               hintText: "最大１５文字",
+                              hintStyle: TextStyle(fontSize: 14.sp)
                             ),
-                            style: TextStyle(fontSize: 15),
+                            style: TextStyle(fontSize: 15.sp),
                           ),
                         ),
                       ],
@@ -401,6 +405,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                     TextSpan(
                                         text: '（必須）',
                                         style: TextStyle(
+                                          fontSize: 14.sp,
                                             color: HexColor('EC9361'))),
                                   ],
                                 ),
@@ -412,21 +417,21 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                               children: [
                                 TableRow(children: [
                                   RadioListTile(
-                                    title: Text('男性'),
+                                    title: Text('男性',style: TextStyle(fontSize: 14.sp)),
                                     value: GenderRadioValue.FIRST,
                                     groupValue: _gValue,
                                     onChanged: (value) =>
                                         gender_onRadioSelected(value, '男性'),
                                   ),
                                   RadioListTile(
-                                    title: Text('女性'),
+                                    title: Text('女性',style: TextStyle(fontSize: 14.sp)),
                                     value: GenderRadioValue.SECOND,
                                     groupValue: _gValue,
                                     onChanged: (value) =>
                                         gender_onRadioSelected(value, '女性'),
                                   ),
                                   RadioListTile(
-                                    title: Text('秘密'),
+                                    title: Text('秘密',style: TextStyle(fontSize: 14.sp)),
                                     value: GenderRadioValue.THIRD,
                                     groupValue: _gValue,
                                     onChanged: (value) =>
@@ -474,6 +479,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                     child: Icon(
                                       Icons.help_outlined,
                                       color: HexColor('EC9361'),
+                                      size:24.sp
                                     )),
                                 SelectableText.rich(
                                     TextSpan(
@@ -482,6 +488,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                         TextSpan(
                                             text: '（必須）',
                                             style: TextStyle(
+                                              fontSize: 14.sp,
                                                 color: HexColor('EC9361'))),
                                       ],
                                     ),
@@ -517,6 +524,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                     }).toList(),
                                   ),
                                   SelectableText('年',
+                                  style: TextStyle(fontSize: 14.sp),
                                       scrollPhysics:
                                           NeverScrollableScrollPhysics())
                                 ],
@@ -543,6 +551,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                     }).toList(),
                                   ),
                                   SelectableText('月',
+                                  style: TextStyle(fontSize: 14.sp),
                                       scrollPhysics:
                                           NeverScrollableScrollPhysics())
                                 ],
@@ -569,6 +578,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                     }).toList(),
                                   ),
                                   SelectableText('日',
+                                  style: TextStyle(fontSize: 14.sp),
                                       scrollPhysics:
                                           NeverScrollableScrollPhysics())
                                 ],
@@ -598,6 +608,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                             child: SelectableText.rich(
                                 TextSpan(
                                   text: '食品の好み',
+                                  style:TextStyle(fontSize: 14.sp)
                                 ),
                                 scrollPhysics: NeverScrollableScrollPhysics())),
                         Container(
@@ -621,19 +632,20 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                       Align(
                                         alignment: Alignment.center,
                                         child: SelectableText('味',
+                                        style: TextStyle(fontSize: 14.sp),
                                             scrollPhysics:
                                                 NeverScrollableScrollPhysics()),
                                       ),
                                       Container(),
                                       RadioListTile(
-                                        title: Text('薄味派'),
+                                        title: Text('薄味派',style: TextStyle(fontSize: 14.sp),),
                                         value: TasteRadioValue.FIRST,
                                         groupValue: _tValue,
                                         onChanged: (value) =>
                                             taste_onRadioSelected(value, '薄味派'),
                                       ),
                                       RadioListTile(
-                                        title: Text('濃味派'),
+                                        title: Text('濃味派',style: TextStyle(fontSize: 14.sp),),
                                         value: TasteRadioValue.SECOND,
                                         groupValue: _tValue,
                                         onChanged: (value) =>
@@ -648,12 +660,13 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                       Align(
                                         alignment: Alignment.center,
                                         child: SelectableText('味覚',
+                                        style: TextStyle(fontSize: 14.sp),
                                             scrollPhysics:
                                                 NeverScrollableScrollPhysics()),
                                       ),
                                       Container(),
                                       RadioListTile(
-                                        title: Text('甘口派'),
+                                        title: Text('甘口派',style: TextStyle(fontSize: 14.sp),),
                                         value: FlavorRadioValue.FIRST,
                                         groupValue: _fValue,
                                         onChanged: (value) =>
@@ -661,7 +674,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                                 value, '甘口派'),
                                       ),
                                       RadioListTile(
-                                        title: Text('辛口派'),
+                                        title: Text('辛口派',style: TextStyle(fontSize: 14.sp),),
                                         value: FlavorRadioValue.SECOND,
                                         groupValue: _fValue,
                                         onChanged: (value) =>
@@ -677,12 +690,13 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                       Align(
                                         alignment: Alignment.center,
                                         child: SelectableText('量・質',
+                                        style: TextStyle(fontSize: 14.sp),
                                             scrollPhysics:
                                                 NeverScrollableScrollPhysics()),
                                       ),
                                       Container(),
                                       RadioListTile(
-                                        title: Text('量派'),
+                                        title: Text('量派',style: TextStyle(fontSize: 14.sp),),
                                         value: QuantityRadioValue.FIRST,
                                         groupValue: _qValue,
                                         onChanged: (value) =>
@@ -690,7 +704,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                                 value, '量派'),
                                       ),
                                       RadioListTile(
-                                        title: Text('質派'),
+                                        title: Text('質派',style: TextStyle(fontSize: 14.sp),),
                                         value: QuantityRadioValue.SECOND,
                                         groupValue: _qValue,
                                         onChanged: (value) =>
@@ -720,6 +734,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                             child: SelectableText.rich(
                                 TextSpan(
                                   text: 'お気に入りのメーカー',
+                                  style:TextStyle(fontSize: 14.sp)
                                 ),
                                 scrollPhysics: NeverScrollableScrollPhysics())),
                         Container(
@@ -736,6 +751,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                   ),
                                   child: Text(
                                     'お気に入りのメーカーを選択',
+                                    style: TextStyle(fontSize: 14.sp),
                                   ),
                                   onPressed: () async {
                                     var selected =
@@ -798,6 +814,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                             child: SelectableText.rich(
                                 TextSpan(
                                   text: '自己紹介',
+                                  style:TextStyle(fontSize: 14.sp)
                                 ),
                                 scrollPhysics: NeverScrollableScrollPhysics())),
                         Container(
@@ -820,8 +837,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                     BorderSide(color: Colors.grey, width: 1.5),
                               ),
                               hintText: "最大200文字",
+                              hintStyle: TextStyle(fontSize: 14.sp)
                             ),
-                            style: TextStyle(fontSize: 15),
+                            style: TextStyle(fontSize: 15.sp),
                           ),
                         ),
                       ],
@@ -844,6 +862,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                               ),
                               child: Text(
                                 '戻る',
+                                style: TextStyle(fontSize: 14.sp),
                               ),
                               onPressed: () async {
                                 setState(() {
@@ -903,6 +922,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                                 ),
                                                 child: Text(
                                                   '更新',
+                                                  style: TextStyle(fontSize: 14.sp),
                                                 ),
                                                 onPressed: () async {
                                                   user_name =
@@ -928,7 +948,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                                       builder: (BuildContext
                                                           context) {
                                                         return AlertDialog(
-                                                          title: Text('変更確認'),
+                                                          title: Text('変更確認',style: TextStyle(fontSize: 14.sp),),
                                                           content: Column(
                                                               crossAxisAlignment:
                                                                   CrossAxisAlignment
@@ -937,17 +957,17 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                                                 Text(
                                                                     'ユーザー情報を以下の通りに変更します。よろしいですか。'),
                                                                 Container(
-                                                                    height: 40),
+                                                                    height: 40.h),
                                                                 Text('ユーザー名：' +
-                                                                    user_name),
+                                                                    user_name,style: TextStyle(fontSize: 14.sp),),
                                                                 Text('性　　　別：' +
-                                                                    user_gender),
+                                                                    user_gender,style: TextStyle(fontSize: 14.sp)),
                                                                 Text('生年月日　：' +
                                                                     DateTime(
                                                                             int.parse(year_defaultValue),
                                                                             int.parse(month_defaultValue),
                                                                             int.parse(day_defaultValue))
-                                                                        .toString()),
+                                                                        .toString(),style: TextStyle(fontSize: 14.sp)),
                                                                 Text('食品の好み：' +
                                                                     user_favorite[
                                                                         0] +
@@ -956,14 +976,14 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                                                         1] +
                                                                     '・' +
                                                                     user_favorite[
-                                                                        2]),
-                                                                Text('自己紹介　：'),
+                                                                        2],style: TextStyle(fontSize: 14.sp)),
+                                                                Text('自己紹介　：',style: TextStyle(fontSize: 14.sp)),
                                                                 Text(
-                                                                    user_profile),
+                                                                    user_profile,style: TextStyle(fontSize: 14.sp)),
                                                               ]),
                                                           actions: <Widget>[
                                                             FlatButton(
-                                                              child: Text('変更'),
+                                                              child: Text('変更',style: TextStyle(fontSize: 14.sp)),
                                                               onPressed: () {
                                                                 FirebaseFirestore
                                                                     .instance
@@ -991,7 +1011,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                                               },
                                                             ),
                                                             FlatButton(
-                                                              child: Text('戻る'),
+                                                              child: Text('戻る',style: TextStyle(fontSize: 14.sp)),
                                                               onPressed: () =>
                                                                   Navigator.of(
                                                                           context)
@@ -1007,7 +1027,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                         });
                                   }
                                 }
-                                return Text('Nodata');
+                                return Text('Nodata',style: TextStyle(fontSize: 14.sp));
                               }),
                         ],
                       )),

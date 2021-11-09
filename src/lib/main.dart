@@ -248,7 +248,7 @@ class _Home extends State<Home> {
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 30.w),
                 child: Column(
                   children: [
                     Row(
@@ -284,14 +284,14 @@ class _Home extends State<Home> {
                     //   },
                     // ),
                     Container(
-                      margin: EdgeInsets.only(top: 20, right: 30),
+                      margin: EdgeInsets.only(top: 20.h, right: 30.w),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           // ランキングボタン
                           Container(
-                            width: 140,
-                            height: 50,
+                            width: 140.w,
+                            height: 50.h,
                             child: ElevatedButton(
                               onPressed: () {
                                 Navigator.push(
@@ -304,7 +304,7 @@ class _Home extends State<Home> {
                                 "ランキング",
                                 style: TextStyle(
                                   color: HexColor('ec9361'),
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -319,15 +319,15 @@ class _Home extends State<Home> {
                           ),
                           // カテゴリボタン
                           Container(
-                            width: 140,
-                            height: 50,
+                            width: 140.w,
+                            height: 50.h,
                             child: ElevatedButton(
                               onPressed: () {},
                               child: Text(
                                 "カテゴリ",
                                 style: TextStyle(
                                   color: HexColor('ec9361'),
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -342,8 +342,8 @@ class _Home extends State<Home> {
                           ),
                           // メーカー
                           Container(
-                            width: 140,
-                            height: 50,
+                            width: 140.w,
+                            height: 50.h,
                             child: ElevatedButton(
                               onPressed: () {
                                 setState(() {});
@@ -352,7 +352,7 @@ class _Home extends State<Home> {
                                 "メーカー",
                                 style: TextStyle(
                                   color: HexColor('ec9361'),
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -367,8 +367,8 @@ class _Home extends State<Home> {
                           ),
                           // 新商品ボタン
                           Container(
-                            width: 140,
-                            height: 50,
+                            width: 140.w,
+                            height: 50.h,
                             child: ElevatedButton(
                               onPressed: () {
                                 Navigator.push(
@@ -381,7 +381,7 @@ class _Home extends State<Home> {
                                 "新商品",
                                 style: TextStyle(
                                   color: HexColor('ec9361'),
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -399,13 +399,13 @@ class _Home extends State<Home> {
                     ),
                     // メイン部分
                     Container(
-                        margin: EdgeInsets.only(top: 40),
+                        margin: EdgeInsets.only(top: 40.h),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // 左側
                             Container(
-                              margin: EdgeInsets.only(left: 40),
+                              margin: EdgeInsets.only(left: 40.w),
                               width: media_width * 0.6,
                               //color: HexColor('fdf5e6'),
                               child: Column(
@@ -426,8 +426,8 @@ class _Home extends State<Home> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Container(
-                                            width: 40,
-                                            height: 40,
+                                            width: 40.w,
+                                            height: 40.h,
                                             child: Image.asset(
                                               'images/podium.png',
                                               fit: BoxFit.cover,
@@ -437,7 +437,7 @@ class _Home extends State<Home> {
                                             'ランキング',
                                             style: TextStyle(
                                               color: HexColor('ec9361'),
-                                              fontSize: 20,
+                                              fontSize: 20.sp,
                                               fontWeight: FontWeight.w600,
                                             ),
                                             scrollPhysics:
@@ -457,7 +457,7 @@ class _Home extends State<Home> {
                                   ),
                                   // ランキングコンテナ
                                   Container(
-                                    margin: EdgeInsets.only(top: 10),
+                                    margin: EdgeInsets.only(top: 10.h),
                                     width: media_width * 0.6,
                                     height: media_height * 0.75,
                                     color: HexColor('F5F3EF'),
@@ -476,6 +476,7 @@ class _Home extends State<Home> {
                                           },
                                           child: Icon(
                                             Icons.arrow_back_ios,
+                                            size:24.sp
                                           ),
                                           //カルーセル
                                         ),
@@ -522,14 +523,14 @@ class _Home extends State<Home> {
                                           ));
                                     },
                                     child: Container(
-                                      margin: EdgeInsets.only(top: 10),
+                                      margin: EdgeInsets.only(top: 10.h),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
                                           Container(
-                                            width: 40,
-                                            height: 40,
+                                            width: 40.w,
+                                            height: 40.h,
                                             child: Image.asset(
                                               'images/trend.png',
                                               fit: BoxFit.cover,
@@ -539,7 +540,7 @@ class _Home extends State<Home> {
                                             'トレンドのタグ',
                                             style: TextStyle(
                                               color: HexColor('ec9361'),
-                                              fontSize: 20,
+                                              fontSize: 20.sp,
                                               fontWeight: FontWeight.w600,
                                             ),
                                             scrollPhysics:
@@ -559,7 +560,7 @@ class _Home extends State<Home> {
                                   ),
                                   // トレンドのタグコンテナ
                                   Container(
-                                    margin: EdgeInsets.only(top: 10),
+                                    margin: EdgeInsets.only(top: 10.h),
                                     width: media_width * 0.6,
                                     height: media_height * 0.4,
                                     color: HexColor('F5F3EF'),
@@ -604,7 +605,7 @@ class _Home extends State<Home> {
                                                             child: Text(
                                                               '#',
                                                               style: TextStyle(
-                                                                fontSize: 24,
+                                                                fontSize: 24.sp,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w500,
@@ -631,7 +632,7 @@ class _Home extends State<Home> {
                                                             SelectableText(
                                                               tag[i]['Text'],
                                                               style: TextStyle(
-                                                                fontSize: 14,
+                                                                fontSize: 14.sp,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600,
@@ -642,7 +643,7 @@ class _Home extends State<Home> {
                                                                   '255' +
                                                                   '投稿',
                                                               style: TextStyle(
-                                                                fontSize: 12,
+                                                                fontSize: 12.sp,
                                                                 color: HexColor(
                                                                     '616161'),
                                                               ),
@@ -681,14 +682,14 @@ class _Home extends State<Home> {
                                           ));
                                     },
                                     child: Container(
-                                      margin: EdgeInsets.only(top: 10),
+                                      margin: EdgeInsets.only(top: 10.h),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
                                           Container(
-                                            width: 40,
-                                            height: 40,
+                                            width: 40.w,
+                                            height: 40.h,
                                             child: Image.asset(
                                               'images/popular_user.png',
                                               fit: BoxFit.cover,
@@ -698,7 +699,7 @@ class _Home extends State<Home> {
                                             '人気のユーザー',
                                             style: TextStyle(
                                               color: HexColor('ec9361'),
-                                              fontSize: 20,
+                                              fontSize: 20.sp,
                                               fontWeight: FontWeight.w600,
                                             ),
                                             scrollPhysics:
@@ -718,7 +719,7 @@ class _Home extends State<Home> {
                                   ),
                                   // 人気ユーザーコンテナ
                                   Container(
-                                    margin: EdgeInsets.only(top: 10),
+                                    margin: EdgeInsets.only(top: 10.h),
                                     width: media_width * 0.6,
                                     height: media_height * 0.4,
                                     color: HexColor('F5F3EF'),
@@ -729,7 +730,7 @@ class _Home extends State<Home> {
                                         for (var i = 0; i < 4; i++)
                                           Card(
                                             margin: EdgeInsets.symmetric(
-                                                horizontal: 15),
+                                                horizontal: 15.w),
                                             child: Container(
                                               width: media_width * 0.12,
                                               height: media_height * 0.34,
@@ -759,13 +760,14 @@ class _Home extends State<Home> {
                                                   Container(
                                                     //margin: EdgeInsets.only(top: 5),
                                                     child: SelectableText(
-                                                        user[i]['Text']),
+                                                        user[i]['Text'],style: TextStyle(fontSize: 14.sp)),
                                                   ),
                                                   Container(
                                                     //margin: EdgeInsets.only(top: 20),
                                                     child: RichText(
                                                       text: TextSpan(
                                                         style: TextStyle(
+                                                          fontSize: 14.sp,
                                                             color: HexColor(
                                                                 '616161')),
                                                         children: [
@@ -777,7 +779,7 @@ class _Home extends State<Home> {
                                                                           5),
                                                               child: Icon(
                                                                 Icons.favorite,
-                                                                size: 12,
+                                                                size: 12.sp,
                                                               ),
                                                             ),
                                                           ),
@@ -788,12 +790,12 @@ class _Home extends State<Home> {
                                                             child: Padding(
                                                               padding: EdgeInsets
                                                                   .only(
-                                                                      left: 15,
+                                                                      left: 15.w,
                                                                       bottom:
-                                                                          5),
+                                                                          5.h),
                                                               child: Icon(
                                                                 Icons.person,
-                                                                size: 12,
+                                                                size: 12.sp,
                                                               ),
                                                             ),
                                                           ),
@@ -823,15 +825,15 @@ class _Home extends State<Home> {
                                           ));
                                     },
                                     child: Container(
-                                      margin: EdgeInsets.only(top: 10),
+                                      margin: EdgeInsets.only(top: 10.h),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
                                           // レビューアイコン
                                           Container(
-                                            width: 40,
-                                            height: 40,
+                                            width: 40.w,
+                                            height: 40.h,
                                             child: Image.asset(
                                               'images/new_review.png',
                                               fit: BoxFit.cover,
@@ -841,7 +843,7 @@ class _Home extends State<Home> {
                                             '新着レビュー',
                                             style: TextStyle(
                                               color: HexColor('ec9361'),
-                                              fontSize: 20,
+                                              fontSize: 20.sp,
                                               fontWeight: FontWeight.w600,
                                             ),
                                             scrollPhysics:
@@ -861,7 +863,7 @@ class _Home extends State<Home> {
                                   ),
                                   // 新着レビューコンテナ
                                   Container(
-                                    margin: EdgeInsets.only(top: 10),
+                                    margin: EdgeInsets.only(top: 10.h),
                                     width: media_width * 0.6,
                                     height: media_height * 0.6,
                                     color: HexColor('F5F3EF'),
@@ -937,6 +939,7 @@ class _Home extends State<Home> {
                                           },
                                           child: Icon(
                                             Icons.arrow_forward_ios,
+                                            size:24.sp
                                           ),
                                         ),
                                       ],
@@ -970,8 +973,8 @@ class _Home extends State<Home> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Container(
-                                              width: 40,
-                                              height: 40,
+                                              width: 40.w,
+                                              height: 40.h,
                                               child: Image.asset(
                                                 'images/questionnaireicon.png',
                                                 fit: BoxFit.cover,
@@ -981,7 +984,7 @@ class _Home extends State<Home> {
                                               'ユーザーアンケート',
                                               style: TextStyle(
                                                 color: HexColor('ec9361'),
-                                                fontSize: 20,
+                                                fontSize: 20.sp,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                               scrollPhysics:
@@ -1002,7 +1005,7 @@ class _Home extends State<Home> {
                                     ),
                                     // コンテナ
                                     Container(
-                                      margin: EdgeInsets.only(top: 10),
+                                      margin: EdgeInsets.only(top: 10.h),
                                       width: media_width * 0.3,
                                       height: media_height * 0.6,
                                       color: HexColor('F5F3EF'),
@@ -1017,7 +1020,7 @@ class _Home extends State<Home> {
                                                   NeverScrollableScrollPhysics(),
                                               style: TextStyle(
                                                 color: HexColor('616161'),
-                                                fontSize: 24,
+                                                fontSize: 24.sp,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
@@ -1031,7 +1034,7 @@ class _Home extends State<Home> {
                                                 "きのこの山",
                                                 style: TextStyle(
                                                   color: HexColor('ec9361'),
-                                                  fontSize: 16,
+                                                  fontSize: 16.sp,
                                                   fontWeight: FontWeight.w600,
                                                 ),
                                               ),
@@ -1055,7 +1058,7 @@ class _Home extends State<Home> {
                                                 "たけのこの里",
                                                 style: TextStyle(
                                                   color: HexColor('ec9361'),
-                                                  fontSize: 16,
+                                                  fontSize: 16.sp,
                                                   fontWeight: FontWeight.w600,
                                                 ),
                                               ),
@@ -1079,7 +1082,7 @@ class _Home extends State<Home> {
                                                 "カントリーマアム",
                                                 style: TextStyle(
                                                   color: HexColor('ec9361'),
-                                                  fontSize: 16,
+                                                  fontSize: 16.sp,
                                                   fontWeight: FontWeight.w600,
                                                 ),
                                               ),
@@ -1103,7 +1106,7 @@ class _Home extends State<Home> {
                                                 "ルマンド",
                                                 style: TextStyle(
                                                   color: HexColor('ec9361'),
-                                                  fontSize: 16,
+                                                  fontSize: 16.sp,
                                                   fontWeight: FontWeight.w600,
                                                 ),
                                               ),
@@ -1127,14 +1130,14 @@ class _Home extends State<Home> {
                                                   TextSpan(
                                                     text: '終了まであと ',
                                                     style: TextStyle(
-                                                      fontSize: 16,
+                                                      fontSize: 16.sp,
                                                     ),
                                                   ),
                                                   TextSpan(
                                                     text: '2日',
                                                     style: TextStyle(
                                                       color: Colors.red,
-                                                      fontSize: 22,
+                                                      fontSize: 22.sp,
                                                       fontWeight:
                                                           FontWeight.w700,
                                                     ),
@@ -1167,14 +1170,14 @@ class _Home extends State<Home> {
                                             ));
                                       },
                                       child: Container(
-                                        margin: EdgeInsets.only(top: 10),
+                                        margin: EdgeInsets.only(top: 10.h),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
                                             Container(
-                                              width: 40,
-                                              height: 40,
+                                              width: 40.w,
+                                              height: 40.h,
                                               child: Image.asset(
                                                 'images/new_goods.png',
                                                 fit: BoxFit.cover,
@@ -1184,7 +1187,7 @@ class _Home extends State<Home> {
                                               '新商品',
                                               style: TextStyle(
                                                 color: HexColor('ec9361'),
-                                                fontSize: 20,
+                                                fontSize: 20.sp,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                               scrollPhysics:
@@ -1204,7 +1207,7 @@ class _Home extends State<Home> {
                                     ),
                                     // 新商品コンテナ
                                     Container(
-                                      margin: EdgeInsets.only(top: 10),
+                                      margin: EdgeInsets.only(top: 10.h),
                                       width: media_width * 0.3,
                                       height: media_height * 0.7,
                                       color: HexColor('F5F3EF'),
@@ -1224,7 +1227,7 @@ class _Home extends State<Home> {
                                                   children: [
                                                     Container(
                                                       margin: EdgeInsets.only(
-                                                          left: 3),
+                                                          left: 3.w),
                                                       width: media_width * 0.1,
                                                       height:
                                                           media_height * 0.16,
@@ -1236,7 +1239,7 @@ class _Home extends State<Home> {
                                                     ),
                                                     Container(
                                                       margin: EdgeInsets.only(
-                                                          left: 10),
+                                                          left: 10.w),
                                                       width:
                                                           media_width * 0.115,
                                                       child: Column(
@@ -1255,10 +1258,13 @@ class _Home extends State<Home> {
                                                           SelectableText(
                                                               '発売日：' +
                                                                   new_item[i]
-                                                                      ['date']),
+                                                                      ['date'],
+                                                            style: TextStyle(fontSize: 14.sp)
+                                                          ),
                                                           SelectableText(
                                                             new_item[i]
                                                                 ['maker'],
+                                                            style: TextStyle(fontSize: 14.sp),
                                                             maxLines: 1,
                                                           ),
                                                           SelectableText(
@@ -1267,7 +1273,7 @@ class _Home extends State<Home> {
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics(),
                                                             style: TextStyle(
-                                                              fontSize: 16,
+                                                              fontSize: 16.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w700,
@@ -1279,7 +1285,7 @@ class _Home extends State<Home> {
                                                     // クリップボタン
                                                     Container(
                                                       margin: EdgeInsets.only(
-                                                          bottom: 10),
+                                                          bottom: 10.h),
                                                       // 末尾に配置するためColumnを追加
                                                       child: Column(
                                                         // 末尾に配置

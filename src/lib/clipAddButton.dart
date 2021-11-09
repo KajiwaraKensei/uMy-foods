@@ -9,6 +9,7 @@ import 'package:umy_foods/comparison.dart';
 import 'package:umy_foods/login/signup.dart';
 import 'package:umy_foods/main.dart';
 import 'package:umy_foods/alert.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,9 +34,10 @@ defaultClipAddButton(String product_id, String product_name, String image_url) {
                 //クリップボタン
                 child: Icon(
                   Icons.assignment_turned_in,
+                  size:24.sp
                 ),
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(12),
+                  padding: EdgeInsets.all(12.sp),
                   primary: HexColor('EC9361'),
                   onPrimary: Colors.white,
                   shape: CircleBorder(
@@ -63,9 +65,10 @@ defaultClipAddButton(String product_id, String product_name, String image_url) {
               //クリップボタン
               child: Icon(
                 Icons.assignment_turned_in,
+                size:24.sp
               ),
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.all(12),
+                padding: EdgeInsets.all(12.sp),
                 primary: HexColor('EC9361'),
                 onPrimary: Colors.white,
                 shape: CircleBorder(

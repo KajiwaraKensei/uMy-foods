@@ -578,11 +578,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                 },
                                                                 child:Container(
                                                                   width: 174.w,
-                                                                  height: 240.h,
+                                                                  height: 220.h,
                                                                   child:Padding(
-                                                                    padding: EdgeInsets.all(10.sp),
+                                                                    padding: EdgeInsets.all(8.sp),
                                                                           child:
                                                                               Column(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                                             children: [
                                                                               Container(
                                                                                 //商品画像
@@ -597,56 +598,57 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                                 children: [
                                                                                   Text('グリコ',style: TextStyle(fontSize: 14.sp)), //メーカー
-                                                                                  // Text('つ',style: TextStyle(fontSize: 14.sp)), //商品名
-                                                                                  // Row(
-                                                                                  //   //星評価
-                                                                                  //   children: [
-                                                                                  //     star(3, 25),
-                                                                                  //     // Text('500', style: TextStyle(color: HexColor('EC9361'), fontSize: 12.sp))
-                                                                                  //   ],
-                                                                                  // ),
-                                                                                  // Row(
-                                                                                  //   children: [
-                                                                                  //     Column(
-                                                                                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                  //       children: [
-                                                                                  //         RichText(
-                                                                                  //             //気になる数
-                                                                                  //             text: TextSpan(style: TextStyle(color: Colors.black,fontSize: 14.sp), children: [
-                                                                                  //           TextSpan(text: '1', style: TextStyle(fontWeight: FontWeight.w800, color: HexColor('EC9361'),fontSize: 14.sp)),
-                                                                                  //           TextSpan(text: '気になる',style: TextStyle(fontSize: 14.sp))
-                                                                                  //         ])),
-                                                                                  //         RichText(
-                                                                                  //             //リピート数
-                                                                                  //             text: TextSpan(style: TextStyle(color: Colors.black,fontSize: 14.sp), children: [
-                                                                                  //           TextSpan(text: '100', style: TextStyle(fontWeight: FontWeight.w800, color: HexColor('EC9361'),fontSize: 14.sp)),
-                                                                                  //           TextSpan(text: 'リピート',style: TextStyle(fontSize: 14.sp))
-                                                                                  //         ]))
-                                                                                  //       ],
-                                                                                  //     ),
-                                                                                  //     SpaceBox.width(10.w),
-                                                                                  //     ElevatedButton(
-                                                                                  //       //クリップボタン
-                                                                                  //       child: Icon(
-                                                                                  //         Icons.assignment_turned_in,
-                                                                                  //         size:24.sp
-                                                                                  //       ),
-                                                                                  //       style: ElevatedButton.styleFrom(
-                                                                                  //         padding: EdgeInsets.all(15.sp),
-                                                                                  //         primary: HexColor('EC9361'),
-                                                                                  //         onPrimary: Colors.white,
-                                                                                  //         shape: CircleBorder(
-                                                                                  //           side: BorderSide(
-                                                                                  //             color: Colors.transparent,
-                                                                                  //             width: 1,
-                                                                                  //             style: BorderStyle.solid,
-                                                                                  //           ),
-                                                                                  //         ),
-                                                                                  //       ),
-                                                                                  //       onPressed: () {},
-                                                                                  //     ),
-                                                                                  //   ],
-                                                                                  // )
+                                                                                  Text('つぶつぶいちごポッキー',style: TextStyle(fontSize: 14.sp)), //商品名
+                                                                                  Row(
+                                                                                    //星評価
+                                                                                    children: [
+                                                                                      star(3, 25),
+                                                                                      // Text('500', style: TextStyle(color: HexColor('EC9361'), fontSize: 12.sp))
+                                                                                    ],
+                                                                                  ),
+                                                                                  Row(
+                                                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                                    children: [
+                                                                                      Column(
+                                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                        children: [
+                                                                                          RichText(
+                                                                                              //気になる数
+                                                                                              text: TextSpan(style: TextStyle(color: Colors.black,fontSize: 12.sp), children: [
+                                                                                            TextSpan(text: '1', style: TextStyle(fontWeight: FontWeight.w800, color: HexColor('EC9361'),fontSize: 12.sp)),
+                                                                                            TextSpan(text: '気になる',style: TextStyle(fontSize: 12.sp))
+                                                                                          ])),
+                                                                                          RichText(
+                                                                                              //リピート数
+                                                                                              text: TextSpan(style: TextStyle(color: Colors.black,fontSize: 12.sp), children: [
+                                                                                            TextSpan(text: '100', style: TextStyle(fontWeight: FontWeight.w800, color: HexColor('EC9361'),fontSize: 12.sp)),
+                                                                                            TextSpan(text: 'リピート',style: TextStyle(fontSize: 12.sp))
+                                                                                          ]))
+                                                                                        ],
+                                                                                      ),
+                                                                                      // SpaceBox.width(3.w),
+                                                                                      ElevatedButton(
+                                                                                        //クリップボタン
+                                                                                        child: Icon(
+                                                                                          Icons.assignment_turned_in,
+                                                                                          size:20.sp
+                                                                                        ),
+                                                                                        style: ElevatedButton.styleFrom(
+                                                                                          padding: EdgeInsets.all(15.sp),
+                                                                                          primary: HexColor('EC9361'),
+                                                                                          onPrimary: Colors.white,
+                                                                                          shape: CircleBorder(
+                                                                                            side: BorderSide(
+                                                                                              color: Colors.transparent,
+                                                                                              width: 1.w,
+                                                                                              style: BorderStyle.solid,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                        onPressed: () {},
+                                                                                      ),
+                                                                                    ],
+                                                                                  )
                                                                                 ],
                                                                               )
                                                                             ],

@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart'; //パンくず
 import 'package:flutter_dropzone/flutter_dropzone.dart'; //ドラッグ&ドロップアップロード
 import 'package:image_picker/image_picker.dart'; //アップロード
+import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/main.dart';
@@ -214,7 +215,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
     _chipList.add(
       Chip(
         key: chipKey,
-        label: Text(text),
+        label: Text(text,style: TextStyle(fontSize: 14.sp)),
         onDeleted: () => _deleteChip(chipKey),
       ),
     );
@@ -273,12 +274,12 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                             onPressed: () {},
                             child: Text(
                               'レビュー投稿',
-                              style: TextStyle(color: Colors.black),
+                              style: TextStyle(color: Colors.black,fontSize: 14.sp),
                             ),
                           ),
                         ),
                       ],
-                      divider: Icon(Icons.chevron_right),
+                      divider: Icon(Icons.chevron_right,size:24.sp),
                     ),
             SpaceBox.height(media_height * 0.03),
                     Row(children: [
@@ -313,13 +314,13 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                   SelectableText(maker /*'アサヒ飲料株式会社'*/,
-                                              style: TextStyle(fontSize: 16),
+                                              style: TextStyle(fontSize: 16.sp),
                                               scrollPhysics:
                                                   NeverScrollableScrollPhysics()),
                                   SelectableText(
                                               product_name /*'ウィルキンソン タンサン 炭酸水 500ml×24本'*/,
                                               style: TextStyle(
-                                                  fontSize: 22,
+                                                  fontSize: 22.sp,
                                                   fontWeight: FontWeight.bold),
                                               scrollPhysics:
                                           NeverScrollableScrollPhysics())
@@ -339,7 +340,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                       children: [
                                 SelectableText('評価',
                                             style: TextStyle(
-                                        fontSize: 22,
+                                        fontSize: 22.sp,
                                                 color: HexColor('EC9361'),
                                                 fontWeight: FontWeight.bold),
                                             scrollPhysics:
@@ -362,7 +363,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                     child: SelectableText(
                                                         '総合評価',
                                                         style: TextStyle(
-                                                          fontSize: 16,
+                                                          fontSize: 16.sp,
                                                         ),
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
@@ -376,7 +377,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         TextButton(
                                                           child: Icon(
                                                             Icons.star_outlined,
-                                                            size: 35,
+                                                            size: 35.sp,
                                                           ),
                                                           style: TextButton
                                                               .styleFrom(
@@ -423,7 +424,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                             height: media_height * 0.09,
                                                     child: SelectableText('コスパ',
                                                 style: TextStyle(
-                                                            fontSize: 16),
+                                                            fontSize: 16.sp),
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
                                                   ),
@@ -435,7 +436,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         TextButton(
                                                           child: Icon(
                                                             Icons.star_outlined,
-                                                            size: 35,
+                                                            size: 35.sp,
                                                           ),
                                                           style: TextButton
                                                               .styleFrom(
@@ -492,7 +493,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                       children: [
                                 SelectableText('味覚',
                                             style: TextStyle(
-                                        fontSize: 22,
+                                        fontSize: 22.sp,
                                                 color: HexColor('EC9361'),
                                                 fontWeight: FontWeight.bold),
                                             scrollPhysics:
@@ -522,36 +523,36 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                     child: Align(
                                                       alignment:
                                                           Alignment.center,
-                                                      child: Text(''),
+                                                      child: Text('',style: TextStyle(fontSize: 14.sp)),
                                                     ),
                                                   ),
                                                   Align(
                                                     alignment: Alignment.center,
-                                                    child: Text('低い'),
+                                                    child: Text('低い',style: TextStyle(fontSize: 14.sp)),
                                                   ),
                                                   Align(
                                                     alignment: Alignment.center,
-                                                    child: Text('１'),
+                                                    child: Text('１',style: TextStyle(fontSize: 14.sp)),
                                                   ),
                                                   Align(
                                                     alignment: Alignment.center,
-                                                    child: Text('２'),
+                                                    child: Text('２',style: TextStyle(fontSize: 14.sp)),
                                                   ),
                                                   Align(
                                                     alignment: Alignment.center,
-                                                    child: Text('３'),
+                                                    child: Text('３',style: TextStyle(fontSize: 14.sp)),
                                                   ),
                                                   Align(
                                                     alignment: Alignment.center,
-                                                    child: Text('４'),
+                                                    child: Text('４',style: TextStyle(fontSize: 14.sp)),
                                                   ),
                                                   Align(
                                                     alignment: Alignment.center,
-                                                    child: Text('５'),
+                                                    child: Text('５',style: TextStyle(fontSize: 14.sp)),
                                                   ),
                                                   Align(
                                                     alignment: Alignment.center,
-                                                    child: Text('高い'),
+                                                    child: Text('高い',style: TextStyle(fontSize: 14.sp)),
                                                   ),
                                                 ]),
                                                 TableRow(children: [
@@ -561,11 +562,11 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         media_height * 0.082,
                                                     child: SelectableText('甘味',
                                                 style: TextStyle(
-                                                            fontSize: 16),
+                                                            fontSize: 16.sp),
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
                                                   ),
-                                                  Text(''),
+                                                  Text('',style: TextStyle(fontSize: 14.sp)),
                                                   Radio(
                                                     value: SweetnessRadio.FIRST,
                                                     groupValue: _sweetnessValue,
@@ -602,7 +603,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         _onRadioSelected_Sweetness(
                                                             value),
                                                   ),
-                                                  Text(''),
+                                                  Text('',style: TextStyle(fontSize: 14.sp)),
                                                 ]),
                                                 TableRow(children: [
                                                   //酸味
@@ -611,11 +612,11 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         media_height * 0.082,
                                                     child: SelectableText('酸味',
                                                 style: TextStyle(
-                                                            fontSize: 16),
+                                                            fontSize: 16.sp),
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
                                                   ),
-                                                  Text(''),
+                                                  Text('',style: TextStyle(fontSize: 14.sp)),
                                                   Radio(
                                                     value: AcidityRadio.FIRST,
                                                     groupValue: _acidityValue,
@@ -651,7 +652,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         _onRadioSelected_Acidity(
                                                             value),
                                                   ),
-                                                  Text(''),
+                                                  Text('',style: TextStyle(fontSize: 14.sp)),
                                                 ]),
                                                 TableRow(children: [
                                                   //塩味
@@ -660,7 +661,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         media_height * 0.082,
                                                     child: SelectableText('塩味',
                                                 style: TextStyle(
-                                                            fontSize: 16),
+                                                            fontSize: 16.sp),
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
                                                   ),
@@ -700,7 +701,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         _onRadioSelected_Salty(
                                                             value),
                                                   ),
-                                                  Text(''),
+                                                  Text('',style: TextStyle(fontSize: 14.sp)),
                                                 ]),
                                                 TableRow(children: [
                                                   //苦味
@@ -709,7 +710,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         media_height * 0.082,
                                                     child: SelectableText('苦味',
                                                 style: TextStyle(
-                                                            fontSize: 16),
+                                                            fontSize: 16.sp),
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
                                                   ),
@@ -749,7 +750,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         _onRadioSelected_Bitter(
                                                             value),
                                                   ),
-                                                  Text(''),
+                                                  Text('',style: TextStyle(fontSize: 14.sp)),
                                                 ]),
                                                 TableRow(children: [
                                                   //辛味
@@ -758,7 +759,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         media_height * 0.082,
                                                     child: SelectableText('辛味',
                                                 style: TextStyle(
-                                                            fontSize: 16),
+                                                            fontSize: 16.sp),
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
                                                   ),
@@ -798,7 +799,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         _onRadioSelected_Spicy(
                                                             value),
                                                   ),
-                                                  Text(''),
+                                                  Text('',style: TextStyle(fontSize: 14.sp)),
                                                 ]),
                                                 TableRow(children: [
                                                   //旨味
@@ -807,11 +808,11 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         media_height * 0.082,
                                                     child: SelectableText('旨味',
                                                 style: TextStyle(
-                                                            fontSize: 16),
+                                                            fontSize: 16.sp),
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
                                                   ),
-                                                  Text(''),
+                                                  Text('',style: TextStyle(fontSize: 14.sp)),
                                                   Radio(
                                                     value: TasteRadio.FIRST,
                                                     groupValue: _tasteValue,
@@ -847,7 +848,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         _onRadioSelected_Taste(
                                                             value),
                                                   ),
-                                                  Text(''),
+                                                  Text('',style: TextStyle(fontSize: 14.sp)),
                                                 ]),
                                               ],
                                             ))
@@ -863,7 +864,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                         children: [
                                   SelectableText('リピートしたいですか？',
                                               style: TextStyle(
-                                          fontSize: 22,
+                                          fontSize: 22.sp,
                                                   color: HexColor('EC9361'),
                                                   fontWeight: FontWeight.bold),
                                               scrollPhysics:
@@ -898,6 +899,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                       ),
                                                       child: Text(
                                                         repeat_text[cnt],
+                                                        style: TextStyle(fontSize: 14.sp)
                                                       ),
                                                       onPressed: () {
                                                         setState(() {
@@ -939,6 +941,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                       child: Text(
                                                         '評価のみ投稿する',
                                                         style: TextStyle(
+                                                          fontSize: 14.sp,
                                                             color: HexColor(
                                                                 'EC9361')),
                                                       ),
@@ -974,13 +977,13 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                         children: [
                                           SelectableText('画像を追加',
                                               style: TextStyle(
-                                                  fontSize: 22,
+                                                  fontSize: 22.sp,
                                                   color: HexColor('EC9361'),
                                                   fontWeight: FontWeight.bold),
                                               scrollPhysics:
                                                   NeverScrollableScrollPhysics()),
                                           SelectableText('最大５枚まで',
-                                              style: TextStyle(),
+                                              style: TextStyle(fontSize: 14.sp),
                                               scrollPhysics:
                                                   NeverScrollableScrollPhysics())
                                         ],
@@ -1050,13 +1053,13 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                         children: [
                                           SelectableText('コメント',
                                               style: TextStyle(
-                                                  fontSize: 22,
+                                                  fontSize: 22.sp,
                                                   color: HexColor('EC9361'),
                                                   fontWeight: FontWeight.bold),
                                               scrollPhysics:
                                                   NeverScrollableScrollPhysics()),
                                           SelectableText('最大400文字',
-                                              style: TextStyle(),
+                                              style: TextStyle(fontSize: 14.sp),
                                               scrollPhysics:
                                                   NeverScrollableScrollPhysics())
                                         ],
@@ -1082,10 +1085,11 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                   color: Colors.grey,
                                                   width: 1.5),
                                             ),
+                                            hintStyle: TextStyle(fontSize: 14.sp),
                                             hintText:
                                                 "お気に入りの食品を共有してみましょう！\n（例）食感、味、おすすめの食べ方",
                                           ),
-                                          style: TextStyle(fontSize: 15),
+                                          style: TextStyle(fontSize: 15.sp),
                                         ),
                                       )
                                     ],
@@ -1103,7 +1107,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                         children: [
                                           SelectableText('タグを追加',
                                               style: TextStyle(
-                                                  fontSize: 22,
+                                                  fontSize: 22.sp,
                                                   color: HexColor('EC9361'),
                                                   fontWeight: FontWeight.bold),
                                               scrollPhysics:
@@ -1115,9 +1119,10 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                   'タグを付けると同じキーワードでの投稿を瞬時に検索できたり、\n話題を共有したりすることができます',
                                               child: Icon(
                                                 Icons.help_outline_outlined,
+                                                size:24.sp
                                               )),
                                           SelectableText('最大10文字　8個まで',
-                                              style: TextStyle(),
+                                              style: TextStyle(fontSize: 14.sp),
                                               scrollPhysics:
                                                   NeverScrollableScrollPhysics())
                                         ],
@@ -1177,7 +1182,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                     child: Text(
                                                         'タグを追加してみましょう！\n（例）今日のアイス、ご褒美スイーツ、チョコミン党',
                                                         style: TextStyle(
-                                                            fontSize: 15,
+                                                            fontSize: 15.sp,
                                                             color: HexColor(
                                                                     '#444444')
                                                                 .withOpacity(
@@ -1210,6 +1215,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         decoration:
                                                             InputDecoration(
                                                           hintText: 'タグを入力',
+                                                          hintStyle: TextStyle(fontSize: 14.sp),
                                                           focusedBorder:
                                                               OutlineInputBorder(
                                                             borderSide:
@@ -1241,6 +1247,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         ),
                                                         child: Icon(
                                                           Icons.send_outlined,
+                                                          size:24.sp,
                                                           color: HexColor(
                                                               '#444444'),
                                                         ),
@@ -1258,7 +1265,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                       ),
                                       SelectableText(tag_alart,
                                           style: TextStyle(
-                                              color: Colors.red, fontSize: 15),
+                                              color: Colors.red, fontSize: 15.sp),
                                           scrollPhysics:
                                               NeverScrollableScrollPhysics()) //タグアラート
                                     ],
@@ -1283,6 +1290,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                             ),
                                             child: Text(
                                               '投稿する',
+                                              style: TextStyle(fontSize: 14.sp),
                                             ),
                                             onPressed: () {
                                               setState(() {});
@@ -1297,7 +1305,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                       Expanded(
                           flex: 2,
                           child: Column(
-                            children: [Text('広告')],
+                            children: [Text('広告',style: TextStyle(fontSize: 14.sp),)],
                           ))
             ])
                   ])),
@@ -1333,7 +1341,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                       style: ElevatedButton.styleFrom(
                         primary: HexColor('B8AA8E'),
                       ),
-                      child: Text('選択'),
+                      child: Text('選択',style: TextStyle(fontSize: 14.sp),),
                       onPressed: () async {
                         List<XFile>? image = await picker.pickMultiImage();
                         setState(() {
@@ -1346,7 +1354,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                   Text(
                     'または、ここに画像ファイルをドラッグしてください',
                     style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 15.sp,
                         color: HexColor('#444444').withOpacity(0.8)),
                   )
                 ],
@@ -1415,7 +1423,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                         primary: HexColor('B8AA8E'),
                       ),
                       child: Text(
-                        '選択',
+                        '選択',style: TextStyle(fontSize: 14.sp),
                       ),
                       onPressed: () async {
                         List<XFile>? image = await picker.pickMultiImage();
@@ -1429,7 +1437,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                   Text(
                     'または、ここに画像ファイルをドラッグしてください',
                     style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 15.sp,
                         color: HexColor('#444444').withOpacity(0.8)),
                   )
                 ],
