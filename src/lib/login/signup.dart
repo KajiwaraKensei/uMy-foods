@@ -11,6 +11,7 @@ import 'package:umy_foods/profile/profile_edit.dart';
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/HexColor.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
 
 class Signup extends StatefulWidget {
   @override
@@ -98,25 +99,25 @@ class _SignupState extends State<Signup> {
       body: SingleChildScrollView(
         child: Column(children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
+            padding: EdgeInsets.fromLTRB(30.h, 30.w, 30.h, 30.w),
             child: Container(
-              height: 900,
+              height: 900.h,
               child: Column(
                 children: [
                   Container(
-                    width: 400,
+                    width: 400.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // メールアドレスで新規登録
                         Center(
                           child: Container(
-                            margin: EdgeInsets.only(bottom: 20),
+                            margin: EdgeInsets.only(bottom: 20.h),
                             child: Text(
                               'メールアドレスで新規登録',
                               style: TextStyle(
                                 color: HexColor('8c6e63'),
-                                fontSize: 25,
+                                fontSize: 25.sp,
                                 // 文字の太さ
                                 fontWeight: FontWeight.w600,
                               ),
@@ -128,6 +129,7 @@ class _SignupState extends State<Signup> {
                             'すべてが必須項目です',
                             style: TextStyle(
                               color: Colors.orange,
+                              fontSize: 14.sp
                             ),
                           ),
                         ),
@@ -136,6 +138,7 @@ class _SignupState extends State<Signup> {
                             'メールアドレス',
                             style: TextStyle(
                               color: HexColor('000000'),
+                              fontSize: 14.sp
                             ),
                           ),
                         ),
@@ -163,15 +166,17 @@ class _SignupState extends State<Signup> {
                               ),
                             ),
                             hintText: 'メールアドレスを入力',
+                            hintStyle: TextStyle(fontSize: 14.sp)
                           ),
                         ),
                         // メールアドレスエラーメッセージ
                         Container(
-                          margin: EdgeInsets.only(top: 3, bottom: 25),
+                          margin: EdgeInsets.only(top: 3.h, bottom: 25.h),
                           child: Text(
                             address_error,
                             style: TextStyle(
                               color: Colors.red,
+                              fontSize: 14.sp
                             ),
                           ),
                         ),
@@ -222,6 +227,7 @@ class _SignupState extends State<Signup> {
                           'パスワード',
                           style: TextStyle(
                             color: HexColor('000000'),
+                            fontSize: 14.sp
                           ),
                         ),
                         // パスワード入力欄
@@ -251,7 +257,8 @@ class _SignupState extends State<Signup> {
                                   _showPassword
                                       ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
-                                  color: Colors.grey),
+                                  color: Colors.grey,
+                                  size:14.sp),
                               onPressed: () {
                                 this.setState(() {
                                   // 表示と非表示切り替え
@@ -260,15 +267,17 @@ class _SignupState extends State<Signup> {
                               },
                             ),
                             hintText: 'パスワードを入力',
+                            hintStyle: TextStyle(fontSize: 14.sp)
                           ),
                         ),
                         // パスワードエラーメッセージ
                         Container(
-                          margin: EdgeInsets.only(top: 3, bottom: 25),
+                          margin: EdgeInsets.only(top: 3.h, bottom: 25.h),
                           child: Text(
                             password_error,
                             style: TextStyle(
                               color: Colors.red,
+                              fontSize: 14.sp
                             ),
                           ),
                         ),
@@ -276,6 +285,7 @@ class _SignupState extends State<Signup> {
                           '確認のため、もう一度パスワードを入力してください',
                           style: TextStyle(
                             color: HexColor('000000'),
+                            fontSize: 14.sp
                           ),
                         ),
                         // パスワード再入力
@@ -305,7 +315,9 @@ class _SignupState extends State<Signup> {
                                   _showPasswordCon
                                       ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
-                                  color: Colors.grey),
+                                  color: Colors.grey,
+                                  size:14.sp
+                                  ),
                               onPressed: () {
                                 this.setState(() {
                                   // 表示と非表示切り替え
@@ -314,14 +326,16 @@ class _SignupState extends State<Signup> {
                               },
                             ),
                             hintText: 'パスワードを入力',
+                            hintStyle: TextStyle(fontSize: 14.sp)
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 5, bottom: 20),
+                          margin: EdgeInsets.only(top: 5.h, bottom: 20.h),
                           child: Text(
                             passwordCon_error,
                             style: TextStyle(
                               color: Colors.red,
+                              fontSize: 14.sp
                             ),
                           ),
                         ),
@@ -331,6 +345,7 @@ class _SignupState extends State<Signup> {
                             '以下規約をご確認いただき、同意の上でお手続きください。',
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
+                              fontSize: 14.sp
                             ),
                           ),
                         ),
@@ -339,7 +354,7 @@ class _SignupState extends State<Signup> {
                         Center(
                           child: Container(
                             child: TextButton(
-                              child: const Text('利用規約'),
+                              child: Text('利用規約',style: TextStyle(fontSize: 14.sp)),
                               style: TextButton.styleFrom(
                                 primary: Colors.blue,
                               ),
@@ -451,7 +466,7 @@ class _SignupState extends State<Signup> {
                                 "利用規約に同意して確認画面へ",
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 20,
+                                  fontSize: 20.sp,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -463,15 +478,15 @@ class _SignupState extends State<Signup> {
                         ),
                         // すでにお持ちのかた
                         Container(
-                          margin: EdgeInsets.only(top: 20),
+                          margin: EdgeInsets.only(top: 20.h),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('すでにお持ちの方は'),
+                              Text('すでにお持ちの方は',style: TextStyle(fontSize: 14.sp)),
                               Container(
-                                margin: EdgeInsets.only(left: 8),
+                                margin: EdgeInsets.only(left: 8.h),
                                 child: TextButton(
-                                  child: const Text('ログイン'),
+                                  child: Text('ログイン',style: TextStyle(fontSize: 14.sp)),
                                   style: TextButton.styleFrom(
                                     primary: Colors.blue,
                                   ),
@@ -489,7 +504,7 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                         //テストメッセージ
-                        Text(_text),
+                        Text(_text,style: TextStyle(fontSize: 14.sp)),
                       ],
                     ),
                   ),

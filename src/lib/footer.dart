@@ -4,6 +4,7 @@ import 'package:umy_foods/main.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:umy_foods/HexColor.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
 
 class FooterCreate extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -11,7 +12,7 @@ class FooterCreate extends StatelessWidget {
       //フッター
       color: HexColor('F5F3EF'),
       child: Padding(
-        padding: new EdgeInsets.all(10.0),
+        padding: new EdgeInsets.all(10.0.sp),
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround, //均等スペース
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,7 +31,7 @@ class FooterCreate extends StatelessWidget {
                               Text(
                                 'ようこそ',
                                 style: TextStyle(
-                                  fontSize: 25,
+                                  fontSize: 25.sp.sp,
                                   color: HexColor('8C6E63'),
                                 ),
                               ),
@@ -42,7 +43,7 @@ class FooterCreate extends StatelessWidget {
                                           builder: (context) => WhatuMyFoods(),
                                         ));
                                   },
-                                  child: Text('uMyFoodsとは'),
+                                  child: Text('uMyFoodsとは',style: TextStyle(fontSize: 14.sp)),
                                   style: ButtonStyle(
                                     foregroundColor:
                                         MaterialStateProperty.all<Color>(
@@ -57,7 +58,7 @@ class FooterCreate extends StatelessWidget {
                                               TermsOfService(),
                                         ));
                                   },
-                                  child: Text('ご利用規約'),
+                                  child: Text('ご利用規約',style: TextStyle(fontSize: 14.sp)),
                                   style: ButtonStyle(
                                     foregroundColor:
                                         MaterialStateProperty.all<Color>(
@@ -71,7 +72,7 @@ class FooterCreate extends StatelessWidget {
                                           builder: (context) => PrivacyPolicy(),
                                         ));
                                   },
-                                  child: Text('プライバシーポリシー'),
+                                  child: Text('プライバシーポリシー',style: TextStyle(fontSize: 14.sp)),
                                   style: ButtonStyle(
                                     foregroundColor:
                                         MaterialStateProperty.all<Color>(
@@ -80,14 +81,14 @@ class FooterCreate extends StatelessWidget {
                               Text(
                                 '',
                                 style: TextStyle(
-                                  fontSize: 25,
+                                  fontSize: 25.sp.sp,
                                   color: HexColor('8C6E63'),
                                 ),
                               ),
                               Text(
                                 'サポート',
                                 style: TextStyle(
-                                  fontSize: 25,
+                                  fontSize: 25.sp,
                                   color: HexColor('8C6E63'),
                                 ),
                               ),
@@ -99,7 +100,7 @@ class FooterCreate extends StatelessWidget {
                                         builder: (context) => FAQ(),
                                       ));
                                 },
-                                child: Text('よくある質問'),
+                                child: Text('よくある質問',style: TextStyle(fontSize: 14.sp)),
                                 style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all<Color>(
@@ -114,7 +115,7 @@ class FooterCreate extends StatelessWidget {
                                         builder: (context) => Support(),
                                       ));
                                 },
-                                child: Text('サポート'),
+                                child: Text('サポート',style: TextStyle(fontSize: 14.sp)),
                                 style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all<Color>(
@@ -141,7 +142,7 @@ class FooterCreate extends StatelessWidget {
                                 Text(
                                   'コンテンツを見る',
                                   style: TextStyle(
-                                    fontSize: 25,
+                                    fontSize: 25.sp,
                                     color: HexColor('8C6E63'),
                                   ),
                                 ),
@@ -154,7 +155,7 @@ class FooterCreate extends StatelessWidget {
                                               ProductRanking(),
                                         ));
                                   },
-                                  child: Text('商品ランキングを見る'),
+                                  child: Text('商品ランキングを見る',style: TextStyle(fontSize: 14.sp)),
                                   style: ButtonStyle(
                                     foregroundColor:
                                         MaterialStateProperty.all<Color>(
@@ -169,7 +170,7 @@ class FooterCreate extends StatelessWidget {
                                           builder: (context) => ReviewRanking(),
                                         ));
                                   },
-                                  child: Text('レビューランキングを見る'),
+                                  child: Text('レビューランキングを見る',style: TextStyle(fontSize: 14.sp)),
                                   style: ButtonStyle(
                                     foregroundColor:
                                         MaterialStateProperty.all<Color>(
@@ -184,7 +185,7 @@ class FooterCreate extends StatelessWidget {
                                           builder: (context) => UserRanking(),
                                         ));
                                   },
-                                  child: Text('ユーザーランキングを見る'),
+                                  child: Text('ユーザーランキングを見る',style: TextStyle(fontSize: 14.sp)),
                                   style: ButtonStyle(
                                     foregroundColor:
                                         MaterialStateProperty.all<Color>(
@@ -199,7 +200,7 @@ class FooterCreate extends StatelessWidget {
                                           builder: (context) => UserQuestion(),
                                         ));
                                   },
-                                  child: Text('ユーザーアンケートを見る'),
+                                  child: Text('ユーザーアンケートを見る',style: TextStyle(fontSize: 14.sp)),
                                   style: ButtonStyle(
                                     foregroundColor:
                                         MaterialStateProperty.all<Color>(
@@ -221,14 +222,14 @@ class FooterCreate extends StatelessWidget {
                           child: Container(
                               child: Column(children: [
                             Container(
-                              height: 250,
+                              height: 250.h,
                               child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Container(
                                         child: ElevatedButton(
                                             child: Image(
-                                              width: 100,
+                                              width: 100.w,
                                               image: AssetImage(
                                                   'images/uMyFoods_icon.png'),
                                               fit: BoxFit.contain,
@@ -262,7 +263,7 @@ class FooterCreate extends StatelessWidget {
                         Text(
                           '商品を探す',
                           style: TextStyle(
-                            fontSize: 25,
+                            fontSize: 25.sp,
                             color: HexColor('8C6E63'),
                           ),
                         ),
@@ -274,7 +275,7 @@ class FooterCreate extends StatelessWidget {
                                   builder: (context) => SearchByCategory(),
                                 ));
                           },
-                          child: Text('カテゴリーから探す'),
+                          child: Text('カテゴリーから探す',style: TextStyle(fontSize: 14.sp)),
                           style: ButtonStyle(
                             foregroundColor:
                                 MaterialStateProperty.all<Color>(Colors.black),
@@ -288,7 +289,7 @@ class FooterCreate extends StatelessWidget {
                                   builder: (context) => SearchByMaker(),
                                 ));
                           },
-                          child: Text('メーカーから探す'),
+                          child: Text('メーカーから探す',style: TextStyle(fontSize: 14.sp)),
                           style: ButtonStyle(
                             foregroundColor:
                                 MaterialStateProperty.all<Color>(Colors.black),
@@ -302,7 +303,7 @@ class FooterCreate extends StatelessWidget {
                                   builder: (context) => SearchByNewProduct(),
                                 ));
                           },
-                          child: Text('新商品から探す'),
+                          child: Text('新商品から探す',style: TextStyle(fontSize: 14.sp)),
                           style: ButtonStyle(
                             foregroundColor:
                                 MaterialStateProperty.all<Color>(Colors.black),
@@ -326,7 +327,7 @@ class FooterCreate extends StatelessWidget {
                               Text(
                                 'レビューを見る',
                                 style: TextStyle(
-                                  fontSize: 25,
+                                  fontSize: 25.sp,
                                   color: HexColor('8C6E63'),
                                 ),
                               ),
@@ -339,7 +340,7 @@ class FooterCreate extends StatelessWidget {
                                             ViewPopularReviews(),
                                       ));
                                 },
-                                child: Text('人気のレビューを見る'),
+                                child: Text('人気のレビューを見る',style: TextStyle(fontSize: 14.sp)),
                                 style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all<Color>(
@@ -354,7 +355,7 @@ class FooterCreate extends StatelessWidget {
                                         builder: (context) => ViewNewReviews(),
                                       ));
                                 },
-                                child: Text('新着のレビューを見る'),
+                                child: Text('新着のレビューを見る',style: TextStyle(fontSize: 14.sp)),
                                 style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all<Color>(
@@ -363,7 +364,7 @@ class FooterCreate extends StatelessWidget {
                               ),
                             ])),
                         Container(
-                          height: 80,
+                          height: 80.h,
                         ),
                         Container(
                           child: Row(
@@ -384,7 +385,7 @@ class FooterCreate extends StatelessWidget {
                         ),
                         */
                                 Container(
-                                  height: 85,
+                                  height: 85.h,
                                   alignment: Alignment.center,
                                   child: Ink(
                                     decoration: const ShapeDecoration(
@@ -393,7 +394,7 @@ class FooterCreate extends StatelessWidget {
                                     ),
                                     child: IconButton(
                                       icon: FaIcon(FontAwesomeIcons.facebook,
-                                          color: Colors.indigo, size: 37),
+                                          color: Colors.indigo, size: 37.sp),
                                       //tooltip: '',
                                       // ボタンのデザイン
                                       onPressed: () async {
@@ -407,17 +408,17 @@ class FooterCreate extends StatelessWidget {
                                   ),
                                 ),
                                 Container(
-                                  height: 100,
+                                  height: 100.h,
                                   alignment: Alignment.center,
-                                  margin: EdgeInsets.only(left: 10),
+                                  margin: EdgeInsets.only(left: 10.w),
                                   child: CircleAvatar(
-                                    radius: 20,
+                                    radius: 20.sp,
                                     // backgroundColor: Colors.blue,
                                     // アイコン部分
                                     child: IconButton(
                                       //tooltip: 'Twitterへ',
                                       icon: FaIcon(FontAwesomeIcons.twitter,
-                                          color: Colors.white, size: 20),
+                                          color: Colors.white, size: 20.sp),
                                       onPressed: () async {
                                         if (await canLaunch(
                                             "https://twitter.com/UmyExe")) {
@@ -429,7 +430,7 @@ class FooterCreate extends StatelessWidget {
                                   ),
                                 ),
                                 Container(
-                                  height: 85,
+                                  height: 85.h,
                                   alignment: Alignment.center,
                                   child: Ink(
                                     decoration: const ShapeDecoration(
@@ -438,7 +439,7 @@ class FooterCreate extends StatelessWidget {
                                     ),
                                     child: IconButton(
                                       icon: FaIcon(FontAwesomeIcons.instagram,
-                                          color: Colors.orange, size: 37),
+                                          color: Colors.orange, size: 37.sp),
                                       //tooltip: '',
                                       // ボタンのデザイン
                                       onPressed: () async {

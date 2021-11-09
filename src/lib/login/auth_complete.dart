@@ -10,6 +10,7 @@ import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/main.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
 
 class AuthComplete extends StatelessWidget {
   // 引数からユーザー情報を受け取れるようにする
@@ -25,9 +26,9 @@ class AuthComplete extends StatelessWidget {
       body: SingleChildScrollView(
           child: Column(
         children: [
-          Container(height: 1000, child: UserWelcome(user.uid)),
+          Container(height: 1000.h, child: UserWelcome(user.uid)),
           IconButton(
-              icon: Icon(Icons.logout),
+              icon: Icon(Icons.logout,size:14.sp),
               onPressed: () async {
                 // ログアウト処理
                 // 内部で保持しているログイン情報等が初期化される
@@ -71,7 +72,7 @@ class GoogleAuthComplete extends StatelessWidget {
             child: Column(
           children: [
             Container(
-                height: 1000,
+                height: 1000.h,
                 child: Column(children: [
                   CircleAvatar(
                     //アイコン
@@ -80,12 +81,12 @@ class GoogleAuthComplete extends StatelessWidget {
                         ? NetworkImage(imageUrl.toString())
                         : null,
                     child: imageUrl == null
-                        ? Icon(Icons.account_circle, size: 30)
+                        ? Icon(Icons.account_circle, size: 30.sp)
                         : Container(),
                   ),
                   Text('ようこそ!${name}さん'),
                   IconButton(
-                      icon: Icon(Icons.logout),
+                      icon: Icon(Icons.logout,size:14.sp),
                       onPressed: () async {
                         // ログアウト処理
                         //uid = null;
@@ -114,7 +115,7 @@ class GoogleAuthComplete extends StatelessWidget {
                       "トップページへ",
                       style: TextStyle(
                         color: HexColor('ffffff'),
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -163,7 +164,7 @@ Widget UserWelcome(userId) {
               style: ElevatedButton.styleFrom(shape: CircleBorder()),
               child: ClipOval(
                   child: Image(
-                width: 85,
+                width: 85.w,
                 image: NetworkImage((result['user_icon'] == "")
                     ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
                     : result['user_icon']),
@@ -171,7 +172,7 @@ Widget UserWelcome(userId) {
               )),
               onPressed: () {}, //ユーザーへ
             ),
-            Text('ようこそ！${result['user_name']}さん'),
+            Text('ようこそ！${result['user_name']}さん',style: TextStyle(fontSize: 14.sp)),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -184,7 +185,7 @@ Widget UserWelcome(userId) {
                 "トップページへ",
                 style: TextStyle(
                   color: HexColor('ffffff'),
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
                 ),
               ),

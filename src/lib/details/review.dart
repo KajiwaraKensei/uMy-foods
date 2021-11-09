@@ -11,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; //DB
 import "package:intl/intl.dart";
 import 'package:intl/date_symbol_data_local.dart'; //日時用
+import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
 
 // 外部ファイル
 import 'package:umy_foods/HexColor.dart'; //16進数カラーコード
@@ -61,13 +62,13 @@ class _ReviewPageState extends State<ReviewPage> {
         //streamが更新されるたびに呼ばれる
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           //データが取れていない時の処理
-          if (!snapshot.hasData) return const Text('Loading...');
+          if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
 
           final result = snapshot.data!.docs;
           List<int> evaList = []; //評価リスト
 
           if (result.length == 0) {
-            return Text('レビューはありません');
+            return Text('レビューはありません',style: TextStyle(fontSize: 14.sp));
           }
 
           for (int j = 0; j < result.length; j++) {
@@ -134,7 +135,7 @@ class _ReviewPageState extends State<ReviewPage> {
                       children: [
                         SelectableText('レビュー',
                             style: TextStyle(
-                                color: HexColor('EC9361'), fontSize: 27.0),
+                                color: HexColor('EC9361'), fontSize: 27.0.sp),
                             scrollPhysics: NeverScrollableScrollPhysics()),
                         Row(
                           children: [
@@ -145,9 +146,11 @@ class _ReviewPageState extends State<ReviewPage> {
                                   star(average, 50), //星評価
                                   SelectableText(result.length.toString() + '件',
                                       scrollPhysics:
-                                          NeverScrollableScrollPhysics()), //評価件数
+                                          NeverScrollableScrollPhysics()
+                                      ,style: TextStyle(fontSize: 14.sp)
+                                  ), //評価件数
                                   Container(
-                                    height: 170,
+                                    height: 170.h,
                                     //Radar Chart
                                     child: RadarChart(
                                       values: mikaku,
@@ -191,21 +194,21 @@ class _ReviewPageState extends State<ReviewPage> {
                       ],
                     ),
                   ),
-                  SpaceBox.width(30),
+                  SpaceBox.width(30.w),
                   Expanded(
                     flex: 2,
                     child: Padding(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10.sp),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
-                            width: 100,
-                            height: 300,
+                            width: 100.w,
+                            height: 300.h,
                             // color: Colors.grey,
                             // child: Text('広告'),
                           ),
-                          SpaceBox.height(25),
+                          SpaceBox.height(25.h),
                           Column(
                             children: [
                               GestureDetector(
@@ -214,16 +217,16 @@ class _ReviewPageState extends State<ReviewPage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      width: 35,
+                                      width: 35.w,
                                       child:
                                           Image.asset('images/new_goods.png'),
                                     ),
-                                    SpaceBox.width(10),
+                                    SpaceBox.width(10.w),
                                     Text(
                                       '新商品',
                                       style: TextStyle(
                                           color: HexColor('EC9361'),
-                                          fontSize: 20.0),
+                                          fontSize: 20.0.sp),
                                     ),
                                   ],
                                 ),
@@ -231,19 +234,19 @@ class _ReviewPageState extends State<ReviewPage> {
                                   setState(() {}); //新商品ページへ
                                 },
                               ),
-                              SpaceBox.height(10), //隙間
+                              SpaceBox.height(10.h), //隙間
                               Container(
                                 //新商品
                                 color: HexColor('F5F3EF'),
                                 child: Padding(
                                     padding: EdgeInsets.symmetric(
-                                        vertical: 20, horizontal: 15),
+                                        vertical: 20.h, horizontal: 15.w),
                                     child: Column(
                                       children: [
                                         for (int i = 0; i < 3; i++)
                                           Padding(
                                             padding: EdgeInsets.symmetric(
-                                                vertical: 5),
+                                                vertical: 5.h),
                                             child: Card(
                                                 child: InkWell(
                                                     onTap: () {
@@ -251,6 +254,8 @@ class _ReviewPageState extends State<ReviewPage> {
                                                           () {}); //商品詳細ページへ
                                                     },
                                                     child: Container(
+                                                      height: 100.h,
+                                                      width: 260.w,
                                                       child: Row(
                                                         children: [
                                                           Expanded(
@@ -261,9 +266,9 @@ class _ReviewPageState extends State<ReviewPage> {
                                                                 //商品画像
                                                                 padding:
                                                                     EdgeInsets
-                                                                        .all(5),
-                                                                height: 90,
-                                                                width: 90,
+                                                                        .all(5.sp),
+                                                                height: 90.h,
+                                                                width: 90.w,
                                                                 child: Image
                                                                     .network(
                                                                   new_item[i]
@@ -292,10 +297,22 @@ class _ReviewPageState extends State<ReviewPage> {
                                                                       new_item[
                                                                               i]
                                                                           [
-                                                                          'date']), //発売日
+                                                                          'date']
+                                                                    ,style: TextStyle(fontSize: 14.sp)
+                                                                  ), //発売日
                                                                   SpaceBox
                                                                       .height(
-                                                                          5),
+                                                                          5.h),
+                                                                  GestureDetector(
+                                                                    child: Text(
+                                                                      new_item[i]['maker'],
+                                                                      style: TextStyle(color: HexColor('616161'), fontSize: 10.sp),
+                                                                    ),
+                                                                    onTap: () {
+                                                                      setState(() {}); //メーカーページへ
+                                                                    },
+                                                                  ),
+                                                                  SpaceBox.height(5.h),
                                                                   Row(
                                                                     children: [
                                                                       Expanded(
@@ -307,17 +324,7 @@ class _ReviewPageState extends State<ReviewPage> {
                                                                                 CrossAxisAlignment.start,
                                                                             children: [
                                                                               GestureDetector(
-                                                                                child: Text(
-                                                                                  new_item[i]['maker'],
-                                                                                  style: TextStyle(color: HexColor('616161'), fontSize: 10),
-                                                                                ),
-                                                                                onTap: () {
-                                                                                  setState(() {}); //メーカーページへ
-                                                                                },
-                                                                              ),
-                                                                              SpaceBox.height(5),
-                                                                              GestureDetector(
-                                                                                child: Text(new_item[i]['Text']),
+                                                                                child: Text(new_item[i]['Text'],style: TextStyle(fontSize: 14.sp)),
                                                                                 onTap: () {
                                                                                   setState(() {}); //商品詳細ページへ
                                                                                 },
@@ -332,11 +339,12 @@ class _ReviewPageState extends State<ReviewPage> {
                                                                           child:
                                                                               Icon(
                                                                             Icons.assignment_turned_in,
+                                                                            size: 14.sp,
                                                                           ),
                                                                           style:
                                                                               ElevatedButton.styleFrom(
                                                                             padding:
-                                                                                EdgeInsets.all(11),
+                                                                                EdgeInsets.all(11.sp),
                                                                             primary:
                                                                                 HexColor('EC9361'),
                                                                             onPrimary:
@@ -373,10 +381,10 @@ class _ReviewPageState extends State<ReviewPage> {
                               )
                             ],
                           ),
-                          SpaceBox.height(25), //隙間
+                          SpaceBox.height(25.h), //隙間
                           Container(
-                            width: 100,
-                            height: 300,
+                            width: 100.w,
+                            height: 300.h,
                             // color: Colors.grey,
                             // child: Text('広告'),
                           ),
@@ -398,23 +406,23 @@ class _ReviewPageState extends State<ReviewPage> {
     return Padding(
       padding: EdgeInsets.all(0),
       child: new LinearPercentIndicator(
-        width: 310.0,
-        lineHeight: 14.0,
+        width: 310.0.w,
+        lineHeight: 20.0.h,
         percent: persent,
         center: Text(
           persenttext + '%',
-          style: new TextStyle(fontSize: 12.0),
+          style: new TextStyle(fontSize: 12.0.sp),
         ),
         leading: Container(
-          width: 60,
+          width: 60.w,
           child: Row(
             children: [
               Icon(
                 Icons.star_outlined,
                 color: HexColor('ffe14c'),
-                size: 35,
+                size: 35.sp,
               ),
-              Text(name, style: TextStyle(color: Colors.black))
+              Text(name, style: TextStyle(color: Colors.black,fontSize:14.sp))
             ],
           ),
         ),
@@ -446,7 +454,7 @@ class _Age_Review extends State<Age_Review> {
   Widget build(BuildContext context) {
     return Column(children: [
       Container(
-        height: 1000,
+        height: 1000.h,
         child: ContainedTabBarView(
           tabBarProperties: TabBarProperties(
             padding: const EdgeInsets.symmetric(
@@ -462,10 +470,10 @@ class _Age_Review extends State<Age_Review> {
             unselectedLabelColor: HexColor('EC9361'),
           ),
           tabs: [
-            Container(child: Text('～10代')),
-            Container(child: Text('20代')),
-            Container(child: Text('30代')),
-            Container(child: Text('40代～')),
+            Container(child: Text('～10代',style: TextStyle(fontSize: 14.sp))),
+            Container(child: Text('20代',style: TextStyle(fontSize: 14.sp))),
+            Container(child: Text('30代',style: TextStyle(fontSize: 14.sp))),
+            Container(child: Text('40代～',style: TextStyle(fontSize: 14.sp))),
           ],
           views: [
             Container(
@@ -524,7 +532,7 @@ class _Age_Review extends State<Age_Review> {
         //streamが更新されるたびに呼ばれる
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           //データが取れていない時の処理
-          if (!snapshot.hasData) return const Text('Loading...');
+          if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
 
           final result = snapshot.data!.docs;
 
@@ -639,13 +647,13 @@ class _Age_Review extends State<Age_Review> {
             return Column(children: [
               Container(
                 alignment: Alignment.topCenter,
-                padding: EdgeInsets.only(top: 100),
-                height: 200,
+                padding: EdgeInsets.only(top: 100.h),
+                height: 200.h,
                 child: Text(
                   'この年代のレビューはありません。',
                   style: TextStyle(
                     color: HexColor('ec9361'),
-                    fontSize: 25,
+                    fontSize: 25.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -667,23 +675,23 @@ class _Age_Review extends State<Age_Review> {
           return Column(
             children: [
               Container(
-                height: 74,
+                height: 74.h,
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SelectableText(age + 'の総合評価',
-                          style: TextStyle(fontSize: 27.0),
+                          style: TextStyle(fontSize: 27.0.sp),
                           scrollPhysics:
                               NeverScrollableScrollPhysics()), //年代タイトル
                       Container(
                         child: Row(
                           children: [
                             SizedBox(
-                              width: 120,
-                              height: 40,
+                              width: 120.w,
+                              height: 40.h,
                               child: ElevatedButton(
                                   //表示順
-                                  child: const Text('表示順'),
+                                  child:Text('表示順',style: TextStyle(fontSize: 14.sp)),
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.white,
                                     onPrimary: HexColor('EC9361'),
@@ -706,13 +714,13 @@ class _Age_Review extends State<Age_Review> {
                                     });
                                   }),
                             ),
-                            SpaceBox.width(20),
+                            SpaceBox.width(20.w),
                             SizedBox(
-                              width: 120,
-                              height: 40,
+                              width: 120.w,
+                              height: 40.h,
                               child: ElevatedButton(
                                   //絞り込みボタン
-                                  child: const Text('絞り込み'),
+                                  child:Text('絞り込み',style: TextStyle(fontSize: 14.sp)),
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.white,
                                     onPrimary: HexColor('EC9361'),
@@ -744,7 +752,7 @@ class _Age_Review extends State<Age_Review> {
                                       child: Icon(
                                         Icons.sort_outlined,
                                         color: HexColor('FFDFC5'),
-                                        size: 50,
+                                        size: 50.sp,
                                       ),
                                       onPressed: _onPressedStart,
                                     ),
@@ -755,7 +763,7 @@ class _Age_Review extends State<Age_Review> {
                                   child: Icon(
                                     Icons.sort_outlined,
                                     color: HexColor('FFDFC5'),
-                                    size: 50,
+                                    size: 50.sp,
                                   ),
                                   onPressed: _onPressedStart),
                           ],
@@ -765,7 +773,7 @@ class _Age_Review extends State<Age_Review> {
               ), //年代別
               Divider(
                 //仕切り線
-                height: 20,
+                height: 20.h,
                 thickness: 5,
                 color: HexColor('FFDFC5'),
               ),
@@ -779,9 +787,9 @@ class _Age_Review extends State<Age_Review> {
                           //総合星評価
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: Text('総合評価', style: TextStyle(fontSize: 15)),
+                            child: Text('総合評価', style: TextStyle(fontSize: 15.sp)),
                           ),
-                          SpaceBox.width(30),
+                          SpaceBox.width(30.w),
                           star(evaluation, 50)
                         ],
                       ),
@@ -790,9 +798,9 @@ class _Age_Review extends State<Age_Review> {
                           //コスパ星評価
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: Text('コスパ', style: TextStyle(fontSize: 15)),
+                            child: Text('コスパ', style: TextStyle(fontSize: 15.sp)),
                           ),
-                          SpaceBox.width(40),
+                          SpaceBox.width(40.w),
                           star(cospa, 50)
                         ],
                       )
@@ -836,10 +844,10 @@ class _Age_Review extends State<Age_Review> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: SelectableText(age + 'のコメント',
-                    style: TextStyle(fontSize: 27.0),
+                    style: TextStyle(fontSize: 27.0.sp),
                     scrollPhysics: NeverScrollableScrollPhysics()),
               ),
-              SpaceBox.height(20),
+              SpaceBox.height(20.h),
               Container(
                 //レビュー内容
                 child: Column(
@@ -862,7 +870,7 @@ class _Age_Review extends State<Age_Review> {
                                       .inDays <
                                   max)
                             Container(
-                              padding: EdgeInsets.only(bottom: 20),
+                              padding: EdgeInsets.only(bottom: 20.h),
                               child: Row(
                                 children: [
                                   reviewUserIcon(reviewResult[i]['user_id']),
@@ -883,7 +891,7 @@ class _Age_Review extends State<Age_Review> {
                                                   text: reviewResult[i]
                                                       ['review_comment'],
                                                   style: TextStyle(
-                                                      color: Colors.black))),
+                                                      color: Colors.black,fontSize:14.sp))),
                                         ),
                                         GestureDetector(
                                           onTap: () {
@@ -894,7 +902,7 @@ class _Age_Review extends State<Age_Review> {
                                             child: Text(
                                               '続きを読む',
                                               style: TextStyle(
-                                                  color: Colors.lightBlue),
+                                                  color: Colors.lightBlue,fontSize:14.sp),
                                             ),
                                           ),
                                         ),
@@ -905,7 +913,7 @@ class _Age_Review extends State<Age_Review> {
                                             Icon(
                                               Icons.favorite,
                                               color: Colors.grey,
-                                              size: 20,
+                                              size: 20.sp,
                                             ),
                                             StreamBuilder<QuerySnapshot>(
 
@@ -924,19 +932,19 @@ class _Age_Review extends State<Age_Review> {
                                                         snapshot) {
                                                   //データが取れていない時の処理
                                                   if (!snapshot.hasData)
-                                                    return const Text(
-                                                        'Loading...');
+                                                    return Text(
+                                                        'Loading...',style: TextStyle(fontSize: 14.sp));
 
                                                   final result =
                                                       snapshot.data!.docs;
                                                   return Text(
-                                                      result.length.toString());
+                                                      result.length.toString(),style: TextStyle(fontSize: 14.sp));
                                                 }),
-                                            SpaceBox.width(20),
+                                            SpaceBox.width(20.w),
                                             Icon(
                                               Icons.chat_bubble_outline,
                                               color: Colors.grey,
-                                              size: 20,
+                                              size: 20.sp,
                                             ),
                                             StreamBuilder<QuerySnapshot>(
 
@@ -955,20 +963,20 @@ class _Age_Review extends State<Age_Review> {
                                                         snapshot) {
                                                   //データが取れていない時の処理
                                                   if (!snapshot.hasData)
-                                                    return const Text(
-                                                        'Loading...');
+                                                    return Text(
+                                                        'Loading...',style: TextStyle(fontSize: 14.sp));
 
                                                   final result =
                                                       snapshot.data!.docs;
                                                   return Text(
-                                                      result.length.toString());
+                                                      result.length.toString(),style: TextStyle(fontSize: 14.sp));
                                                 }),
-                                            SpaceBox.width(50),
+                                            SpaceBox.width(50.w),
                                             Text(DateFormat("yyyy/MM/dd")
                                                 .format(reviewResult[i]
                                                         ['review_postdate']
                                                     .toDate())
-                                                .toString()), //投稿日時
+                                                .toString(),style: TextStyle(fontSize: 14.sp)), //投稿日時
                                           ],
                                         ),
                                       ],
@@ -981,7 +989,7 @@ class _Age_Review extends State<Age_Review> {
                 ),
               ),
               Container(
-                  margin: EdgeInsets.symmetric(vertical: 20),
+                  margin: EdgeInsets.symmetric(vertical: 20.h),
                   child: Column(
                     children: [
                       Row(
@@ -989,18 +997,18 @@ class _Age_Review extends State<Age_Review> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            width: 35,
-                            height: 50,
+                            width: 35.w,
+                            height: 50.h,
                             child: ElevatedButton(
                               child: Text(
                                 '1',
-                                style: TextStyle(fontSize: 20),
+                                style: TextStyle(fontSize: 20.sp),
                               ),
                               style: ElevatedButton.styleFrom(
                                 primary: HexColor('EC9361'),
                                 onPrimary: Colors.white,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(10.sp),
                                 ),
                               ),
                               onPressed: () {},
@@ -1008,9 +1016,9 @@ class _Age_Review extends State<Age_Review> {
                           ),
                           TextButton(
                             //＞ボタン
-                            child: const Text(
+                            child: Text(
                               '>',
-                              style: TextStyle(fontSize: 40),
+                              style: TextStyle(fontSize: 40.sp),
                             ),
                             style: TextButton.styleFrom(
                               primary: Colors.black,
@@ -1069,7 +1077,7 @@ Widget reviewUserData(userId, evaluation) {
       //streamが更新されるたびに呼ばれる
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         //データが取れていない時の処理
-        if (!snapshot.hasData) return const Text('Loading...');
+        if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
 
         final result = snapshot.data!.docs[0];
         String gender = "";
@@ -1086,12 +1094,12 @@ Widget reviewUserData(userId, evaluation) {
               Align(
                   alignment: Alignment.centerLeft,
                   child: SelectableText(result['user_name'],
-                      style: TextStyle(fontSize: 17),
+                      style: TextStyle(fontSize: 17.sp),
                       scrollPhysics: NeverScrollableScrollPhysics())), //ユーザー名
               Align(
                   alignment: Alignment.centerLeft,
                   child: SelectableText(gender,
-                      style: TextStyle(fontSize: 17),
+                      style: TextStyle(fontSize: 17.sp),
                       scrollPhysics: NeverScrollableScrollPhysics())), //性別
               /*Align(
                   alignment: Alignment.centerLeft,
@@ -1115,7 +1123,7 @@ Widget reviewUserIcon(userId) {
       //streamが更新されるたびに呼ばれる
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         //データが取れていない時の処理
-        if (!snapshot.hasData) return const Text('Loading...');
+        if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
 
         final result = snapshot.data!.docs[0];
 
@@ -1128,7 +1136,8 @@ Widget reviewUserIcon(userId) {
                 style: ElevatedButton.styleFrom(shape: CircleBorder()),
                 child: ClipOval(
                     child: Image(
-                  width: 85,
+                  width: 85.w,
+                  height: 85.h,
                   image: NetworkImage((result['user_icon'] == "")
                       ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
                       : result['user_icon']),

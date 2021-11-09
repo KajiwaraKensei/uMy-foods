@@ -16,6 +16,7 @@ import 'package:cloud_firestore/cloud_firestore.dart'; //DB
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/date_symbol_data_local.dart'; //日時用
+import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
 
 // 外部ファイル
 import 'package:umy_foods/HexColor.dart'; //16進数カラーコード
@@ -82,12 +83,12 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return const Text('Loading...');
+            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
 
             String result = snapshot.data!.docs[0]['maker_name'];
             maker = result;
 
-            return Text(result);
+            return Text(result,style: TextStyle(fontSize: 14.sp),);
           });
     }
 
@@ -106,11 +107,11 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return const Text('Loading...');
+            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
 
             String result = snapshot.data!.docs[0]['brand_name'];
 
-            return Text(result);
+            return Text(result,style: TextStyle(fontSize: 14.sp));
           });
     }
 
@@ -129,7 +130,7 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return const Text('Loading...');
+            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
 
             String result = snapshot.data!.docs[0]['allergy_name'];
 
@@ -137,7 +138,7 @@ class _DetailsPageState extends State<DetailsPage> {
               return Text('');
             }
 
-            return Text('${result}　');
+            return Text('${result}　',style: TextStyle(fontSize: 14.sp));
           });
     }
 
@@ -156,7 +157,7 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return const Text('Loading...');
+            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
 
             final result = snapshot.data!.docs;
 
@@ -171,7 +172,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SelectableText('総合評価',
-                              scrollPhysics: NeverScrollableScrollPhysics()),
+                              scrollPhysics: NeverScrollableScrollPhysics(),style: TextStyle(fontSize: 14.sp)),
                           star(0, 30)
                         ],
                       )),
@@ -182,7 +183,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SelectableText('コスパ',
-                              scrollPhysics: NeverScrollableScrollPhysics()),
+                              scrollPhysics: NeverScrollableScrollPhysics(),style: TextStyle(fontSize: 14.sp)),
                           star(0, 30)
                         ],
                       )),
@@ -214,7 +215,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SelectableText('総合評価',
-                            scrollPhysics: NeverScrollableScrollPhysics()),
+                            scrollPhysics: NeverScrollableScrollPhysics(),style: TextStyle(fontSize: 14.sp)),
                         star(evaluation, 30)
                       ],
                     )),
@@ -225,7 +226,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SelectableText('コスパ',
-                            scrollPhysics: NeverScrollableScrollPhysics()),
+                            scrollPhysics: NeverScrollableScrollPhysics(),style: TextStyle(fontSize: 14.sp)),
                         star(cospa, 30)
                       ],
                     )),
@@ -248,12 +249,13 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return const Text('Loading...');
+            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
 
             final result = snapshot.data!.docs;
 
             return Text(result.length.toString(),
                 style: TextStyle(
+                  fontSize: 14.sp,
                   color: HexColor('#EC9361'),
                   fontWeight: FontWeight.w900,
                 ));
@@ -274,13 +276,14 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return const Text('Loading...');
+            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
 
             final result = snapshot.data!.docs;
             repeatnum = result.length;
 
             return Text(result.length.toString(),
                 style: TextStyle(
+                  fontSize: 14.sp,
                   color: HexColor('#EC9361'),
                   fontWeight: FontWeight.w900,
                 ));
@@ -301,14 +304,14 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return const Text('Loading...');
+            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
 
             final result = snapshot.data!.docs;
 
             return Text('気になる (${result.length})',
                 style: TextStyle(
                     color: concern == true ? Colors.white : HexColor('616161'),
-                    fontSize: 17));
+                    fontSize: 17.sp));
           });
     }
 
@@ -325,7 +328,7 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return const Text('Loading...');
+            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
 
             final result = snapshot.data!.docs;
             final now = DateTime.now();
@@ -380,14 +383,14 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return const Text('Loading...');
+            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
 
             final result = snapshot.data!.docs;
 
             if (result.length == 0) {
               return Container(
                 child: Column(children: [
-                  Text('この商品を「リピート」しているユーザーの年代'),
+                  Text('この商品を「リピート」しているユーザーの年代',style: TextStyle(fontSize: 14.sp)),
                   Table(
                     children: [
                       TableRow(children: [
@@ -410,7 +413,7 @@ class _DetailsPageState extends State<DetailsPage> {
             }
             return Container(
               child: Column(children: [
-                Text('この商品を「リピート」しているユーザーの年代'),
+                Text('この商品を「リピート」しているユーザーの年代',style: TextStyle(fontSize: 14.sp)),
                 parcentAge(userId),
               ]),
             );
@@ -431,23 +434,23 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return const Text('Loading...');
+            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
 
             final result = snapshot.data!.docs;
 
             if (result.length == 0) {
               return Container(
                 child: Column(children: [
-                  Text('この商品を「レビュー」しているユーザーの年代'),
+                  Text('この商品を「レビュー」しているユーザーの年代',style: TextStyle(fontSize: 14.sp)),
                   Table(
                     children: [
                       TableRow(children: [
-                        percent_indicator('~10代', 0.0),
-                        percent_indicator('20代', 0.0),
+                        percent_indicator('~10代',0.0),
+                        percent_indicator('20代',0.0),
                       ]),
                       TableRow(children: [
-                        percent_indicator('30代', 0.0),
-                        percent_indicator('40代~', 0.0),
+                        percent_indicator('30代',0.0),
+                        percent_indicator('40代~',0.0),
                       ])
                     ],
                   ),
@@ -461,7 +464,7 @@ class _DetailsPageState extends State<DetailsPage> {
             }
             return Container(
               child: Column(children: [
-                Text('この商品を「レビュー」しているユーザーの年代'),
+                Text('この商品を「レビュー」しているユーザーの年代',style: TextStyle(fontSize: 14.sp)),
                 parcentAge(userId),
               ]),
             );
@@ -485,15 +488,17 @@ class _DetailsPageState extends State<DetailsPage> {
           builder: (context,
               AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return const Text('Loading...');
+            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
 
             return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SelectableText('${snapshot.data!['subject']}',
+                    style: TextStyle(fontSize: 14.sp),
                       scrollPhysics: NeverScrollableScrollPhysics()),
                   SelectableText(
                       'たんぱく質　${snapshot.data!['たんぱく質']}　/　エネルギー　${snapshot.data!['エネルギー']}　/　炭水化物　${snapshot.data!['炭水化物']}　/　脂質　${snapshot.data!['脂質']}　/　食塩相当量　${snapshot.data!['食塩相当量']}',
+                      style: TextStyle(fontSize: 14.sp),
                       scrollPhysics: NeverScrollableScrollPhysics()),
                 ]);
           });
@@ -517,7 +522,7 @@ class _DetailsPageState extends State<DetailsPage> {
                               content: TextButton(
                                   child: Text(
                                     where,
-                                    style: TextStyle(color: Colors.black),
+                                    style: TextStyle(color: Colors.black,fontSize: 14.sp),
                                   ),
                                   onPressed: () {
                                     Navigator.pop(context);
@@ -527,14 +532,14 @@ class _DetailsPageState extends State<DetailsPage> {
                               content: TextButton(
                                   child: Text(
                                     '商品詳細',
-                                    style: TextStyle(color: Colors.black),
+                                    style: TextStyle(color: Colors.black,fontSize: 14.sp),
                                   ),
                                   onPressed: () {}),
                             ),
                           ],
                           divider: Icon(Icons.chevron_right),
                         ),
-                        SpaceBox.height(20),
+                        SpaceBox.height(20.h),
                         //商品詳細
                         StreamBuilder<QuerySnapshot>(
 
@@ -546,7 +551,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
                               //データが取れていない時の処理
                               if (!snapshot.hasData)
-                                return const Text('Loading...');
+                                return Text('Loading...',style: TextStyle(fontSize: 14.sp));
 
                               final result = snapshot.data!.docs[0];
                               String imgmain = (result['images'][0] == "")
@@ -568,7 +573,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                             SelectableText(
                                                 result['product_name'],
                                                 style: TextStyle(
-                                                  fontSize: 27.0,
+                                                  fontSize: 27.0.sp,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                                 scrollPhysics:
@@ -603,14 +608,14 @@ class _DetailsPageState extends State<DetailsPage> {
                                           children: [
                                             IconButton(
                                               //スパナ
-                                              icon: const Icon(
+                                              icon: Icon(
                                                 FontAwesomeIcons.wrench,
                                                 color: Colors.grey,
-                                                size: 20,
+                                                size: 20.sp,
                                               ),
                                               onPressed: () {},
                                             ),
-                                            SpaceBox.width(10),
+                                            SpaceBox.width(10.w),
                                             Ink(
                                               //Twitterボタン
                                               decoration: ShapeDecoration(
@@ -618,10 +623,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 shape: CircleBorder(),
                                               ),
                                               child: IconButton(
-                                                icon: const Icon(
+                                                icon: Icon(
                                                   FontAwesomeIcons.twitter,
                                                   color: Colors.white,
-                                                  size: 20,
+                                                  size: 20.sp,
                                                 ),
                                                 color: Colors.white,
                                                 onPressed: () async {
@@ -639,7 +644,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 },
                                               ),
                                             ),
-                                            SpaceBox.width(10),
+                                            SpaceBox.width(10.w),
                                             Ink(
                                               //Instagramボタン
                                               decoration: ShapeDecoration(
@@ -654,16 +659,16 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 shape: CircleBorder(),
                                               ),
                                               child: IconButton(
-                                                icon: const Icon(
+                                                icon: Icon(
                                                   FontAwesomeIcons.instagram,
                                                   color: Colors.white,
-                                                  size: 20,
+                                                  size: 20.sp,
                                                 ),
                                                 color: Colors.white,
                                                 onPressed: () {},
                                               ),
                                             ),
-                                            SpaceBox.width(10),
+                                            SpaceBox.width(10.w),
                                             Ink(
                                               //Facebookボタン
                                               decoration: ShapeDecoration(
@@ -671,10 +676,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 shape: CircleBorder(),
                                               ),
                                               child: IconButton(
-                                                icon: const Icon(
+                                                icon: Icon(
                                                   FontAwesomeIcons.facebook,
                                                   color: Colors.white,
-                                                  size: 20,
+                                                  size: 20.sp,
                                                 ),
                                                 color: Colors.white,
                                                 onPressed: () async {
@@ -697,11 +702,12 @@ class _DetailsPageState extends State<DetailsPage> {
                                         flex: 1,
                                         child: Container(
                                           // height: 454,
-                                          padding: EdgeInsets.all(10),
+                                          padding: EdgeInsets.all(10.sp),
                                           child: Column(
                                             children: [
                                               Container(
-                                                height: 330,
+                                                height: 330.h,
+                                                width: 330.w,
                                                 child: Image.network(
                                                     imgmain), //メイン商品画像
                                               ),
@@ -713,11 +719,11 @@ class _DetailsPageState extends State<DetailsPage> {
                                           flex: 1,
                                           child: Container(
                                               padding:
-                                                  EdgeInsets.only(left: 20),
+                                                  EdgeInsets.only(left: 20.w),
                                               child: Column(
                                                 children: [
                                                   evaluation(productId),
-                                                  SpaceBox.height(20),
+                                                  SpaceBox.height(20.h),
                                                   Align(
                                                     alignment:
                                                         Alignment.centerLeft,
@@ -726,9 +732,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics(),
                                                         style: TextStyle(
-                                                            fontSize: 20)),
+                                                            fontSize: 20.sp)),
                                                   ),
-                                                  SpaceBox.height(20),
+                                                  SpaceBox.height(20.h),
                                                   Table(
                                                     //商品情報テーブル
                                                     columnWidths: const <int,
@@ -741,45 +747,52 @@ class _DetailsPageState extends State<DetailsPage> {
                                                     children: [
                                                       TableRow(children: [
                                                         SelectableText('商品名',
+                                                          style: TextStyle(fontSize: 14.sp),
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics()),
                                                         SelectableText(
                                                             result[
                                                                 'product_name'],
+                                                            style: TextStyle(fontSize: 14.sp),
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics()),
-                                                        SpaceBox.height(30),
+                                                        SpaceBox.height(30.h),
                                                       ]),
                                                       TableRow(children: [
                                                         SelectableText('メーカー名',
+                                                          style: TextStyle(fontSize: 14.sp),
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics()),
                                                         makerName(
                                                             result['maker_id']),
-                                                        SpaceBox.height(30),
+                                                        SpaceBox.height(30.h),
                                                       ]),
                                                       TableRow(children: [
                                                         SelectableText('ブランド名',
+                                                          style: TextStyle(fontSize: 14.sp),
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics()),
                                                         brandName(
                                                             result['maker_id'],
                                                             result['brand_id']),
-                                                        SpaceBox.height(30),
+                                                        SpaceBox.height(30.h),
                                                       ]),
                                                       TableRow(children: [
                                                         SelectableText('内容量',
+                                                          style: TextStyle(fontSize: 14.sp),
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics()),
                                                         SelectableText(
                                                             result[
                                                                 'Internal_capacity'],
+                                                            style: TextStyle(fontSize: 14.sp),
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics()),
-                                                        SpaceBox.height(30),
+                                                        SpaceBox.height(30.h),
                                                       ]),
                                                       TableRow(children: [
                                                         SelectableText('発売日',
+                                                          style: TextStyle(fontSize: 14.sp),
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics()),
                                                         (DateFormat("yyyy/MM/dd")
@@ -790,6 +803,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                 '0001/01/01')
                                                             ? SelectableText(
                                                                 'データなし',
+                                                                style: TextStyle(fontSize: 14.sp),
                                                                 scrollPhysics:
                                                                     NeverScrollableScrollPhysics())
                                                             : SelectableText(
@@ -799,9 +813,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                             'release_date']
                                                                         .toDate())
                                                                     .toString(),
+                                                                style: TextStyle(fontSize: 14.sp),
                                                                 scrollPhysics:
                                                                     NeverScrollableScrollPhysics()),
-                                                        SpaceBox.height(30),
+                                                        SpaceBox.height(30.h),
                                                       ]),
                                                     ],
                                                   )
@@ -809,7 +824,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                               ))),
                                     ],
                                   ),
-                                  SpaceBox.height(20),
+                                  SpaceBox.height(20.h),
                                   Row(
                                     children: [
                                       Expanded(
@@ -837,15 +852,14 @@ class _DetailsPageState extends State<DetailsPage> {
                                                       });
                                                     },
                                                     child: Container(
-                                                      padding:
-                                                          EdgeInsets.all(5),
+                                                      padding:  EdgeInsets.symmetric(vertical: 5.h,horizontal: 5.w),
                                                       decoration: BoxDecoration(
                                                         border: Border.all(
                                                             color: Colors.grey),
                                                       ),
                                                       child: Container(
-                                                        height: 100, //画像サイズ
-                                                        width: 100,
+                                                        height: 100.h, //画像サイズ
+                                                        width: 100.w,
                                                         child: (result['images']
                                                                     [i] ==
                                                                 "")
@@ -863,15 +877,15 @@ class _DetailsPageState extends State<DetailsPage> {
                                           child: Container(
                                               // color: Colors.red,
                                               padding:
-                                                  EdgeInsets.only(left: 20),
+                                                  EdgeInsets.only(left: 20.w),
                                               child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
                                                           .spaceAround,
                                                   children: [
                                                     SizedBox(
-                                                        width: 170,
-                                                        height: 35,
+                                                        width: 170.w,
+                                                        height: 35.h,
                                                         child: ElevatedButton(
                                                           style: ElevatedButton
                                                               .styleFrom(
@@ -884,7 +898,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                               'Amazonで購入',
                                                               style: TextStyle(
                                                                   fontSize:
-                                                                      12)),
+                                                                      12.sp)),
                                                           onPressed: () async {
                                                             if (await canLaunch(
                                                                 "https://www.amazon.co.jp/s?k=" +
@@ -898,8 +912,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                                           },
                                                         )),
                                                     SizedBox(
-                                                        width: 170,
-                                                        height: 35,
+                                                        width: 170.w,
+                                                        height: 35.h,
                                                         child: ElevatedButton(
                                                           style: ElevatedButton
                                                               .styleFrom(
@@ -911,7 +925,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                           child: Text('楽天市場で購入',
                                                               style: TextStyle(
                                                                   fontSize:
-                                                                      12)),
+                                                                      12.sp)),
                                                           onPressed: () async {
                                                             if (await canLaunch(
                                                                 "https://search.rakuten.co.jp/search/mall/" +
@@ -925,8 +939,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                                           },
                                                         )),
                                                     SizedBox(
-                                                        width: 170,
-                                                        height: 35,
+                                                        width: 170.w,
+                                                        height: 35.h,
                                                         child: ElevatedButton(
                                                           style: ElevatedButton
                                                               .styleFrom(
@@ -939,7 +953,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                               'Y！ショッピングで購入',
                                                               style: TextStyle(
                                                                   fontSize:
-                                                                      12)),
+                                                                      12.sp)),
                                                           onPressed: () async {
                                                             if (await canLaunch(
                                                                 "https://shopping.yahoo.co.jp/search?first=&p=" +
@@ -955,7 +969,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   ]))),
                                     ],
                                   ),
-                                  SpaceBox.height(20),
+                                  SpaceBox.height(20.h),
                                   Row(
                                     children: [
                                       Expanded(
@@ -964,8 +978,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                               child: Center(
                                             child: SizedBox(
                                               //気になるボタン
-                                              width: 200,
-                                              height: 50,
+                                              width: 200.w,
+                                              height: 50.h,
                                               child: ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
                                                   primary: concern == true
@@ -985,7 +999,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                             ? Colors.white
                                                             : HexColor(
                                                                 '616161')),
-                                                    SpaceBox.width(10),
+                                                    SpaceBox.width(10.w),
                                                     numberOfConcern(productId),
                                                   ],
                                                 ),
@@ -1003,8 +1017,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                               child: Center(
                                             child: SizedBox(
                                               //リピートボタン
-                                              width: 200,
-                                              height: 50,
+                                              width: 200.w,
+                                              height: 50.h,
                                               child: ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
                                                   primary: repeat == true
@@ -1029,7 +1043,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                 ? Colors.white
                                                                 : HexColor(
                                                                     '616161'),
-                                                            fontSize: 17))
+                                                            fontSize: 17.sp))
                                                   ],
                                                 ),
                                                 onPressed: () {
@@ -1042,7 +1056,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                           ))),
                                     ],
                                   ),
-                                  SpaceBox.height(20),
+                                  SpaceBox.height(20.h),
                                   Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -1054,10 +1068,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                             children: [
                                               SizedBox(
                                                 //原材料ドロップダウン
-                                                width: 700,
-                                                height: 40,
+                                                width: 700.w,
+                                                height: 40.h,
                                                 child: ElevatedButton(
-                                                    child: const Text('原材料'),
+                                                    child: Text('原材料',style: TextStyle(fontSize: 14.sp),),
                                                     style: ElevatedButton
                                                         .styleFrom(
                                                       primary: Colors.white,
@@ -1077,12 +1091,12 @@ class _DetailsPageState extends State<DetailsPage> {
                                               Visibility(
                                                   //押してない時の空間
                                                   visible: !_materials,
-                                                  child: SpaceBox.height(40)),
+                                                  child: SpaceBox.height(40.h)),
                                               Visibility(
                                                   //押したとき表示
                                                   visible: _materials,
                                                   child: Container(
-                                                      width: 700,
+                                                      width: 700.w,
                                                       // height: 150,
                                                       child: Column(
                                                           crossAxisAlignment:
@@ -1092,19 +1106,20 @@ class _DetailsPageState extends State<DetailsPage> {
                                                             SelectableText(
                                                               result[
                                                                   'raw_material'],
+                                                              style: TextStyle(fontSize: 14.sp),
                                                               scrollPhysics:
                                                                   NeverScrollableScrollPhysics(),
                                                             ),
-                                                            SpaceBox.height(20)
+                                                            SpaceBox.height(20.h)
                                                           ])
                                                       // child: SelectableText(result['raw_material'],scrollPhysics: NeverScrollableScrollPhysics(),),
                                                       )),
                                               SizedBox(
                                                 //アレルギードロップダウン
-                                                width: 700,
-                                                height: 40,
+                                                width: 700.w,
+                                                height: 40.h,
                                                 child: ElevatedButton(
-                                                    child: const Text('アレルギー'),
+                                                    child: Text('アレルギー',style: TextStyle(fontSize: 14.sp)),
                                                     style: ElevatedButton
                                                         .styleFrom(
                                                       primary: Colors.white,
@@ -1123,12 +1138,12 @@ class _DetailsPageState extends State<DetailsPage> {
                                               Visibility(
                                                   //押してない時の空間
                                                   visible: !_allergy,
-                                                  child: SpaceBox.height(40)),
+                                                  child: SpaceBox.height(40.h)),
                                               Visibility(
                                                   //押したとき表示
                                                   visible: _allergy,
                                                   child: Container(
-                                                      width: 700,
+                                                      width: 700.w,
                                                       // height: 100,
                                                       child: Column(
                                                           crossAxisAlignment:
@@ -1147,14 +1162,14 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                             i++)
                                                                           allergyName(result['allergy_id'][i])
                                                                       ]),
-                                                            SpaceBox.height(20)
+                                                            SpaceBox.height(20.h)
                                                           ]))),
                                               SizedBox(
                                                 //栄養成分ドロップダウン
-                                                width: 700,
-                                                height: 40,
+                                                width: 700.w,
+                                                height: 40.h,
                                                 child: ElevatedButton(
-                                                    child: const Text('栄養成分'),
+                                                    child: Text('栄養成分',style: TextStyle(fontSize: 14.sp)),
                                                     style: ElevatedButton
                                                         .styleFrom(
                                                       primary: Colors.white,
@@ -1175,7 +1190,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   //押したとき表示
                                                   visible: _nutrition,
                                                   child: Container(
-                                                      width: 700,
+                                                      width: 700.w,
                                                       // height: 100,
                                                       child: Column(
                                                           crossAxisAlignment:
@@ -1197,13 +1212,14 @@ class _DetailsPageState extends State<DetailsPage> {
                                           flex: 1,
                                           child: Container(
                                               //割合棒グラフ
-                                              height: 300,
+                                              height: 300.h,
                                               padding:
-                                                  EdgeInsets.only(left: 20),
+                                                  EdgeInsets.only(left: 20.w),
                                               child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                 children: [
                                                   repeatAge(productId),
-                                                  SpaceBox.height(20),
+                                                  // SpaceBox.height(20.h),
                                                   reviewAge(productId),
                                                 ],
                                               ))),
@@ -1213,8 +1229,8 @@ class _DetailsPageState extends State<DetailsPage> {
                               );
                             }),
                         //仕切り線
-                        const Divider(
-                          height: 20,
+                        Divider(
+                          height: 20.h,
                           thickness: 5,
                           indent: 0,
                           endIndent: 0,
@@ -1232,11 +1248,11 @@ class _DetailsPageState extends State<DetailsPage> {
                   data: Theme.of(context)
                       .copyWith(canvasColor: Colors.transparent),
                   child: Container(
-                    margin: EdgeInsets.only(bottom: 20),
+                    margin: EdgeInsets.only(bottom: 20.h),
                     padding:
-                        const EdgeInsets.symmetric(vertical: 7, horizontal: 17),
-                    width: 350,
-                    height: 65,
+                        EdgeInsets.symmetric(vertical: 7.h, horizontal: 17.w),
+                    width: 370.w,
+                    height: 65.h,
                     decoration: BoxDecoration(
                       color: HexColor('EC9361'),
                       borderRadius: BorderRadius.circular(10),
@@ -1247,15 +1263,15 @@ class _DetailsPageState extends State<DetailsPage> {
                         children: [
                           ElevatedButton(
                             //レビューボタン
-                            child: const Text('この商品をレビューする',
-                                style: TextStyle(fontWeight: FontWeight.w600)),
+                            child: Text('この商品をレビューする',
+                                style: TextStyle(fontWeight: FontWeight.w600,fontSize: 14.sp)),
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.symmetric(
-                                  vertical: 20, horizontal: 30),
+                                  vertical: 20.h, horizontal: 30.w),
                               primary: Colors.white,
                               onPrimary: HexColor('EC9361'),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(10.sp),
                               ),
                             ),
                             onPressed: () {
@@ -1292,9 +1308,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                       return ElevatedButton(
                                         //クリップボタン
                                         child: Icon(Icons.assignment_turned_in,
-                                            size: 30),
+                                            size: 30.sp),
                                         style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.all(20),
+                                          padding: EdgeInsets.all(20.sp),
                                           primary: Colors.white,
                                           onPrimary: HexColor('EC9361'),
                                           shape: CircleBorder(
@@ -1323,9 +1339,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                   return ElevatedButton(
                                       //クリップボタン
                                       child: Icon(Icons.assignment_turned_in,
-                                          size: 30),
+                                          size: 30.sp),
                                       style: ElevatedButton.styleFrom(
-                                        padding: EdgeInsets.all(20),
+                                        padding: EdgeInsets.all(20.sp),
                                         primary: Colors.white,
                                         onPrimary: HexColor('EC9361'),
                                         shape: CircleBorder(
@@ -1367,18 +1383,18 @@ Widget percent_indicator(String name, double persent) {
   String persenttext = persentsub.ceil().toString(); //パーセントを文字化
 
   return Padding(
-    padding: EdgeInsets.all(15.0),
+    padding: EdgeInsets.all(15.0.sp),
     child: new LinearPercentIndicator(
-      width: 140.0,
-      lineHeight: 14.0,
+      width: 140.0.w,
+      lineHeight: 17.0.h,
       percent: persent,
       center: Text(
         persenttext + '%',
-        style: new TextStyle(fontSize: 12.0),
+        style: TextStyle(fontSize: 12.0.sp),
       ),
       leading: Container(
-        width: 60,
-        child: Text(name),
+        width: 60.w,
+        child: Text(name,style: TextStyle(fontSize: 14.sp)),
       ),
       linearStrokeCap: LinearStrokeCap.roundAll,
       backgroundColor: HexColor('E0E0E0'),

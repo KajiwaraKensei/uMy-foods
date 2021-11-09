@@ -9,6 +9,7 @@ import 'package:umy_foods/HexColor.dart'; //16進数カラーコード
 import 'package:umy_foods/SpaceBox.dart'; //空間
 import 'package:umy_foods/star.dart'; //星評価
 import 'package:umy_foods/profile/profile_edit.dart'; //プロフィール編集
+import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
 
@@ -69,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               onPressed: () {},
                               child: SelectableText(
                                 'TOP',
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(color: Colors.black,fontSize: 14.sp),
                                 scrollPhysics: NeverScrollableScrollPhysics(),
                               ),
                             ),
@@ -79,13 +80,13 @@ class _ProfilePageState extends State<ProfilePage> {
                               onPressed: () {},
                               child: SelectableText(
                                 'プロフィール',
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(color: Colors.black,fontSize: 14.sp),
                                 scrollPhysics: NeverScrollableScrollPhysics(),
                               ),
                             ),
                           ),
                         ],
-                        divider: Icon(Icons.chevron_right),
+                        divider: Icon(Icons.chevron_right,size:24.sp),
                       ),
                       Row(
                         children: [
@@ -94,6 +95,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () {},
                             icon: Icon(
                               Icons.settings_outlined,
+                              size:24.sp
                             ),
                             tooltip: '設定',
                           ),
@@ -110,6 +112,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             },
                             icon: Icon(
                               Icons.edit_outlined,
+                              size:24.sp
                             ),
                             tooltip: 'プロフィール編集',
                           ),
@@ -214,38 +217,44 @@ class _ProfilePageState extends State<ProfilePage> {
                                           children: [
                                             SelectableText(result['user_name'],
                                                 style: TextStyle(
-                                                  fontSize: 40,
+                                                  fontSize: 40.sp,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                                 scrollPhysics:
                                                     NeverScrollableScrollPhysics()),
                                             SelectableText(
                                                 '20代 / 女性 / 甘党 / 薄味 / 派量派',
+                                                style: TextStyle(fontSize: 14.sp),
                                                 scrollPhysics:
                                                     NeverScrollableScrollPhysics()),
                                             Row(
                                               //ランキング
                                               children: [
                                                 FaIcon(FontAwesomeIcons.crown,
-                                                    color: HexColor('FFDF4C')),
+                                                    color: HexColor('FFDF4C'),size:24.sp),
                                                 SelectableText('今日のランキング0位　',
                                                     style: TextStyle(
                                                         color:
-                                                            HexColor('EC9361')),
+                                                            HexColor('EC9361'),
+                                                        fontSize: 14.sp,
+                                                    ),
                                                     scrollPhysics:
                                                         NeverScrollableScrollPhysics()),
                                                 FaIcon(FontAwesomeIcons.crown,
-                                                    color: HexColor('FFDF4C')),
+                                                    color: HexColor('FFDF4C'),size:24.sp),
                                                 SelectableText('週間ランキング0位　',
                                                     style: TextStyle(
                                                         color:
-                                                            HexColor('EC9361')),
+                                                            HexColor('EC9361'),
+                                                        fontSize: 14.sp,    
+                                                        ),
                                                     scrollPhysics:
                                                         NeverScrollableScrollPhysics()),
                                                 FaIcon(FontAwesomeIcons.crown,
-                                                    color: HexColor('FFDF4C')),
+                                                    color: HexColor('FFDF4C'),size:24.sp),
                                                 SelectableText('月間ランキング0位　',
                                                     style: TextStyle(
+                                                        fontSize: 14.sp,
                                                         color:
                                                             HexColor('EC9361')),
                                                     scrollPhysics:
@@ -289,6 +298,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 result[
                                                     'user_profile'] //'９歳の娘ちゃんと猫ちゃん♀と暮らしてます。\n旦那は海外単身赴任中。\nまんまるころころかわいいもの大好き。\nチョコ、モンブラン、おこちゃまおやつ大好き。\n流行りにとらわれず、自分の好きなもの、食べたいものを口コミしていきます。\nのんびりのんびり(=^ェ^=)'
                                                 ,
+                                                style: TextStyle(fontSize: 14.sp),
                                                 scrollPhysics:
                                                     NeverScrollableScrollPhysics()
                                                 // ,minLines: 9,maxLines: 9,
@@ -301,11 +311,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                 });
                           }
                         }
-                        return Text('情報なし');
+                        return Text('情報なし',style: TextStyle(fontSize: 14.sp));
                       }),
                   Divider(
                     //仕切り線
-                    height: 10,
+                    height: 10.h,
                     thickness: 5,
                     indent: 0,
                     endIndent: 0,
@@ -360,7 +370,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                     0.3)
                                                             : HexColor(
                                                                 'EC9361'),
-                                                        fontSize: 20)),
+                                                        fontSize: 20.sp)),
                                                 onPressed: () {
                                                   setState(() {
                                                     display = 'レビュー';
@@ -378,7 +388,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       ? HexColor('EC9361')
                                                           .withOpacity(0.3)
                                                       : HexColor('EC9361'),
-                                                  width: 3,
+                                                  width: 3.w,
                                                 ),
                                               )),
                                               child: TextButton(
@@ -397,7 +407,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                     0.3)
                                                             : HexColor(
                                                                 'EC9361'),
-                                                        fontSize: 20)),
+                                                        fontSize: 20.sp)),
                                                 onPressed: () {
                                                   setState(() {
                                                     display = '食品';
@@ -426,7 +436,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         Container(
                                                             child: Row(
                                                           children: [
-                                                            SpaceBox.width(23),
+                                                            SpaceBox.width(23.w),
                                                             Card(
                                                               //商品カード
                                                               child: InkWell(
@@ -438,7 +448,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                     width: media_width * 0.1359,
                                                                     height: media_height * 0.3578,
                                                                     child: Padding(
-                                                                        padding: EdgeInsets.all(10),
+                                                                        padding: EdgeInsets.all(10.sp),
                                                                         child: Column(
                                                                           children: [
                                                                             Container(
@@ -455,23 +465,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                             Column(
                                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                                               children: [
-                                                                                Text('クッピーラムネ'), //商品名
+                                                                                Text('クッピーラムネ',style: TextStyle(fontSize: 14.sp)), //商品名
                                                                                 Row(
                                                                                   //星評価
                                                                                   children: [
                                                                                     Text(
                                                                                       '総合評価：',
-                                                                                      style: TextStyle(fontSize: 12),
+                                                                                      style: TextStyle(fontSize: 12.sp),
                                                                                     ),
                                                                                     star(3, 15),
                                                                                   ],
                                                                                 ),
-                                                                                SpaceBox.height(5),
-                                                                                Text(
+                                                                                SpaceBox.height(5.h),
+                                                                                SelectableText(
                                                                                   //レビュー内容
                                                                                   '298円で販売されていて、いつもとは違う味を食べたくて冒険してみた。シンプルにボイルして食べてみたら、中からトロ〜っとチーズが溶けていつものシャウエッセンのお肉のジューシーなコクのある塩気とチーズの濃厚な味が',
-                                                                                  style: TextStyle(fontSize: 11),
-                                                                                  overflow: TextOverflow.ellipsis,
+                                                                                  style: TextStyle(fontSize: 11.sp),
+                                                                                  scrollPhysics: NeverScrollableScrollPhysics(),
                                                                                   maxLines: 3,
                                                                                 )
                                                                               ],
@@ -502,7 +512,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           child: Text(
                                                             '1',
                                                             style: TextStyle(
-                                                                fontSize: 20),
+                                                                fontSize: 20.sp),
                                                           ),
                                                         ),
                                                         style: ElevatedButton
@@ -524,10 +534,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     ),
                                                     TextButton(
                                                       //＞ボタン
-                                                      child: const Text(
+                                                      child: Text(
                                                         '>',
                                                         style: TextStyle(
-                                                            fontSize: 40),
+                                                            fontSize: 40.sp),
                                                       ),
                                                       style:
                                                           TextButton.styleFrom(
@@ -558,7 +568,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         Container(
                                                             child: Row(
                                                           children: [
-                                                            SpaceBox.width(23),
+                                                            // SpaceBox.width(23.w),
                                                             Card(
                                                               //商品カード
                                                               child: InkWell(
@@ -566,13 +576,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                   setState(
                                                                       () {}); //商品詳細ページへ
                                                                 },
-                                                                child:
-                                                                    Container(
-                                                                  child: Stack(
-                                                                    children: [
-                                                                      Padding(
-                                                                          padding: EdgeInsets.all(
-                                                                              10),
+                                                                child:Container(
+                                                                  width: 174.w,
+                                                                  height: 240.h,
+                                                                  child:Padding(
+                                                                    padding: EdgeInsets.all(10.sp),
                                                                           child:
                                                                               Column(
                                                                             children: [
@@ -588,62 +596,63 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                               Column(
                                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                                 children: [
-                                                                                  Text('グリコ'), //メーカー
-                                                                                  Text('つぶつぶいちごポッキー'), //商品名
-                                                                                  Row(
-                                                                                    //星評価
-                                                                                    children: [
-                                                                                      star(3, 25),
-                                                                                      Text('500', style: TextStyle(color: HexColor('EC9361'), fontSize: 12))
-                                                                                    ],
-                                                                                  ),
-                                                                                  Row(
-                                                                                    children: [
-                                                                                      Column(
-                                                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                        children: [
-                                                                                          RichText(
-                                                                                              //気になる数
-                                                                                              text: TextSpan(style: TextStyle(color: Colors.black), children: [
-                                                                                            TextSpan(text: '1', style: TextStyle(fontWeight: FontWeight.w800, color: HexColor('EC9361'))),
-                                                                                            TextSpan(text: '気になる')
-                                                                                          ])),
-                                                                                          RichText(
-                                                                                              //リピート数
-                                                                                              text: TextSpan(style: TextStyle(color: Colors.black), children: [
-                                                                                            TextSpan(text: '100', style: TextStyle(fontWeight: FontWeight.w800, color: HexColor('EC9361'))),
-                                                                                            TextSpan(text: 'リピート')
-                                                                                          ]))
-                                                                                        ],
-                                                                                      ),
-                                                                                      SpaceBox.width(10),
-                                                                                      ElevatedButton(
-                                                                                        //クリップボタン
-                                                                                        child: Icon(
-                                                                                          Icons.assignment_turned_in,
-                                                                                        ),
-                                                                                        style: ElevatedButton.styleFrom(
-                                                                                          padding: EdgeInsets.all(15),
-                                                                                          primary: HexColor('EC9361'),
-                                                                                          onPrimary: Colors.white,
-                                                                                          shape: CircleBorder(
-                                                                                            side: BorderSide(
-                                                                                              color: Colors.transparent,
-                                                                                              width: 1,
-                                                                                              style: BorderStyle.solid,
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                        onPressed: () {},
-                                                                                      ),
-                                                                                    ],
-                                                                                  )
+                                                                                  Text('グリコ',style: TextStyle(fontSize: 14.sp)), //メーカー
+                                                                                  // Text('つ',style: TextStyle(fontSize: 14.sp)), //商品名
+                                                                                  // Row(
+                                                                                  //   //星評価
+                                                                                  //   children: [
+                                                                                  //     star(3, 25),
+                                                                                  //     // Text('500', style: TextStyle(color: HexColor('EC9361'), fontSize: 12.sp))
+                                                                                  //   ],
+                                                                                  // ),
+                                                                                  // Row(
+                                                                                  //   children: [
+                                                                                  //     Column(
+                                                                                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                  //       children: [
+                                                                                  //         RichText(
+                                                                                  //             //気になる数
+                                                                                  //             text: TextSpan(style: TextStyle(color: Colors.black,fontSize: 14.sp), children: [
+                                                                                  //           TextSpan(text: '1', style: TextStyle(fontWeight: FontWeight.w800, color: HexColor('EC9361'),fontSize: 14.sp)),
+                                                                                  //           TextSpan(text: '気になる',style: TextStyle(fontSize: 14.sp))
+                                                                                  //         ])),
+                                                                                  //         RichText(
+                                                                                  //             //リピート数
+                                                                                  //             text: TextSpan(style: TextStyle(color: Colors.black,fontSize: 14.sp), children: [
+                                                                                  //           TextSpan(text: '100', style: TextStyle(fontWeight: FontWeight.w800, color: HexColor('EC9361'),fontSize: 14.sp)),
+                                                                                  //           TextSpan(text: 'リピート',style: TextStyle(fontSize: 14.sp))
+                                                                                  //         ]))
+                                                                                  //       ],
+                                                                                  //     ),
+                                                                                  //     SpaceBox.width(10.w),
+                                                                                  //     ElevatedButton(
+                                                                                  //       //クリップボタン
+                                                                                  //       child: Icon(
+                                                                                  //         Icons.assignment_turned_in,
+                                                                                  //         size:24.sp
+                                                                                  //       ),
+                                                                                  //       style: ElevatedButton.styleFrom(
+                                                                                  //         padding: EdgeInsets.all(15.sp),
+                                                                                  //         primary: HexColor('EC9361'),
+                                                                                  //         onPrimary: Colors.white,
+                                                                                  //         shape: CircleBorder(
+                                                                                  //           side: BorderSide(
+                                                                                  //             color: Colors.transparent,
+                                                                                  //             width: 1,
+                                                                                  //             style: BorderStyle.solid,
+                                                                                  //           ),
+                                                                                  //         ),
+                                                                                  //       ),
+                                                                                  //       onPressed: () {},
+                                                                                  //     ),
+                                                                                  //   ],
+                                                                                  // )
                                                                                 ],
                                                                               )
                                                                             ],
-                                                                          ))
-                                                                    ],
-                                                                  ),
+                                                                          )
+                                                                        )
+                                                                    
                                                                 ),
                                                               ),
                                                             ),
@@ -669,7 +678,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           child: Text(
                                                             '1',
                                                             style: TextStyle(
-                                                                fontSize: 20),
+                                                                fontSize: 20.sp),
                                                           ),
                                                         ),
                                                         style: ElevatedButton
@@ -691,10 +700,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     ),
                                                     TextButton(
                                                       //＞ボタン
-                                                      child: const Text(
+                                                      child: Text(
                                                         '>',
                                                         style: TextStyle(
-                                                            fontSize: 40),
+                                                            fontSize: 40.sp),
                                                       ),
                                                       style:
                                                           TextButton.styleFrom(
@@ -728,7 +737,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             border: Border(
                                           bottom: BorderSide(
                                             color: HexColor('EC9361'),
-                                            width: 3,
+                                            width: 3.w,
                                           ),
                                         )),
                                         child: Row(
@@ -739,13 +748,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                             Text('お気に入りのメーカー',
                                                 style: TextStyle(
                                                     color: HexColor('EC9361'),
-                                                    fontSize: 20)),
+                                                    fontSize: 20.sp)),
                                             SizedBox(
                                               height: media_height * 0.0525,
                                               child: IconButton(
                                                 onPressed: () {},
                                                 icon: Icon(
                                                   Icons.edit_outlined,
+                                                  size:24.sp
                                                 ),
                                                 tooltip: 'お気に入りのメーカーを編集',
                                               ),
@@ -758,12 +768,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                           x++) //メーカー名表示
                                         ListTile(
                                           leading: Icon(
-                                              Icons.arrow_forward_ios_outlined),
-                                          title: Text(maker_name[x]),
+                                              Icons.arrow_forward_ios_outlined,size:24.sp),
+                                          title: Text(maker_name[x],style: TextStyle(fontSize: 14.sp)),
                                           onTap: () {},
                                         )
                                     ])),
-                                    SpaceBox.height(40),
+                                    SpaceBox.height(40.h),
                                     Container(
                                       //新商品
                                       child: Column(
@@ -779,12 +789,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   child: Image.asset(
                                                       'images/icon/newgoods.png'),
                                                 ),
-                                                SpaceBox.width(10),
+                                                SpaceBox.width(10.w),
                                                 Text(
                                                   '新商品',
                                                   style: TextStyle(
                                                       color: HexColor('EC9361'),
-                                                      fontSize: 20.0),
+                                                      fontSize: 20.0.sp),
                                                 ),
                                               ],
                                             ),
@@ -797,8 +807,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                             color: HexColor('F5F3EF'),
                                             child: Padding(
                                                 padding: EdgeInsets.symmetric(
-                                                    vertical: 20,
-                                                    horizontal: 15),
+                                                    vertical: 20.h,
+                                                    horizontal: 15.w),
                                                 child: Column(
                                                   children: [
                                                     for (int cnt = 0;
@@ -807,7 +817,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       Padding(
                                                         padding: EdgeInsets
                                                             .symmetric(
-                                                                vertical: 5),
+                                                                vertical: 5.h),
                                                         child: Card(
                                                             child: InkWell(
                                                                 onTap: () {
@@ -826,7 +836,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                               Container(
                                                                             //商品画像
                                                                             padding:
-                                                                                EdgeInsets.all(5),
+                                                                                EdgeInsets.all(5.sp),
                                                                             height:
                                                                                 media_height * 0.1477,
                                                                             width:
@@ -850,8 +860,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                             mainAxisAlignment:
                                                                                 MainAxisAlignment.start,
                                                                             children: [
-                                                                              Text('発売日' + '2020/10/03'), //発売日
-                                                                              SpaceBox.height(10),
+                                                                              Text('発売日' + '2020/10/03',style: TextStyle(fontSize: 14.sp)), //発売日
+                                                                              SpaceBox.height(10.h),
                                                                               Row(
                                                                                 children: [
                                                                                   Expanded(
@@ -862,15 +872,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                                           GestureDetector(
                                                                                             child: Text(
                                                                                               'ポッカサッポロ',
-                                                                                              style: TextStyle(color: HexColor('616161'), fontSize: 10),
+                                                                                              style: TextStyle(color: HexColor('616161'), fontSize: 10.sp),
                                                                                             ),
                                                                                             onTap: () {
                                                                                               setState(() {}); //メーカーページへ
                                                                                             },
                                                                                           ),
-                                                                                          SpaceBox.height(10),
+                                                                                          SpaceBox.height(10.h),
                                                                                           GestureDetector(
-                                                                                            child: Text('LEMON MADE'),
+                                                                                            child: Text('LEMON MADE',style: TextStyle(fontSize: 14.sp)),
                                                                                             onTap: () {
                                                                                               setState(() {}); //商品詳細ページへ
                                                                                             },
@@ -881,9 +891,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                                     flex: 2,
                                                                                     child: ElevatedButton(
                                                                                       //クリップボタン
-                                                                                      child: Icon(Icons.assignment_turned_in, size: 25),
+                                                                                      child: Icon(Icons.assignment_turned_in, size: 25.sp),
                                                                                       style: ElevatedButton.styleFrom(
-                                                                                        padding: EdgeInsets.all(15),
+                                                                                        padding: EdgeInsets.all(15.sp),
                                                                                         primary: HexColor('EC9361'),
                                                                                         onPrimary: Colors.white,
                                                                                         shape: CircleBorder(

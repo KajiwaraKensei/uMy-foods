@@ -12,6 +12,7 @@ import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/main.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
 
 //firebase_auth
 final FirebaseAuth auth = FirebaseAuth.instance;
@@ -97,25 +98,25 @@ class _LoginState extends State<Login> {
           child: Column(
             children: [
               Container(
-                  height: 700,
+                  height: 700.h,
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
+                    padding: EdgeInsets.fromLTRB(30.h, 30.w, 30.h, 30.w),
                     child: Column(
                       children: [
                         Container(
-                          width: 400,
+                          width: 400.w,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // メールアドレスでログイン
                               Center(
                                 child: Container(
-                                  margin: EdgeInsets.only(bottom: 20),
+                                  margin: EdgeInsets.only(bottom: 20.h),
                                   child: Text(
                                     'メールアドレスでログイン',
                                     style: TextStyle(
                                       color: HexColor('8c6e63'),
-                                      fontSize: 25,
+                                      fontSize: 25.sp,
                                       fontWeight: FontWeight.w600, // 文字の太さ
                                     ),
                                   ),
@@ -146,15 +147,17 @@ class _LoginState extends State<Login> {
                                     ),
                                   ),
                                   hintText: 'メールアドレスを入力',
+                                  hintStyle: TextStyle(fontSize: 14.sp)
                                 ),
                               ),
                               // メールアドレスエラーメッセージ
                               Container(
-                                margin: EdgeInsets.only(top: 3, bottom: 25),
+                                margin: EdgeInsets.only(top: 3.h, bottom: 25.h),
                                 child: Text(
                                   address_error,
                                   style: TextStyle(
                                     color: Colors.red,
+                                    fontSize: 14.sp
                                   ),
                                 ),
                               ),
@@ -185,7 +188,8 @@ class _LoginState extends State<Login> {
                                         _showPassword
                                             ? Icons.visibility_outlined
                                             : Icons.visibility_off_outlined,
-                                        color: Colors.grey),
+                                        color: Colors.grey,
+                                        size:14.sp),
                                     onPressed: () {
                                       this.setState(() {
                                         // 表示と非表示切り替え
@@ -194,29 +198,31 @@ class _LoginState extends State<Login> {
                                     },
                                   ),
                                   hintText: 'パスワードを入力',
+                                  hintStyle: TextStyle(fontSize: 14.sp)
                                 ),
                               ),
                               // パスワードエラーメッセージ
                               Container(
-                                margin: EdgeInsets.only(top: 5, bottom: 5),
+                                margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
                                 child: Text(
                                   password_error,
                                   style: TextStyle(
                                     color: Colors.red,
+                                    fontSize: 14.sp
                                   ),
                                 ),
                               ),
                               // パスワード忘れリンク
                               Container(
-                                margin: EdgeInsets.only(top: 20),
+                                margin: EdgeInsets.only(top: 20.h),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('パスワードを忘れた方は'),
+                                    Text('パスワードを忘れた方は',style: TextStyle(fontSize: 14.sp)),
                                     Container(
                                       margin: EdgeInsets.only(left: 8),
                                       child: TextButton(
-                                        child: const Text('こちら'),
+                                        child: Text('こちら',style: TextStyle(fontSize: 14.sp)),
                                         style: TextButton.styleFrom(
                                           primary: Colors.blue,
                                         ),
@@ -230,7 +236,7 @@ class _LoginState extends State<Login> {
                               ),
                               // ログイン状態保存チェックボックス
                               Container(
-                                margin: EdgeInsets.only(top: 10, right: 50),
+                                margin: EdgeInsets.only(top: 10.h, right: 50.w),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -243,16 +249,16 @@ class _LoginState extends State<Login> {
                                         });
                                       },
                                     ),
-                                    Text('ログイン状態を保存する'),
+                                    Text('ログイン状態を保存する',style: TextStyle(fontSize: 14.sp)),
                                   ],
                                 ),
                               ),
                               // ログインボタン
                               Center(
                                 child: Container(
-                                  margin: EdgeInsets.only(top: 20),
-                                  width: 170,
-                                  height: 40,
+                                  margin: EdgeInsets.only(top: 20.h),
+                                  width: 170.w,
+                                  height: 40.h,
                                   child: //Column(children: [
                                       ElevatedButton(
                                     onPressed: () async {
@@ -302,7 +308,7 @@ class _LoginState extends State<Login> {
                                       "ログイン",
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 20,
+                                        fontSize: 20.sp,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -316,23 +322,23 @@ class _LoginState extends State<Login> {
                               ),
                               // 新規会員登録リンク
                               Container(
-                                margin: EdgeInsets.only(top: 20, bottom: 20),
+                                margin: EdgeInsets.only(top: 20.h, bottom: 20.h),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
                                       '新規会員登録は',
                                       style: TextStyle(
-                                        fontSize: 17,
+                                        fontSize: 17.sp,
                                       ),
                                     ),
                                     Container(
-                                      margin: EdgeInsets.only(left: 8),
+                                      margin: EdgeInsets.only(left: 8.w),
                                       child: TextButton(
-                                        child: const Text(
+                                        child: Text(
                                           'こちら',
                                           style: TextStyle(
-                                            fontSize: 17,
+                                            fontSize: 17.sp,
                                           ),
                                         ),
                                         style: TextButton.styleFrom(
@@ -356,37 +362,37 @@ class _LoginState extends State<Login> {
                         ),
                         // 縦線
                         Container(
-                          margin: EdgeInsets.only(left: 8),
-                          height: 3,
-                          width: 700,
+                          margin: EdgeInsets.only(left: 8.w),
+                          height: 3.h,
+                          width: 700.w,
                           color: HexColor('ffdfc5'),
                         ),
                         // 他サービス欄
                         Container(
-                          margin: EdgeInsets.only(top: 30, left: 8),
-                          width: 400,
+                          margin: EdgeInsets.only(top: 30.h, left: 8.w),
+                          width: 400.w,
                           child: Column(
                             children: [
                               // 他サービスIDでログイン
                               Container(
-                                margin: EdgeInsets.only(bottom: 20),
+                                margin: EdgeInsets.only(bottom: 20.h),
                                 child: Text(
                                   '他サービスIDでログイン',
                                   style: TextStyle(
                                     color: HexColor('8c6e63'),
-                                    fontSize: 25,
+                                    fontSize: 25.sp,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ),
                               // Google
                               Container(
-                                width: 300,
-                                height: 50,
+                                width: 300.w,
+                                height: 50.h,
                                 // ボタン + icon
                                 child: ElevatedButton.icon(
                                   icon: FaIcon(FontAwesomeIcons.google,
-                                      color: Colors.red),
+                                      color: Colors.red,size:14.sp),
                                   label: Text('Google'),
                                   // ボタンのデザイン
                                   style: ElevatedButton.styleFrom(
