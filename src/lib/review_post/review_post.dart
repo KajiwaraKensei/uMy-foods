@@ -2,11 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; //文字数制限
 import 'package:flutter/rendering.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; //DB
+import 'dart:math';
 
 // パッケージ
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart'; //パンくず
 import 'package:flutter_dropzone/flutter_dropzone.dart'; //ドラッグ&ドロップアップロード
 import 'package:image_picker/image_picker.dart'; //アップロード
+import 'package:umy_foods/details/details.dart';
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/main.dart';
@@ -225,12 +230,22 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
     setState(() => _chipList.removeWhere((Widget w) => w.key == chipKey));
   }
 
+  num sweet = 1;
+  num acidity = 1;
+  num salty = 1;
+  num bitter = 1;
+  num spicy = 1;
+  num umami = 1;
+
+  var comment = TextEditingController();
+  String review_comment = '';
+
   Widget build(BuildContext context) {
     var media_width = MediaQuery.of(context).size.width; //学校販売PCの場合1280
     var media_height = MediaQuery.of(context).size.height; //学校販売PCの場合609
 
     return Scaffold(
-      appBar: Header(),
+        appBar: Header(),
         body: ListView(children: [
           Padding(
               padding: EdgeInsets.symmetric(
@@ -243,7 +258,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                       //パンくずリスト
                       items: <BreadCrumbItem>[
                         BreadCrumbItem(
-                  content: TextButton(
+                          content: TextButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
@@ -280,28 +295,28 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                       ],
                       divider: Icon(Icons.chevron_right),
                     ),
-            SpaceBox.height(media_height * 0.03),
+                    SpaceBox.height(media_height * 0.03),
                     Row(children: [
                       Expanded(
                           flex: 5,
                           child: Padding(
-                    padding: EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                                 horizontal: media_width * 0.0156),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                          margin: EdgeInsets.only(
+                                  margin: EdgeInsets.only(
                                       top: media_height * 0.016,
                                       bottom: media_height * 0.041),
                                   child: Row(
                                     children: [
                                       Container(
                                         //商品画像
-                                height: media_height * 0.16,
+                                        height: media_height * 0.16,
                                         child: Align(
                                           alignment: Alignment.center,
-                                  child: Image.network((image == "")
+                                          child: Image.network((image == "")
                                               ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
                                               : image),
                                         ),
@@ -312,17 +327,17 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                  SelectableText(maker /*'アサヒ飲料株式会社'*/,
+                                          SelectableText(maker /*'アサヒ飲料株式会社'*/,
                                               style: TextStyle(fontSize: 16),
                                               scrollPhysics:
                                                   NeverScrollableScrollPhysics()),
-                                  SelectableText(
+                                          SelectableText(
                                               product_name /*'ウィルキンソン タンサン 炭酸水 500ml×24本'*/,
                                               style: TextStyle(
                                                   fontSize: 22,
                                                   fontWeight: FontWeight.bold),
                                               scrollPhysics:
-                                          NeverScrollableScrollPhysics())
+                                                  NeverScrollableScrollPhysics())
                                         ],
                                       )
                                     ],
@@ -330,23 +345,23 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                 ),
                                 Container(
                                     //評価
-                            margin: EdgeInsets.symmetric(
+                                    margin: EdgeInsets.symmetric(
                                         vertical: media_height * 0.041),
                                     child: Column(
                                       //
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                SelectableText('評価',
+                                        SelectableText('評価',
                                             style: TextStyle(
-                                        fontSize: 22,
+                                                fontSize: 22,
                                                 color: HexColor('EC9361'),
                                                 fontWeight: FontWeight.bold),
                                             scrollPhysics:
                                                 NeverScrollableScrollPhysics()),
-                                SpaceBox.height(media_height * 0.03),
+                                        SpaceBox.height(media_height * 0.03),
                                         Container(
-                                    padding: EdgeInsets.symmetric(
+                                            padding: EdgeInsets.symmetric(
                                                 horizontal:
                                                     media_width * 0.0625),
                                             child: Table(
@@ -358,7 +373,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                               children: [
                                                 TableRow(children: [
                                                   Container(
-                                            height: media_height * 0.09,
+                                                    height: media_height * 0.09,
                                                     child: SelectableText(
                                                         '総合評価',
                                                         style: TextStyle(
@@ -420,9 +435,9 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                 ]),
                                                 TableRow(children: [
                                                   Container(
-                                            height: media_height * 0.09,
+                                                    height: media_height * 0.09,
                                                     child: SelectableText('コスパ',
-                                                style: TextStyle(
+                                                        style: TextStyle(
                                                             fontSize: 16),
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
@@ -484,22 +499,22 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                     )),
                                 Container(
                                     //味覚
-                            margin: EdgeInsets.symmetric(
+                                    margin: EdgeInsets.symmetric(
                                         vertical: media_height * 0.041),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                SelectableText('味覚',
+                                        SelectableText('味覚',
                                             style: TextStyle(
-                                        fontSize: 22,
+                                                fontSize: 22,
                                                 color: HexColor('EC9361'),
                                                 fontWeight: FontWeight.bold),
                                             scrollPhysics:
                                                 NeverScrollableScrollPhysics()),
-                                SpaceBox.height(media_height * 0.03),
+                                        SpaceBox.height(media_height * 0.03),
                                         Container(
-                                    padding: EdgeInsets.symmetric(
+                                            padding: EdgeInsets.symmetric(
                                                 horizontal:
                                                     media_width * 0.0625),
                                             child: Table(
@@ -518,7 +533,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                 TableRow(children: [
                                                   //値のラベル
                                                   Container(
-                                            height: 0.057,
+                                                    height: 0.057,
                                                     child: Align(
                                                       alignment:
                                                           Alignment.center,
@@ -557,10 +572,10 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                 TableRow(children: [
                                                   //甘味
                                                   Container(
-                                            height:
+                                                    height:
                                                         media_height * 0.082,
                                                     child: SelectableText('甘味',
-                                                style: TextStyle(
+                                                        style: TextStyle(
                                                             fontSize: 16),
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
@@ -571,7 +586,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                     groupValue: _sweetnessValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Sweetness(
-                                                            value),
+                                                            value, 1),
                                                   ),
                                                   Radio(
                                                     value:
@@ -579,38 +594,38 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                     groupValue: _sweetnessValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Sweetness(
-                                                            value),
+                                                            value, 2),
                                                   ),
                                                   Radio(
                                                     value: SweetnessRadio.THIRD,
                                                     groupValue: _sweetnessValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Sweetness(
-                                                            value),
+                                                            value, 3),
                                                   ),
                                                   Radio(
                                                     value: SweetnessRadio.FOUR,
                                                     groupValue: _sweetnessValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Sweetness(
-                                                            value),
+                                                            value, 4),
                                                   ),
                                                   Radio(
                                                     value: SweetnessRadio.FIVE,
                                                     groupValue: _sweetnessValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Sweetness(
-                                                            value),
+                                                            value, 5),
                                                   ),
                                                   Text(''),
                                                 ]),
                                                 TableRow(children: [
                                                   //酸味
                                                   Container(
-                                            height:
+                                                    height:
                                                         media_height * 0.082,
                                                     child: SelectableText('酸味',
-                                                style: TextStyle(
+                                                        style: TextStyle(
                                                             fontSize: 16),
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
@@ -621,45 +636,45 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                     groupValue: _acidityValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Acidity(
-                                                            value),
+                                                            value, 1),
                                                   ),
                                                   Radio(
                                                     value: AcidityRadio.SECOND,
                                                     groupValue: _acidityValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Acidity(
-                                                            value),
+                                                            value, 2),
                                                   ),
                                                   Radio(
                                                     value: AcidityRadio.THIRD,
                                                     groupValue: _acidityValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Acidity(
-                                                            value),
+                                                            value, 3),
                                                   ),
                                                   Radio(
                                                     value: AcidityRadio.FOUR,
                                                     groupValue: _acidityValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Acidity(
-                                                            value),
+                                                            value, 4),
                                                   ),
                                                   Radio(
                                                     value: AcidityRadio.FIVE,
                                                     groupValue: _acidityValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Acidity(
-                                                            value),
+                                                            value, 5),
                                                   ),
                                                   Text(''),
                                                 ]),
                                                 TableRow(children: [
                                                   //塩味
                                                   Container(
-                                            height:
+                                                    height:
                                                         media_height * 0.082,
                                                     child: SelectableText('塩味',
-                                                style: TextStyle(
+                                                        style: TextStyle(
                                                             fontSize: 16),
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
@@ -670,45 +685,45 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                     groupValue: _saltyValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Salty(
-                                                            value),
+                                                            value, 1),
                                                   ),
                                                   Radio(
                                                     value: SaltyRadio.SECOND,
                                                     groupValue: _saltyValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Salty(
-                                                            value),
+                                                            value, 2),
                                                   ),
                                                   Radio(
                                                     value: SaltyRadio.THIRD,
                                                     groupValue: _saltyValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Salty(
-                                                            value),
+                                                            value, 3),
                                                   ),
                                                   Radio(
                                                     value: SaltyRadio.FOUR,
                                                     groupValue: _saltyValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Salty(
-                                                            value),
+                                                            value, 4),
                                                   ),
                                                   Radio(
                                                     value: SaltyRadio.FIVE,
                                                     groupValue: _saltyValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Salty(
-                                                            value),
+                                                            value, 5),
                                                   ),
                                                   Text(''),
                                                 ]),
                                                 TableRow(children: [
                                                   //苦味
                                                   Container(
-                                            height:
+                                                    height:
                                                         media_height * 0.082,
                                                     child: SelectableText('苦味',
-                                                style: TextStyle(
+                                                        style: TextStyle(
                                                             fontSize: 16),
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
@@ -719,45 +734,45 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                     groupValue: _bitterValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Bitter(
-                                                            value),
+                                                            value, 1),
                                                   ),
                                                   Radio(
                                                     value: BitterRadio.SECOND,
                                                     groupValue: _bitterValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Bitter(
-                                                            value),
+                                                            value, 2),
                                                   ),
                                                   Radio(
                                                     value: BitterRadio.THIRD,
                                                     groupValue: _bitterValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Bitter(
-                                                            value),
+                                                            value, 3),
                                                   ),
                                                   Radio(
                                                     value: BitterRadio.FOUR,
                                                     groupValue: _bitterValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Bitter(
-                                                            value),
+                                                            value, 4),
                                                   ),
                                                   Radio(
                                                     value: BitterRadio.FIVE,
                                                     groupValue: _bitterValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Bitter(
-                                                            value),
+                                                            value, 5),
                                                   ),
                                                   Text(''),
                                                 ]),
                                                 TableRow(children: [
                                                   //辛味
                                                   Container(
-                                            height:
+                                                    height:
                                                         media_height * 0.082,
                                                     child: SelectableText('辛味',
-                                                style: TextStyle(
+                                                        style: TextStyle(
                                                             fontSize: 16),
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
@@ -768,45 +783,45 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                     groupValue: _spicyValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Spicy(
-                                                            value),
+                                                            value, 1),
                                                   ),
                                                   Radio(
                                                     value: SpicyRadio.SECOND,
                                                     groupValue: _spicyValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Spicy(
-                                                            value),
+                                                            value, 2),
                                                   ),
                                                   Radio(
                                                     value: SpicyRadio.THIRD,
                                                     groupValue: _spicyValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Spicy(
-                                                            value),
+                                                            value, 3),
                                                   ),
                                                   Radio(
                                                     value: SpicyRadio.FOUR,
                                                     groupValue: _spicyValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Spicy(
-                                                            value),
+                                                            value, 4),
                                                   ),
                                                   Radio(
                                                     value: SpicyRadio.FIVE,
                                                     groupValue: _spicyValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Spicy(
-                                                            value),
+                                                            value, 5),
                                                   ),
                                                   Text(''),
                                                 ]),
                                                 TableRow(children: [
                                                   //旨味
                                                   Container(
-                                            height:
+                                                    height:
                                                         media_height * 0.082,
                                                     child: SelectableText('旨味',
-                                                style: TextStyle(
+                                                        style: TextStyle(
                                                             fontSize: 16),
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
@@ -817,35 +832,35 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                     groupValue: _tasteValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Taste(
-                                                            value),
+                                                            value, 1),
                                                   ),
                                                   Radio(
                                                     value: TasteRadio.SECOND,
                                                     groupValue: _tasteValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Taste(
-                                                            value),
+                                                            value, 2),
                                                   ),
                                                   Radio(
                                                     value: TasteRadio.THIRD,
                                                     groupValue: _tasteValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Taste(
-                                                            value),
+                                                            value, 3),
                                                   ),
                                                   Radio(
                                                     value: TasteRadio.FOUR,
                                                     groupValue: _tasteValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Taste(
-                                                            value),
+                                                            value, 4),
                                                   ),
                                                   Radio(
                                                     value: TasteRadio.FIVE,
                                                     groupValue: _tasteValue,
                                                     onChanged: (value) =>
                                                         _onRadioSelected_Taste(
-                                                            value),
+                                                            value, 5),
                                                   ),
                                                   Text(''),
                                                 ]),
@@ -855,27 +870,27 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                     )),
                                 Container(
                                     //リピート
-                            margin: EdgeInsets.symmetric(
+                                    margin: EdgeInsets.symmetric(
                                         vertical: media_height * 0.041),
                                     child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                  SelectableText('リピートしたいですか？',
+                                          SelectableText('リピートしたいですか？',
                                               style: TextStyle(
-                                          fontSize: 22,
+                                                  fontSize: 22,
                                                   color: HexColor('EC9361'),
                                                   fontWeight: FontWeight.bold),
                                               scrollPhysics:
                                                   NeverScrollableScrollPhysics()),
-                                  SpaceBox.height(media_height * 0.049),
+                                          SpaceBox.height(media_height * 0.049),
                                           Container(
-                                    padding: EdgeInsets.symmetric(
+                                            padding: EdgeInsets.symmetric(
                                                 horizontal:
                                                     media_width * 0.0625),
                                             child: Row(
                                               mainAxisAlignment:
-                                          MainAxisAlignment
+                                                  MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
                                                 for (int cnt = 0;
@@ -883,7 +898,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                     cnt++)
                                                   SizedBox(
                                                     //リピートボタン
-                                            width: media_width * 0.108,
+                                                    width: media_width * 0.108,
                                                     height:
                                                         media_height * 0.049,
                                                     child: ElevatedButton(
@@ -901,7 +916,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                       ),
                                                       onPressed: () {
                                                         setState(() {
-                                                  repeat_button =
+                                                          repeat_button =
                                                               repeat_text[
                                                                   cnt]; //選択を代入
                                                         });
@@ -912,7 +927,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                             ),
                                           ),
                                           Container(
-                                      //評価のみ投稿
+                                              //評価のみ投稿
                                               margin: EdgeInsets.only(
                                                   top: media_height * 0.164,
                                                   bottom: media_height * 0.041),
@@ -942,7 +957,72 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                             color: HexColor(
                                                                 'EC9361')),
                                                       ),
-                                                      onPressed: () {
+                                                      onPressed: () async {
+                                                        final user =
+                                                            await FirebaseAuth
+                                                                .instance
+                                                                .currentUser;
+                                                        final userId = user?.uid
+                                                            .toString();
+                                                        final snapshot =
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    '/account/')
+                                                                .doc(userId)
+                                                                .get();
+                                                        final account = snapshot
+                                                            .data() as Map;
+                                                        String reviewId =
+                                                            randomString(20);
+
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'review')
+                                                            .doc(reviewId)
+                                                            .set({
+                                                          'user_id': userId,
+                                                          'user_name': account[
+                                                              'user_name'],
+                                                          'product_id':
+                                                              product_id,
+                                                          'product_name':
+                                                              product_name,
+                                                          'comment_sum': 0,
+                                                          'favorite_sum': 0,
+                                                          'user_gender': account[
+                                                              'user_gender'],
+                                                          'user_birthday': account[
+                                                              'user_birthday'],
+                                                          'url': '',
+                                                          'review_comment': '',
+                                                          'review_evaluation':
+                                                              comprehensive_rate,
+                                                          'review_cospa':
+                                                              costperformance_rate,
+                                                          'taste': [
+                                                            sweet,
+                                                            acidity,
+                                                            salty,
+                                                            bitter,
+                                                            spicy,
+                                                            umami
+                                                          ],
+                                                          'tag_id': [],
+                                                          'delete_date': FieldValue
+                                                              .serverTimestamp(),
+                                                          'delete_flag': false,
+                                                          'review_postdate':
+                                                              FieldValue
+                                                                  .serverTimestamp(),
+                                                          'update_date': FieldValue
+                                                              .serverTimestamp(),
+                                                          'review_id': reviewId,
+                                                        });
+                                                        Navigator.of(context)
+                                                            .pop();
+
                                                         setState(() {});
                                                       },
                                                     ),
@@ -1065,6 +1145,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                         padding: EdgeInsets.symmetric(
                                             vertical: media_height * 0.049),
                                         child: TextField(
+                                          controller: comment,
                                           minLines: 3,
                                           maxLines: null,
                                           inputFormatters: [
@@ -1275,7 +1356,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                       children: [
                                         SizedBox(
                                           //投稿ボタン
-                                  width: media_width * 0.14,
+                                          width: media_width * 0.14,
                                           height: media_height * 0.065,
                                           child: ElevatedButton(
                                             style: ElevatedButton.styleFrom(
@@ -1284,14 +1365,76 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                             child: Text(
                                               '投稿する',
                                             ),
-                                            onPressed: () {
+                                            onPressed: () async {
+                                              final user = await FirebaseAuth
+                                                  .instance.currentUser;
+                                              final userId =
+                                                  user?.uid.toString();
+                                              final snapshot =
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection('/account/')
+                                                      .doc(userId)
+                                                      .get();
+                                              final account =
+                                                  snapshot.data() as Map;
+                                              String reviewId =
+                                                  randomString(20);
+
+                                              review_comment =
+                                                  comment.text.toString();
+
+                                              FirebaseFirestore.instance
+                                                  .collection('review')
+                                                  .doc(reviewId)
+                                                  .set({
+                                                'user_id': userId,
+                                                'user_name':
+                                                    account['user_name'],
+                                                'product_id': product_id,
+                                                'product_name': product_name,
+                                                'comment_sum': 0,
+                                                'favorite_sum': 0,
+                                                'user_gender':
+                                                    account['user_gender'],
+                                                'user_birthday':
+                                                    account['user_birthday'],
+                                                'url': '',
+                                                'review_comment':
+                                                    review_comment,
+                                                'review_evaluation':
+                                                    comprehensive_rate,
+                                                'review_cospa':
+                                                    costperformance_rate,
+                                                'taste': [
+                                                  sweet,
+                                                  acidity,
+                                                  salty,
+                                                  bitter,
+                                                  spicy,
+                                                  umami
+                                                ],
+                                                'tag_id': _chipList,
+                                                'delete_date': FieldValue
+                                                    .serverTimestamp(),
+                                                'delete_flag': false,
+                                                'review_postdate': FieldValue
+                                                    .serverTimestamp(),
+                                                'update_date': FieldValue
+                                                    .serverTimestamp(),
+                                                'review_id': reviewId,
+                                              });
+                                              Navigator.of(context).pop();
+
+                                              setState(() {});
+
                                               setState(() {});
                                             },
                                           ),
                                         ),
                                       ],
                                     ))
-                      ],
+                              ],
                             ),
                           )),
                       Expanded(
@@ -1299,10 +1442,10 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                           child: Column(
                             children: [Text('広告')],
                           ))
-            ])
+                    ])
                   ])),
           FooterCreate(),
-      //フッター
+          //フッター
         ]));
   }
 
@@ -1439,39 +1582,61 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
         }
       });
   //以下ラジオボタンの処理
-  _onRadioSelected_Sweetness(value) {
+  _onRadioSelected_Sweetness(value, select) {
     setState(() {
+      sweet = select;
       _sweetnessValue = value;
     });
   }
 
-  _onRadioSelected_Acidity(value) {
+  _onRadioSelected_Acidity(value, select) {
     setState(() {
+      acidity = select;
       _acidityValue = value;
     });
   }
 
-  _onRadioSelected_Salty(value) {
+  _onRadioSelected_Salty(value, select) {
     setState(() {
+      salty = select;
       _saltyValue = value;
     });
   }
 
-  _onRadioSelected_Bitter(value) {
+  _onRadioSelected_Bitter(value, select) {
     setState(() {
+      bitter = select;
       _bitterValue = value;
     });
   }
 
-  _onRadioSelected_Spicy(value) {
+  _onRadioSelected_Spicy(value, select) {
     setState(() {
+      spicy = select;
       _spicyValue = value;
     });
   }
 
-  _onRadioSelected_Taste(value) {
+  _onRadioSelected_Taste(value, select) {
     setState(() {
+      umami = select;
       _tasteValue = value;
     });
   }
+}
+
+String randomString(int length) {
+  const _randomChars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const _charsLength = _randomChars.length;
+
+  final rand = new Random();
+  final codeUnits = new List.generate(
+    length,
+    (index) {
+      final n = rand.nextInt(_charsLength);
+      return _randomChars.codeUnitAt(n);
+    },
+  );
+  return new String.fromCharCodes(codeUnits);
 }

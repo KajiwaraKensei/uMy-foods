@@ -6,10 +6,12 @@ import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/review_post/product_selection.dart';
 import 'package:umy_foods/list_page/brand.dart';
 import 'package:umy_foods/profile/profile.dart';
+import 'package:umy_foods/search/search_result.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; //DB
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:umy_foods/search/search_result.dart'; //DB
 
 class Header extends StatefulWidget with PreferredSizeWidget {
   @override
@@ -115,7 +117,15 @@ class _HeaderState extends State<Header> {
                     ),
                     IconButton(
                         icon: Icon(Icons.search, color: Colors.black),
-                        onPressed: () {}),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SearchResultsPage(
+                                    _categoryNameController.text.toString(),
+                                    _value),
+                              ));
+                        }),
                   ],
                 ),
               ],

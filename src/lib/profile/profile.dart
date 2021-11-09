@@ -66,9 +66,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         items: <BreadCrumbItem>[
                           BreadCrumbItem(
                             content: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
                               child: SelectableText(
-                                'TOP',
+                                '前のページへ',
                                 style: TextStyle(color: Colors.black),
                                 scrollPhysics: NeverScrollableScrollPhysics(),
                               ),
@@ -141,13 +143,42 @@ class _ProfilePageState extends State<ProfilePage> {
                                 builder: (BuildContext context,
                                     AsyncSnapshot<QuerySnapshot> snapshot) {
                                   //データが取れていない時の処理
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  }
 
                                   final result = snapshot.data!.docs[0];
 
                                   DateTime now = DateTime.now(); //現在
 
-                                  String age = '20代前半';
+                                  int year = now
+                                      .difference(
+                                          result['user_birthday'].toDate())
+                                      .inDays;
 
+                                  String age = '20代';
+                                  if (year > 0 && year < 7300) {
+                                    age = '～10代';
+                                  } else if (year >= 7300 && year < 10950) {
+                                    age = '20代';
+                                  } else if (year >= 10950 && year < 14600) {
+                                    age = '30代';
+                                  } else {
+                                    age = '40代～';
+                                  }
+
+                                  String gender = '';
+                                  if (result['user_gender'] == 'male') {
+                                    gender = '男性';
+                                  } else if (result['user_gender'] ==
+                                      'female') {
+                                    gender = '女性';
+                                  } else if (result['user_gender'] ==
+                                      'secret') {
+                                    gender = '秘密';
+                                  }
                                   return Container(
                                     //プロフィール
                                     margin: EdgeInsets.symmetric(
@@ -172,7 +203,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     image: new DecorationImage(
                                                         fit: BoxFit.cover,
                                                         image: NetworkImage(
-                                                            'https://images-na.ssl-images-amazon.com/images/I/71qJYwkBWwL._SX402_.jpg')))),
+                                        (result[
+                                                                  'user_icon'] ==
+                                                              "")
+                                                          ? 'images/anotherUser2.png'
+                                                          : result[
+                                                              'user_icon']), //NetworkImage('https://images-na.ssl-images-amazon.com/images/I/71qJYwkBWwL._SX402_.jpg')
+                                                    ))),
                                             SpaceBox.height(
                                                 media_height * 0.08),
                                             // SizedBox(
@@ -220,7 +257,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 scrollPhysics:
                                                     NeverScrollableScrollPhysics()),
                                             SelectableText(
-                                                '20代 / 女性 / 甘党 / 薄味 / 派量派',
+                                                age +
+                                                    ' / ' +
+                                                    gender +
+                                                    ' / ' +
+                                                    result['user_favorite'][0] +
+                                                    ' / ' +
+                                                    result['user_favorite'][1] +
+                                                    ' / ' +
+                                                    result['user_favorite'][2],
                                                 scrollPhysics:
                                                     NeverScrollableScrollPhysics()),
                                             Row(
@@ -258,7 +303,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 TextSpan(//投稿・フォロワーなどの数値
                                                     children: [
                                               TextSpan(
-                                                  text: '72',
+                                                  text: '0',
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                   )),
