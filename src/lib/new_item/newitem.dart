@@ -12,6 +12,7 @@ import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/clipButton.dart';
 import 'package:umy_foods/main.dart';
+import 'package:umy_foods/alert.dart';
 
 /*void main() {
   initializeDateFormatting().then((_) => runApp(MyApp())); //翻訳して実行
@@ -120,17 +121,17 @@ class _NewItemPageState extends State<NewItemPage> {
     }
 
     return Scaffold(
-    appBar: Header(),
-    floatingActionButton: clipButton('新商品'),
-          body: Container(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-        child: ListView(
-          children: [
-            BreadCrumb(
-              //パンくずリスト
-              items: <BreadCrumbItem>[
-                BreadCrumbItem(
-                          content: TextButton(
+        appBar: Header(),
+        floatingActionButton: clipButton('新商品'),
+        body: Container(
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+          child: ListView(
+            children: [
+              BreadCrumb(
+                //パンくずリスト
+                items: <BreadCrumbItem>[
+                  BreadCrumbItem(
+                    content: TextButton(
                         child: Text(
                           'TOP',
                           style: TextStyle(color: Colors.black),
@@ -141,7 +142,7 @@ class _NewItemPageState extends State<NewItemPage> {
                         }),
                   ),
                   BreadCrumbItem(
-                          content: TextButton(
+                    content: TextButton(
                         child: Text(
                           '新商品',
                           style: TextStyle(color: Colors.black),
@@ -153,344 +154,356 @@ class _NewItemPageState extends State<NewItemPage> {
                                   builder: (context) => NewItemPage()));
                         }),
                   ),
-              ],
-              divider: Icon(Icons.chevron_right),
-            ),
-            SpaceBox.height(20),
-            Row(children: [
-              Expanded(
-                flex: 5,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        //カレンダー表示非表示ボタン
-                        height: 40,
-                        child: ElevatedButton(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('カレンダーでチェックする'),
-                                Icon(
-                                  Icons.expand_more_outlined,
-                                ),
-                              ],
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                primary: HexColor('EC9361'),
-                                onPrimary: Colors.white
-                                // side:BorderSide(color: HexColor('EC9361')),
-                                ),
-                            onPressed: () async {
-                              setState(() {
-                                _calendar = !_calendar;
-                              });
-                            }),
-                      ),
-                      Visibility(
-                          visible: _calendar,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              TableCalendar(
-                                //カレンダー設定
-                                locale: 'ja_JP',
-                                firstDay: DateTime.utc(2020, 1, 1),
-                                lastDay: DateTime.utc(2030, 12, 31),
-                                startingDayOfWeek:
-                                    StartingDayOfWeek.sunday, //月曜始まり
-                                focusedDay: _focusedDay, //現在日時
-                                eventLoader: getEventForDay, //イベント読み込み
-                                daysOfWeekHeight: 30, //曜日の高さ
-                                headerStyle: HeaderStyle(
-                                    //表示切替非表示
-                                    formatButtonVisible: false,
-                                    titleCentered: true, //タイトル年月中央寄せ
-                                    decoration: BoxDecoration(
-                                        color: HexColor('#F5F3EF'))),
-                                calendarBuilders: CalendarBuilders(
-                                  //色合いなどのカスタム
-                                  markerBuilder: (context, date, events) {
-                                    //イベントマーカー
-                                    if (events.isNotEmpty) {
-                                      return _buildEventsMarker(date, events);
-                                    }
-                                  },
-                                  //カレンダーカスタム
-                                  dowBuilder: (context, day) {
-                                    //曜日のラベル
-                                    return _weeklabel(day.weekday);
-                                  },
-                                  defaultBuilder: (context, day, focusedDay) {
-                                    //今日以外の今月の日付
-                                    return _day(day.weekday, day.day);
-                                  },
-                                  todayBuilder: (context, day, focusedDay) {
-                                    //今日の日付
-                                    return _today(day.weekday, day.day);
-                                  },
-                                  outsideBuilder: (context, day, focusedDay) {
-                                    //先月・来月の日付
-                                    return _outmonth(day.weekday, day.day);
-                                  },
-                                ),
-                              ),
-                              Container(
-                                  //カレンダー内の●の説明
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 8, horizontal: 5),
-                                  color: Colors.white,
-                                  alignment: Alignment.centerRight,
-                                  child: Container(
-                                    width: 130,
-                                    padding: EdgeInsets.only(right: 10),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey),
-                                      color:
-                                          HexColor('F5F3EF').withOpacity(0.3),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          '●',
-                                          style: TextStyle(
-                                              color: HexColor('EC9361'),
-                                              fontSize: 20),
-                                        ),
-                                        SpaceBox.width(10),
-                                        Text('新発売商品数')
-                                      ],
-                                    ),
-                                  )),
-                            ],
-                          )),
-                      SpaceBox.height(60),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          SizedBox(
-                            //先週ボタン
-                            width: 100,
-                            height: 30,
-                            child: ElevatedButton(
+                ],
+                divider: Icon(Icons.chevron_right),
+              ),
+              SpaceBox.height(20),
+              Row(children: [
+                Expanded(
+                  flex: 5,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          //カレンダー表示非表示ボタン
+                          height: 40,
+                          child: ElevatedButton(
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
+                                  Text('カレンダーでチェックする'),
                                   Icon(
-                                    Icons.arrow_back_ios_outlined,
-                                  ),
-                                  Text('先週')
-                                ],
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith<Color>(
-                                        (Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.hovered))
-                                    return HexColor('EC9361'); //ホバーした時
-                                  return HexColor('B8AA8E');
-                                }),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  week_cnt -= 7;
-                                  week_cntend -= 7;
-                                  if (nosunday == true) {
-                                    //現在日時が日曜日以外だったら日曜日に合わせる
-                                    label_start = DateTime(
-                                        label_start.year,
-                                        label_start.month,
-                                        label_start.day - 7 - now.weekday);
-                                    label_end = DateTime(
-                                        label_end.year,
-                                        label_end.month,
-                                        label_end.day - 7 - now.weekday);
-                                    nosunday = false;
-                                  } else {
-                                    label_start = DateTime(label_start.year,
-                                        label_start.month, label_start.day - 7);
-                                    label_end = DateTime(label_end.year,
-                                        label_end.month, label_end.day - 7);
-                                  }
-                                });
-                              },
-                            ),
-                          ),
-                          //先週と来週ボタンの間の日付
-                          if (nosunday = true) //現在日時が日曜日以外の場合
-                            Text(
-                                DateTime(label_start.year, label_start.month,
-                                            label_start.day - now.weekday)
-                                        .month
-                                        .toString() +
-                                    '月' +
-                                    DateTime(
-                                            label_start.year,
-                                            label_start.month,
-                                            label_start.day - now.weekday)
-                                        .day
-                                        .toString() +
-                                    '日(' +
-                                    weekname[DateTime(
-                                            label_start.year,
-                                            label_start.month,
-                                            label_start.day - now.weekday)
-                                        .weekday] +
-                                    ') ―  ' +
-                                    DateTime(label_end.year, label_end.month,
-                                            label_end.day - now.weekday)
-                                        .month
-                                        .toString() +
-                                    '月' +
-                                    DateTime(label_end.year, label_end.month,
-                                            label_end.day - now.weekday)
-                                        .day
-                                        .toString() +
-                                    '日(' +
-                                    weekname[DateTime(
-                                            label_end.year,
-                                            label_end.month,
-                                            label_end.day - now.weekday)
-                                        .weekday] +
-                                    ')',
-                                style: TextStyle(fontSize: 25)),
-                          if (nosunday = false) //現在日時が日曜日の場合
-                            Text(
-                                label_start.month.toString() +
-                                    '月' +
-                                    (label_start.day).toString() +
-                                    '日(' +
-                                    weekname[label_start.weekday] +
-                                    ') ―  ' +
-                                    label_end.month.toString() +
-                                    '月' +
-                                    (label_end.day).toString() +
-                                    '日(' +
-                                    weekname[label_end.weekday] +
-                                    ')',
-                                style: TextStyle(fontSize: 25)),
-                          SizedBox(
-                            //来週ボタン
-                            width: 100,
-                            height: 30,
-                            child: ElevatedButton(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text('来週'),
-                                  Icon(
-                                    Icons.arrow_forward_ios_outlined,
+                                    Icons.expand_more_outlined,
                                   ),
                                 ],
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith<Color>(
-                                        (Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.hovered))
-                                    return HexColor('EC9361'); //ホバーした時
-                                  return HexColor('B8AA8E');
-                                }),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  week_cnt += 7;
-                                  week_cntend += 7;
-                                  if (nosunday == true) {
-                                    //現在日時が日曜日以外だったら日曜日に合わせる
-                                    label_start = DateTime(
-                                        label_start.year,
-                                        label_start.month,
-                                        label_start.day + 7 - now.weekday);
-                                    label_end = DateTime(
-                                        label_end.year,
-                                        label_end.month,
-                                        label_end.day + 7 - now.weekday);
-                                    nosunday = false;
-                                  } else {
-                                    label_start = DateTime(label_start.year,
-                                        label_start.month, label_start.day + 7);
-                                    label_end = DateTime(label_end.year,
-                                        label_end.month, label_end.day + 7);
-                                  }
-                                });
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      SpaceBox.height(35),
-                      //発売日時・新商品のカードを表示
-                      if (DateTime(now.year, now.month, now.day).weekday !=
-                          7) //現在日時が日曜日以外だったら
-                        for (int cnt = week_cnt;
-                            cnt < week_cntend;
-                            cnt++) //一週間分
-                          _releaseList(
-                              getEventForDay(DateTime(now.year, now.month,
-                                  (now.day - now.weekday) + cnt)),
-                              DateTime(now.year, now.month,
-                                  (now.day - now.weekday) + cnt)),
-                      if (DateTime(now.year, now.month, now.day).weekday ==
-                          7) //現在日時が日曜日だったら
-                        for (int cnt = week_cnt;
-                            cnt < week_cntend;
-                            cnt++) //一週間分
-                          _releaseList(
-                              getEventForDay(
-                                  DateTime(now.year, now.month, now.day + cnt)),
-                              DateTime(now.year, now.month, now.day + cnt)),
-                      SpaceBox.height(20),
-                      Row(
-                        //ページング
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            //数字ボタン
-                            width: 35,
-                            height: 50,
-                            child: ElevatedButton(
-                              child: Text(
-                                '1',
-                                style: TextStyle(fontSize: 20),
                               ),
                               style: ElevatedButton.styleFrom(
-                                primary: HexColor('EC9361'),
-                                onPrimary: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                                  primary: HexColor('EC9361'),
+                                  onPrimary: Colors.white
+                                  // side:BorderSide(color: HexColor('EC9361')),
+                                  ),
+                              onPressed: () async {
+                                showDialog<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return BetaAlert();
+                                  },
+                                );
+                                // setState(() {
+                                //   _calendar = !_calendar;
+                                // });
+                              }),
+                        ),
+                        Visibility(
+                            visible: _calendar,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                TableCalendar(
+                                  //カレンダー設定
+                                  locale: 'ja_JP',
+                                  firstDay: DateTime.utc(2020, 1, 1),
+                                  lastDay: DateTime.utc(2030, 12, 31),
+                                  startingDayOfWeek:
+                                      StartingDayOfWeek.sunday, //月曜始まり
+                                  focusedDay: _focusedDay, //現在日時
+                                  eventLoader: getEventForDay, //イベント読み込み
+                                  daysOfWeekHeight: 30, //曜日の高さ
+                                  headerStyle: HeaderStyle(
+                                      //表示切替非表示
+                                      formatButtonVisible: false,
+                                      titleCentered: true, //タイトル年月中央寄せ
+                                      decoration: BoxDecoration(
+                                          color: HexColor('#F5F3EF'))),
+                                  calendarBuilders: CalendarBuilders(
+                                    //色合いなどのカスタム
+                                    markerBuilder: (context, date, events) {
+                                      //イベントマーカー
+                                      if (events.isNotEmpty) {
+                                        return _buildEventsMarker(date, events);
+                                      }
+                                    },
+                                    //カレンダーカスタム
+                                    dowBuilder: (context, day) {
+                                      //曜日のラベル
+                                      return _weeklabel(day.weekday);
+                                    },
+                                    defaultBuilder: (context, day, focusedDay) {
+                                      //今日以外の今月の日付
+                                      return _day(day.weekday, day.day);
+                                    },
+                                    todayBuilder: (context, day, focusedDay) {
+                                      //今日の日付
+                                      return _today(day.weekday, day.day);
+                                    },
+                                    outsideBuilder: (context, day, focusedDay) {
+                                      //先月・来月の日付
+                                      return _outmonth(day.weekday, day.day);
+                                    },
+                                  ),
                                 ),
+                                Container(
+                                    //カレンダー内の●の説明
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 8, horizontal: 5),
+                                    color: Colors.white,
+                                    alignment: Alignment.centerRight,
+                                    child: Container(
+                                      width: 130,
+                                      padding: EdgeInsets.only(right: 10),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.grey),
+                                        color:
+                                            HexColor('F5F3EF').withOpacity(0.3),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            '●',
+                                            style: TextStyle(
+                                                color: HexColor('EC9361'),
+                                                fontSize: 20),
+                                          ),
+                                          SpaceBox.width(10),
+                                          Text('新発売商品数')
+                                        ],
+                                      ),
+                                    )),
+                              ],
+                            )),
+                        SpaceBox.height(60),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            SizedBox(
+                              //先週ボタン
+                              width: 100,
+                              height: 30,
+                              child: ElevatedButton(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_back_ios_outlined,
+                                    ),
+                                    Text('先週')
+                                  ],
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith<Color>(
+                                          (Set<MaterialState> states) {
+                                    if (states.contains(MaterialState.hovered))
+                                      return HexColor('EC9361'); //ホバーした時
+                                    return HexColor('B8AA8E');
+                                  }),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    week_cnt -= 7;
+                                    week_cntend -= 7;
+                                    if (nosunday == true) {
+                                      //現在日時が日曜日以外だったら日曜日に合わせる
+                                      label_start = DateTime(
+                                          label_start.year,
+                                          label_start.month,
+                                          label_start.day - 7 - now.weekday);
+                                      label_end = DateTime(
+                                          label_end.year,
+                                          label_end.month,
+                                          label_end.day - 7 - now.weekday);
+                                      nosunday = false;
+                                    } else {
+                                      label_start = DateTime(
+                                          label_start.year,
+                                          label_start.month,
+                                          label_start.day - 7);
+                                      label_end = DateTime(label_end.year,
+                                          label_end.month, label_end.day - 7);
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                            //先週と来週ボタンの間の日付
+                            if (nosunday = true) //現在日時が日曜日以外の場合
+                              Text(
+                                  DateTime(label_start.year, label_start.month,
+                                              label_start.day - now.weekday)
+                                          .month
+                                          .toString() +
+                                      '月' +
+                                      DateTime(
+                                              label_start.year,
+                                              label_start.month,
+                                              label_start.day - now.weekday)
+                                          .day
+                                          .toString() +
+                                      '日(' +
+                                      weekname[DateTime(
+                                              label_start.year,
+                                              label_start.month,
+                                              label_start.day - now.weekday)
+                                          .weekday] +
+                                      ') ―  ' +
+                                      DateTime(label_end.year, label_end.month,
+                                              label_end.day - now.weekday)
+                                          .month
+                                          .toString() +
+                                      '月' +
+                                      DateTime(label_end.year, label_end.month,
+                                              label_end.day - now.weekday)
+                                          .day
+                                          .toString() +
+                                      '日(' +
+                                      weekname[DateTime(
+                                              label_end.year,
+                                              label_end.month,
+                                              label_end.day - now.weekday)
+                                          .weekday] +
+                                      ')',
+                                  style: TextStyle(fontSize: 25)),
+                            if (nosunday = false) //現在日時が日曜日の場合
+                              Text(
+                                  label_start.month.toString() +
+                                      '月' +
+                                      (label_start.day).toString() +
+                                      '日(' +
+                                      weekname[label_start.weekday] +
+                                      ') ―  ' +
+                                      label_end.month.toString() +
+                                      '月' +
+                                      (label_end.day).toString() +
+                                      '日(' +
+                                      weekname[label_end.weekday] +
+                                      ')',
+                                  style: TextStyle(fontSize: 25)),
+                            SizedBox(
+                              //来週ボタン
+                              width: 100,
+                              height: 30,
+                              child: ElevatedButton(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text('来週'),
+                                    Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                    ),
+                                  ],
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith<Color>(
+                                          (Set<MaterialState> states) {
+                                    if (states.contains(MaterialState.hovered))
+                                      return HexColor('EC9361'); //ホバーした時
+                                    return HexColor('B8AA8E');
+                                  }),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    week_cnt += 7;
+                                    week_cntend += 7;
+                                    if (nosunday == true) {
+                                      //現在日時が日曜日以外だったら日曜日に合わせる
+                                      label_start = DateTime(
+                                          label_start.year,
+                                          label_start.month,
+                                          label_start.day + 7 - now.weekday);
+                                      label_end = DateTime(
+                                          label_end.year,
+                                          label_end.month,
+                                          label_end.day + 7 - now.weekday);
+                                      nosunday = false;
+                                    } else {
+                                      label_start = DateTime(
+                                          label_start.year,
+                                          label_start.month,
+                                          label_start.day + 7);
+                                      label_end = DateTime(label_end.year,
+                                          label_end.month, label_end.day + 7);
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SpaceBox.height(35),
+                        //発売日時・新商品のカードを表示
+                        if (DateTime(now.year, now.month, now.day).weekday !=
+                            7) //現在日時が日曜日以外だったら
+                          for (int cnt = week_cnt;
+                              cnt < week_cntend;
+                              cnt++) //一週間分
+                            _releaseList(
+                                getEventForDay(DateTime(now.year, now.month,
+                                    (now.day - now.weekday) + cnt)),
+                                DateTime(now.year, now.month,
+                                    (now.day - now.weekday) + cnt)),
+                        if (DateTime(now.year, now.month, now.day).weekday ==
+                            7) //現在日時が日曜日だったら
+                          for (int cnt = week_cnt;
+                              cnt < week_cntend;
+                              cnt++) //一週間分
+                            _releaseList(
+                                getEventForDay(DateTime(
+                                    now.year, now.month, now.day + cnt)),
+                                DateTime(now.year, now.month, now.day + cnt)),
+                        SpaceBox.height(20),
+                        Row(
+                          //ページング
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              //数字ボタン
+                              width: 35,
+                              height: 50,
+                              child: ElevatedButton(
+                                child: Text(
+                                  '1',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: HexColor('EC9361'),
+                                  onPrimary: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                onPressed: () {},
+                              ),
+                            ),
+                            TextButton(
+                              //＞ボタン
+                              child: const Text(
+                                '>',
+                                style: TextStyle(fontSize: 40),
+                              ),
+                              style: TextButton.styleFrom(
+                                primary: Colors.black,
                               ),
                               onPressed: () {},
                             ),
-                          ),
-                          TextButton(
-                            //＞ボタン
-                            child: const Text(
-                              '>',
-                              style: TextStyle(fontSize: 40),
-                            ),
-                            style: TextButton.styleFrom(
-                              primary: Colors.black,
-                            ),
-                            onPressed: () {},
-                          ),
-                        ],
-                      )
-                    ],
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Expanded(flex: 2, child: Text('広告'))
-            ]),
+                Expanded(flex: 2, child: Text('広告'))
+              ]),
               FooterCreate(),
-          ],
-        ),
-      ));
+            ],
+          ),
+        ));
   }
 
   Widget _releaseList(List<dynamic> releaseId, DateTime day) {

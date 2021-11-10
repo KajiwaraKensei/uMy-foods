@@ -317,7 +317,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                       primary: HexColor('B8AA8E'),
                                     ),
                                     child: Text(
-                                      media_height.toString()
+                                      'プロフィール画像を変更'
                                       ,style: TextStyle(fontSize: 14.sp)
                                     ),
                                     onPressed: () async {

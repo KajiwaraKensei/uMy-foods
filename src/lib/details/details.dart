@@ -16,7 +16,7 @@ import 'package:cloud_firestore/cloud_firestore.dart'; //DB
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/date_symbol_data_local.dart'; //日時用
-import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
+import 'package:flutter_screenutil/flutter_screenutil.dart'; //レスポンシブ
 
 // 外部ファイル
 import 'package:umy_foods/HexColor.dart'; //16進数カラーコード
@@ -83,12 +83,16 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
+            if (!snapshot.hasData)
+              return Text('Loading...', style: TextStyle(fontSize: 14.sp));
 
             String result = snapshot.data!.docs[0]['maker_name'];
             maker = result;
 
-            return Text(result,style: TextStyle(fontSize: 14.sp),);
+            return Text(
+              result,
+              style: TextStyle(fontSize: 14.sp),
+            );
           });
     }
 
@@ -107,11 +111,12 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
+            if (!snapshot.hasData)
+              return Text('Loading...', style: TextStyle(fontSize: 14.sp));
 
             String result = snapshot.data!.docs[0]['brand_name'];
 
-            return Text(result,style: TextStyle(fontSize: 14.sp));
+            return Text(result, style: TextStyle(fontSize: 14.sp));
           });
     }
 
@@ -130,7 +135,8 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
+            if (!snapshot.hasData)
+              return Text('Loading...', style: TextStyle(fontSize: 14.sp));
 
             String result = snapshot.data!.docs[0]['allergy_name'];
 
@@ -138,7 +144,7 @@ class _DetailsPageState extends State<DetailsPage> {
               return Text('');
             }
 
-            return Text('${result}　',style: TextStyle(fontSize: 14.sp));
+            return Text('${result}　', style: TextStyle(fontSize: 14.sp));
           });
     }
 
@@ -157,7 +163,8 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
+            if (!snapshot.hasData)
+              return Text('Loading...', style: TextStyle(fontSize: 14.sp));
 
             final result = snapshot.data!.docs;
 
@@ -172,7 +179,8 @@ class _DetailsPageState extends State<DetailsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SelectableText('総合評価',
-                              scrollPhysics: NeverScrollableScrollPhysics(),style: TextStyle(fontSize: 14.sp)),
+                              scrollPhysics: NeverScrollableScrollPhysics(),
+                              style: TextStyle(fontSize: 14.sp)),
                           star(0, 30)
                         ],
                       )),
@@ -183,7 +191,8 @@ class _DetailsPageState extends State<DetailsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SelectableText('コスパ',
-                              scrollPhysics: NeverScrollableScrollPhysics(),style: TextStyle(fontSize: 14.sp)),
+                              scrollPhysics: NeverScrollableScrollPhysics(),
+                              style: TextStyle(fontSize: 14.sp)),
                           star(0, 30)
                         ],
                       )),
@@ -215,7 +224,8 @@ class _DetailsPageState extends State<DetailsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SelectableText('総合評価',
-                            scrollPhysics: NeverScrollableScrollPhysics(),style: TextStyle(fontSize: 14.sp)),
+                            scrollPhysics: NeverScrollableScrollPhysics(),
+                            style: TextStyle(fontSize: 14.sp)),
                         star(evaluation, 30)
                       ],
                     )),
@@ -226,7 +236,8 @@ class _DetailsPageState extends State<DetailsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SelectableText('コスパ',
-                            scrollPhysics: NeverScrollableScrollPhysics(),style: TextStyle(fontSize: 14.sp)),
+                            scrollPhysics: NeverScrollableScrollPhysics(),
+                            style: TextStyle(fontSize: 14.sp)),
                         star(cospa, 30)
                       ],
                     )),
@@ -249,7 +260,8 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
+            if (!snapshot.hasData)
+              return Text('Loading...', style: TextStyle(fontSize: 14.sp));
 
             final result = snapshot.data!.docs;
 
@@ -276,7 +288,8 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
+            if (!snapshot.hasData)
+              return Text('Loading...', style: TextStyle(fontSize: 14.sp));
 
             final result = snapshot.data!.docs;
             repeatnum = result.length;
@@ -304,7 +317,8 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
+            if (!snapshot.hasData)
+              return Text('Loading...', style: TextStyle(fontSize: 14.sp));
 
             final result = snapshot.data!.docs;
 
@@ -328,7 +342,8 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
+            if (!snapshot.hasData)
+              return Text('Loading...', style: TextStyle(fontSize: 14.sp));
 
             final result = snapshot.data!.docs;
             final now = DateTime.now();
@@ -383,14 +398,16 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
+            if (!snapshot.hasData)
+              return Text('Loading...', style: TextStyle(fontSize: 14.sp));
 
             final result = snapshot.data!.docs;
 
             if (result.length == 0) {
               return Container(
                 child: Column(children: [
-                  Text('この商品を「リピート」しているユーザーの年代',style: TextStyle(fontSize: 14.sp)),
+                  Text('この商品を「リピート」しているユーザーの年代',
+                      style: TextStyle(fontSize: 14.sp)),
                   Table(
                     children: [
                       TableRow(children: [
@@ -413,7 +430,8 @@ class _DetailsPageState extends State<DetailsPage> {
             }
             return Container(
               child: Column(children: [
-                Text('この商品を「リピート」しているユーザーの年代',style: TextStyle(fontSize: 14.sp)),
+                Text('この商品を「リピート」しているユーザーの年代',
+                    style: TextStyle(fontSize: 14.sp)),
                 parcentAge(userId),
               ]),
             );
@@ -434,23 +452,25 @@ class _DetailsPageState extends State<DetailsPage> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
+            if (!snapshot.hasData)
+              return Text('Loading...', style: TextStyle(fontSize: 14.sp));
 
             final result = snapshot.data!.docs;
 
             if (result.length == 0) {
               return Container(
                 child: Column(children: [
-                  Text('この商品を「レビュー」しているユーザーの年代',style: TextStyle(fontSize: 14.sp)),
+                  Text('この商品を「レビュー」しているユーザーの年代',
+                      style: TextStyle(fontSize: 14.sp)),
                   Table(
                     children: [
                       TableRow(children: [
-                        percent_indicator('~10代',0.0),
-                        percent_indicator('20代',0.0),
+                        percent_indicator('~10代', 0.0),
+                        percent_indicator('20代', 0.0),
                       ]),
                       TableRow(children: [
-                        percent_indicator('30代',0.0),
-                        percent_indicator('40代~',0.0),
+                        percent_indicator('30代', 0.0),
+                        percent_indicator('40代~', 0.0),
                       ])
                     ],
                   ),
@@ -464,7 +484,8 @@ class _DetailsPageState extends State<DetailsPage> {
             }
             return Container(
               child: Column(children: [
-                Text('この商品を「レビュー」しているユーザーの年代',style: TextStyle(fontSize: 14.sp)),
+                Text('この商品を「レビュー」しているユーザーの年代',
+                    style: TextStyle(fontSize: 14.sp)),
                 parcentAge(userId),
               ]),
             );
@@ -488,13 +509,14 @@ class _DetailsPageState extends State<DetailsPage> {
           builder: (context,
               AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
             //データが取れていない時の処理
-            if (!snapshot.hasData) return Text('Loading...',style: TextStyle(fontSize: 14.sp));
+            if (!snapshot.hasData)
+              return Text('Loading...', style: TextStyle(fontSize: 14.sp));
 
             return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SelectableText('${snapshot.data!['subject']}',
-                    style: TextStyle(fontSize: 14.sp),
+                      style: TextStyle(fontSize: 14.sp),
                       scrollPhysics: NeverScrollableScrollPhysics()),
                   SelectableText(
                       'たんぱく質　${snapshot.data!['たんぱく質']}　/　エネルギー　${snapshot.data!['エネルギー']}　/　炭水化物　${snapshot.data!['炭水化物']}　/　脂質　${snapshot.data!['脂質']}　/　食塩相当量　${snapshot.data!['食塩相当量']}',
@@ -522,7 +544,8 @@ class _DetailsPageState extends State<DetailsPage> {
                               content: TextButton(
                                   child: Text(
                                     where,
-                                    style: TextStyle(color: Colors.black,fontSize: 14.sp),
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 14.sp),
                                   ),
                                   onPressed: () {
                                     Navigator.pop(context);
@@ -532,7 +555,8 @@ class _DetailsPageState extends State<DetailsPage> {
                               content: TextButton(
                                   child: Text(
                                     '商品詳細',
-                                    style: TextStyle(color: Colors.black,fontSize: 14.sp),
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 14.sp),
                                   ),
                                   onPressed: () {}),
                             ),
@@ -551,7 +575,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
                               //データが取れていない時の処理
                               if (!snapshot.hasData)
-                                return Text('Loading...',style: TextStyle(fontSize: 14.sp));
+                                return Text('Loading...',
+                                    style: TextStyle(fontSize: 14.sp));
 
                               final result = snapshot.data!.docs[0];
                               String imgmain = (result['images'][0] == "")
@@ -644,30 +669,30 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 },
                                               ),
                                             ),
-                                            SpaceBox.width(10.w),
-                                            Ink(
-                                              //Instagramボタン
-                                              decoration: ShapeDecoration(
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    HexColor('4C64D3'),
-                                                    HexColor('CF2E92'),
-                                                    HexColor('F26939'),
-                                                    HexColor('FFDD83'),
-                                                  ],
-                                                ),
-                                                shape: CircleBorder(),
-                                              ),
-                                              child: IconButton(
-                                                icon: Icon(
-                                                  FontAwesomeIcons.instagram,
-                                                  color: Colors.white,
-                                                  size: 20.sp,
-                                                ),
-                                                color: Colors.white,
-                                                onPressed: () {},
-                                              ),
-                                            ),
+                                            // SpaceBox.width(10.w),
+                                            // Ink(
+                                            //   //Instagramボタン
+                                            //   decoration: ShapeDecoration(
+                                            //     gradient: LinearGradient(
+                                            //       colors: [
+                                            //         HexColor('4C64D3'),
+                                            //         HexColor('CF2E92'),
+                                            //         HexColor('F26939'),
+                                            //         HexColor('FFDD83'),
+                                            //       ],
+                                            //     ),
+                                            //     shape: CircleBorder(),
+                                            //   ),
+                                            //   child: IconButton(
+                                            //     icon: Icon(
+                                            //       FontAwesomeIcons.instagram,
+                                            //       color: Colors.white,
+                                            //       size: 20.sp,
+                                            //     ),
+                                            //     color: Colors.white,
+                                            //     onPressed: () {},
+                                            //   ),
+                                            // ),
                                             SpaceBox.width(10.w),
                                             Ink(
                                               //Facebookボタン
@@ -747,20 +772,24 @@ class _DetailsPageState extends State<DetailsPage> {
                                                     children: [
                                                       TableRow(children: [
                                                         SelectableText('商品名',
-                                                          style: TextStyle(fontSize: 14.sp),
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    14.sp),
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics()),
-                                                        SelectableText(
-                                                            result[
-                                                                'product_name'],
-                                                            style: TextStyle(fontSize: 14.sp),
+                                                        SelectableText(result['product_name'],
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    14.sp),
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics()),
                                                         SpaceBox.height(30.h),
                                                       ]),
                                                       TableRow(children: [
                                                         SelectableText('メーカー名',
-                                                          style: TextStyle(fontSize: 14.sp),
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    14.sp),
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics()),
                                                         makerName(
@@ -769,7 +798,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                                       ]),
                                                       TableRow(children: [
                                                         SelectableText('ブランド名',
-                                                          style: TextStyle(fontSize: 14.sp),
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    14.sp),
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics()),
                                                         brandName(
@@ -779,20 +810,24 @@ class _DetailsPageState extends State<DetailsPage> {
                                                       ]),
                                                       TableRow(children: [
                                                         SelectableText('内容量',
-                                                          style: TextStyle(fontSize: 14.sp),
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    14.sp),
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics()),
-                                                        SelectableText(
-                                                            result[
-                                                                'Internal_capacity'],
-                                                            style: TextStyle(fontSize: 14.sp),
+                                                        SelectableText(result['Internal_capacity'],
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    14.sp),
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics()),
                                                         SpaceBox.height(30.h),
                                                       ]),
                                                       TableRow(children: [
                                                         SelectableText('発売日',
-                                                          style: TextStyle(fontSize: 14.sp),
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    14.sp),
                                                             scrollPhysics:
                                                                 NeverScrollableScrollPhysics()),
                                                         (DateFormat("yyyy/MM/dd")
@@ -803,17 +838,20 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                 '0001/01/01')
                                                             ? SelectableText(
                                                                 'データなし',
-                                                                style: TextStyle(fontSize: 14.sp),
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14.sp),
                                                                 scrollPhysics:
                                                                     NeverScrollableScrollPhysics())
                                                             : SelectableText(
-                                                                DateFormat(
-                                                                        "yyyy/MM/dd")
+                                                                DateFormat("yyyy/MM/dd")
                                                                     .format(result[
                                                                             'release_date']
                                                                         .toDate())
                                                                     .toString(),
-                                                                style: TextStyle(fontSize: 14.sp),
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14.sp),
                                                                 scrollPhysics:
                                                                     NeverScrollableScrollPhysics()),
                                                         SpaceBox.height(30.h),
@@ -852,7 +890,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                                       });
                                                     },
                                                     child: Container(
-                                                      padding:  EdgeInsets.symmetric(vertical: 5.h,horizontal: 5.w),
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 5.h,
+                                                              horizontal: 5.w),
                                                       decoration: BoxDecoration(
                                                         border: Border.all(
                                                             color: Colors.grey),
@@ -1007,51 +1048,64 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   setState(() async {
                                                     concern = !concern;
 
-                                                    concern = !concern;
                                                     final user =
                                                         await FirebaseAuth
                                                             .instance
                                                             .currentUser;
                                                     final userId =
                                                         user?.uid.toString();
-                                                    if (concern == false) {
-                                                      String doc =
-                                                          randomString(20);
-                                                      FirebaseFirestore.instance
-                                                          .collection("concern")
-                                                          .doc(doc)
-                                                          .set({
-                                                        "concern_id": doc,
-                                                        'product_id': productId,
-                                                        'user_id': userId,
-                                                        "addtime": FieldValue
-                                                            .serverTimestamp(),
-                                                        "update_date": FieldValue
-                                                            .serverTimestamp(),
-                                                      });
+                                                    if (userId != '') {
+                                                      if (concern == false) {
+                                                        String doc =
+                                                            randomString(20);
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                "concern")
+                                                            .doc(doc)
+                                                            .set({
+                                                          "concern_id": doc,
+                                                          'product_id':
+                                                              productId,
+                                                          'user_id': userId,
+                                                          "addtime": FieldValue
+                                                              .serverTimestamp(),
+                                                          "update_date": FieldValue
+                                                              .serverTimestamp(),
+                                                        });
+                                                      } else {
+                                                        final snapshot =
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'concern')
+                                                                .where(
+                                                                    'user_id',
+                                                                    isEqualTo:
+                                                                        userId)
+                                                                .where(
+                                                                    'product_id',
+                                                                    isEqualTo:
+                                                                        productId)
+                                                                .get();
+                                                        final concern =
+                                                            snapshot.docs[0];
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'concern')
+                                                            .doc(concern[
+                                                                'concern_id'])
+                                                            .delete();
+                                                      }
                                                     } else {
-                                                      final snapshot =
-                                                          await FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'concern')
-                                                              .where('user_id',
-                                                                  isEqualTo:
-                                                                      userId)
-                                                              .where(
-                                                                  'product_id',
-                                                                  isEqualTo:
-                                                                      productId)
-                                                              .get();
-                                                      final concern =
-                                                          snapshot.docs[0];
-                                                      FirebaseFirestore.instance
-                                                          .collection('concern')
-                                                          .doc(concern[
-                                                              'concern_id'])
-                                                          .delete();
+                                                      showDialog<void>(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return LoginAlert();
+                                                          });
                                                     }
-
                                                   });
                                                 },
                                               ),
@@ -1101,42 +1155,57 @@ class _DetailsPageState extends State<DetailsPage> {
                                                             .currentUser;
                                                     final userId =
                                                         user?.uid.toString();
-                                                    if (repeat == false) {
-                                                      String doc =
-                                                          randomString(20);
-                                                      FirebaseFirestore.instance
-                                                          .collection("repeat")
-                                                          .doc(doc)
-                                                          .set({
-                                                        "repeat_id": doc,
-                                                        'product_id': productId,
-                                                        'user_id': userId,
-                                                        "addtime": FieldValue
-                                                            .serverTimestamp(),
-                                                        "update_date": FieldValue
-                                                            .serverTimestamp(),
-                                                      });
+                                                    if (userId != '') {
+                                                      if (repeat == false) {
+                                                        String doc =
+                                                            randomString(20);
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                "repeat")
+                                                            .doc(doc)
+                                                            .set({
+                                                          "repeat_id": doc,
+                                                          'product_id':
+                                                              productId,
+                                                          'user_id': userId,
+                                                          "addtime": FieldValue
+                                                              .serverTimestamp(),
+                                                          "update_date": FieldValue
+                                                              .serverTimestamp(),
+                                                        });
+                                                      } else {
+                                                        final snapshot =
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'repeat')
+                                                                .where(
+                                                                    'user_id',
+                                                                    isEqualTo:
+                                                                        userId)
+                                                                .where(
+                                                                    'product_id',
+                                                                    isEqualTo:
+                                                                        productId)
+                                                                .get();
+                                                        final concern =
+                                                            snapshot.docs[0];
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'repeat')
+                                                            .doc(concern[
+                                                                'repeat_id'])
+                                                            .delete();
+                                                      }
                                                     } else {
-                                                      final snapshot =
-                                                          await FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'repeat')
-                                                              .where('user_id',
-                                                                  isEqualTo:
-                                                                      userId)
-                                                              .where(
-                                                                  'product_id',
-                                                                  isEqualTo:
-                                                                      productId)
-                                                              .get();
-                                                      final concern =
-                                                          snapshot.docs[0];
-                                                      FirebaseFirestore.instance
-                                                          .collection('repeat')
-                                                          .doc(concern[
-                                                              'repeat_id'])
-                                                          .delete();
+                                                      showDialog<void>(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return LoginAlert();
+                                                          });
                                                     }
                                                   });
                                                 },
@@ -1160,7 +1229,11 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 width: 700.w,
                                                 height: 40.h,
                                                 child: ElevatedButton(
-                                                    child: Text('原材料',style: TextStyle(fontSize: 14.sp),),
+                                                    child: Text(
+                                                      '原材料',
+                                                      style: TextStyle(
+                                                          fontSize: 14.sp),
+                                                    ),
                                                     style: ElevatedButton
                                                         .styleFrom(
                                                       primary: Colors.white,
@@ -1195,11 +1268,14 @@ class _DetailsPageState extends State<DetailsPage> {
                                                             SelectableText(
                                                               result[
                                                                   'raw_material'],
-                                                              style: TextStyle(fontSize: 14.sp),
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      14.sp),
                                                               scrollPhysics:
                                                                   NeverScrollableScrollPhysics(),
                                                             ),
-                                                            SpaceBox.height(20.h)
+                                                            SpaceBox.height(
+                                                                20.h)
                                                           ])
                                                       // child: SelectableText(result['raw_material'],scrollPhysics: NeverScrollableScrollPhysics(),),
                                                       )),
@@ -1208,7 +1284,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 width: 700.w,
                                                 height: 40.h,
                                                 child: ElevatedButton(
-                                                    child: Text('アレルギー',style: TextStyle(fontSize: 14.sp)),
+                                                    child: Text('アレルギー',
+                                                        style: TextStyle(
+                                                            fontSize: 14.sp)),
                                                     style: ElevatedButton
                                                         .styleFrom(
                                                       primary: Colors.white,
@@ -1251,14 +1329,17 @@ class _DetailsPageState extends State<DetailsPage> {
                                                                             i++)
                                                                           allergyName(result['allergy_id'][i])
                                                                       ]),
-                                                            SpaceBox.height(20.h)
+                                                            SpaceBox.height(
+                                                                20.h)
                                                           ]))),
                                               SizedBox(
                                                 //栄養成分ドロップダウン
                                                 width: 700.w,
                                                 height: 40.h,
                                                 child: ElevatedButton(
-                                                    child: Text('栄養成分',style: TextStyle(fontSize: 14.sp)),
+                                                    child: Text('栄養成分',
+                                                        style: TextStyle(
+                                                            fontSize: 14.sp)),
                                                     style: ElevatedButton
                                                         .styleFrom(
                                                       primary: Colors.white,
@@ -1305,7 +1386,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                               padding:
                                                   EdgeInsets.only(left: 20.w),
                                               child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
                                                   repeatAge(productId),
                                                   // SpaceBox.height(20.h),
@@ -1353,7 +1436,9 @@ class _DetailsPageState extends State<DetailsPage> {
                           ElevatedButton(
                             //レビューボタン
                             child: Text('この商品をレビューする',
-                                style: TextStyle(fontWeight: FontWeight.w600,fontSize: 14.sp)),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.sp)),
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.symmetric(
                                   vertical: 20.h, horizontal: 30.w),
@@ -1483,7 +1568,7 @@ Widget percent_indicator(String name, double persent) {
       ),
       leading: Container(
         width: 60.w,
-        child: Text(name,style: TextStyle(fontSize: 14.sp)),
+        child: Text(name, style: TextStyle(fontSize: 14.sp)),
       ),
       linearStrokeCap: LinearStrokeCap.roundAll,
       backgroundColor: HexColor('E0E0E0'),

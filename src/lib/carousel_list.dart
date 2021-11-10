@@ -314,6 +314,7 @@ newreviewcarousel(var mwidth, var mheight, review) {
   return Container(
     child: Card(
       margin: EdgeInsets.symmetric(horizontal: 8),
+
       child: Container(
         //margin: EdgeInsets.only(left: 5),
         width: mwidth * 0.18,

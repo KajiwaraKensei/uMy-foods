@@ -180,11 +180,12 @@ class FooterCreate extends StatelessWidget {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => RankingPage(),
-                                        ));
+                                    showDialog<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return BetaAlert();
+                                      },
+                                    );
                                     // Navigator.push(
                                     //     context,
                                     //     MaterialPageRoute(
@@ -201,11 +202,12 @@ class FooterCreate extends StatelessWidget {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => RankingPage(),
-                                        ));
+                                    showDialog<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return BetaAlert();
+                                      },
+                                    );
                                     // Navigator.push(
                                     //     context,
                                     //     MaterialPageRoute(
@@ -221,11 +223,12 @@ class FooterCreate extends StatelessWidget {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => RankingPage(),
-                                        ));
+                                    showDialog<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return BetaAlert();
+                                      },
+                                    );
                                     // Navigator.push(
                                     //     context,
                                     //     MaterialPageRoute(

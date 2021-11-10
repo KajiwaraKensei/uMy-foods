@@ -11,6 +11,7 @@ import 'package:umy_foods/profile/profile_edit.dart';
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/HexColor.dart';
+import 'package:umy_foods/alert.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
 
 class Signup extends StatefulWidget {
@@ -360,6 +361,12 @@ class _SignupState extends State<Signup> {
                               ),
                               onPressed: () {
                                 //利用規約表示
+                                                showDialog<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return BetaAlert();
+                                  },
+                                );
                               },
                             ),
                           ),

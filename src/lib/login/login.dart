@@ -12,7 +12,8 @@ import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/main.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
+import 'package:umy_foods/alert.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; //レスポンシブ
 
 //firebase_auth
 final FirebaseAuth auth = FirebaseAuth.instance;
@@ -128,27 +129,26 @@ class _LoginState extends State<Login> {
                                 cursorColor: Colors.orange, // カーソルの色
                                 controller: _useraddress, // 入力文字取得用
                                 decoration: InputDecoration(
-                                  // フォーカスされていないとき
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(10.0), //角のまるさ
-                                    // 枠線
-                                    borderSide: BorderSide(
-                                      color: HexColor('ec9463'),
-                                      width: 1.5,
+                                    // フォーカスされていないとき
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10.0), //角のまるさ
+                                      // 枠線
+                                      borderSide: BorderSide(
+                                        color: HexColor('ec9463'),
+                                        width: 1.5,
+                                      ),
                                     ),
-                                  ),
-                                  // フォーカスされているとき
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(
-                                      color: HexColor('ec9463'),
-                                      width: 3.5,
+                                    // フォーカスされているとき
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide(
+                                        color: HexColor('ec9463'),
+                                        width: 3.5,
+                                      ),
                                     ),
-                                  ),
-                                  hintText: 'メールアドレスを入力',
-                                  hintStyle: TextStyle(fontSize: 14.sp)
-                                ),
+                                    hintText: 'メールアドレスを入力',
+                                    hintStyle: TextStyle(fontSize: 14.sp)),
                               ),
                               // メールアドレスエラーメッセージ
                               Container(
@@ -156,9 +156,7 @@ class _LoginState extends State<Login> {
                                 child: Text(
                                   address_error,
                                   style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 14.sp
-                                  ),
+                                      color: Colors.red, fontSize: 14.sp),
                                 ),
                               ),
                               // パスワード入力欄
@@ -167,39 +165,38 @@ class _LoginState extends State<Login> {
                                 obscureText: _showPassword, // 入力文字非表示
                                 controller: _userpassword,
                                 decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(
-                                      color: HexColor('ec9463'),
-                                      width: 1.5,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide(
+                                        color: HexColor('ec9463'),
+                                        width: 1.5,
+                                      ),
                                     ),
-                                  ),
-                                  // フォーカスされているとき
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(
-                                      color: HexColor('ec9463'),
-                                      width: 3.5,
+                                    // フォーカスされているとき
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide(
+                                        color: HexColor('ec9463'),
+                                        width: 3.5,
+                                      ),
                                     ),
-                                  ),
-                                  // 表示マーク
-                                  suffixIcon: IconButton(
-                                    icon: Icon(
-                                        _showPassword
-                                            ? Icons.visibility_outlined
-                                            : Icons.visibility_off_outlined,
-                                        color: Colors.grey,
-                                        size:14.sp),
-                                    onPressed: () {
-                                      this.setState(() {
-                                        // 表示と非表示切り替え
-                                        _showPassword = !_showPassword;
-                                      });
-                                    },
-                                  ),
-                                  hintText: 'パスワードを入力',
-                                  hintStyle: TextStyle(fontSize: 14.sp)
-                                ),
+                                    // 表示マーク
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                          _showPassword
+                                              ? Icons.visibility_outlined
+                                              : Icons.visibility_off_outlined,
+                                          color: Colors.grey,
+                                          size: 14.sp),
+                                      onPressed: () {
+                                        this.setState(() {
+                                          // 表示と非表示切り替え
+                                          _showPassword = !_showPassword;
+                                        });
+                                      },
+                                    ),
+                                    hintText: 'パスワードを入力',
+                                    hintStyle: TextStyle(fontSize: 14.sp)),
                               ),
                               // パスワードエラーメッセージ
                               Container(
@@ -207,9 +204,7 @@ class _LoginState extends State<Login> {
                                 child: Text(
                                   password_error,
                                   style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 14.sp
-                                  ),
+                                      color: Colors.red, fontSize: 14.sp),
                                 ),
                               ),
                               // パスワード忘れリンク
@@ -218,15 +213,23 @@ class _LoginState extends State<Login> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('パスワードを忘れた方は',style: TextStyle(fontSize: 14.sp)),
+                                    Text('パスワードを忘れた方は',
+                                        style: TextStyle(fontSize: 14.sp)),
                                     Container(
                                       margin: EdgeInsets.only(left: 8),
                                       child: TextButton(
-                                        child: Text('こちら',style: TextStyle(fontSize: 14.sp)),
+                                        child: Text('こちら',
+                                            style: TextStyle(fontSize: 14.sp)),
                                         style: TextButton.styleFrom(
                                           primary: Colors.blue,
                                         ),
                                         onPressed: () {
+                                          showDialog<void>(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return BetaAlert();
+                                            },
+                                          );
                                           // パスワード忘れ画面へ
                                         },
                                       ),
@@ -249,7 +252,8 @@ class _LoginState extends State<Login> {
                                         });
                                       },
                                     ),
-                                    Text('ログイン状態を保存する',style: TextStyle(fontSize: 14.sp)),
+                                    Text('ログイン状態を保存する',
+                                        style: TextStyle(fontSize: 14.sp)),
                                   ],
                                 ),
                               ),
@@ -322,7 +326,8 @@ class _LoginState extends State<Login> {
                               ),
                               // 新規会員登録リンク
                               Container(
-                                margin: EdgeInsets.only(top: 20.h, bottom: 20.h),
+                                margin:
+                                    EdgeInsets.only(top: 20.h, bottom: 20.h),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -392,7 +397,7 @@ class _LoginState extends State<Login> {
                                 // ボタン + icon
                                 child: ElevatedButton.icon(
                                   icon: FaIcon(FontAwesomeIcons.google,
-                                      color: Colors.red,size:14.sp),
+                                      color: Colors.red, size: 14.sp),
                                   label: Text('Google'),
                                   // ボタンのデザイン
                                   style: ElevatedButton.styleFrom(

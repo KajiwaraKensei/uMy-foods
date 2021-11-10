@@ -12,6 +12,7 @@ import 'package:umy_foods/profile/profile_edit.dart'; //プロフィール編集
 import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
+import 'package:umy_foods/alert.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -92,7 +93,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           IconButton(
                             //設定ボタン
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return BetaAlert();
+                                },
+                              );
+                            },
                             icon: Icon(
                               Icons.settings_outlined,
                               size:24.sp
@@ -246,7 +254,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     style: TextStyle(
                                                         color:
                                                             HexColor('EC9361'),
-                                                        fontSize: 14.sp,    
+                                                        fontSize: 14.sp,
                                                         ),
                                                     scrollPhysics:
                                                         NeverScrollableScrollPhysics()),
@@ -654,7 +662,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                             ],
                                                                           )
                                                                         )
-                                                                    
+
                                                                 ),
                                                               ),
                                                             ),
@@ -754,7 +762,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                             SizedBox(
                                               height: media_height * 0.0525,
                                               child: IconButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  showDialog<void>(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return BetaAlert();
+                                                    },
+                                                  );
+                                                },
                                                 icon: Icon(
                                                   Icons.edit_outlined,
                                                   size:24.sp
