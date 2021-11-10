@@ -41,14 +41,14 @@ rankingcarousel(
               ),
             ),
             // ランキングのカテゴリ
-            SelectableText(
-              category1[0] + '>' + category1[1] + '>' + category1[2],
-              scrollPhysics: NeverScrollableScrollPhysics(),
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: HexColor('616161'),
-              ),
-            ),
+            // SelectableText(
+            //   category1[0] + '>' + category1[1] + '>' + category1[2],
+            //   scrollPhysics: NeverScrollableScrollPhysics(),
+            //   style: TextStyle(
+            //     fontSize: 12.sp,
+            //     color: HexColor('616161'),
+            //   ),
+            // ),
             // カード部分
             for (var i = 0; i < 3; i++)
               Card(
@@ -171,14 +171,14 @@ rankingcarousel(
               ),
             ),
             // ランキングのカテゴリ
-            SelectableText(
-              category2[0] + '>' + category2[1] + '>' + category2[2],
-              scrollPhysics: NeverScrollableScrollPhysics(),
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: HexColor('616161'),
-              ),
-            ),
+            // SelectableText(
+            //   category2[0] + '>' + category2[1] + '>' + category2[2],
+            //   scrollPhysics: NeverScrollableScrollPhysics(),
+            //   style: TextStyle(
+            //     fontSize: 12.sp,
+            //     color: HexColor('616161'),
+            //   ),
+            // ),
             // リピートカード部分
             for (var i = 0; i < 3; i++)
               Card(

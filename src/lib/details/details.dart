@@ -638,7 +638,15 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 color: Colors.grey,
                                                 size: 20.sp,
                                               ),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                showDialog<void>(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return BetaAlert();
+                                                  },
+                                                );
+                                              },
                                             ),
                                             SpaceBox.width(10.w),
                                             Ink(

@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: Size(screen_width, screen_height),
       builder: () => MaterialApp(
-        title: 'uMyFoods',
+        title: 'uMy foods',
         theme: ThemeData(primarySwatch: Colors.blue),
         debugShowCheckedModeBanner: false,
         scrollBehavior: MyCustomScrollBehavior(), // これを追加！

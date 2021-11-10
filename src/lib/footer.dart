@@ -507,9 +507,9 @@ class FooterCreate extends StatelessWidget {
                                           color: Colors.white, size: 20.sp),
                                       onPressed: () async {
                                         if (await canLaunch(
-                                            "https://twitter.com/UmyExe")) {
+                                            "https://twitter.com/Umyfoods")) {
                                           await launch(
-                                              "https://twitter.com/UmyExe");
+                                              "https://twitter.com/Umyfoods");
                                         }
                                       },
                                     ),
@@ -566,6 +566,8 @@ class FooterCreate extends StatelessWidget {
                       ]),
                 ),
               ),
+              Container(), //一番左をあける
+              Container(), //一番左をあける
               Container(), //一番左をあける
             ]),
       ),
