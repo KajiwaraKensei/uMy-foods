@@ -45,3 +45,29 @@ class _LoginAlertState extends State<LoginAlert> {
     );
   }
 }
+
+class BetaAlert extends StatefulWidget {
+  @override
+  _BetaAlertState createState() => _BetaAlertState();
+}
+
+class _BetaAlertState extends State<BetaAlert> {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: Container(
+        height: 50,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text('申し訳ございません。Beta版なのでこの機能はご利用いただけません。'),
+          Text('製品版をお楽しみに！'),
+        ]),
+      ),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('戻る'),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ],
+    );
+  }
+}

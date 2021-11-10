@@ -1352,7 +1352,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                   ),
                   SpaceBox.height(media_height * 0.02463),
                   Text(
-                    'または、ここに画像ファイルをドラッグしてください',
+                    'または、ここに画像ファイルをドラッグしてください(Beta版は画像投稿できません)',
                     style: TextStyle(
                         fontSize: 15.sp,
                         color: HexColor('#444444').withOpacity(0.8)),

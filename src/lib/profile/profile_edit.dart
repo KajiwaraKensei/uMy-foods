@@ -20,6 +20,7 @@ import 'package:umy_foods/Filtering.dart'; //フィルタリングポップア�
 import 'package:umy_foods/profile/profile.dart'; //プロフィール
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
+import 'package:umy_foods/alert.dart';
 
 // void main() {
 //   runApp(MyApp());
@@ -320,12 +321,18 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                       ,style: TextStyle(fontSize: 14.sp)
                                     ),
                                     onPressed: () async {
-                                      XFile? image = await picker.pickImage(
-                                          source: ImageSource.gallery); //画像取得
-                                      setState(() {
-                                        icon_image = image;
-                                        icon_url = icon_image!.path; //画像をURLに変換
-                                      });
+                                      showDialog<void>(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return BetaAlert();
+                                        },
+                                      );
+                                      // XFile? image = await picker.pickImage(
+                                      //     source: ImageSource.gallery); //画像取得
+                                      // setState(() {
+                                      //   icon_image = image;
+                                      //   icon_url = icon_image!.path; //画像をURLに変換
+                                      // });
                                     },
                                   ),
                                 ),
@@ -754,20 +761,26 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                     style: TextStyle(fontSize: 14.sp),
                                   ),
                                   onPressed: () async {
-                                    var selected =
-                                        await showDialog<List<String>>(
-                                            //選択したものを取得
-                                            context: context,
-                                            barrierDismissible: true,
-                                            builder: (BuildContext context) {
-                                              return Maker_FilteringDialog();
-                                            });
-                                    setState(() {
-                                      if (selected != null) {
-                                        //何も押さず閉じた場合nullになる
-                                        like_maker = selected;
-                                      }
-                                    });
+                                    showDialog<void>(
+                                      context: context,
+                                        builder: (BuildContext context) {
+                                          return BetaAlert();
+                                      },
+                                    );
+                                    // var selected =
+                                    //     await showDialog<List<String>>(
+                                    //         //選択したものを取得
+                                    //         context: context,
+                                    //         barrierDismissible: true,
+                                    //         builder: (BuildContext context) {
+                                    //           return Maker_FilteringDialog();
+                                    //         });
+                                    // setState(() {
+                                    //   if (selected != null) {
+                                    //     //何も押さず閉じた場合nullになる
+                                    //     like_maker = selected;
+                                    //   }
+                                    // });
                                   },
                                 ),
                               ),

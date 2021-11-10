@@ -1,7 +1,7 @@
 import 'dart:html';
 import "package:intl/intl.dart";
 import 'package:intl/date_symbol_data_local.dart';
-
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 // パッケージ
@@ -296,7 +296,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
           //表示したいFiresotreの保存先を指定
           stream: FirebaseFirestore.instance
-              .collection('Concern')
+              .collection('concern')
               .where('product_id', isEqualTo: id)
               .snapshots(),
 
@@ -1004,8 +1004,54 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   ],
                                                 ),
                                                 onPressed: () {
-                                                  setState(() {
+                                                  setState(() async {
                                                     concern = !concern;
+
+                                                    concern = !concern;
+                                                    final user =
+                                                        await FirebaseAuth
+                                                            .instance
+                                                            .currentUser;
+                                                    final userId =
+                                                        user?.uid.toString();
+                                                    if (concern == false) {
+                                                      String doc =
+                                                          randomString(20);
+                                                      FirebaseFirestore.instance
+                                                          .collection("concern")
+                                                          .doc(doc)
+                                                          .set({
+                                                        "concern_id": doc,
+                                                        'product_id': productId,
+                                                        'user_id': userId,
+                                                        "addtime": FieldValue
+                                                            .serverTimestamp(),
+                                                        "update_date": FieldValue
+                                                            .serverTimestamp(),
+                                                      });
+                                                    } else {
+                                                      final snapshot =
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'concern')
+                                                              .where('user_id',
+                                                                  isEqualTo:
+                                                                      userId)
+                                                              .where(
+                                                                  'product_id',
+                                                                  isEqualTo:
+                                                                      productId)
+                                                              .get();
+                                                      final concern =
+                                                          snapshot.docs[0];
+                                                      FirebaseFirestore.instance
+                                                          .collection('concern')
+                                                          .doc(concern[
+                                                              'concern_id'])
+                                                          .delete();
+                                                    }
+
                                                   });
                                                 },
                                               ),
@@ -1047,8 +1093,51 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   ],
                                                 ),
                                                 onPressed: () {
-                                                  setState(() {
+                                                  setState(() async {
                                                     repeat = !repeat;
+                                                    final user =
+                                                        await FirebaseAuth
+                                                            .instance
+                                                            .currentUser;
+                                                    final userId =
+                                                        user?.uid.toString();
+                                                    if (repeat == false) {
+                                                      String doc =
+                                                          randomString(20);
+                                                      FirebaseFirestore.instance
+                                                          .collection("repeat")
+                                                          .doc(doc)
+                                                          .set({
+                                                        "repeat_id": doc,
+                                                        'product_id': productId,
+                                                        'user_id': userId,
+                                                        "addtime": FieldValue
+                                                            .serverTimestamp(),
+                                                        "update_date": FieldValue
+                                                            .serverTimestamp(),
+                                                      });
+                                                    } else {
+                                                      final snapshot =
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'repeat')
+                                                              .where('user_id',
+                                                                  isEqualTo:
+                                                                      userId)
+                                                              .where(
+                                                                  'product_id',
+                                                                  isEqualTo:
+                                                                      productId)
+                                                              .get();
+                                                      final concern =
+                                                          snapshot.docs[0];
+                                                      FirebaseFirestore.instance
+                                                          .collection('repeat')
+                                                          .doc(concern[
+                                                              'repeat_id'])
+                                                          .delete();
+                                                    }
                                                   });
                                                 },
                                               ),
@@ -1401,4 +1490,20 @@ Widget percent_indicator(String name, double persent) {
       progressColor: HexColor('FFDF4C'),
     ),
   );
+}
+
+String randomString(int length) {
+  const _randomChars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const _charsLength = _randomChars.length;
+
+  final rand = new Random();
+  final codeUnits = new List.generate(
+    length,
+    (index) {
+      final n = rand.nextInt(_charsLength);
+      return _randomChars.codeUnitAt(n);
+    },
+  );
+  return new String.fromCharCodes(codeUnits);
 }

@@ -6,6 +6,7 @@ import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/review_post/product_selection.dart';
 import 'package:umy_foods/list_page/brand.dart';
 import 'package:umy_foods/profile/profile.dart';
+import 'package:umy_foods/alert.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -141,20 +142,34 @@ class _HeaderState extends State<Header> {
                   message: 'レビューを投稿する',
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProductselectionPage(),
-                          ));
+                      showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return BetaAlert();
+                        },
+                      );
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => ProductselectionPage(),
+                      //     ));
                     },
                     child: IconButton(
-                      icon: Icon(Icons.mode, color: Colors.white),
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProductselectionPage(),
-                          )),
-                    ),
+                        icon: Icon(Icons.mode, color: Colors.white),
+                        onPressed: () {
+                          showDialog<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return BetaAlert();
+                            },
+                          );
+                        }
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => ProductselectionPage(),
+                        //     ));
+                        ),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -229,8 +244,7 @@ class _HeaderState extends State<Header> {
                                       return Login(); //ログイン画面に戻る
                                     }),
                                   );
-                                }
-                                else if (s == 'マイページ') {
+                                } else if (s == 'マイページ') {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(

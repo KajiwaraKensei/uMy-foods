@@ -5,6 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:umy_foods/HexColor.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';//レスポンシブ
+import 'package:umy_foods/alert.dart';
+import 'package:umy_foods/ranking/ranking.dart';
 
 class FooterCreate extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -37,11 +39,17 @@ class FooterCreate extends StatelessWidget {
                               ),
                               TextButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => WhatuMyFoods(),
-                                        ));
+                                    showDialog<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return BetaAlert();
+                                      },
+                                    );
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (context) => WhatuMyFoods(),
+                                    //     ));
                                   },
                                   child: Text('uMyFoodsとは',style: TextStyle(fontSize: 14.sp)),
                                   style: ButtonStyle(
@@ -51,12 +59,18 @@ class FooterCreate extends StatelessWidget {
                                   )),
                               TextButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              TermsOfService(),
-                                        ));
+                                    showDialog<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return BetaAlert();
+                                      },
+                                    );
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (context) =>
+                                    //           TermsOfService(),
+                                    //     ));
                                   },
                                   child: Text('ご利用規約',style: TextStyle(fontSize: 14.sp)),
                                   style: ButtonStyle(
@@ -66,11 +80,17 @@ class FooterCreate extends StatelessWidget {
                                   )),
                               TextButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => PrivacyPolicy(),
-                                        ));
+                                    showDialog<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return BetaAlert();
+                                      },
+                                    );
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (context) => PrivacyPolicy(),
+                                    //     ));
                                   },
                                   child: Text('プライバシーポリシー',style: TextStyle(fontSize: 14.sp)),
                                   style: ButtonStyle(
@@ -94,11 +114,17 @@ class FooterCreate extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => FAQ(),
-                                      ));
+                                  showDialog<void>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return BetaAlert();
+                                    },
+                                  );
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //       builder: (context) => FAQ(),
+                                  //     ));
                                 },
                                 child: Text('よくある質問',style: TextStyle(fontSize: 14.sp)),
                                 style: ButtonStyle(
@@ -109,11 +135,17 @@ class FooterCreate extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Support(),
-                                      ));
+                                  showDialog<void>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return BetaAlert();
+                                    },
+                                  );
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //       builder: (context) => Support(),
+                                  //     ));
                                 },
                                 child: Text('サポート',style: TextStyle(fontSize: 14.sp)),
                                 style: ButtonStyle(
@@ -151,9 +183,14 @@ class FooterCreate extends StatelessWidget {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              ProductRanking(),
+                                          builder: (context) => RankingPage(),
                                         ));
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (context) =>
+                                    //           ProductRanking(),
+                                    //     ));
                                   },
                                   child: Text('商品ランキングを見る',style: TextStyle(fontSize: 14.sp)),
                                   style: ButtonStyle(
@@ -167,8 +204,13 @@ class FooterCreate extends StatelessWidget {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => ReviewRanking(),
+                                          builder: (context) => RankingPage(),
                                         ));
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (context) => ReviewRanking(),
+                                    //     ));
                                   },
                                   child: Text('レビューランキングを見る',style: TextStyle(fontSize: 14.sp)),
                                   style: ButtonStyle(
@@ -182,8 +224,13 @@ class FooterCreate extends StatelessWidget {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => UserRanking(),
+                                          builder: (context) => RankingPage(),
                                         ));
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (context) => UserRanking(),
+                                    //     ));
                                   },
                                   child: Text('ユーザーランキングを見る',style: TextStyle(fontSize: 14.sp)),
                                   style: ButtonStyle(
@@ -194,11 +241,17 @@ class FooterCreate extends StatelessWidget {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => UserQuestion(),
-                                        ));
+                                    showDialog<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return BetaAlert();
+                                      },
+                                    );
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (context) => UserQuestion(),
+                                    //     ));
                                   },
                                   child: Text('ユーザーアンケートを見る',style: TextStyle(fontSize: 14.sp)),
                                   style: ButtonStyle(
@@ -269,11 +322,17 @@ class FooterCreate extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SearchByCategory(),
-                                ));
+                            showDialog<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return BetaAlert();
+                              },
+                            );
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) => SearchByCategory(),
+                            //     ));
                           },
                           child: Text('カテゴリーから探す',style: TextStyle(fontSize: 14.sp)),
                           style: ButtonStyle(
@@ -283,11 +342,17 @@ class FooterCreate extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SearchByMaker(),
-                                ));
+                            showDialog<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return BetaAlert();
+                              },
+                            );
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) => SearchByMaker(),
+                            //     ));
                           },
                           child: Text('メーカーから探す',style: TextStyle(fontSize: 14.sp)),
                           style: ButtonStyle(
@@ -297,11 +362,17 @@ class FooterCreate extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SearchByNewProduct(),
-                                ));
+                            showDialog<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return BetaAlert();
+                              },
+                            );
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) => SearchByNewProduct(),
+                            //     ));
                           },
                           child: Text('新商品から探す',style: TextStyle(fontSize: 14.sp)),
                           style: ButtonStyle(
@@ -333,12 +404,18 @@ class FooterCreate extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ViewPopularReviews(),
-                                      ));
+                                  showDialog<void>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return BetaAlert();
+                                    },
+                                  );
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           ViewPopularReviews(),
+                                  //     ));
                                 },
                                 child: Text('人気のレビューを見る',style: TextStyle(fontSize: 14.sp)),
                                 style: ButtonStyle(
@@ -349,11 +426,17 @@ class FooterCreate extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ViewNewReviews(),
-                                      ));
+                                  showDialog<void>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return BetaAlert();
+                                    },
+                                  );
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //       builder: (context) => ViewNewReviews(),
+                                  //     ));
                                 },
                                 child: Text('新着のレビューを見る',style: TextStyle(fontSize: 14.sp)),
                                 style: ButtonStyle(
@@ -444,9 +527,9 @@ class FooterCreate extends StatelessWidget {
                                       // ボタンのデザイン
                                       onPressed: () async {
                                         if (await canLaunch(
-                                            "https://www.facebook.com/UmyExe/")) {
+                                            "https://www.instagram.com/umy_foods/")) {
                                           await launch(
-                                              "https://www.facebook.com/UmyExe/");
+                                              "https://www.instagram.com/umy_foods/");
                                         }
                                       },
                                     ),
