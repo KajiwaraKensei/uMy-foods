@@ -1404,7 +1404,7 @@ showDialog<void>(
                                                               new_item[i][
                                                                   'product_id'],
                                                               new_item[i]
-                                                                  ['text'],
+                                                                  ['Text'],
                                                               new_item[i]
                                                                   ['image'])
                                                         ],

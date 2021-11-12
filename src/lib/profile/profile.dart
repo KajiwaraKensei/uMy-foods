@@ -153,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                                   DateTime now = DateTime.now(); //現在
 
-                                  String age = '20代前半';
+                                  String age = '20代';
 
                                   String gender = '';
                                   if (result['user_gender'] == 'male') {
