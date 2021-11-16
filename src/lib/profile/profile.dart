@@ -140,7 +140,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                                 //表示したいFiresotreの保存先を指定
                                 stream: FirebaseFirestore.instance
-                                    .collection('/account/')
+                                    .collection('account')
                                     .where('user_id', isEqualTo: uid)
                                     .snapshots(),
 
@@ -256,11 +256,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     ' / ' +
                                                     gender +
                                                     ' / ' +
-                                                    result['user_fovorite'][0] +
+                                                    result['user_favorite'][0] +
                                                     ' / ' +
-                                                    result['user_fovorite'][1] +
+                                                    result['user_favorite'][1] +
                                                     ' / ' +
-                                                    result['user_fovorite'][2],
+                                                    result['user_favorite'][2],
                                                 style:
                                                     TextStyle(fontSize: 14.sp),
                                                 scrollPhysics:

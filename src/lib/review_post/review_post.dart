@@ -946,7 +946,25 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                                 'EC9361')),
                                                       ),
                                                       onPressed: () {
-                                                        setState(() {});
+                                                        setState(() {
+                                                          // FirebaseFirestore
+                                                          //     .instance
+                                                          //     .collection(
+                                                          //         'account')
+                                                          //     .doc(uid)
+                                                          //     .update({
+                                                          //   'user_name':
+                                                          //       user_name,
+                                                          //   'user_gender':
+                                                          //       user_gender,
+                                                          //   'user_birthday':
+                                                          //       user_birthday,
+                                                          //   'user_favorite':
+                                                          //       user_favorite,
+                                                          //   'user_profile':
+                                                          //       user_profile,
+                                                          // });
+                                                        });
                                                       },
                                                     ),
                                                   ),

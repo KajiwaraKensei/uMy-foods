@@ -1052,16 +1052,15 @@ class _DetailsPageState extends State<DetailsPage> {
                                                     numberOfConcern(productId),
                                                   ],
                                                 ),
-                                                onPressed: () {
-                                                  setState(() async {
-                                                    concern = !concern;
-
-                                                    final user =
+                                                onPressed: () async {
+                                                  final user =
                                                         await FirebaseAuth
                                                             .instance
                                                             .currentUser;
                                                     final userId =
                                                         user?.uid.toString();
+                                                  setState(() async {
+                                                    concern = !concern;
                                                     if (userId != '') {
                                                       if (concern == false) {
                                                         String doc =

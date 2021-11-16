@@ -216,7 +216,7 @@ class _ComparisonState extends State<Comparison> {
                 divider: Icon(Icons.chevron_right),
               ),
               LimitedBox(
-                maxHeight: 1150, //最大の高さを指定
+                maxHeight: 1170, //最大の高さを指定
                 child: ReorderableListView(
                   header: Container(
                     child: myContainer(size: 120, text: 'list'),
@@ -390,8 +390,14 @@ class _ComparisonState extends State<Comparison> {
                                           builder: (context) => DetailsPage(
                                               result['product_id'], '比較')));
                                 },
-                                child: Text(result['product_name'],
-                                    style: TextStyle(color: Colors.black)))),
+                                child: Flexible(
+                                    child: DefaultTextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        style: TextStyle(color: Colors.black),
+                                        child: Text(
+                                          result['product_name'],
+                                        ))))),
                         color: Colors.white,
                       ),
                     ]),
