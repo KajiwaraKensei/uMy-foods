@@ -68,7 +68,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         items: <BreadCrumbItem>[
                           BreadCrumbItem(
                             content: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
                               child: SelectableText(
                                 'TOP',
                                 style: TextStyle(

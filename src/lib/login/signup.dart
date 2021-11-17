@@ -440,7 +440,7 @@ class _SignupState extends State<Signup> {
                                           'user_profile': '',
                                           'user_icon': '',
                                           'user_gender': '',
-                                          'user_favorite': [''],
+                                          'user_favorite': ['', '', ''],
                                           'delete_flag': false,
                                           'user_birthday':
                                               FieldValue.serverTimestamp(),

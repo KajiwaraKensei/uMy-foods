@@ -1,9 +1,14 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'dart:math';
 // パッケージ
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart'; //パンくず
 import 'package:intl/date_symbol_data_local.dart'; //翻訳
 import 'package:table_calendar/table_calendar.dart'; //カレンダー
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; //DB
+import 'package:flutter_screenutil/flutter_screenutil.dart'; //レスポンシブ
+import 'package:font_awesome_flutter/font_awesome_flutter.dart'; //font_awesome
 // 外部ファイル
 import 'package:umy_foods/HexColor.dart'; //16進数カラーコード
 import 'package:umy_foods/SpaceBox.dart'; //空間
@@ -11,8 +16,10 @@ import 'package:umy_foods/star.dart'; //星評価
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/clipButton.dart';
+import 'package:umy_foods/clipAddButton.dart';
 import 'package:umy_foods/main.dart';
 import 'package:umy_foods/alert.dart';
+import 'package:umy_foods/details/details.dart';
 
 /*void main() {
   initializeDateFormatting().then((_) => runApp(MyApp())); //翻訳して実行
@@ -110,6 +117,9 @@ class _NewItemPageState extends State<NewItemPage> {
   bool nosunday = true; //日曜日に合わせる
 
   Widget build(BuildContext context) {
+    var media_width = MediaQuery.of(context).size.width; //学校販売PCの場合1280
+    var media_height = MediaQuery.of(context).size.height; //学校販売PCの場合609
+
     final _events = LinkedHashMap<DateTime, List>(
       equals: isSameDay,
       hashCode: getHashCode,
@@ -458,6 +468,132 @@ class _NewItemPageState extends State<NewItemPage> {
                                     now.year, now.month, now.day + cnt)),
                                 DateTime(now.year, now.month, now.day + cnt)),
                         SpaceBox.height(20),
+                        StreamBuilder<QuerySnapshot>(
+
+                            //表示したいFiresotreの保存先を指定
+                            stream: FirebaseFirestore.instance
+                                .collection('product')
+                                .orderBy("release_date")
+                                .limit(1)
+                                .snapshots(),
+
+                            //streamが更新されるたびに呼ばれる
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              //データが取れていない時の処理
+                              if (!snapshot.hasData)
+                                return const Text('Loading...');
+
+                              final result =
+                                  snapshot.data!.docs; //list<QuerySnapshot>['']
+
+                              return Row(children: [
+                                for (int i = 0; i < result.length; i++)
+                                  Card(
+                                    //商品カード
+                                    child: InkWell(
+                                      onTap: () {
+                                        setState(() {});
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => DetailsPage(
+                                                  result[i]['product_id'],
+                                                  '検索'),
+                                            )); //商品詳細ページへ
+                                      },
+                                      child: Container(
+                                        child: Stack(
+                                          children: [
+                                            Padding(
+                                                padding: EdgeInsets.all(10),
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      //商品画像
+                                                      height:
+                                                          media_height * 0.164,
+                                                      width: media_width *
+                                                          0.078125,
+                                                      child: Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Image.network(
+                                                            (result[i]['images']
+                                                                        [0] ==
+                                                                    '')
+                                                                ? 'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf'
+                                                                : result[i][
+                                                                        'images']
+                                                                    [0]),
+                                                      ),
+                                                    ),
+                                                    Column(
+                                                      // ベースラインに揃えて配置
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .baseline,
+
+                                                      // ベースラインの指定
+                                                      textBaseline: TextBaseline
+                                                          .ideographic,
+                                                      children: [
+                                                        makerName(result[i][
+                                                            'maker_id']), //メーカー
+                                                        Text(result[i][
+                                                            'product_name']), //商品名
+                                                        evaluation(result[i]
+                                                            ['product_id']),
+                                                        Row(
+                                                          children: [
+                                                            Container(
+                                                              width:
+                                                                  media_width *
+                                                                      0.05,
+                                                              child: Padding(
+                                                                padding: EdgeInsets.only(
+                                                                    right:
+                                                                        media_width *
+                                                                            0.02),
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    numberofconcern(
+                                                                        result[i]
+                                                                            [
+                                                                            'product_id']),
+                                                                    numberOfRepeat(
+                                                                        result[i]
+                                                                            [
+                                                                            'product_id'])
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            SpaceBox.width(10),
+                                                            defaultClipAddButton(
+                                                                result[i][
+                                                                    'product_id'],
+                                                                result[i][
+                                                                    'product_name'],
+                                                                result[i][
+                                                                        'images']
+                                                                    [0]),
+                                                          ],
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                ))
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ]);
+                            }),
                         Row(
                           //ページング
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -864,5 +1000,147 @@ class _NewItemPageState extends State<NewItemPage> {
           )
       ],
     );
+  }
+
+  Widget makerName(maker_id) {
+    return StreamBuilder<QuerySnapshot>(
+
+        //表示したいFiresotreの保存先を指定
+        stream: FirebaseFirestore.instance
+            .collection('maker')
+            .where('maker_id', isEqualTo: maker_id)
+            .snapshots(),
+
+        //streamが更新されるたびに呼ばれる
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          //データが取れていない時の処理
+          if (!snapshot.hasData) return const Text('Loading...');
+
+          final result = snapshot.data!.docs[0];
+
+          return Text(result['maker_name']);
+        });
+  }
+
+  Widget evaluation(product_id) {
+    return StreamBuilder<QuerySnapshot>(
+
+        //表示したいFiresotreの保存先を指定
+        stream: FirebaseFirestore.instance
+            .collection('review')
+            .where('product_id', isEqualTo: product_id)
+            .snapshots(),
+
+        //streamが更新されるたびに呼ばれる
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          //データが取れていない時の処理
+          if (!snapshot.hasData)
+            return Text('Loading...', style: TextStyle(fontSize: 14.sp));
+
+          final result = snapshot.data!.docs;
+
+          if (result.length == 0) {
+            return Row(
+              //星評価
+              children: [
+                star(0, 25),
+                Text(result.length.toString(),
+                    style: TextStyle(color: HexColor('EC9361'), fontSize: 12))
+              ],
+            );
+          }
+
+          List<int> evaList = [];
+          for (int j = 0; j < result.length; j++) {
+            evaList.add(result[j]['review_evaluation']);
+          }
+          double eva = evaList.reduce((a, b) => a + b) / evaList.length;
+          int evaluation = eva.round();
+          return Row(
+            //星評価
+            children: [
+              star(evaluation, 25),
+              Text(result.length.toString(),
+                  style: TextStyle(color: HexColor('EC9361'), fontSize: 12))
+            ],
+          );
+        });
+  }
+
+  Widget numberofconcern(id) {
+    return StreamBuilder<QuerySnapshot>(
+
+        //表示したいFiresotreの保存先を指定
+        stream: FirebaseFirestore.instance
+            .collection('concern')
+            .where('product_id', isEqualTo: id)
+            .snapshots(),
+
+        //streamが更新されるたびに呼ばれる
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          //データが取れていない時の処理
+          if (!snapshot.hasData)
+            return Text('Loading...', style: TextStyle(fontSize: 14.sp));
+
+          final result = snapshot.data!.docs;
+
+          return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(FontAwesomeIcons.exclamation,
+                    size: 12.sp, color: HexColor('616161')),
+                RichText(
+                    //気になる数
+                    text: TextSpan(
+                        style: TextStyle(color: Colors.black, fontSize: 16.sp),
+                        children: [
+                      TextSpan(
+                          text: result.length.toString(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              color: HexColor('616161'))),
+                    ]))
+              ]);
+        });
+  }
+
+  //リピート
+  Widget numberOfRepeat(id) {
+    return StreamBuilder<QuerySnapshot>(
+
+        //表示したいFiresotreの保存先を指定
+        stream: FirebaseFirestore.instance
+            .collection('repeat')
+            .where('product_id', isEqualTo: id)
+            .snapshots(),
+
+        //streamが更新されるたびに呼ばれる
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          //データが取れていない時の処理
+          if (!snapshot.hasData)
+            return Text('Loading...', style: TextStyle(fontSize: 14.sp));
+
+          final result = snapshot.data!.docs;
+
+          return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(FontAwesomeIcons.sync,
+                    size: 12.sp, color: HexColor('616161')),
+                RichText(
+                    //リピート数
+                    text: TextSpan(
+                        style: TextStyle(color: Colors.black, fontSize: 16.sp),
+                        children: [
+                      TextSpan(
+                          text: result.length.toString(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              color: HexColor('616161'))),
+                    ]))
+              ]);
+        });
   }
 }

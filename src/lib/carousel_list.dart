@@ -334,13 +334,13 @@ newreviewcarousel(var mwidth, var mheight, review) {
                 width: mwidth * 0.16,
                 height: mheight * 0.24,
                 //color: HexColor('ff2222'), // 範囲確認用
-                child: (review['url'] == "")
+                child: (review['url'][0] == "")
                     ? Image.network(
                         'https://firebasestorage.googleapis.com/v0/b/umyfoods-rac.appspot.com/o/NoImage.png?alt=media&token=ed1d2e08-d7ce-47d4-bd6c-16dc4f95addf',
                         fit: BoxFit.contain,
                       )
                     : Image.network(
-                        review['url'],
+                        review['url'][0],
                         fit: BoxFit.contain,
                       ),
               ),

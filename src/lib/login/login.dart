@@ -426,7 +426,7 @@ class _LoginState extends State<Login> {
                                                     ? ''
                                                     : result?.photoURL,
                                             'user_gender': '',
-                                            'user_favorite': [''],
+                                            'user_favorite': ['', '', ''],
                                             'delete_flag': false,
                                             'user_birthday':
                                                 FieldValue.serverTimestamp(),

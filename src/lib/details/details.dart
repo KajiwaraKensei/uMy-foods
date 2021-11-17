@@ -548,6 +548,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                         color: Colors.black, fontSize: 14.sp),
                                   ),
                                   onPressed: () {
+                                    if (where != 'レビュー投稿')
                                     Navigator.pop(context);
                                   }),
                             ),
