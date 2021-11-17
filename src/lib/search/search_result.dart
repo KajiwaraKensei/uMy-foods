@@ -19,7 +19,10 @@ import 'package:umy_foods/footer.dart';
 import 'package:umy_foods/details/details.dart';
 import 'package:umy_foods/clipButton.dart';
 import 'package:umy_foods/clipAddButton.dart';
+<<<<<<< HEAD
 import 'package:umy_foods/alert.dart';
+=======
+>>>>>>> prototype
 
 class SearchResultsPage extends StatefulWidget {
   SearchResultsPage(String this.searchWord, String this.kind);
@@ -90,7 +93,11 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                   items: <BreadCrumbItem>[
                     BreadCrumbItem(
                       content: TextButton(
+<<<<<<< HEAD
                         onPressed: () {Navigator.pop(context);},
+=======
+                        onPressed: () {},
+>>>>>>> prototype
                         child: SelectableText(
                           'TOP',
                           style: TextStyle(color: Colors.black),
@@ -194,6 +201,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                                                 'EC9361')),
                                                       ),
                                                       onPressed: () async {
+<<<<<<< HEAD
                                                         showDialog<void>(
                                                 context: context,
                                                 builder:
@@ -237,6 +245,44 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                                         //         .toString(); //選択したものを代入
                                                         //   }
                                                         // });
+=======
+                                                        var selected;
+                                                        if (display == '商品') {
+                                                          //商品の場合
+                                                          selected = await showDialog<
+                                                                  String>(
+                                                              context: context,
+                                                              barrierDismissible:
+                                                                  true, // user must tap button!
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return SearchResultsSortDialog();
+                                                              });
+                                                        } else if (display ==
+                                                            'レビュー') {
+                                                          //レビューの場合
+                                                          selected = await showDialog<
+                                                                  String>(
+                                                              context: context,
+                                                              barrierDismissible:
+                                                                  true, // user must tap button!
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return SortDialog();
+                                                              });
+                                                        }
+                                                        setState(() {
+                                                          if (selected !=
+                                                              null) {
+                                                            //何も押さず閉じた場合nullになる
+                                                            sort = ''; //初期化
+                                                            sort = selected
+                                                                .toString(); //選択したものを代入
+                                                          }
+                                                        });
+>>>>>>> prototype
                                                       }),
                                                 ),
                                               SpaceBox.width(20),
@@ -256,6 +302,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                                               'EC9361')),
                                                     ),
                                                     onPressed: () async {
+<<<<<<< HEAD
                                                       showDialog<void>(
                                                 context: context,
                                                 builder:
@@ -332,6 +379,77 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                                       //     }
                                                       //   });
                                                       // }
+=======
+                                                      var selected;
+                                                      if (display == 'ユーザー' ||
+                                                          display == 'レビュー') {
+                                                        selected = await showDialog<
+                                                                List<String>>(
+                                                            //[年代,性別]
+                                                            context: context,
+                                                            barrierDismissible:
+                                                                true,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return GenderAge_FilteringDialog();
+                                                            });
+                                                        setState(() {
+                                                          if (selected !=
+                                                              null) {
+                                                            //何も押さず閉じた場合nullになる
+                                                            //初期化
+                                                            age = '';
+                                                            gender = '';
+                                                            if (selected[0]
+                                                                    .length >
+                                                                1) {
+                                                              //年代
+                                                              age = selected[0];
+                                                            }
+                                                            if (selected[1]
+                                                                    .length >
+                                                                1) {
+                                                              //性別
+                                                              gender =
+                                                                  selected[1];
+                                                            }
+                                                          }
+                                                        });
+                                                      } else if (display ==
+                                                          '商品') {
+                                                        selected = await showDialog<
+                                                                List<String>>(
+                                                            //[カテゴリ、ブランド、メーカー]
+                                                            context: context,
+                                                            barrierDismissible:
+                                                                true, // user must tap button!
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return Details_FilteringDialog();
+                                                            });
+                                                        setState(() {
+                                                          if (selected !=
+                                                              null) {
+                                                            //何も押さず閉じた場合nullになる
+                                                            //代入
+                                                            major_category =
+                                                                selected[
+                                                                    0]; //親カテゴリ
+                                                            category = selected[
+                                                                1]; //子カテゴリ
+                                                            sub_category =
+                                                                selected[
+                                                                    2]; //孫カテゴリ
+                                                            brand = selected[
+                                                                3]; //ブランド
+                                                            maker = selected[
+                                                                4]; //メーカー
+                                                          }
+                                                        });
+                                                      }
+>>>>>>> prototype
                                                     }),
                                               ),
                                               if (switchBool) //昇順降順ボタン

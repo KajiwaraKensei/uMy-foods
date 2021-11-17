@@ -6,7 +6,11 @@ import 'package:umy_foods/HexColor.dart';
 import 'package:umy_foods/review_post/product_selection.dart';
 import 'package:umy_foods/list_page/brand.dart';
 import 'package:umy_foods/profile/profile.dart';
+<<<<<<< HEAD
 import 'package:umy_foods/alert.dart';
+=======
+import 'package:umy_foods/search/search_result.dart';
+>>>>>>> prototype
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';

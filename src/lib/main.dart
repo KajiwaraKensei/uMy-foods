@@ -44,9 +44,13 @@ double screen_height=ScreenUtil.getInstance().screenHeight;
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return ScreenUtilInit(
       designSize: Size(screen_width, screen_height),
       builder: () => MaterialApp(
+=======
+    return MaterialApp(
+>>>>>>> prototype
         title: 'uMy foods',
         theme: ThemeData(primarySwatch: Colors.blue),
         debugShowCheckedModeBanner: false,

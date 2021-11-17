@@ -72,9 +72,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Navigator.pop(context);
                               },
                               child: SelectableText(
+<<<<<<< HEAD
                                 'TOP',
                                 style: TextStyle(
                                     color: Colors.black, fontSize: 14.sp),
+=======
+                                '前のページへ',
+                                style: TextStyle(color: Colors.black),
+>>>>>>> prototype
                                 scrollPhysics: NeverScrollableScrollPhysics(),
                               ),
                             ),
@@ -150,11 +155,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                 builder: (BuildContext context,
                                     AsyncSnapshot<QuerySnapshot> snapshot) {
                                   //データが取れていない時の処理
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  }
 
                                   final result = snapshot.data!.docs[0];
 
                                   DateTime now = DateTime.now(); //現在
 
+<<<<<<< HEAD
                                   String age = '20代';
 
                                   String gender = '';
@@ -168,20 +179,42 @@ class _ProfilePageState extends State<ProfilePage> {
                                   }
 
                                   final old = now
+=======
+                                  int year = now
+>>>>>>> prototype
                                       .difference(
                                           result['user_birthday'].toDate())
                                       .inDays;
 
+<<<<<<< HEAD
                                   if (old < 7300) {
                                     age = '～10代';
                                   } else if (old >= 7300 && old < 10950) {
                                     age = '20代';
                                   } else if (old >= 10950 && old < 14600) {
+=======
+                                  String age = '20代';
+                                  if (year > 0 && year < 7300) {
+                                    age = '～10代';
+                                  } else if (year >= 7300 && year < 10950) {
+                                    age = '20代';
+                                  } else if (year >= 10950 && year < 14600) {
+>>>>>>> prototype
                                     age = '30代';
                                   } else {
                                     age = '40代～';
                                   }
 
+                                  String gender = '';
+                                  if (result['user_gender'] == 'male') {
+                                    gender = '男性';
+                                  } else if (result['user_gender'] ==
+                                      'female') {
+                                    gender = '女性';
+                                  } else if (result['user_gender'] ==
+                                      'secret') {
+                                    gender = '秘密';
+                                  }
                                   return Container(
                                     //プロフィール
                                     margin: EdgeInsets.symmetric(
@@ -206,7 +239,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     image: new DecorationImage(
                                                         fit: BoxFit.cover,
                                                         image: NetworkImage(
-                                                            'https://images-na.ssl-images-amazon.com/images/I/71qJYwkBWwL._SX402_.jpg')))),
+                                        (result[
+                                                                  'user_icon'] ==
+                                                              "")
+                                                          ? 'images/anotherUser2.png'
+                                                          : result[
+                                                              'user_icon']), //NetworkImage('https://images-na.ssl-images-amazon.com/images/I/71qJYwkBWwL._SX402_.jpg')
+                                                    ))),
                                             SpaceBox.height(
                                                 media_height * 0.08),
                                             // SizedBox(
@@ -263,8 +302,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     result['user_favorite'][1] +
                                                     ' / ' +
                                                     result['user_favorite'][2],
+<<<<<<< HEAD
                                                 style:
                                                     TextStyle(fontSize: 14.sp),
+=======
+>>>>>>> prototype
                                                 scrollPhysics:
                                                     NeverScrollableScrollPhysics()),
                                             Row(

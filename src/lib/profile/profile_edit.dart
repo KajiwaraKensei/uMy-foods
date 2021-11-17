@@ -923,6 +923,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                               result['user_favorite']; //好み
                                           var user_profile =
                                               result['user_profile']; //自己紹介
+                                              String gender = '';
 
                                           return Row(children: [
                                             SizedBox(
@@ -956,6 +957,16 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                                     flavor,
                                                     quantity
                                                   ]; //好み
+
+                                                  if (user_gender == '男性') {
+                                                    gender = 'male';
+                                                  } else if (user_gender ==
+                                                      '女性') {
+                                                    gender = 'female';
+                                                  } else if (user_gender ==
+                                                      '秘密') {
+                                                    gender = 'secret';
+                                                  }
                                                   showDialog<int>(
                                                       context: context,
                                                       builder: (BuildContext
@@ -1007,7 +1018,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                                                   'user_name':
                                                                       user_name,
                                                                   'user_gender':
-                                                                      user_gender,
+                                                                      gender,
                                                                   'user_birthday':
                                                                       user_birthday,
                                                                   'user_favorite':

@@ -2,13 +2,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; //文字数制限
 import 'package:flutter/rendering.dart';
+<<<<<<< HEAD
+=======
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; //DB
+>>>>>>> prototype
 import 'dart:math';
 
 // パッケージ
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart'; //パンくず
 import 'package:flutter_dropzone/flutter_dropzone.dart'; //ドラッグ&ドロップアップロード
 import 'package:image_picker/image_picker.dart'; //アップロード
+<<<<<<< HEAD
 import 'package:flutter_screenutil/flutter_screenutil.dart'; //レスポンシブ
+=======
+>>>>>>> prototype
 import 'package:umy_foods/details/details.dart';
 import 'package:umy_foods/header.dart';
 import 'package:umy_foods/footer.dart';
@@ -238,6 +247,16 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
     setState(() => _chipList.removeWhere((Widget w) => w.key == chipKey));
   }
 
+  num sweet = 1;
+  num acidity = 1;
+  num salty = 1;
+  num bitter = 1;
+  num spicy = 1;
+  num umami = 1;
+
+  var comment = TextEditingController();
+  String review_comment = '';
+
   Widget build(BuildContext context) {
     var media_width = MediaQuery.of(context).size.width; //学校販売PCの場合1280
     var media_height = MediaQuery.of(context).size.height; //学校販売PCの場合609
@@ -330,7 +349,11 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           SelectableText(maker /*'アサヒ飲料株式会社'*/,
+<<<<<<< HEAD
                                               style: TextStyle(fontSize: 16.sp),
+=======
+                                              style: TextStyle(fontSize: 16),
+>>>>>>> prototype
                                               scrollPhysics:
                                                   NeverScrollableScrollPhysics()),
                                           SelectableText(
@@ -356,7 +379,11 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                       children: [
                                         SelectableText('評価',
                                             style: TextStyle(
+<<<<<<< HEAD
                                                 fontSize: 22.sp,
+=======
+                                                fontSize: 22,
+>>>>>>> prototype
                                                 color: HexColor('EC9361'),
                                                 fontWeight: FontWeight.bold),
                                             scrollPhysics:
@@ -440,7 +467,11 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                     height: media_height * 0.09,
                                                     child: SelectableText('コスパ',
                                                         style: TextStyle(
+<<<<<<< HEAD
                                                             fontSize: 16.sp),
+=======
+                                                            fontSize: 16),
+>>>>>>> prototype
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
                                                   ),
@@ -509,7 +540,11 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                       children: [
                                         SelectableText('味覚',
                                             style: TextStyle(
+<<<<<<< HEAD
                                                 fontSize: 22.sp,
+=======
+                                                fontSize: 22,
+>>>>>>> prototype
                                                 color: HexColor('EC9361'),
                                                 fontWeight: FontWeight.bold),
                                             scrollPhysics:
@@ -594,7 +629,11 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         media_height * 0.082,
                                                     child: SelectableText('甘味',
                                                         style: TextStyle(
+<<<<<<< HEAD
                                                             fontSize: 16.sp),
+=======
+                                                            fontSize: 16),
+>>>>>>> prototype
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
                                                   ),
@@ -648,7 +687,11 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         media_height * 0.082,
                                                     child: SelectableText('酸味',
                                                         style: TextStyle(
+<<<<<<< HEAD
                                                             fontSize: 16.sp),
+=======
+                                                            fontSize: 16),
+>>>>>>> prototype
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
                                                   ),
@@ -701,7 +744,11 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         media_height * 0.082,
                                                     child: SelectableText('塩味',
                                                         style: TextStyle(
+<<<<<<< HEAD
                                                             fontSize: 16.sp),
+=======
+                                                            fontSize: 16),
+>>>>>>> prototype
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
                                                   ),
@@ -752,7 +799,11 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         media_height * 0.082,
                                                     child: SelectableText('苦味',
                                                         style: TextStyle(
+<<<<<<< HEAD
                                                             fontSize: 16.sp),
+=======
+                                                            fontSize: 16),
+>>>>>>> prototype
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
                                                   ),
@@ -803,7 +854,11 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         media_height * 0.082,
                                                     child: SelectableText('辛味',
                                                         style: TextStyle(
+<<<<<<< HEAD
                                                             fontSize: 16.sp),
+=======
+                                                            fontSize: 16),
+>>>>>>> prototype
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
                                                   ),
@@ -854,7 +909,11 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                         media_height * 0.082,
                                                     child: SelectableText('旨味',
                                                         style: TextStyle(
+<<<<<<< HEAD
                                                             fontSize: 16.sp),
+=======
+                                                            fontSize: 16),
+>>>>>>> prototype
                                                         scrollPhysics:
                                                             NeverScrollableScrollPhysics()),
                                                   ),
@@ -914,7 +973,11 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                         children: [
                                           SelectableText('リピートしたいですか？',
                                               style: TextStyle(
+<<<<<<< HEAD
                                                   fontSize: 22.sp,
+=======
+                                                  fontSize: 22,
+>>>>>>> prototype
                                                   color: HexColor('EC9361'),
                                                   fontWeight: FontWeight.bold),
                                               scrollPhysics:
@@ -1006,6 +1069,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                             await FirebaseFirestore
                                                                 .instance
                                                                 .collection(
+<<<<<<< HEAD
                                                                     'account')
                                                                 .where(
                                                                     'user_id',
@@ -1181,6 +1245,64 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                                 ],
                                                               );
                                                             });
+=======
+                                                                    '/account/')
+                                                                .doc(userId)
+                                                                .get();
+                                                        final account = snapshot
+                                                            .data() as Map;
+                                                        String reviewId =
+                                                            randomString(20);
+
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'review')
+                                                            .doc(reviewId)
+                                                            .set({
+                                                          'user_id': userId,
+                                                          'user_name': account[
+                                                              'user_name'],
+                                                          'product_id':
+                                                              product_id,
+                                                          'product_name':
+                                                              product_name,
+                                                          'comment_sum': 0,
+                                                          'favorite_sum': 0,
+                                                          'user_gender': account[
+                                                              'user_gender'],
+                                                          'user_birthday': account[
+                                                              'user_birthday'],
+                                                          'url': '',
+                                                          'review_comment': '',
+                                                          'review_evaluation':
+                                                              comprehensive_rate,
+                                                          'review_cospa':
+                                                              costperformance_rate,
+                                                          'taste': [
+                                                            sweet,
+                                                            acidity,
+                                                            salty,
+                                                            bitter,
+                                                            spicy,
+                                                            umami
+                                                          ],
+                                                          'tag_id': [],
+                                                          'delete_date': FieldValue
+                                                              .serverTimestamp(),
+                                                          'delete_flag': false,
+                                                          'review_postdate':
+                                                              FieldValue
+                                                                  .serverTimestamp(),
+                                                          'update_date': FieldValue
+                                                              .serverTimestamp(),
+                                                          'review_id': reviewId,
+                                                        });
+                                                        Navigator.of(context)
+                                                            .pop();
+
+                                                        setState(() {});
+>>>>>>> prototype
                                                       },
                                                     ),
                                                   ),
@@ -1302,6 +1424,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                         padding: EdgeInsets.symmetric(
                                             vertical: media_height * 0.049),
                                         child: TextField(
+                                          controller: comment,
                                           minLines: 3,
                                           maxLines: null,
                                           inputFormatters: [
@@ -1537,6 +1660,7 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                               final snapshot =
                                                   await FirebaseFirestore
                                                       .instance
+<<<<<<< HEAD
                                                       .collection('account')
                                                       .where('user_id',
                                                           isEqualTo: userId)
@@ -1722,6 +1846,64 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
                                                       ],
                                                     );
                                                   });
+=======
+                                                      .collection('/account/')
+                                                      .doc(userId)
+                                                      .get();
+                                              final account =
+                                                  snapshot.data() as Map;
+                                              String reviewId =
+                                                  randomString(20);
+
+                                              review_comment =
+                                                  comment.text.toString();
+
+                                              FirebaseFirestore.instance
+                                                  .collection('review')
+                                                  .doc(reviewId)
+                                                  .set({
+                                                'user_id': userId,
+                                                'user_name':
+                                                    account['user_name'],
+                                                'product_id': product_id,
+                                                'product_name': product_name,
+                                                'comment_sum': 0,
+                                                'favorite_sum': 0,
+                                                'user_gender':
+                                                    account['user_gender'],
+                                                'user_birthday':
+                                                    account['user_birthday'],
+                                                'url': '',
+                                                'review_comment':
+                                                    review_comment,
+                                                'review_evaluation':
+                                                    comprehensive_rate,
+                                                'review_cospa':
+                                                    costperformance_rate,
+                                                'taste': [
+                                                  sweet,
+                                                  acidity,
+                                                  salty,
+                                                  bitter,
+                                                  spicy,
+                                                  umami
+                                                ],
+                                                'tag_id': _chipList,
+                                                'delete_date': FieldValue
+                                                    .serverTimestamp(),
+                                                'delete_flag': false,
+                                                'review_postdate': FieldValue
+                                                    .serverTimestamp(),
+                                                'update_date': FieldValue
+                                                    .serverTimestamp(),
+                                                'review_id': reviewId,
+                                              });
+                                              Navigator.of(context).pop();
+
+                                              setState(() {});
+
+                                              setState(() {});
+>>>>>>> prototype
                                             },
                                           ),
                                         ),
@@ -1884,44 +2066,80 @@ class _ReviewPostPageState extends State<ReviewPostPage> {
         }
       });
   //以下ラジオボタンの処理
+<<<<<<< HEAD
   _onRadioSelected_Sweetness(value, num level) {
     setState(() {
       sweet = level;
+=======
+  _onRadioSelected_Sweetness(value, select) {
+    setState(() {
+      sweet = select;
+>>>>>>> prototype
       _sweetnessValue = value;
     });
   }
 
+<<<<<<< HEAD
   _onRadioSelected_Acidity(value, num level) {
     setState(() {
       acidity = level;
+=======
+  _onRadioSelected_Acidity(value, select) {
+    setState(() {
+      acidity = select;
+>>>>>>> prototype
       _acidityValue = value;
     });
   }
 
+<<<<<<< HEAD
   _onRadioSelected_Salty(value, num level) {
     setState(() {
       salty = level;
+=======
+  _onRadioSelected_Salty(value, select) {
+    setState(() {
+      salty = select;
+>>>>>>> prototype
       _saltyValue = value;
     });
   }
 
+<<<<<<< HEAD
   _onRadioSelected_Bitter(value, num level) {
     setState(() {
       bitter = level;
+=======
+  _onRadioSelected_Bitter(value, select) {
+    setState(() {
+      bitter = select;
+>>>>>>> prototype
       _bitterValue = value;
     });
   }
 
+<<<<<<< HEAD
   _onRadioSelected_Spicy(value, num level) {
     setState(() {
       spicy = level;
+=======
+  _onRadioSelected_Spicy(value, select) {
+    setState(() {
+      spicy = select;
+>>>>>>> prototype
       _spicyValue = value;
     });
   }
 
+<<<<<<< HEAD
   _onRadioSelected_Taste(value, num level) {
     setState(() {
       umami = level;
+=======
+  _onRadioSelected_Taste(value, select) {
+    setState(() {
+      umami = select;
+>>>>>>> prototype
       _tasteValue = value;
     });
   }
