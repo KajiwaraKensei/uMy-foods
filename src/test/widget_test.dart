@@ -7,13 +7,23 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+<<<<<<< HEAD
 
 import 'package:workspace/main.dart';
+=======
+import 'package:umy_foods/main.dart';
+// import 'package:workspace/main.dart';
+>>>>>>> new_items
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
+<<<<<<< HEAD
     await tester.pumpWidget(const MyApp());
+=======
+    await tester.pumpWidget(MyApp());
+    // await tester.pumpWidget(const MyApp());
+>>>>>>> new_items
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
