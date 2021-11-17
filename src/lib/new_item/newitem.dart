@@ -1060,8 +1060,8 @@ class _NewItemPageState extends State<NewItemPage> {
             //星評価
             children: [
               star(evaluation, 25),
-              Text(result.length.toString(),
-                  style: TextStyle(color: HexColor('EC9361'), fontSize: 12))
+              Text("(" + result.length.toString() + ")",
+                  style: TextStyle(color: HexColor('616161'), fontSize: 12))
             ],
           );
         });
